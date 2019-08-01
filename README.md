@@ -25,7 +25,7 @@ git clone https://github.com/MajorArkwolf/ICT290P1.git
 * Build:
     * Unix:
     ```
-    make && ./steel-ball-run
+    make && ./shays-world
     ```
     * Windows:
         * Select Build in Visual Studio
