@@ -6,26 +6,24 @@
 //  Shay Leary, March 2005
 //--------------------------------------------------------------------------------------
 
-#include <iostream.h>
 #include "AABB.h"
+
+#include <iostream.h>
 
 //--------------------------------------------------------------------------------------
 
-void AABB::SetNoBoundingBoxes(const int & tempSize) 
-{
-	m_BBox = new BoundingBox[tempSize];
-	m_NoOfBoxes = tempSize;
+void AABB::SetNoBoundingBoxes(const int &tempSize) {
+    m_BBox      = new BoundingBox[tempSize];
+    m_NoOfBoxes = tempSize;
 }
 
 //--------------------------------------------------------------------------------------
 
-void AABB::ClearBB(BoundingBox* &tempArray)
-{
-	tempArray = NULL;
-	if (tempArray == NULL)
-	{
-		delete [] tempArray;
-	}
+void AABB::ClearBB(BoundingBox *&tempArray) {
+    tempArray = NULL;
+    if (tempArray == NULL) {
+        delete[] tempArray;
+    }
 }
 
 //--------------------------------------------------------------------------------------
