@@ -106,14 +106,14 @@ bool Collision::Collide(GLdouble endX, GLdouble endY, GLdouble endZ) {
 //--------------------------------------------------------------------------------------
 // Called from above function to check if collsion occurred.
 //--------------------------------------------------------------------------------------
-bool Collision::CheckCollision(
-    int index, GLdouble endX, GLdouble endY, GLdouble endZ) {
+bool Collision::CheckCollision(int index, GLdouble endX, GLdouble endY,
+                               GLdouble endZ) {
     bool CollisionFound = false;
     for (int count = 0; count < m_listSize[index]; count++) {
         if (((endX < m_list[index].GetMaxX(count)) &&
-                (endX > m_list[index].GetMinX(count))) &&
+             (endX > m_list[index].GetMinX(count))) &&
             ((endZ < m_list[index].GetMaxZ(count)) &&
-                (endZ > m_list[index].GetMinZ(count)))) {
+             (endZ > m_list[index].GetMinZ(count)))) {
             CollisionFound = true;
         }
     }

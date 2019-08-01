@@ -36,14 +36,14 @@ class PlainLinkedList {
     void Clear();
 
     // add a node to the start of the linked list
-    bool AddToStart(const int tempType, const GLdouble tempXs,
-        const GLdouble tempXe, const GLdouble tempYs, const GLdouble tempYe,
-        const GLdouble tempZs, const GLdouble tempZe);
+    bool AddToStart(const int tempType, const GLdouble tempXs, const GLdouble tempXe,
+                    const GLdouble tempYs, const GLdouble tempYe,
+                    const GLdouble tempZs, const GLdouble tempZe);
 
     // set the values of the node data
     void SetData(const int &ptrCount, const int tempType, const GLdouble tempXs,
-        const GLdouble tempXe, const GLdouble tempYs, const GLdouble tempYe,
-        const GLdouble tempZs, const GLdouble tempZe);
+                 const GLdouble tempXe, const GLdouble tempYs, const GLdouble tempYe,
+                 const GLdouble tempZs, const GLdouble tempZe);
 
     //----------------------------------------------------------------------------------
     //  Get Methods

@@ -75,9 +75,9 @@ class Camera {
     }
 
     // sets the co-ordinate of each plain
-    void SetPlains(const int tempType, const GLdouble tempXs,
-        const GLdouble tempXe, const GLdouble tempYs, const GLdouble tempYe,
-        const GLdouble tempZs, const GLdouble tempZe);
+    void SetPlains(const int tempType, const GLdouble tempXs, const GLdouble tempXe,
+                   const GLdouble tempYs, const GLdouble tempYe,
+                   const GLdouble tempZs, const GLdouble tempZe);
 
     //----------------------------------------------------------------------------------
     //  Get Methods
@@ -112,7 +112,7 @@ class Camera {
 
     // position the camera
     void Position(GLdouble const &tempX, GLdouble const &tempY,
-        GLdouble const &tempZ, GLdouble const &tempAngle);
+                  GLdouble const &tempZ, GLdouble const &tempAngle);
 
     // check whether ok to move
     void CheckCamera();
@@ -126,13 +126,13 @@ class Camera {
 
     // display map
     void DisplayMap(const int &screenWidth, const int &screenHeight,
-        const GLuint &tempImage);
+                    const GLuint &tempImage);
     // display welcome screen
     void DisplayWelcomeScreen(const int &screenWidth, const int &screenHeight,
-        const int &tempExit, const GLuint &tempImage);
+                              const int &tempExit, const GLuint &tempImage);
     // display no exit
     void DisplayNoExit(const int &screenWidth, const int &screenHeight,
-        const GLuint &tempImage);
+                       const GLuint &tempImage);
 
   private:
     // steep incline increments
@@ -193,7 +193,7 @@ class Camera {
     // These functions were set up to climb stairs, but are not used.
     // The Plain object is used instead
     void ClimbSteps(GLdouble stepStart, GLdouble stepFinish,
-        GLdouble stepHeight, GLdouble stepWidth, int noSteps);
+                    GLdouble stepHeight, GLdouble stepWidth, int noSteps);
     void CheckSteps();
 
     CEasySound *es;

@@ -58,7 +58,7 @@ class AABBNode {
     //  Set Methods
     //----------------------------------------------------------------------------------
     void SetData(const GLdouble maxX, const GLdouble minX, const GLdouble maxY,
-        const GLdouble minY, const GLdouble maxZ, const GLdouble minZ);
+                 const GLdouble minY, const GLdouble maxZ, const GLdouble minZ);
 
     // Set the address of the link to the next node in the list
     void SetNext(AABBNode *next) {

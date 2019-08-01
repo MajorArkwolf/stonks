@@ -13,7 +13,8 @@
 //--------------------------------------------------------------------------------------
 
 void CameraMap::DisplayMap(const int &screenWidth, const int &screenHeight,
-    const GLdouble &xPos, const GLdouble &zPos, const GLuint &tempImage) {
+                           const GLdouble &xPos, const GLdouble &zPos,
+                           const GLuint &tempImage) {
     GLdouble tempX = xPos / 163.0 - 2096 / 163;
     GLdouble tempZ = zPos / 164.0 - 4688 / 164;
     glPushMatrix();
@@ -53,7 +54,8 @@ void CameraMap::DisplayMap(const int &screenWidth, const int &screenHeight,
 //  Displays a welcome or exit screen
 //--------------------------------------------------------------------------------------
 void CameraMap::DisplayWelcomeScreen(const int &screenWidth,
-    const int &screenHeight, const int &tempExit, const GLuint &tempImage) {
+                                     const int &screenHeight, const int &tempExit,
+                                     const GLuint &tempImage) {
     glPushMatrix();
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
@@ -80,8 +82,8 @@ void CameraMap::DisplayWelcomeScreen(const int &screenWidth,
     glPopMatrix();
 }
 
-void CameraMap::DisplayNoExit(
-    const int &screenWidth, const int &screenHeight, const GLuint &tempImage) {
+void CameraMap::DisplayNoExit(const int &screenWidth, const int &screenHeight,
+                              const GLuint &tempImage) {
     glPushMatrix();
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();

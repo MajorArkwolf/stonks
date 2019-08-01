@@ -32,8 +32,9 @@ void PlainLinkedList::Delete(PlainNode *before) {
 //--------------------------------------------------------------------------------------
 
 bool PlainLinkedList::AddToStart(const int tempType, const GLdouble tempXs,
-    const GLdouble tempXe, const GLdouble tempYs, const GLdouble tempYe,
-    const GLdouble tempZs, const GLdouble tempZe) {
+                                 const GLdouble tempXe, const GLdouble tempYs,
+                                 const GLdouble tempYe, const GLdouble tempZs,
+                                 const GLdouble tempZe) {
     PlainNode *newNode;
 
     try {
@@ -153,15 +154,16 @@ GLdouble PlainLinkedList::GetZend(int ptrCount) {
 //--------------------------------------------------------------------------------------
 
 void PlainLinkedList::SetData(const int &ptrCount, const int tempType,
-    const GLdouble tempXs, const GLdouble tempXe, const GLdouble tempYs,
-    const GLdouble tempYe, const GLdouble tempZs, const GLdouble tempZe) {
+                              const GLdouble tempXs, const GLdouble tempXe,
+                              const GLdouble tempYs, const GLdouble tempYe,
+                              const GLdouble tempZs, const GLdouble tempZe) {
     PlainNode *ptr = (m_first);
 
     for (int count = 0; count < ptrCount; count++) {
         ptr = ptr->GetNext();
     }
-    ptr->GetNext()->SetData(
-        tempType, tempXs, tempXe, tempYs, tempYe, tempZs, tempZe);
+    ptr->GetNext()->SetData(tempType, tempXs, tempXe, tempYs, tempYe, tempZs,
+                            tempZe);
 }
 
 //--------------------------------------------------------------------------------------

@@ -32,7 +32,7 @@ void AABBLinkedList::Delete(AABBNode *before) {
 //--------------------------------------------------------------------------------------
 
 bool AABBLinkedList::AddToStart(GLdouble maxX, GLdouble minX, GLdouble maxY,
-    GLdouble minY, GLdouble maxZ, GLdouble minZ) {
+                                GLdouble minY, GLdouble maxZ, GLdouble minZ) {
     AABBNode *newNode;
     try {
         newNode = new AABBNode;
@@ -136,8 +136,9 @@ GLdouble AABBLinkedList::GetMinZ(int ptrCount) {
 //--------------------------------------------------------------------------------------
 
 void AABBLinkedList::SetData(const int &ptrCount, const GLdouble maxX,
-    const GLdouble minX, const GLdouble maxY, const GLdouble minY,
-    const GLdouble maxZ, const GLdouble minZ) {
+                             const GLdouble minX, const GLdouble maxY,
+                             const GLdouble minY, const GLdouble maxZ,
+                             const GLdouble minZ) {
     AABBNode *ptr = (m_first);
 
     for (int count = 0; count < ptrCount; count++) {

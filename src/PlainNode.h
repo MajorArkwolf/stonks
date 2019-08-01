@@ -61,9 +61,9 @@ class PlainNode {
     //----------------------------------------------------------------------------------
     //  Set Methods
     //----------------------------------------------------------------------------------
-    void SetData(const int tempType, const GLdouble tempXs,
-        const GLdouble tempXe, const GLdouble tempYs, const GLdouble tempYe,
-        const GLdouble tempZs, const GLdouble tempZe);
+    void SetData(const int tempType, const GLdouble tempXs, const GLdouble tempXe,
+                 const GLdouble tempYs, const GLdouble tempYe,
+                 const GLdouble tempZs, const GLdouble tempZe);
 
     // Set the address of the link to the next node in the list
     void SetNext(PlainNode *next) {

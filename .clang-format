@@ -5,9 +5,8 @@ ColumnLimit: 80
 IndentWidth: 4
 TabWidth: 4
 BreakInheritanceList: AfterColon
-AlignAfterOpenBracket: DontAlign
-ContinuationIndentWidth : 4
-ConstructorInitializerIndentWidth : 4
+AlignAfterOpenBracket: true
+ConstructorInitializerIndentWidth: 4
 PenaltyExcessCharacter: 4
 BreakBeforeBraces: Attach
 IndentPPDirectives: AfterHash

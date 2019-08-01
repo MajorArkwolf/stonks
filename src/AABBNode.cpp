@@ -16,8 +16,9 @@ void AABBNode::Clear() {
 
 //----------------------------------------------------------------
 
-void AABBNode::SetData(const GLdouble maxX, const GLdouble minX, const GLdouble maxY,
-    const GLdouble minY, const GLdouble maxZ, const GLdouble minZ) {
+void AABBNode::SetData(const GLdouble maxX, const GLdouble minX,
+                       const GLdouble maxY, const GLdouble minY,
+                       const GLdouble maxZ, const GLdouble minZ) {
     m_BBox.max.x = maxX;
     m_BBox.min.x = minX;
     m_BBox.max.y = maxY;

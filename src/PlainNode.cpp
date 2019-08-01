@@ -17,8 +17,9 @@ void PlainNode::Clear() {
 //----------------------------------------------------------------
 
 void PlainNode::SetData(const int tempType, const GLdouble tempXs,
-    const GLdouble tempXe, const GLdouble tempYs, const GLdouble tempYe,
-    const GLdouble tempZs, const GLdouble tempZe) {
+                        const GLdouble tempXe, const GLdouble tempYs,
+                        const GLdouble tempYe, const GLdouble tempZs,
+                        const GLdouble tempZe) {
     m_type        = tempType;
     m_xPlainStart = tempXs;
     m_xPlainEnd   = tempXe;

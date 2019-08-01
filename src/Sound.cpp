@@ -28,7 +28,7 @@ CSound::CSound(char *filename, int iSoundID) {
     SDL_AudioCVT cvt;
 
     SDL_BuildAudioCVT(&cvt, m_spec.format, m_spec.channels, m_spec.freq,
-        obtained.format, obtained.channels, obtained.freq);
+                      obtained.format, obtained.channels, obtained.freq);
     cvt.buf = (Uint8 *)malloc(m_len.GetSDLTime() * cvt.len_mult);
     memcpy(cvt.buf, m_data, m_len.GetSDLTime());
     cvt.len = m_len.GetSDLTime();

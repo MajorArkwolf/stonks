@@ -39,12 +39,12 @@ class AABBLinkedList {
 
     // add a node to the start of the linked list
     bool AddToStart(GLdouble maxX, GLdouble minX, GLdouble maxY, GLdouble minY,
-        GLdouble maxZ, GLdouble minZ);
+                    GLdouble maxZ, GLdouble minZ);
 
     //  set the values of the node data
     void SetData(const int &ptrCount, const GLdouble maxX, const GLdouble minX,
-        const GLdouble maxY, const GLdouble minY, const GLdouble maxZ,
-        const GLdouble minZ);
+                 const GLdouble maxY, const GLdouble minY, const GLdouble maxZ,
+                 const GLdouble minZ);
 
     //----------------------------------------------------------------------------------
     //  Get Methods
