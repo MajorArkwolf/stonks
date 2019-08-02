@@ -406,7 +406,7 @@ void DeleteImageFromMemory(unsigned char *tempImage);
 int main(int argc, char **argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-    glutInitWindowPosition(100, 100);
+    glutInitWindowPosition(-1, -1);
     glutInitWindowSize(800, 500);
     glutCreateWindow("Murdoch University Campus Tour");
 
