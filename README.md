@@ -17,7 +17,7 @@ git clone https://github.com/MajorArkwolf/ICT290P1.git
     ```
     mkdir build
     cd build
-    CXX=clang++ CXX_COMPILER_LAUNCHER=ccache cmake -GNinja ..
+    CXX=clang++ cmake -GNinja ..
     ```
     * Windows:
         * In Visual Studio, select Open → CMake, select `CMakeLists.txt`
