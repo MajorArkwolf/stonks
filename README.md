@@ -4,7 +4,7 @@ ICT290 Group Project Part 1
 ## Building
 * Clone the repo:
 ```
-git clone https://github.com/MajorArkwolf/ICT290P1.git
+git clone https://github.com/opeik/ICT290.git
 ```
 
 * Install dependencies:
