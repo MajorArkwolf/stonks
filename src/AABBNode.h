@@ -9,8 +9,9 @@
 #ifndef AABBNODE_H
 #    define AABBNODE_H
 
-#    include <gl/glut.h>
 #    include <vector>
+
+#    include "Glut.hpp"
 
 //--------------------------------------------------------------------------------------
 

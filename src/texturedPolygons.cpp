@@ -8,7 +8,7 @@
 
 #include "texturedPolygons.h"
 
-#include <iostream.h>
+#include <iostream>
 
 //--------------------------------------------------------------------------------------
 //  Declares datatype to store a raw image file and calls method to load image
@@ -19,7 +19,7 @@ GLubyte *TexturedPolygons::LoadTexture(char *filename, int imgWidth, int imgHeig
     unsigned char *image = NULL;
     image                = LoadRawImageFile(filename, imgWidth, imgHeight);
     // inform user if file loaded
-    cout << "Loading image file " << filename << "...\n";
+    std::cout << "Loading image file " << filename << "...\n";
     return image;
 }
 
@@ -35,7 +35,7 @@ GLubyte *TexturedPolygons::LoadRawImageFile(char *filename, int width, int heigh
     file  = fopen(filename, "rb");
     // exit program if image not found and inform user
     if (file == NULL) {
-        cout << "ERROR loading image file: " << filename << "...\n";
+        std::cout << "ERROR loading image file: " << filename << "...\n";
         exit(0);
     }
     fread(image, width * height * 3, 1, file);

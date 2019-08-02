@@ -8,8 +8,9 @@
 
 #include "Camera.h"
 
-#include <gl/glut.h>
 #include <math.h>
+
+#include "Glut.hpp"
 
 //--------------------------------------------------------------------------------------
 // Set initial values
@@ -33,7 +34,7 @@ Camera::Camera() {
 
     // sound objects
     es        = CEasySound::Instance();
-    stepSound = es->GetSound(es->Load("sounds/step.wav"));
+    stepSound = es->GetSound(es->Load("res/sound/step.wav"));
 }
 
 //--------------------------------------------------------------------------------------

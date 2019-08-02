@@ -1,6 +1,7 @@
-#include <GL/glut.h>
 #include <math.h>
 #include <time.h>
+
+#include "Glut.hpp"
 
 //#include <windows.h> // only used if mouse is required (not portable)
 #include "camera.h"
@@ -860,667 +861,667 @@ void CreateTextures() {
     tp.SetTextureCount(250);
 
     // load and create textures
-    image = tp.LoadTexture("data/abovechanctext.raw", 128, 1024);
+    image = tp.LoadTexture("res/tex/abovechanctext.raw", 128, 1024);
     tp.CreateTexture(ABOVE_CHANC_TEXT, image, 128, 1024);
 
-    image = tp.LoadTexture("data/abovechanctext2.raw", 128, 1024);
+    image = tp.LoadTexture("res/tex/abovechanctext2.raw", 128, 1024);
     tp.CreateTexture(ABOVE_CHANC_TEXT_2, image, 128, 1024);
 
-    image = tp.LoadTexture("data/abovechanctext3.raw", 128, 1024);
+    image = tp.LoadTexture("res/tex/abovechanctext3.raw", 128, 1024);
     tp.CreateTexture(ABOVE_CHANC_TEXT_3, image, 128, 1024);
 
-    image = tp.LoadTexture("data/aboveLibText.raw", 1024, 256);
+    image = tp.LoadTexture("res/tex/aboveLibText.raw", 1024, 256);
     tp.CreateTexture(ABOVE_LIB_TEXT, image, 1024, 256);
 
-    image = tp.LoadTexture("data/aboveLibraryText2.raw", 1024, 256);
+    image = tp.LoadTexture("res/tex/aboveLibraryText2.raw", 1024, 256);
     tp.CreateTexture(ABOVE_LIB_TEXT_2, image, 1024, 256);
 
-    image = tp.LoadTexture("data/aboveUnder4B.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/aboveUnder4B.raw", 256, 128);
     tp.CreateTexture(ABOVE_UNDER_4B, image, 256, 128);
 
-    image = tp.LoadTexture("data/aboveWindows.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/aboveWindows.raw", 128, 256);
     tp.CreateTexture(ABOVE_WINDOW_BLOCK, image, 128, 256);
 
-    image = tp.LoadTexture("data/aboveWindows2.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/aboveWindows2.raw", 128, 256);
     tp.CreateTexture(ABOVE_WINDOW_BLOCK_2, image, 128, 256);
 
-    image = tp.LoadTexture("data/aboveWindowsChanc.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/aboveWindowsChanc.raw", 128, 256);
     tp.CreateTexture(ABOVE_WINDOW_BLOCK_CHANC, image, 128, 256);
 
-    image = tp.LoadTexture("data/aboveWindows2posts.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/aboveWindows2posts.raw", 128, 256);
     tp.CreateTexture(ABOVE_UNDER_POSTS, image, 128, 256);
 
-    image = tp.LoadTexture("data/aboveWindows2posts2.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/aboveWindows2posts2.raw", 128, 256);
     tp.CreateTexture(ABOVE_UNDER_POSTS_2, image, 256, 128);
 
-    image = tp.LoadTexture("data/aboveWindowsLib.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/aboveWindowsLib.raw", 256, 256);
     tp.CreateTexture(ABOVE_LIB, image, 256, 256);
 
-    image = tp.LoadTexture("data/aboveWindows2lib.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/aboveWindows2lib.raw", 256, 128);
     tp.CreateTexture(ABOVE_WINDOW_UNDER_LIB, image, 256, 128);
 
-    image = tp.LoadTexture("data/aboveWindows3bricks.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/aboveWindows3bricks.raw", 256, 256);
     tp.CreateTexture(ABOVE_WINDOW_BLOCK_3, image, 256, 256);
 
-    image = tp.LoadTexture("data/abovephysscitext.raw", 256, 1024);
+    image = tp.LoadTexture("res/tex/abovephysscitext.raw", 256, 1024);
     tp.CreateTexture(ABOVE_PHYS_SCI_TEXT, image, 256, 1024);
 
-    image = tp.LoadTexture("data/aboveWindows3bricksXY.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/aboveWindows3bricksXY.raw", 256, 256);
     tp.CreateTexture(ABOVE_WINDOW_BLOCK_XY_3, image, 256, 256);
 
-    image = tp.LoadTexture("data/aboveWindowEdge.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/aboveWindowEdge.raw", 128, 256);
     tp.CreateTexture(ABOVE_WINDOW_EDGE_3B, image, 128, 256);
 
-    image = tp.LoadTexture("data/aboveWindowEdgeLib.raw", 256, 64);
+    image = tp.LoadTexture("res/tex/aboveWindowEdgeLib.raw", 256, 64);
     tp.CreateTexture(ABOVE_WINDOW_EDGE_3B_LIB, image, 256, 64);
 
-    image = tp.LoadTexture("data/aboveWindowsLibEdge.raw", 256, 64);
+    image = tp.LoadTexture("res/tex/aboveWindowsLibEdge.raw", 256, 64);
     tp.CreateTexture(ABOVE_WINDOW_EDGE_4B_LIB, image, 256, 64);
 
-    image = tp.LoadTexture("data/aboveTicketsText.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/aboveTicketsText.raw", 256, 256);
     tp.CreateTexture(ABOVE_TICKETS_TEXT, image, 256, 256);
 
-    image = tp.LoadTexture("data/aboveWindowsEdge.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/aboveWindowsEdge.raw", 128, 128);
     tp.CreateTexture(ABOVE_CHANC_EDGE, image, 128, 128);
 
-    image = tp.LoadTexture("data/belowrooffill.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/belowrooffill.raw", 128, 256);
     tp.CreateTexture(BELOW_ROOF_FILL, image, 128, 256);
 
-    image = tp.LoadTexture("data/bench.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/bench.raw", 64, 64);
     tp.CreateTexture(BENCH_TOP, image, 64, 64);
 
-    image = tp.LoadTexture("data/benchedgeside.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/benchedgeside.raw", 64, 64);
     tp.CreateTexture(BENCH_EDGE_SIDE, image, 64, 64);
 
-    image = tp.LoadTexture("data/benchedge.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/benchedge.raw", 64, 64);
     tp.CreateTexture(BENCH_EDGE, image, 64, 64);
 
-    image = tp.LoadTexture("data/benchedgetop.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/benchedgetop.raw", 64, 64);
     tp.CreateTexture(BENCH_EDGE_TOP, image, 64, 64);
 
-    image = tp.LoadTexture("data/benchedge2.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/benchedge2.raw", 64, 64);
     tp.CreateTexture(BENCH_EDGE_2, image, 64, 64);
 
-    image = tp.LoadTexture("data/benchedge3.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/benchedge3.raw", 64, 64);
     tp.CreateTexture(BENCH_EDGE_3, image, 64, 64);
 
-    image = tp.LoadTexture("data/benchedgetop2.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/benchedgetop2.raw", 64, 64);
     tp.CreateTexture(BENCH_EDGE_TOP_2, image, 64, 64);
 
-    image = tp.LoadTexture("data/benchside.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/benchside.raw", 64, 64);
     tp.CreateTexture(BENCH_SIDE, image, 64, 64);
 
-    image = tp.LoadTexture("data/benchside2.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/benchside2.raw", 64, 64);
     tp.CreateTexture(BENCH_SIDE_2, image, 64, 64);
 
-    image = tp.LoadTexture("data/bricks1.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/bricks1.raw", 128, 128);
     tp.CreateTexture(WALL_BRICK_YZ, image, 128, 128);
 
-    image = tp.LoadTexture("data/bricks2.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/bricks2.raw", 128, 128);
     tp.CreateTexture(WALL_BRICK_XY, image, 128, 128);
 
-    image = tp.LoadTexture("data/bricks2edge.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/bricks2edge.raw", 128, 128);
     tp.CreateTexture(WALL_BRICK_XY_END, image, 128, 128);
 
-    image = tp.LoadTexture("data/bricks1edge.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/bricks1edge.raw", 128, 128);
     tp.CreateTexture(WALL_BRICK_YZ_END, image, 128, 128);
 
-    image = tp.LoadTexture("data/bricks075.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/bricks075.raw", 128, 128);
     tp.CreateTexture(WALL_BRICK_3_4, image, 128, 128);
 
-    image = tp.LoadTexture("data/brick87.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/brick87.raw", 128, 128);
     tp.CreateTexture(WALL_BRICK_XY_87WIDTH, image, 128, 128);
 
-    image = tp.LoadTexture("data/brickgap.raw", 128, 32);
+    image = tp.LoadTexture("res/tex/brickgap.raw", 128, 32);
     tp.CreateTexture(WALL_BRICK_GAP_YZ, image, 128, 32);
 
-    image = tp.LoadTexture("data/brickgap2.raw", 128, 32);
+    image = tp.LoadTexture("res/tex/brickgap2.raw", 128, 32);
     tp.CreateTexture(WALL_BRICK_GAP2_YZ, image, 128, 32);
 
-    image = tp.LoadTexture("data/bricksecsign.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/bricksecsign.raw", 256, 128);
     tp.CreateTexture(WALL_BRICK_SEC_SIGN, image, 256, 128);
 
-    image = tp.LoadTexture("data/brickshadow.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/brickshadow.raw", 128, 128);
     tp.CreateTexture(SHADOW_BRICK, image, 128, 128);
 
-    image = tp.LoadTexture("data/bricksUSD.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/bricksUSD.raw", 128, 128);
     tp.CreateTexture(WALL_BRICK_USD_YZ, image, 128, 128);
 
-    image = tp.LoadTexture("data/carpet.raw", 32, 32);
+    image = tp.LoadTexture("res/tex/carpet.raw", 32, 32);
     tp.CreateTexture(CARPET, image, 32, 32);
 
-    image = tp.LoadTexture("data/coffeeMachine.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/coffeeMachine.raw", 128, 256);
     tp.CreateTexture(COFFEE_MACHINE, image, 128, 256);
 
-    image = tp.LoadTexture("data/cokeMachine.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/cokeMachine.raw", 128, 256);
     tp.CreateTexture(COKE_MACHINE, image, 128, 256);
 
-    image = tp.LoadTexture("data/COsign.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/COsign.raw", 256, 128);
     tp.CreateTexture(CO_SIGN, image, 256, 128);
 
-    image = tp.LoadTexture("data/counterside.raw", 4, 16);
+    image = tp.LoadTexture("res/tex/counterside.raw", 4, 16);
     tp.CreateTexture(COUNTER_SIDE, image, 4, 16);
 
-    image = tp.LoadTexture("data/countertop.raw", 1, 1);
+    image = tp.LoadTexture("res/tex/countertop.raw", 1, 1);
     tp.CreateTexture(COUNTER_TOP, image, 1, 1);
 
-    image = tp.LoadTexture("data/drainpipe.raw", 32, 2);
+    image = tp.LoadTexture("res/tex/drainpipe.raw", 32, 2);
     tp.CreateTexture(DRAINPIPE, image, 32, 2);
 
-    image = tp.LoadTexture("data/drinksEdge.raw", 16, 2);
+    image = tp.LoadTexture("res/tex/drinksEdge.raw", 16, 2);
     tp.CreateTexture(DRINKS_EDGE, image, 16, 2);
 
-    image = tp.LoadTexture("data/drinksSide.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/drinksSide.raw", 64, 64);
     tp.CreateTexture(DRINKS_SIDE, image, 64, 64);
 
-    image = tp.LoadTexture("data/drinksSide2.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/drinksSide2.raw", 64, 64);
     tp.CreateTexture(DRINKS_SIDE_2, image, 64, 64);
 
-    image = tp.LoadTexture("data/drinksSidetop.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/drinksSidetop.raw", 64, 64);
     tp.CreateTexture(DRINKS_TOP, image, 64, 64);
 
-    image = tp.LoadTexture("data/doorpave1.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/doorpave1.raw", 128, 256);
     tp.CreateTexture(DOORPAVE_1, image, 128, 256);
 
-    image = tp.LoadTexture("data/doorpost1.raw", 1024, 128);
+    image = tp.LoadTexture("res/tex/doorpost1.raw", 1024, 128);
     tp.CreateTexture(DOOR_POST_CHANC, image, 1024, 128);
 
-    image = tp.LoadTexture("data/doorpostSec.raw", 1024, 128);
+    image = tp.LoadTexture("res/tex/doorpostSec.raw", 1024, 128);
     tp.CreateTexture(DOOR_POST_SECURITY, image, 1024, 128);
 
-    image = tp.LoadTexture("data/doorpostside1.raw", 64, 1024);
+    image = tp.LoadTexture("res/tex/doorpostside1.raw", 64, 1024);
     tp.CreateTexture(DOOR_SIDEPOST_CHANC, image, 64, 1024);
 
-    image = tp.LoadTexture("data/doorPostLibSide.raw", 512, 64);
+    image = tp.LoadTexture("res/tex/doorPostLibSide.raw", 512, 64);
     tp.CreateTexture(DOOR_POST_LIB, image, 512, 64);
 
-    image = tp.LoadTexture("data/glassboard.raw", 512, 256);
+    image = tp.LoadTexture("res/tex/glassboard.raw", 512, 256);
     tp.CreateTexture(GLASS_BOARD, image, 512, 256);
 
-    image = tp.LoadTexture("data/glassboard2.raw", 512, 256);
+    image = tp.LoadTexture("res/tex/glassboard2.raw", 512, 256);
     tp.CreateTexture(GLASS_BOARD_2, image, 512, 256);
 
-    image = tp.LoadTexture("data/glassboard3.raw", 512, 256);
+    image = tp.LoadTexture("res/tex/glassboard3.raw", 512, 256);
     tp.CreateTexture(GLASS_BOARD_3, image, 512, 256);
 
-    image = tp.LoadTexture("data/glassboardSide.raw", 2, 16);
+    image = tp.LoadTexture("res/tex/glassboardSide.raw", 2, 16);
     tp.CreateTexture(GLASS_B_SIDE, image, 2, 16);
 
-    image = tp.LoadTexture("data/grass.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/grass.raw", 64, 64);
     tp.CreateTexture(GRASS, image, 64, 64);
 
-    image = tp.LoadTexture("data/grass2.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/grass2.raw", 64, 64);
     tp.CreateTexture(GRASS_2, image, 64, 64);
 
-    image = tp.LoadTexture("data/grass3.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/grass3.raw", 64, 64);
     tp.CreateTexture(GRASS_HILL, image, 64, 64);
 
-    image = tp.LoadTexture("data/GSsign.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/GSsign.raw", 256, 256);
     tp.CreateTexture(GS_SIGN, image, 256, 256);
 
-    image = tp.LoadTexture("data/GSsign2.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/GSsign2.raw", 256, 256);
     tp.CreateTexture(GS_SIGN_2, image, 256, 256);
 
-    image = tp.LoadTexture("data/GSsignedge.raw", 256, 64);
+    image = tp.LoadTexture("res/tex/GSsignedge.raw", 256, 64);
     tp.CreateTexture(GS_SIGN_EDGE, image, 256, 64);
 
-    image = tp.LoadTexture("data/kbl.raw", 512, 256);
+    image = tp.LoadTexture("res/tex/kbl.raw", 512, 256);
     tp.CreateTexture(KBLT, image, 512, 256);
 
-    image = tp.LoadTexture("data/KBLTside1.raw", 2, 128);
+    image = tp.LoadTexture("res/tex/KBLTside1.raw", 2, 128);
     tp.CreateTexture(KBLT_SIDE_1, image, 2, 128);
 
-    image = tp.LoadTexture("data/KBLTside2.raw", 2, 2);
+    image = tp.LoadTexture("res/tex/KBLTside2.raw", 2, 2);
     tp.CreateTexture(KBLT_SIDE_2, image, 2, 2);
 
-    image = tp.LoadTexture("data/kblCorner.raw", 1, 1);
+    image = tp.LoadTexture("res/tex/kblCorner.raw", 1, 1);
     tp.CreateTexture(KBLT_EDGE_CORNER, image, 1, 1);
 
-    image = tp.LoadTexture("data/kbltEdge.raw", 16, 32);
+    image = tp.LoadTexture("res/tex/kbltEdge.raw", 16, 32);
     tp.CreateTexture(KBLT_EDGE, image, 16, 32);
 
-    image = tp.LoadTexture("data/kbltEdge2.raw", 32, 16);
+    image = tp.LoadTexture("res/tex/kbltEdge2.raw", 32, 16);
     tp.CreateTexture(KBLT_EDGE_2, image, 32, 16);
 
-    image = tp.LoadTexture("data/light.raw", 256, 64);
+    image = tp.LoadTexture("res/tex/light.raw", 256, 64);
     tp.CreateTexture(LIGHT, image, 256, 64);
 
-    image = tp.LoadTexture("data/lightsupport.raw", 8, 2);
+    image = tp.LoadTexture("res/tex/lightsupport.raw", 8, 2);
     tp.CreateTexture(LIGHT_SUPPORT, image, 8, 2);
 
-    image = tp.LoadTexture("data/lightsupport2.raw", 2, 8);
+    image = tp.LoadTexture("res/tex/lightsupport2.raw", 2, 8);
     tp.CreateTexture(LIGHT_SUPPORT_2, image, 2, 8);
 
-    image = tp.LoadTexture("data/machineSides.raw", 1, 1);
+    image = tp.LoadTexture("res/tex/machineSides.raw", 1, 1);
     tp.CreateTexture(MACHINE_SIDES, image, 1, 1);
 
-    image = tp.LoadTexture("data/machineSides2.raw", 1, 1);
+    image = tp.LoadTexture("res/tex/machineSides2.raw", 1, 1);
     tp.CreateTexture(MACHINE_SIDES_2, image, 1, 1);
 
-    image = tp.LoadTexture("data/mainPost.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/mainPost.raw", 128, 256);
     tp.CreateTexture(MAIN_POST, image, 128, 256);
 
-    image = tp.LoadTexture("data/mainPost2.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/mainPost2.raw", 256, 128);
     tp.CreateTexture(MAIN_POST_2, image, 256, 128);
 
-    image = tp.LoadTexture("data/map2.raw", 256, 512);
+    image = tp.LoadTexture("res/tex/map2.raw", 256, 512);
     tp.CreateTexture(MAP_2, image, 256, 512);
 
-    image = tp.LoadTexture("data/nexus.raw", 512, 256);
+    image = tp.LoadTexture("res/tex/nexus.raw", 512, 256);
     tp.CreateTexture(NEXUS_SIGN, image, 512, 256);
 
-    image = tp.LoadTexture("data/nexusSide.raw", 2, 16);
+    image = tp.LoadTexture("res/tex/nexusSide.raw", 2, 16);
     tp.CreateTexture(NEXUS_SIDE, image, 2, 16);
 
-    image = tp.LoadTexture("data/noexit.raw", 256, 64);
+    image = tp.LoadTexture("res/tex/noexit.raw", 256, 64);
     tp.CreateTexture(NO_EXIT, image, 256, 64);
 
-    image = tp.LoadTexture("data/nosmokesign.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/nosmokesign.raw", 256, 128);
     tp.CreateTexture(NO_SMOKE_SIGN, image, 256, 128);
 
-    image = tp.LoadTexture("data/pavement.raw", 128, 64);
+    image = tp.LoadTexture("res/tex/pavement.raw", 128, 64);
     tp.CreateTexture(PAVEMENT, image, 128, 64);
 
-    image = tp.LoadTexture("data/pavement16.raw", 32, 64);
+    image = tp.LoadTexture("res/tex/pavement16.raw", 32, 64);
     tp.CreateTexture(PAVEMENT_16, image, 32, 64);
 
-    image = tp.LoadTexture("data/pavementflip.raw", 128, 64);
+    image = tp.LoadTexture("res/tex/pavementflip.raw", 128, 64);
     tp.CreateTexture(PAVEMENT_FLIP, image, 128, 64);
 
-    image = tp.LoadTexture("data/pavementcorner1.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/pavementcorner1.raw", 128, 128);
     tp.CreateTexture(PAVEMENT_CORNER_1, image, 128, 128);
 
-    image = tp.LoadTexture("data/pavementcorner2.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/pavementcorner2.raw", 128, 128);
     tp.CreateTexture(PAVEMENT_CORNER_2, image, 128, 128);
 
-    image = tp.LoadTexture("data/pavementtop.raw", 64, 128);
+    image = tp.LoadTexture("res/tex/pavementtop.raw", 64, 128);
     tp.CreateTexture(PAVEMENT_TOP, image, 64, 128);
 
-    image = tp.LoadTexture("data/pavementtopflip.raw", 64, 128);
+    image = tp.LoadTexture("res/tex/pavementtopflip.raw", 64, 128);
     tp.CreateTexture(PAVEMENT_TOP_FLIP, image, 64, 128);
 
-    image = tp.LoadTexture("data/pavementSide.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/pavementSide.raw", 64, 64);
     tp.CreateTexture(PAVEMENTSIDE_LEFT, image, 64, 64);
 
-    image = tp.LoadTexture("data/pavementSide2.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/pavementSide2.raw", 64, 64);
     tp.CreateTexture(PAVEMENTSIDE_RIGHT, image, 64, 64);
 
-    image = tp.LoadTexture("data/pavementSide3.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/pavementSide3.raw", 64, 64);
     tp.CreateTexture(PAVEMENTSIDE_TOP, image, 64, 64);
 
-    image = tp.LoadTexture("data/phonefront.raw", 512, 32);
+    image = tp.LoadTexture("res/tex/phonefront.raw", 512, 32);
     tp.CreateTexture(TELEPHONE_FRONT, image, 512, 32);
 
-    image = tp.LoadTexture("data/phoneside1.raw", 32, 256);
+    image = tp.LoadTexture("res/tex/phoneside1.raw", 32, 256);
     tp.CreateTexture(TELEPHONE_SIDE_1, image, 32, 256);
 
-    image = tp.LoadTexture("data/phonefront2.raw", 512, 16);
+    image = tp.LoadTexture("res/tex/phonefront2.raw", 512, 16);
     tp.CreateTexture(TELEPHONE_FRONT_2, image, 512, 16);
 
-    image = tp.LoadTexture("data/phonemainside.raw", 512, 256);
+    image = tp.LoadTexture("res/tex/phonemainside.raw", 512, 256);
     tp.CreateTexture(TELEPHONE_MAIN_SIDE, image, 512, 256);
 
-    image = tp.LoadTexture("data/phonetop1.raw", 512, 128);
+    image = tp.LoadTexture("res/tex/phonetop1.raw", 512, 128);
     tp.CreateTexture(TELEPHONE_TOP_1, image, 512, 128);
 
-    image = tp.LoadTexture("data/phoneside2.raw", 16, 256);
+    image = tp.LoadTexture("res/tex/phoneside2.raw", 16, 256);
     tp.CreateTexture(TELEPHONE_SIDE_2, image, 16, 256);
 
-    image = tp.LoadTexture("data/phonetop2.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/phonetop2.raw", 128, 256);
     tp.CreateTexture(TELEPHONE_TOP_2, image, 128, 256);
 
-    image = tp.LoadTexture("data/phonebottom.raw", 512, 128);
+    image = tp.LoadTexture("res/tex/phonebottom.raw", 512, 128);
     tp.CreateTexture(TELEPHONE_BOTTOM, image, 512, 128);
 
-    image = tp.LoadTexture("data/phoneFill.raw", 2, 2);
+    image = tp.LoadTexture("res/tex/phoneFill.raw", 2, 2);
     tp.CreateTexture(TELEPHONE_FILL, image, 2, 2);
 
-    image = tp.LoadTexture("data/phonefront3.raw", 16, 512);
+    image = tp.LoadTexture("res/tex/phonefront3.raw", 16, 512);
     tp.CreateTexture(TELEPHONE_FRONT_3, image, 16, 512);
 
-    image = tp.LoadTexture("data/PSCsign.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/PSCsign.raw", 256, 128);
     tp.CreateTexture(PSC_SIGN, image, 256, 128);
 
-    image = tp.LoadTexture("data/PSCsign2.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/PSCsign2.raw", 256, 128);
     tp.CreateTexture(PSC_SIGN_2, image, 256, 128);
 
-    image = tp.LoadTexture("data/purplepost.raw", 64, 128);
+    image = tp.LoadTexture("res/tex/purplepost.raw", 64, 128);
     tp.CreateTexture(PURPLE_POST, image, 64, 128);
 
-    image = tp.LoadTexture("data/purplepostside.raw", 128, 64);
+    image = tp.LoadTexture("res/tex/purplepostside.raw", 128, 64);
     tp.CreateTexture(PURPLE_POSTSIDE, image, 128, 64);
 
-    image = tp.LoadTexture("data/redpost.raw", 64, 128);
+    image = tp.LoadTexture("res/tex/redpost.raw", 64, 128);
     tp.CreateTexture(RED_POST, image, 64, 128);
 
-    image = tp.LoadTexture("data/redpostside.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/redpostside.raw", 64, 64);
     tp.CreateTexture(RED_POSTSIDE, image, 64, 64);
 
-    image = tp.LoadTexture("data/roofbeam1.raw", 128, 32);
+    image = tp.LoadTexture("res/tex/roofbeam1.raw", 128, 32);
     tp.CreateTexture(ROOF_BEAM_1, image, 128, 32);
 
-    image = tp.LoadTexture("data/roofbeam2.raw", 32, 128);
+    image = tp.LoadTexture("res/tex/roofbeam2.raw", 32, 128);
     tp.CreateTexture(ROOF_BEAM_2, image, 32, 128);
 
-    image = tp.LoadTexture("data/roofbeam3.raw", 64, 128);
+    image = tp.LoadTexture("res/tex/roofbeam3.raw", 64, 128);
     tp.CreateTexture(ROOF_BEAM_3, image, 64, 128);
 
-    image = tp.LoadTexture("data/roofbeam3top.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/roofbeam3top.raw", 128, 128);
     tp.CreateTexture(ROOF_BEAM_3_TOP, image, 128, 128);
 
-    image = tp.LoadTexture("data/roofbeam4.raw", 128, 64);
+    image = tp.LoadTexture("res/tex/roofbeam4.raw", 128, 64);
     tp.CreateTexture(ROOF_BEAM_4, image, 128, 64);
 
-    image = tp.LoadTexture("data/roofPlanks.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/roofPlanks.raw", 128, 128);
     tp.CreateTexture(ROOF_PLANKS, image, 128, 128);
 
-    image = tp.LoadTexture("data/roofPlanks2.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/roofPlanks2.raw", 128, 128);
     tp.CreateTexture(ROOF_PLANKS_2, image, 128, 128);
 
-    image = tp.LoadTexture("data/rooftop.raw", 2, 128);
+    image = tp.LoadTexture("res/tex/rooftop.raw", 2, 128);
     tp.CreateTexture(ROOF_TOP, image, 2, 128);
 
-    image = tp.LoadTexture("data/rooftoplib.raw", 128, 2);
+    image = tp.LoadTexture("res/tex/rooftoplib.raw", 128, 2);
     tp.CreateTexture(ROOF_TOP_LIB, image, 128, 2);
 
-    image = tp.LoadTexture("data/rustyman.raw", 256, 1024);
+    image = tp.LoadTexture("res/tex/rustyman.raw", 256, 1024);
     tp.CreateTexture(RUSTY_MAN, image, 256, 1024);
 
-    image = tp.LoadTexture("data/securitysign1.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/securitysign1.raw", 128, 128);
     tp.CreateTexture(SECURITY_SIGN, image, 128, 128);
 
-    image = tp.LoadTexture("data/securitysign2.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/securitysign2.raw", 128, 128);
     tp.CreateTexture(SECURITY_SIGN_2, image, 128, 128);
 
-    image = tp.LoadTexture("data/sign1.raw", 512, 256);
+    image = tp.LoadTexture("res/tex/sign1.raw", 512, 256);
     tp.CreateTexture(SIGN_1, image, 512, 256);
 
-    image = tp.LoadTexture("data/sign1side1.raw", 16, 512);
+    image = tp.LoadTexture("res/tex/sign1side1.raw", 16, 512);
     tp.CreateTexture(SIGN_1_SIDE_1, image, 16, 512);
 
-    image = tp.LoadTexture("data/sign1side2.raw", 16, 512);
+    image = tp.LoadTexture("res/tex/sign1side2.raw", 16, 512);
     tp.CreateTexture(SIGN_1_SIDE_2, image, 16, 512);
 
-    image = tp.LoadTexture("data/sign2.raw", 512, 512);
+    image = tp.LoadTexture("res/tex/sign2.raw", 512, 512);
     tp.CreateTexture(SIGN_2, image, 512, 512);
 
-    image = tp.LoadTexture("data/sign2side.raw", 512, 16);
+    image = tp.LoadTexture("res/tex/sign2side.raw", 512, 16);
     tp.CreateTexture(SIGN_2_SIDE, image, 512, 16);
 
-    image = tp.LoadTexture("data/statravel.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/statravel.raw", 256, 256);
     tp.CreateTexture(STA_TRAVEL, image, 256, 256);
 
-    image = tp.LoadTexture("data/statraveledge.raw", 256, 64);
+    image = tp.LoadTexture("res/tex/statraveledge.raw", 256, 64);
     tp.CreateTexture(STA_TRAVEL_EDGE, image, 256, 64);
 
-    image = tp.LoadTexture("data/statravelbracket.raw", 16, 2);
+    image = tp.LoadTexture("res/tex/statravelbracket.raw", 16, 2);
     tp.CreateTexture(STA_TRAVEL_BRACKET, image, 16, 2);
 
-    image = tp.LoadTexture("data/statravel2.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/statravel2.raw", 256, 256);
     tp.CreateTexture(STA_TRAVEL_2, image, 256, 256);
 
-    image = tp.LoadTexture("data/statravelbottom.raw", 2, 64);
+    image = tp.LoadTexture("res/tex/statravelbottom.raw", 2, 64);
     tp.CreateTexture(STA_TRAVEL_BOTTOM, image, 2, 64);
 
-    image = tp.LoadTexture("data/stepbricks.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/stepbricks.raw", 128, 128);
     tp.CreateTexture(WALL_BRICK_STEPS, image, 128, 128);
 
-    image = tp.LoadTexture("data/stepbrickscover.raw", 64, 128);
+    image = tp.LoadTexture("res/tex/stepbrickscover.raw", 64, 128);
     tp.CreateTexture(WALL_BRICK_STEPS_COVER, image, 64, 128);
 
-    image = tp.LoadTexture("data/stepbricksedge.raw", 64, 32);
+    image = tp.LoadTexture("res/tex/stepbricksedge.raw", 64, 32);
     tp.CreateTexture(WALL_BRICK_STEPS_EDGE, image, 64, 32);
 
-    image = tp.LoadTexture("data/stepbricksedge2.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/stepbricksedge2.raw", 64, 64);
     tp.CreateTexture(WALL_BRICK_STEPS_EDGE_2, image, 64, 64);
 
-    image = tp.LoadTexture("data/stepbrickstop.raw", 32, 128);
+    image = tp.LoadTexture("res/tex/stepbrickstop.raw", 32, 128);
     tp.CreateTexture(WALL_BRICK_STEPS_TOP, image, 32, 128);
 
-    image = tp.LoadTexture("data/stepslibrary.raw", 128, 1024);
+    image = tp.LoadTexture("res/tex/stepslibrary.raw", 128, 1024);
     tp.CreateTexture(STEPS_LIBRARY, image, 128, 1024);
 
-    image = tp.LoadTexture("data/stepslibrarytop.raw", 256, 1024);
+    image = tp.LoadTexture("res/tex/stepslibrarytop.raw", 256, 1024);
     tp.CreateTexture(STEPS_LIBRARY_TOP, image, 256, 1024);
 
-    image = tp.LoadTexture("data/steppaving1.raw", 1024, 512);
+    image = tp.LoadTexture("res/tex/steppaving1.raw", 1024, 512);
     tp.CreateTexture(STEP_PAVING_1, image, 1024, 512);
 
-    image = tp.LoadTexture("data/steppavingedge.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/steppavingedge.raw", 64, 64);
     tp.CreateTexture(STEP_EDGE, image, 64, 64);
 
-    image = tp.LoadTexture("data/sweetMachine.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/sweetMachine.raw", 256, 256);
     tp.CreateTexture(SWEET_MACHINE, image, 256, 256);
 
-    image = tp.LoadTexture("data/telephoneback.raw", 512, 512);
+    image = tp.LoadTexture("res/tex/telephoneback.raw", 512, 512);
     tp.CreateTexture(TELEPHONE_BACK, image, 512, 512);
 
-    image = tp.LoadTexture("data/ticketcounteredge2.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/ticketcounteredge2.raw", 64, 64);
     tp.CreateTexture(TICKET_COUNTER_EDGE_2, image, 64, 64);
 
-    image = tp.LoadTexture("data/ticketcounteredge3.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/ticketcounteredge3.raw", 64, 64);
     tp.CreateTexture(TICKET_COUNTER_EDGE_3, image, 64, 64);
 
-    image = tp.LoadTexture("data/ticketcountertop.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/ticketcountertop.raw", 128, 256);
     tp.CreateTexture(TICKET_COUNTER_TOP, image, 128, 256);
 
-    image = tp.LoadTexture("data/ticketledgeedge.raw", 2, 32);
+    image = tp.LoadTexture("res/tex/ticketledgeedge.raw", 2, 32);
     tp.CreateTexture(TICKET_LEDGE_EDGE, image, 2, 32);
 
-    image = tp.LoadTexture("data/ticketledge.raw", 2, 128);
+    image = tp.LoadTexture("res/tex/ticketledge.raw", 2, 128);
     tp.CreateTexture(TICKET_LEDGE, image, 2, 128);
 
-    image = tp.LoadTexture("data/ticketledgeedge2.raw", 32, 2);
+    image = tp.LoadTexture("res/tex/ticketledgeedge2.raw", 32, 2);
     tp.CreateTexture(TICKET_LEDGE_EDGE_2, image, 32, 2);
 
-    image = tp.LoadTexture("data/ticketcounteredge.raw", 128, 32);
+    image = tp.LoadTexture("res/tex/ticketcounteredge.raw", 128, 32);
     tp.CreateTexture(TICKET_COUNTER_EDGE, image, 128, 32);
 
-    image = tp.LoadTexture("data/toiletdoortop.raw", 32, 256);
+    image = tp.LoadTexture("res/tex/toiletdoortop.raw", 32, 256);
     tp.CreateTexture(TOILET_DOOR_TOP, image, 32, 256);
 
-    image = tp.LoadTexture("data/toiletmen.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/toiletmen.raw", 128, 128);
     tp.CreateTexture(TOILET_MEN, image, 128, 128);
 
-    image = tp.LoadTexture("data/toiletwomen.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/toiletwomen.raw", 128, 128);
     tp.CreateTexture(TOILET_WOMEN, image, 128, 128);
 
-    image = tp.LoadTexture("data/wallgap1.raw", 8, 128);
+    image = tp.LoadTexture("res/tex/wallgap1.raw", 8, 128);
     tp.CreateTexture(WALL_GAP_1, image, 8, 128);
 
-    image = tp.LoadTexture("data/windowledge1.raw", 32, 1024);
+    image = tp.LoadTexture("res/tex/windowledge1.raw", 32, 1024);
     tp.CreateTexture(WINDOWLEDGE_CHANC_FRONT, image, 32, 1024);
 
-    image = tp.LoadTexture("data/windowledge2.raw", 128, 1024);
+    image = tp.LoadTexture("res/tex/windowledge2.raw", 128, 1024);
     tp.CreateTexture(WINDOWLEDGE_CHANC_TOP, image, 128, 1024);
 
-    image = tp.LoadTexture("data/windowledgeend.raw", 32, 64);
+    image = tp.LoadTexture("res/tex/windowledgeend.raw", 32, 64);
     tp.CreateTexture(WINDOW_LEDGE_END_1, image, 32, 64);
 
-    image = tp.LoadTexture("data/windowledgeend2.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/windowledgeend2.raw", 64, 64);
     tp.CreateTexture(WINDOW_LEDGE_END_2, image, 64, 64);
 
-    image = tp.LoadTexture("data/windowledgeLibfa.raw", 1024, 32);
+    image = tp.LoadTexture("res/tex/windowledgeLibfa.raw", 1024, 32);
     tp.CreateTexture(WINDOWLEDGE_LIB_A, image, 1024, 32);
 
-    image = tp.LoadTexture("data/windowledgeLibfb.raw", 1024, 32);
+    image = tp.LoadTexture("res/tex/windowledgeLibfb.raw", 1024, 32);
     tp.CreateTexture(WINDOWLEDGE_LIB_B, image, 1024, 32);
 
-    image = tp.LoadTexture("data/windowledgeLibta.raw", 1024, 128);
+    image = tp.LoadTexture("res/tex/windowledgeLibta.raw", 1024, 128);
     tp.CreateTexture(WINDOWLEDGE_LIB_TOP_A, image, 1024, 128);
 
-    image = tp.LoadTexture("data/windowledgeLibtb.raw", 1024, 128);
+    image = tp.LoadTexture("res/tex/windowledgeLibtb.raw", 1024, 128);
     tp.CreateTexture(WINDOWLEDGE_LIB_TOP_B, image, 1024, 128);
 
-    image = tp.LoadTexture("data/windowledgeUS1.raw", 32, 1024);
+    image = tp.LoadTexture("res/tex/windowledgeUS1.raw", 32, 1024);
     tp.CreateTexture(WINDOWLEDGE_PS_FRONT, image, 32, 1024);
 
-    image = tp.LoadTexture("data/windowledgeUS2.raw", 128, 1024);
+    image = tp.LoadTexture("res/tex/windowledgeUS2.raw", 128, 1024);
     tp.CreateTexture(WINDOWLEDGE_PS_TOP, image, 128, 1024);
 
-    image = tp.LoadTexture("data/windowledgeUS3.raw", 128, 1024);
+    image = tp.LoadTexture("res/tex/windowledgeUS3.raw", 128, 1024);
     tp.CreateTexture(WINDOWLEDGE_PS_BOTT, image, 128, 1024);
 
-    image = tp.LoadTexture("data/windowpost1.raw", 1024, 128);
+    image = tp.LoadTexture("res/tex/windowpost1.raw", 1024, 128);
     tp.CreateTexture(WINDOWPOST_CHANC_FRONT, image, 1024, 128);
 
-    image = tp.LoadTexture("data/windowpostsmall.raw", 512, 128);
+    image = tp.LoadTexture("res/tex/windowpostsmall.raw", 512, 128);
     tp.CreateTexture(WINDOWPOST_PHYSSCI_FRONT, image, 512, 128);
 
-    image = tp.LoadTexture("data/windowpostsmallside2.raw", 64, 512);
+    image = tp.LoadTexture("res/tex/windowpostsmallside2.raw", 64, 512);
     tp.CreateTexture(WINDOWPOST_PHYSSCI_RIGHT, image, 64, 512);
 
-    image = tp.LoadTexture("data/windowpostsmallside.raw", 64, 512);
+    image = tp.LoadTexture("res/tex/windowpostsmallside.raw", 64, 512);
     tp.CreateTexture(WINDOWPOST_PHYSSCI_LEFT, image, 64, 512);
 
-    image = tp.LoadTexture("data/windowpostLib.raw", 128, 512);
+    image = tp.LoadTexture("res/tex/windowpostLib.raw", 128, 512);
     tp.CreateTexture(WINDOWPOST_LIB_FRONT, image, 128, 512);
 
-    image = tp.LoadTexture("data/windowpostLibside1.raw", 512, 64);
+    image = tp.LoadTexture("res/tex/windowpostLibside1.raw", 512, 64);
     tp.CreateTexture(WINDOWPOST_LIB_LEFT, image, 512, 64);
 
-    image = tp.LoadTexture("data/windowpostLibside2.raw", 512, 64);
+    image = tp.LoadTexture("res/tex/windowpostLibside2.raw", 512, 64);
     tp.CreateTexture(WINDOWPOST_LIB_RIGHT, image, 512, 64);
 
-    image = tp.LoadTexture("data/windowposthalf1.raw", 64, 1024);
+    image = tp.LoadTexture("res/tex/windowposthalf1.raw", 64, 1024);
     tp.CreateTexture(WINDOWPOST_CHANC_RIGHT, image, 64, 1024);
 
-    image = tp.LoadTexture("data/windowposthalf2.raw", 64, 1024);
+    image = tp.LoadTexture("res/tex/windowposthalf2.raw", 64, 1024);
     tp.CreateTexture(WINDOWPOST_CHANC_LEFT, image, 64, 1024);
 
     // Larger Textures
 
-    image = tp.LoadTexture("data/windows/stepwindow.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/windows/stepwindow.raw", 128, 256);
     tp.CreateTexture(STEP_WINDOW, image, 128, 256);
 
-    image = tp.LoadTexture("data/windows/chancDoor1.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/chancDoor1.raw", 256, 256);
     tp.CreateTexture(CHANC_DOOR_1, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/chancDoor2.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/chancDoor2.raw", 256, 256);
     tp.CreateTexture(CHANC_DOOR_2, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/entrance.raw", 512, 256);
+    image = tp.LoadTexture("res/tex/windows/entrance.raw", 512, 256);
     tp.CreateTexture(ENTRANCE, image, 512, 256);
 
-    image = tp.LoadTexture("data/windows/entrance2.raw", 512, 512);
+    image = tp.LoadTexture("res/tex/windows/entrance2.raw", 512, 512);
     tp.CreateTexture(ENTRANCE_2, image, 512, 512);
 
-    image = tp.LoadTexture("data/windows/exiteast.raw", 512, 512);
+    image = tp.LoadTexture("res/tex/windows/exiteast.raw", 512, 512);
     tp.CreateTexture(EXIT_EAST, image, 512, 512);
 
-    image = tp.LoadTexture("data/windows/exitwest.raw", 256, 512);
+    image = tp.LoadTexture("res/tex/windows/exitwest.raw", 256, 512);
     tp.CreateTexture(EXIT_WEST, image, 256, 512);
 
-    image = tp.LoadTexture("data/windows/window1.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/window1.raw", 256, 256);
     tp.CreateTexture(WINDOW_1, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/window1b.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/window1b.raw", 256, 256);
     tp.CreateTexture(WINDOW_1B, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/window2.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/window2.raw", 256, 256);
     tp.CreateTexture(WINDOW_2, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/window2b.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/window2b.raw", 256, 256);
     tp.CreateTexture(WINDOW_2B, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/window2c.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/window2c.raw", 256, 256);
     tp.CreateTexture(WINDOW_2C, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/window2d.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/window2d.raw", 256, 256);
     tp.CreateTexture(WINDOW_2D, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/window2e.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/window2e.raw", 256, 256);
     tp.CreateTexture(WINDOW_2E, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/window2us.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/window2us.raw", 256, 256);
     tp.CreateTexture(WINDOW_2US, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/window2usb.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/window2usb.raw", 256, 256);
     tp.CreateTexture(WINDOW_2USB, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/window3.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/window3.raw", 256, 256);
     tp.CreateTexture(WINDOW_3, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/window3b.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/window3b.raw", 256, 256);
     tp.CreateTexture(WINDOW_3B, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/window4.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/windows/window4.raw", 128, 256);
     tp.CreateTexture(WINDOW_4, image, 128, 256);
 
-    image = tp.LoadTexture("data/windows/window5.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/windows/window5.raw", 128, 256);
     tp.CreateTexture(WINDOW_5, image, 128, 256);
 
-    image = tp.LoadTexture("data/windows/window6.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/window6.raw", 256, 256);
     tp.CreateTexture(WINDOW_6, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/window7.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/window7.raw", 256, 256);
     tp.CreateTexture(WINDOW_7, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/window8.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/window8.raw", 256, 256);
     tp.CreateTexture(WINDOW_8, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/window9.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/window9.raw", 256, 256);
     tp.CreateTexture(WINDOW_9, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/window10.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/window10.raw", 256, 256);
     tp.CreateTexture(WINDOW_10, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/window11.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/window11.raw", 256, 256);
     tp.CreateTexture(WINDOW_11, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/window12.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/window12.raw", 256, 256);
     tp.CreateTexture(WINDOW_12, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/window13.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/window13.raw", 256, 256);
     tp.CreateTexture(WINDOW_13, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/window14.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/windows/window14.raw", 256, 128);
     tp.CreateTexture(WINDOW_14, image, 256, 128);
 
-    image = tp.LoadTexture("data/windows/window14b.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/windows/window14b.raw", 256, 128);
     tp.CreateTexture(WINDOW_14B, image, 256, 128);
 
-    image = tp.LoadTexture("data/windows/window15.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/window15.raw", 256, 256);
     tp.CreateTexture(WINDOW_15, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/window16.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/windows/window16.raw", 128, 256);
     tp.CreateTexture(WINDOW_16, image, 128, 256);
 
-    image = tp.LoadTexture("data/windows/window17.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/windows/window17.raw", 128, 256);
     tp.CreateTexture(WINDOW_17, image, 128, 256);
 
-    image = tp.LoadTexture("data/windows/windowLib1.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/windows/windowLib1.raw", 256, 128);
     tp.CreateTexture(WINDOW_LIB_1, image, 256, 128);
 
-    image = tp.LoadTexture("data/windows/windowLib1a.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/windows/windowLib1a.raw", 256, 128);
     tp.CreateTexture(WINDOW_LIB_1A, image, 256, 128);
 
-    image = tp.LoadTexture("data/windows/windowLib1b.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/windows/windowLib1b.raw", 256, 128);
     tp.CreateTexture(WINDOW_LIB_1B, image, 256, 128);
 
-    image = tp.LoadTexture("data/windows/windowLib1c.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/windows/windowLib1c.raw", 256, 128);
     tp.CreateTexture(WINDOW_LIB_1C, image, 256, 128);
 
-    image = tp.LoadTexture("data/windows/windowLibUSa.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/windows/windowLibUSa.raw", 256, 128);
     tp.CreateTexture(WINDOW_LIB_US_A, image, 256, 128);
 
-    image = tp.LoadTexture("data/windows/windowLibUSb.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/windows/windowLibUSb.raw", 256, 128);
     tp.CreateTexture(WINDOW_LIB_US_B, image, 256, 128);
 
-    image = tp.LoadTexture("data/windows/windowLibDoor1.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/windowLibDoor1.raw", 256, 256);
     tp.CreateTexture(WINDOW_LIB_DOOR_1, image, 256, 256);
 
-    image = tp.LoadTexture("data/windows/windowLibDoor2.raw", 512, 256);
+    image = tp.LoadTexture("res/tex/windows/windowLibDoor2.raw", 512, 256);
     tp.CreateTexture(WINDOW_LIB_DOOR_2, image, 512, 256);
 
-    image = tp.LoadTexture("data/windows/windowLibLong.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/windows/windowLibLong.raw", 256, 128);
     tp.CreateTexture(WINDOW_LIB_LONG, image, 256, 128);
 
-    image = tp.LoadTexture("data/map.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/map.raw", 256, 256);
     tp.CreateTexture(217, image, 256, 256);
-    image = tp.LoadTexture("data/welcome.raw", 512, 512);
+    image = tp.LoadTexture("res/tex/welcome.raw", 512, 512);
     tp.CreateTexture(218, image, 512, 512);
-    image = tp.LoadTexture("data/thanks.raw", 512, 512);
+    image = tp.LoadTexture("res/tex/thanks.raw", 512, 512);
     tp.CreateTexture(219, image, 512, 512);
 
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
@@ -1582,7 +1583,7 @@ void DisplayChancPosts() {
 
     //  Windowledges Chanc (downstairs)
     step = 0.0;
-    for (i = 0; i < 11; i++) {
+    for (int i = 0; i < 11; i++) {
         glPushMatrix();
         glTranslatef(0.0, 0.0, step);
         glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOWLEDGE_CHANC_FRONT));
@@ -1600,7 +1601,7 @@ void DisplayChancPosts() {
     glPushMatrix();
     step = 0.0;
     glTranslatef(0.0, 1023.0, 0.0);
-    for (i = 0; i < 14; i++) {
+    for (int i = 0; i < 14; i++) {
         glTranslatef(0.0, 0.0, step);
         glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOWPOST_CHANC_FRONT));
         glCallList(11);
@@ -1917,20 +1918,20 @@ void DisplayAboveWindowBlock() {
 
     // -------------------------------- Above Library ------------------------------------
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ABOVE_LIB));
-    for (i = 55; i < 57; i++)
+    for (int i = 55; i < 57; i++)
         glCallList(i);
     glCallList(238);
     glCallList(415);
     glCallList(417);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ABOVE_WINDOW_UNDER_LIB));
-    for (i = 70; i < 71; i++)
+    for (int i = 70; i < 71; i++)
         glCallList(i);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ABOVE_WINDOW_EDGE_3B_LIB));
     glCallList(209);
     step = 17536.0;
-    for (i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++) {
         glPushMatrix();
         glTranslatef(step, 0.0, 0.0);
         glCallList(209);
@@ -1941,7 +1942,7 @@ void DisplayAboveWindowBlock() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ABOVE_WINDOW_EDGE_4B_LIB));
     glCallList(210);
     step = 17536.0;
-    for (i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++) {
         glPushMatrix();
         glTranslatef(step, 0.0, 0.0);
         glCallList(210);
@@ -1950,7 +1951,7 @@ void DisplayAboveWindowBlock() {
     }
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ABOVE_UNDER_4B));
-    for (i = 211; i < 213; i++)
+    for (int i = 211; i < 213; i++)
         glCallList(i);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ABOVE_LIB_TEXT));
@@ -2353,7 +2354,7 @@ void DisplayPhysSciPosts() {
     }
 
     step = 960.0;
-    for (i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++) {
         glPushMatrix();
         glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOWPOST_PHYSSCI_FRONT));
         glTranslatef(0.0, -1024.0, step);
@@ -2383,7 +2384,7 @@ void DisplayPhysSciPosts() {
 
     // WindowLedges Phys Sci (toilets downstairs)
     step = 960.0;
-    for (i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++) {
         glPushMatrix();
         glTranslatef(0.0, -832.0, step);
         glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOWLEDGE_PS_FRONT));
@@ -2396,7 +2397,7 @@ void DisplayPhysSciPosts() {
 
     step       = 6758.0;
     stepLength = -832.0;
-    for (i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++) {
         glPushMatrix();
         glTranslatef(0.0, stepLength, step);
         glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOWLEDGE_PS_FRONT));
@@ -2410,14 +2411,14 @@ void DisplayPhysSciPosts() {
     }
     // shops downstairs phys sci
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOWLEDGE_PS_BOTT));
-    for (i = 40; i < 42; i++)
+    for (int i = 40; i < 42; i++)
         glCallList(i);
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOWLEDGE_PS_FRONT));
     glCallList(42);
 
     // WindowLedges Phys Sci (upstairs)
     step = 0.0;
-    for (i = 0; i < 15; i++) {
+    for (int i = 0; i < 15; i++) {
         glPushMatrix();
         glTranslatef(0.0, 0.0, step);
         glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOWLEDGE_PS_FRONT));
@@ -2530,7 +2531,7 @@ void DisplayLibraryPosts() {
         stepLength += 1054;
     }
     stepLength = 0.0;
-    for (j = 0; j < 2; j++) {
+    for (int j = 0; j < 2; j++) {
         glPushMatrix();
         glTranslatef(0.0, stepLength, 0.0);
         // WINDOWLEDGE_LIB
@@ -2653,14 +2654,14 @@ void DisplayPavement() {
     for (int i = 72; i < 74; i++)
         glCallList(i);
     glCallList(28);
-    for (i = 81; i < 89; i++)
+    for (int i = 81; i < 89; i++)
         glCallList(i);
     glPushMatrix();
     glTranslatef(0.0, 0.0, 1920.0);
     glCallList(86);
     glPopMatrix();
 
-    for (i = 247; i < 250; i++)
+    for (int i = 247; i < 250; i++)
         glCallList(i);
     glPushMatrix();
     glTranslatef(0.0, 0.0, 8640.0);
@@ -2670,7 +2671,7 @@ void DisplayPavement() {
     glCallList(428);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(PAVEMENT_TOP));
-    for (i = 91; i < 93; i++)
+    for (int i = 91; i < 93; i++)
         glCallList(i);
     glCallList(246);
     glCallList(243);
@@ -2704,7 +2705,7 @@ void DisplayPavement() {
     glCallList(94);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(PAVEMENT_FLIP));
-    for (i = 89; i < 91; i++)
+    for (int i = 89; i < 91; i++)
         glCallList(i);
     glCallList(240);
     glPushMatrix();
@@ -2862,9 +2863,9 @@ void DisplayBricks() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_YZ));
     for (int i = 101; i < 111; i++)
         glCallList(i);
-    for (i = 112; i < 126; i++)
+    for (int i = 112; i < 126; i++)
         glCallList(i);
-    for (i = 191; i < 195; i++)
+    for (int i = 191; i < 195; i++)
         glCallList(i);
     glPushMatrix();
     glTranslatef(0.0, 0.0, 1920.0);
@@ -2883,15 +2884,15 @@ void DisplayBricks() {
 
     // WALL_BRICK_USD_YZ
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_USD_YZ));
-    for (i = 200; i < 202; i++)
+    for (int i = 200; i < 202; i++)
         glCallList(i);
     glCallList(188);
 
     // WALL_BRICK_XY
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_XY));
-    for (i = 135; i < 165; i++)
+    for (int i = 135; i < 165; i++)
         glCallList(i);
-    for (i = 217; i < 222; i++)
+    for (int i = 217; i < 222; i++)
         glCallList(i);
     glPushMatrix();
     glTranslatef(0.0, 0.0, -1792.0);
@@ -2901,10 +2902,10 @@ void DisplayBricks() {
     glTranslatef(0.0, 1024.0, 0.0);
     glCallList(152);
     glPopMatrix();
-    for (i = 195; i < 198; i++)
+    for (int i = 195; i < 198; i++)
         glCallList(i);
     glCallList(392);
-    for (i = 430; i < 434; i++)
+    for (int i = 430; i < 434; i++)
         glCallList(i);
     // Brick with map on
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAP_2));
@@ -2912,7 +2913,7 @@ void DisplayBricks() {
 
     // WALL_BRICK_GAP_YZ
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_GAP_YZ));
-    for (i = 180; i < 182; i++)
+    for (int i = 180; i < 182; i++)
         glCallList(i);
     glPushMatrix();
     glTranslatef(0.0, 1024.0, 0.0);
@@ -2927,12 +2928,12 @@ void DisplayBricks() {
     glCallList(182);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_GAP_1));
-    for (i = 183; i < 185; i++)
+    for (int i = 183; i < 185; i++)
         glCallList(i);
 
     // WALL_BRICK_XY_END
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_XY_END));
-    for (i = 165; i < 168; i++)
+    for (int i = 165; i < 168; i++)
         glCallList(i);
     glCallList(134);
     glCallList(185);
@@ -2943,7 +2944,7 @@ void DisplayBricks() {
     glCallList(399);
     glPopMatrix();
     step = -832.0;
-    for (i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++) {
         glPushMatrix();
         glTranslatef(0.0, 0.0, step);
         glCallList(166);
@@ -2954,7 +2955,7 @@ void DisplayBricks() {
     glTranslatef(0.0, 0.0, 321.0);
     glCallList(167);
     glPopMatrix();
-    for (i = 131; i < 132; i++)
+    for (int i = 131; i < 132; i++)
         glCallList(i);
     glCallList(132);
     glPushMatrix();
@@ -2977,7 +2978,7 @@ void DisplayBricks() {
 
     // WALL_BRICK_YZ_END
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_YZ_END));
-    for (i = 126; i < 130; i++)
+    for (int i = 126; i < 130; i++)
         glCallList(i);
     glPushMatrix();
     glTranslatef(-896.0, 0.0, 0.0);
@@ -2988,7 +2989,7 @@ void DisplayBricks() {
     glCallList(129);
     glCallList(168);
     glPopMatrix();
-    for (i = 168; i < 170; i++)
+    for (int i = 168; i < 170; i++)
         glCallList(i);
     glCallList(390);
     glCallList(391);
@@ -3250,10 +3251,10 @@ void DisplayRoof() {
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ROOF_BEAM_1));
     // corner beams
-    for (i = 1; i < 6; i++)
+    for (int i = 1; i < 6; i++)
         glCallList(i);
     step = -1689.0;
-    for (i = 0; i < 85; i++) {
+    for (int i = 0; i < 85; i++) {
         glPushMatrix();
         glTranslatef(0.0, 0.0, step);
         glCallList(253);
@@ -3267,7 +3268,7 @@ void DisplayRoof() {
     glCallList(254);
 
     step = 214.0;
-    for (i = 0; i < 8; i++) {
+    for (int i = 0; i < 8; i++) {
         glPushMatrix();
         glTranslatef(0.0, 0.0, step);
         glCallList(254);
@@ -3282,7 +3283,7 @@ void DisplayRoof() {
 
     // Beams between library and phys sci
     step = 0.0;
-    for (i = 0; i < 5; i++) {
+    for (int i = 0; i < 5; i++) {
         glPushMatrix();
         glTranslatef(0.0, 0.0, step);
         glCallList(298);
@@ -3301,7 +3302,7 @@ void DisplayRoof() {
 
     // Library Roof
     step = 281.0;
-    for (i = 0; i < 70; i++) {
+    for (int i = 0; i < 70; i++) {
         glPushMatrix();
         glTranslatef(step, 0.0, 0.0);
         glCallList(296);
@@ -3310,11 +3311,11 @@ void DisplayRoof() {
     }
 
     // spacers
-    for (i = 202; i < 204; i++)
+    for (int i = 202; i < 204; i++)
         glCallList(i);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ROOF_BEAM_4));
-    for (i = 6; i < 11; i++) {
+    for (int i = 6; i < 11; i++) {
         glCallList(i);
         glPushMatrix();
         glTranslatef(0.0, 0.0, 32.0);
@@ -3323,7 +3324,7 @@ void DisplayRoof() {
     }
 
     step = -1689.0;
-    for (i = 0; i < 85; i++) {
+    for (int i = 0; i < 85; i++) {
         glPushMatrix();
         glTranslatef(0.0, 0.0, step);
         glCallList(255);
@@ -3345,7 +3346,7 @@ void DisplayRoof() {
     glPopMatrix();
 
     step = 214.0;
-    for (i = 0; i < 8; i++) {
+    for (int i = 0; i < 8; i++) {
         glPushMatrix();
         glTranslatef(0.0, 0.0, step);
         glCallList(256);
@@ -3368,7 +3369,7 @@ void DisplayRoof() {
 
     // Beams between library and phys sci
     step = 0.0;
-    for (i = 0; i < 5; i++) {
+    for (int i = 0; i < 5; i++) {
         glPushMatrix();
         glTranslatef(0.0, 0.0, step);
         glCallList(299);
@@ -3391,7 +3392,7 @@ void DisplayRoof() {
 
     // Library Roof
     step = 281.0;
-    for (i = 0; i < 70; i++) {
+    for (int i = 0; i < 70; i++) {
         glPushMatrix();
         glTranslatef(step, 0.0, 0.0);
         glCallList(297);
@@ -3409,7 +3410,7 @@ void DisplayRoof() {
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ROOF_BEAM_3));
     // corner beams
-    for (i = 170; i < 175; i++) {
+    for (int i = 170; i < 175; i++) {
         glCallList(i + 5);
         glPushMatrix();
         glTranslatef(32.0, 0.0, 0.0);
@@ -3438,15 +3439,15 @@ void DisplayRoof() {
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ROOF_BEAM_2));
     // spacers
-    for (i = 97; i < 101; i++)
+    for (int i = 97; i < 101; i++)
         glCallList(i);
     // corner beams
-    for (i = 170; i < 175; i++)
+    for (int i = 170; i < 175; i++)
         glCallList(i);
 
     // Top of Roof
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ROOF_TOP));
-    for (i = 214; i < 216; i++)
+    for (int i = 214; i < 216; i++)
         glCallList(i);
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ROOF_TOP_LIB));
     glCallList(216);
@@ -3753,21 +3754,21 @@ void DisplayEntranceSteps() {
         glCallList(i);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(STEP_EDGE));
-    for (i = 274; i < 290; i++)
+    for (int i = 274; i < 290; i++)
         glCallList(i);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(STEP_PAVING_1));
-    for (i = 290; i < 293; i++)
+    for (int i = 290; i < 293; i++)
         glCallList(i);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(STEP_EDGE));
-    for (i = 293; i < 296; i++)
+    for (int i = 293; i < 296; i++)
         glCallList(i);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(STEPS_LIBRARY));
     step  = 0.0;
     step2 = -51.0;
-    for (i = 0; i < 10; i++) {
+    for (int i = 0; i < 10; i++) {
         glPushMatrix();
         glTranslatef(step, step2, 0.0);
         glCallList(206);
@@ -3804,7 +3805,7 @@ void DrawEntranceSteps() {
     }
     step       = 9808.0;
     stepLength = 8882.0;
-    for (i = 290; i < 293; i++) {
+    for (int i = 290; i < 293; i++) {
         tp.CreateDisplayList(XZ, i, 1024.0, 512.0, 31582.0, step, stepLength,
                              2.2, 1.0);
         tp.CreateDisplayList(XY, i + 3, 64.0, 64.0, 31582.0, step - 64.0,
@@ -3864,7 +3865,7 @@ void DisplayBench() {
         }
         glBindTexture(GL_TEXTURE_2D, tp.GetTexture(BENCH_EDGE_SIDE));
         step = 0.0;
-        for (i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
             glPushMatrix();
             glTranslatef(step, 0.0, 0.0);
             glCallList(404);
@@ -3893,7 +3894,7 @@ void DisplayBench() {
 
     step2             = 1940.0;
     GLdouble vertStep = 0.0;
-    for (j = 0; j < 8; j++) {
+    for (int j = 0; j < 8; j++) {
         glPushMatrix();
         glTranslatef(step2, 0.0, vertStep);
 
@@ -3932,7 +3933,7 @@ void DisplayBench() {
         }
         glBindTexture(GL_TEXTURE_2D, tp.GetTexture(BENCH_EDGE_3));
         step = 0.0;
-        for (i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
             glPushMatrix();
             glTranslatef(0.0, 0.0, step);
             glCallList(411);
@@ -4096,7 +4097,7 @@ void DisplayExtras() {
     glPopMatrix();
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MACHINE_SIDES));
-    for (i = 321; i < 323; i++)
+    for (int i = 321; i < 323; i++)
         glCallList(i);
     glCallList(320);
     glPushMatrix();
@@ -4131,7 +4132,7 @@ void DisplayExtras() {
     int sign     = STA_TRAVEL;
     int signBack = STA_TRAVEL_2;
     int signEdge = STA_TRAVEL_EDGE;
-    for (i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++) {
         glPushMatrix();
         glTranslatef(0.0, 0.0, step);
         glBindTexture(GL_TEXTURE_2D, tp.GetTexture(sign));
@@ -4161,7 +4162,7 @@ void DisplayExtras() {
 
     // Telephone Boxes
     step = 0.0;
-    for (i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++) {
         glPushMatrix();
         glTranslatef(step, 0.0, 0.0);
 
@@ -4477,7 +4478,7 @@ void DisplayLargerTextures() {
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOW_2B));
     step = 2880.0;
-    for (i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) {
         glPushMatrix();
         glTranslatef(0.0, 0.0, step);
         glCallList(352);
@@ -4489,7 +4490,7 @@ void DisplayLargerTextures() {
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOW_2C));
     step = 6720.0;
-    for (i = 1; i < 3; i++) {
+    for (int i = 1; i < 3; i++) {
         glPushMatrix();
         glTranslatef(0.0, 0.0, step);
         glCallList(352);
@@ -4523,7 +4524,7 @@ void DisplayLargerTextures() {
     glCallList(352);
     glPopMatrix();
     step = 9600.0;
-    for (i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) {
         glPushMatrix();
         glTranslatef(0.0, 1023.0, step);
         glCallList(352);
@@ -4533,7 +4534,7 @@ void DisplayLargerTextures() {
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOW_2USB));
     step = 960;
-    for (i = 0; i < 9; i++) {
+    for (int i = 0; i < 9; i++) {
         glPushMatrix();
         glTranslatef(0.0, 1023.0, step);
         glCallList(352);
@@ -4544,7 +4545,7 @@ void DisplayLargerTextures() {
     // Physical Science upstairs
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOW_3));
     step = 3840.0;
-    for (i = 4; i < 14; i++) {
+    for (int i = 4; i < 14; i++) {
         glPushMatrix();
         glTranslatef(0.0, 0.0, step);
         glCallList(353);
@@ -4553,7 +4554,7 @@ void DisplayLargerTextures() {
     }
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOW_3B));
     step = 0.0;
-    for (i = 0; i < 6; i++) {
+    for (int i = 0; i < 6; i++) {
         glPushMatrix();
         glTranslatef(0.0, 0.0, step);
         glCallList(353);
@@ -4566,7 +4567,7 @@ void DisplayLargerTextures() {
     // toilets
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOW_4));
     step = 0.0;
-    for (i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++) {
         glPushMatrix();
         glTranslatef(0.0, 0.0, step);
         glCallList(354);
@@ -4649,7 +4650,7 @@ void DisplayLargerTextures() {
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOW_LIB_1));
     step = 1088.0;
-    for (i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++) {
         glPushMatrix();
         glTranslatef(step, 0.0, 0.0);
         glCallList(383);
@@ -4659,7 +4660,7 @@ void DisplayLargerTextures() {
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOW_LIB_1B));
     step = 2176.0;
-    for (i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) {
         glPushMatrix();
         glTranslatef(step, 0.0, 0.0);
         glCallList(383);
@@ -4669,7 +4670,7 @@ void DisplayLargerTextures() {
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOW_LIB_1C));
     step = 3264.0;
-    for (i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) {
         glPushMatrix();
         glTranslatef(step, 0.0, 0.0);
         glCallList(383);
@@ -4680,7 +4681,7 @@ void DisplayLargerTextures() {
     // library windows upstairs
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOW_LIB_US_B));
     step = 2176.0;
-    for (i = 0; i < 9; i++) {
+    for (int i = 0; i < 9; i++) {
         glPushMatrix();
         glTranslatef(step, 0.0, 0.0);
         glCallList(384);
@@ -4697,7 +4698,7 @@ void DisplayLargerTextures() {
     glPopMatrix();
 
     step = 11968.0;
-    for (i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) {
         glPushMatrix();
         glTranslatef(step, 0.0, 0.0);
         glCallList(384);
@@ -4988,7 +4989,7 @@ void DisplayLights() {
 
     // Light Supports
     beamstep = 0.0;
-    for (i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++) {
         glBindTexture(GL_TEXTURE_2D, tp.GetTexture(LIGHT_SUPPORT_2));
         step = -40.0;
         for (int k = 0; k < 2; k++) {
@@ -5008,7 +5009,7 @@ void DisplayLights() {
 
         glBindTexture(GL_TEXTURE_2D, tp.GetTexture(LIGHT_SUPPORT));
         step = -40.0;
-        for (k = 0; k < 2; k++) {
+        for (int k = 0; k < 2; k++) {
             step2 = 0.0;
             for (int j = 0; j < 2; j++) {
                 glPushMatrix();
@@ -5122,7 +5123,7 @@ void DisplayStepBricks() {
             glCallList(i);
 
         glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_STEPS_TOP));
-        for (i = 488; i < 493; i++)
+        for (int i = 488; i < 493; i++)
             glCallList(i);
 
         glPushMatrix();

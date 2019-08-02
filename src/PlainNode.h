@@ -10,9 +10,10 @@
 
 //--------------------------------------------------------------------------------------
 
-#    include <gl/glut.h>
-#    include <iostream.h>
-#    include <math.h>
+#    include <cmath>
+#    include <iostream>
+
+#    include "Glut.hpp"
 
 class PlainNode {
 

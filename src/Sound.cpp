@@ -4,8 +4,8 @@
 
 #include "Sound.h"
 
-#include <malloc.h>
-#include <memory.h>
+#include <cstdlib>
+#include <memory>
 
 #include "EasySound.h"
 

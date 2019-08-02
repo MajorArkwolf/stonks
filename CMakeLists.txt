@@ -92,7 +92,7 @@ add_custom_target(run
 
 add_dependencies(run shays-world)
 
-#add_custom_command(TARGET shays-world POST_BUILD
-#                   COMMAND ${CMAKE_COMMAND} -E copy_directory
-#                       ${CMAKE_SOURCE_DIR}/tex
-#                       $<TARGET_FILE_DIR:shays-world>/tex)
+add_custom_command(TARGET shays-world POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                       ${CMAKE_SOURCE_DIR}/res
+                       $<TARGET_FILE_DIR:shays-world>/res)
