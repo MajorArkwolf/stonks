@@ -66,7 +66,7 @@ target_compile_options(shays-world PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/W4 /wd4458>
 target_include_directories(shays-world PRIVATE src)
 
 # Find, include, and link against dependencies.
-find_package(OpenGL REQUIRED COMPONENTS GL)
+find_package(OpenGL REQUIRED COMPONENTS OpenGL)
 find_package(GLUT REQUIRED)
 find_package(SDL REQUIRED)
 add_dependencies(shays-world OpenGL::GL GLUT::GLUT)
