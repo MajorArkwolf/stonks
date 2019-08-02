@@ -1,6 +1,6 @@
 //  PlainLinkedList.h
 //  Header file for the PlainLinkedList class
-//  Linked List used to store nodes (PlainNode) which contain the co-ordinates of the 
+//  Linked List used to store nodes (PlainNode) which contain the co-ordinates of the
 //  of each plain used in the program.
 //
 //	The program will split the world into four quadrants and creates a linked list to
@@ -11,71 +11,75 @@
 //--------------------------------------------------------------------------------------
 
 #ifndef PLAINLINKED_LIST_H
-#define PLAINLINKED_LIST_H
+#    define PLAINLINKED_LIST_H
 
 //--------------------------------------------------------------------------------------
 
-#include "PlainNode.h"
+#    include "PlainNode.h"
 
 //--------------------------------------------------------------------------------------
 
-class PlainLinkedList
-{
-public:
-	// constructor creates pointer to first node
-	PlainLinkedList() {m_first = new PlainNode;}
+class PlainLinkedList {
+  public:
+    // constructor creates pointer to first node
+    PlainLinkedList() {
+        m_first = new PlainNode;
+    }
 
-	virtual ~PlainLinkedList() {Clear();}
+    virtual ~PlainLinkedList() {
+        Clear();
+    }
 
-	//----------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------
 
-	// clears linked list and frees memory
-	void Clear();
+    // clears linked list and frees memory
+    void Clear();
 
-	// add a node to the start of the linked list
-	bool AddToStart (const int tempType,
-				     const GLdouble tempXs, const GLdouble tempXe,
-				     const GLdouble tempYs, const GLdouble tempYe,
-				     const GLdouble tempZs, const GLdouble tempZe);
-	
-	// set the values of the node data
-	void SetData(const int &ptrCount, const int tempType,
-				 const GLdouble tempXs, const GLdouble tempXe,
-				 const GLdouble tempYs, const GLdouble tempYe,
-				 const GLdouble tempZs, const GLdouble tempZe);
+    // add a node to the start of the linked list
+    bool AddToStart(const int tempType, const GLdouble tempXs, const GLdouble tempXe,
+                    const GLdouble tempYs, const GLdouble tempYe,
+                    const GLdouble tempZs, const GLdouble tempZe);
 
-	//----------------------------------------------------------------------------------
-	//  Get Methods
-	//----------------------------------------------------------------------------------
-	GLdouble GetType (int ptrCount);
-	GLdouble GetXstart (int ptrCount);
-	GLdouble GetXend (int ptrCount);
-	GLdouble GetYstart (int ptrCount);
-	GLdouble GetYend (int ptrCount);
-	GLdouble GetZstart (int ptrCount);
-	GLdouble GetZend (int ptrCount);
+    // set the values of the node data
+    void SetData(const int &ptrCount, const int tempType, const GLdouble tempXs,
+                 const GLdouble tempXe, const GLdouble tempYs, const GLdouble tempYe,
+                 const GLdouble tempZs, const GLdouble tempZe);
 
-	// Return size of list
-	int GetListSize ();
-	
-	// Return the address of the link to the next node in the list
-    PlainNode *GetNext () const {return m_first->GetNext();}
-	// Return the address of the link to the first node in the list
-	PlainNode *GetFirst() const {return m_first;}
+    //----------------------------------------------------------------------------------
+    //  Get Methods
+    //----------------------------------------------------------------------------------
+    GLdouble GetType(int ptrCount);
+    GLdouble GetXstart(int ptrCount);
+    GLdouble GetXend(int ptrCount);
+    GLdouble GetYstart(int ptrCount);
+    GLdouble GetYend(int ptrCount);
+    GLdouble GetZstart(int ptrCount);
+    GLdouble GetZend(int ptrCount);
 
+    // Return size of list
+    int GetListSize();
 
-//--------------------------------------------------------------------------------------
+    // Return the address of the link to the next node in the list
+    PlainNode *GetNext() const {
+        return m_first->GetNext();
+    }
+    // Return the address of the link to the first node in the list
+    PlainNode *GetFirst() const {
+        return m_first;
+    }
 
-private:
-	// pointer to first node in list
-	PlainNode *m_first;
+    //--------------------------------------------------------------------------------------
 
-	// used to clear memory
-	void Delete (PlainNode *before);
+  private:
+    // pointer to first node in list
+    PlainNode *m_first;
 
-	// Privatised copy constructor and assignment operator
-	PlainLinkedList (const PlainLinkedList &array) {};
-	PlainLinkedList &operator = (const PlainLinkedList &array) {};
+    // used to clear memory
+    void Delete(PlainNode *before);
+
+    // Privatised copy constructor and assignment operator
+    PlainLinkedList(const PlainLinkedList &array){};
+    PlainLinkedList &operator=(const PlainLinkedList &array){};
 };
 
 #endif

@@ -10,25 +10,23 @@
 
 //----------------------------------------------------------------
 
-void PlainNode::Clear()
-{
-	m_next = NULL;
+void PlainNode::Clear() {
+    m_next = NULL;
 }
 
 //----------------------------------------------------------------
 
-void PlainNode::SetData(const int tempType,
-						const GLdouble tempXs, const GLdouble tempXe,
-						const GLdouble tempYs, const GLdouble tempYe,
-						const GLdouble tempZs, const GLdouble tempZe)
-{
-	m_type = tempType;
-	m_xPlainStart = tempXs;
-	m_xPlainEnd = tempXe;
-	m_yPlainStart = tempYs;
-	m_yPlainEnd = tempYe;
-	m_zPlainStart = tempZs;
-	m_zPlainEnd = tempZe;
+void PlainNode::SetData(const int tempType, const GLdouble tempXs,
+                        const GLdouble tempXe, const GLdouble tempYs,
+                        const GLdouble tempYe, const GLdouble tempZs,
+                        const GLdouble tempZe) {
+    m_type        = tempType;
+    m_xPlainStart = tempXs;
+    m_xPlainEnd   = tempXe;
+    m_yPlainStart = tempYs;
+    m_yPlainEnd   = tempYe;
+    m_zPlainStart = tempZs;
+    m_zPlainEnd   = tempZe;
 }
 
 //----------------------------------------------------------------

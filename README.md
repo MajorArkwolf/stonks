@@ -8,8 +8,8 @@ git clone https://github.com/MajorArkwolf/ICT290P1.git
 ```
 
 * Install dependencies:
-    * Linux: `sudo apt-get install cmake freeglut3-dev libsdl1.2-dev`
-    * macOS: `brew install cmake sdl`
+    * Linux: `sudo apt-get install cmake freeglut3-dev libsdl1.2-dev ninja-build clang`
+    * macOS: `brew install cmake sdl ninja`
     * Windows: `.\vcpkg install freeglut sdl1`
 
 * Configure the build:
@@ -17,7 +17,7 @@ git clone https://github.com/MajorArkwolf/ICT290P1.git
     ```
     mkdir build
     cd build
-    CXX=clang++ cmake ..
+    CXX=clang++ cmake -GNinja ..
     ```
     * Windows:
         * In Visual Studio, select Open → CMake, select `CMakeLists.txt`

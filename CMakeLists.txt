@@ -5,6 +5,11 @@ cmake_minimum_required(VERSION 3.12)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 set(CMAKE_DISABLE_SOURCE_CHANGES ON)
 
+# Detect Linux.
+if(UNIX AND NOT APPLE)
+    set(LINUX TRUE)
+endif()
+
 # Set build type to Debug by default.
 if(NOT CMAKE_BUILD_TYPE)
     message(STATUS "Build type not set, defaulting to 'Debug'")
@@ -18,19 +23,19 @@ project(shays-world LANGUAGES CXX)
 
 # Define executable source files.
 add_executable(shays-world
-    src/main.cpp
+    src/Main.cpp
     src/AABBLinkedList.cpp
     src/EasySound.cpp
     src/PlainNode.cpp
     src/SoundTime.cpp
-    src/cameraMap.cpp
+    src/CameraMap.cpp
     src/AABB.cpp
     src/AABBNode.cpp
     src/PlainLinkedList.cpp
     src/Sound.cpp
-    src/camera.cpp
-    src/collision.cpp
-    src/texturedPolygons.cpp
+    src/Camera.cpp
+    src/Collision.cpp
+    src/TexturedPolygons.cpp
 )
 
 # Set C++ standard.
@@ -61,13 +66,18 @@ target_compile_options(shays-world PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/W4 /wd4458>
 target_include_directories(shays-world PRIVATE src)
 
 # Find, include, and link against dependencies.
-find_package(OpenGL REQUIRED)
+find_package(OpenGL REQUIRED COMPONENTS OpenGL)
 find_package(GLUT REQUIRED)
 find_package(SDL REQUIRED)
 add_dependencies(shays-world OpenGL::GL GLUT::GLUT)
 target_include_directories(shays-world PRIVATE ${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS}
     ${SDL_INCLUDE_DIR})
 target_link_libraries(shays-world PRIVATE OpenGL::GL ${SDL_LIBRARY})
+
+# Hack to fix Linux Glu library paths.
+if (LINUX)
+    target_link_libraries(shays-world PRIVATE ${OPENGL_glu_LIBRARY})
+endif()
 
 # Hack to fix macOS GLUT framework paths.
 if (APPLE)
@@ -92,7 +102,7 @@ add_custom_target(run
 
 add_dependencies(run shays-world)
 
-#add_custom_command(TARGET shays-world POST_BUILD
-#                   COMMAND ${CMAKE_COMMAND} -E copy_directory
-#                       ${CMAKE_SOURCE_DIR}/tex
-#                       $<TARGET_FILE_DIR:shays-world>/tex)
+add_custom_command(TARGET shays-world POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                       ${CMAKE_SOURCE_DIR}/res
+                       $<TARGET_FILE_DIR:shays-world>/res)
