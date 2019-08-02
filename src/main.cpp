@@ -4,8 +4,8 @@
 #include "Glut.hpp"
 
 //#include <windows.h> // only used if mouse is required (not portable)
-#include "camera.h"
-#include "texturedPolygons.h"
+#include "Camera.h"
+#include "TexturedPolygons.h"
 
 //--------------------------------------------------------------------------------------
 

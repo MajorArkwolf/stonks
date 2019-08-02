@@ -23,19 +23,19 @@ project(shays-world LANGUAGES CXX)
 
 # Define executable source files.
 add_executable(shays-world
-    src/main.cpp
+    src/Main.cpp
     src/AABBLinkedList.cpp
     src/EasySound.cpp
     src/PlainNode.cpp
     src/SoundTime.cpp
-    src/cameraMap.cpp
+    src/CameraMap.cpp
     src/AABB.cpp
     src/AABBNode.cpp
     src/PlainLinkedList.cpp
     src/Sound.cpp
-    src/camera.cpp
-    src/collision.cpp
-    src/texturedPolygons.cpp
+    src/Camera.cpp
+    src/Collision.cpp
+    src/TexturedPolygons.cpp
 )
 
 # Set C++ standard.

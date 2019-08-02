@@ -6,7 +6,7 @@
 //  Shay Leary, April 2005
 //--------------------------------------------------------------------------------------
 
-#include "cameraMap.h"
+#include "CameraMap.h"
 
 //--------------------------------------------------------------------------------------
 //  Display a map with a cursor on it, which moves with the camera

@@ -10,10 +10,10 @@
 
 #define PI 3.1415962654
 
+#include "CameraMap.h"
+#include "Collision.h"
 #include "EasySound.h"
 #include "PlainLinkedList.h"
-#include "cameraMap.h"
-#include "collision.h"
 
 //--------------------------------------------------------------------------------------
 

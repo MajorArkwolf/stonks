@@ -123,13 +123,17 @@ bool Camera::MoveUDOK() {
 // Is ok to rotate sideways
 //--------------------------------------------------------------------------------------
 bool Camera::RotateLROK() {
-    bool tempReturn;
-    if ((m_deltaAngleLR / m_rotateSpeed) < 0 ||
-        (m_deltaAngleLR / m_rotateSpeed) > 0) {
-        tempReturn = true;
-    } else {
-        tempReturn = false;
+    bool tempReturn = false;
+
+    if (m_rotateSpeed != 0.0) {
+        if ((m_deltaAngleLR / m_rotateSpeed) < 0 ||
+            (m_deltaAngleLR / m_rotateSpeed) > 0) {
+            tempReturn = true;
+        } else {
+            tempReturn = false;
+        }
     }
+
     return tempReturn;
 }
 
@@ -137,13 +141,17 @@ bool Camera::RotateLROK() {
 // Is ok to rotate up and down
 //--------------------------------------------------------------------------------------
 bool Camera::LookUDOK() {
-    bool tempReturn;
-    if ((m_deltaAngleUD / m_rotateSpeed) < 0 ||
-        (m_deltaAngleUD / m_rotateSpeed) > 0) {
-        tempReturn = true;
-    } else {
-        tempReturn = false;
+    bool tempReturn = false;
+
+    if (m_rotateSpeed != 0.0) {
+        if ((m_deltaAngleUD / m_rotateSpeed) < 0 ||
+            (m_deltaAngleUD / m_rotateSpeed) > 0) {
+            tempReturn = true;
+        } else {
+            tempReturn = false;
+        }
     }
+
     return tempReturn;
 }
 

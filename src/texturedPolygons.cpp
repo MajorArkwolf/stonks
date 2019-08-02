@@ -6,7 +6,7 @@
 //  Shay Leary, March 2005
 //--------------------------------------------------------------------------------------
 
-#include "texturedPolygons.h"
+#include "TexturedPolygons.h"
 
 #include <iostream>
 

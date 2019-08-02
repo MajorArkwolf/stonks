@@ -6,7 +6,7 @@
 //  Shay Leary, March 2005
 //--------------------------------------------------------------------------------------
 
-#include "collision.h"
+#include "Collision.h"
 
 //--------------------------------------------------------------------------------------
 //  Creates a linked list for each quadrant and then copies the bounding box data from
