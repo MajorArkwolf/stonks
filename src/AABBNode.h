@@ -68,19 +68,19 @@ class AABBNode {
 
   private:
     // The address of the next node in the list
-    AABBNode *m_next;
+    AABBNode *m_next = nullptr;
 
     // stores x,y,z co-ordinates
     struct XYZ {
-        GLdouble x, y, z;
+        GLdouble x = 0.0, y = 0.0, z = 0.0;
     };
     // stores max and min values of co-ordinates
     struct BoundingBox {
-        XYZ max;
-        XYZ min;
+        XYZ max{};
+        XYZ min{};
     };
     // stores above info
-    BoundingBox m_BBox;
+    BoundingBox m_BBox{};
 
     //----------------------------------------------------------------------------------
 
