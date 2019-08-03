@@ -280,10 +280,10 @@ constexpr int NO_EXIT = 222;
 
 //--------------------------------------------------------------------------------------
 
-GLdouble stepIncrement = 0.0;
+GLdouble stepIncrement  = 0.0;
 GLdouble angleIncrement = 0.0;
-int frameCount    = 0;
-clock_t lastClock = 0;
+int frameCount          = 0;
+clock_t lastClock       = 0;
 
 // ratio of screen
 float ratio = 0.0f;
@@ -424,7 +424,8 @@ int main(int argc, char **argv) {
 
     // ONLY USE IF REQUIRE MOUSE MOVEMENT
     glutPassiveMotionFunc(mouseMove);
-    while(ShowCursor(FALSE) >= 0);
+    while (ShowCursor(FALSE) >= 0)
+        ;
 
     glutReshapeFunc(reshape);
     glutMainLoop();
@@ -565,7 +566,7 @@ void keys(unsigned char key, int x, int y) {
         // step forward
         case 'W':
         case 'w': cam.DirectionFB(1); break;
-		//step backward
+        // step backward
         case 'S':
         case 's': cam.DirectionFB(-1); break;
         // display campus map
