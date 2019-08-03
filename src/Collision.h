@@ -85,7 +85,7 @@ class Collision {
     }
 
     // returns TRUE if a collsion occurred
-    bool Collide(double endX, double endY, double endZ);
+    bool Collide(GLdouble endX, GLdouble endY, GLdouble endZ);
 
     // reads the BB info from AABB (dynamic array) and creates a Linked List
     // containing BB data
@@ -93,26 +93,26 @@ class Collision {
 
   private:
     // initially stores BB info in AABB (dynamic array) before copying to Linked List
-    AABB m_AABB;
+    AABB m_AABB = {};
 
     // lists to store bounding box info in each quadrant
-    AABBLinkedList m_list[4];
+    AABBLinkedList m_list[4] = {};
 
     // Stores the list size of each linked list
     // Set to 4 has the world is split into 4 quadrants
-    int m_listSize[4];
+    int m_listSize[4] = {};
 
     // stores world co-ordinates
-    double m_worldSizeX;
-    double m_worldSizeZ;
+    double m_worldSizeX = 0.0;
+    double m_worldSizeZ = 0.0;
 
     // checks if collsion occurred (called from Collide)
-    bool CheckCollision(int index, double endX, double endY, double endZ);
+    bool CheckCollision(int index, GLdouble endX, GLdouble endY, GLdouble endZ);
 
     //----------------------------------------------------------------------------------
 
     // Privatised copy constructor and assignment operator
-    Collision(const Collision &coll){};
+    Collision(const Collision &coll) = default;
     Collision &operator=(const Collision &coll){};
 };
 
