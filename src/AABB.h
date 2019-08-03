@@ -28,25 +28,25 @@ class AABB {
   private:
     // stores x,y,z co-ordinates
     struct XYZ {
-        GLdouble x, y, z;
+        GLdouble x = 0, y = 0, z = 0;
     };
     // stores max and min values of co-ordinates
     struct BoundingBox {
-        XYZ max;
-        XYZ min;
+        XYZ max = {};
+        XYZ min = {};
     };
     // dynamic array to store info
-    BoundingBox *m_BBox;
+    BoundingBox *m_BBox = nullptr;
     // number of BB created (i.e. array size)
-    int m_NoOfBoxes;
+    int m_NoOfBoxes = 0;
     // deletes arrays and clears memory
     void ClearBB(BoundingBox *&tempArray);
 
     //----------------------------------------------------------------------------------
 
     // Privatised copy constructor and assignment operator
-    AABB(const AABB &aabb){};
-    AABB &operator=(const AABB &aabb){};
+    AABB(const AABB &aabb) = default;
+    AABB &operator=(const AABB &aabb) = default;
 
   public:
     AABB() {}
