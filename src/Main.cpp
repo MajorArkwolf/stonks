@@ -9,7 +9,7 @@
 
 //--------------------------------------------------------------------------------------
 
-#define PI 3.1415962654
+//#define PI 3.1415962654
 
 // USE THESE STTEINGS TO CHANGE SPEED (on different spec computers)
 // Set speed (steps)
@@ -567,7 +567,7 @@ void keys(unsigned char key, int x, int y) {
         case 'w': cam.DirectionFB(1); break;
 		//step backward
         case 'S':
-        case 's': cam.DirectionFB(0); break;
+        case 's': cam.DirectionFB(-1); break;
         // display campus map
         case 'm':
         case 'M': {
