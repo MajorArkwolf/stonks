@@ -33,8 +33,8 @@ class CameraMap {
 
   private:
     // Privatised copy constructor and assignment operator
-    CameraMap(const CameraMap &cam){};
-    CameraMap &operator=(const CameraMap &cam){};
+    CameraMap(const CameraMap &cam) = delete;
+    CameraMap &operator=(const CameraMap &cam) = delete;
 };
 
 #endif
