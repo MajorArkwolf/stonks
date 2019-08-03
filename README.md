@@ -12,8 +12,8 @@ git clone https://github.com/opeik/ICT290.git
 ```
 
 ### Dependencies
-* Linux: `sudo apt-get install cmake freeglut3-dev libsdl1.2-dev ninja-build clang`
 * macOS: `brew install cmake sdl ninja`
+* Linux: `sudo apt-get install cmake freeglut3-dev libsdl1.2-dev ninja-build clang`
 * Windows: `.\vcpkg.exe install --triplet x64-windows freeglut sdl1`
 
 ### Configure build
