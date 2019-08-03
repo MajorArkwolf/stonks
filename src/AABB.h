@@ -28,12 +28,12 @@ class AABB {
   private:
     // stores x,y,z co-ordinates
     struct XYZ {
-        GLdouble x = 0, y = 0, z = 0;
+        GLdouble x = 0.0, y = 0.0, z = 0.0;
     };
     // stores max and min values of co-ordinates
     struct BoundingBox {
-        XYZ max = {};
-        XYZ min = {};
+        XYZ max{};
+        XYZ min{};
     };
     // dynamic array to store info
     BoundingBox *m_BBox = nullptr;
@@ -49,7 +49,7 @@ class AABB {
     AABB &operator=(const AABB &aabb) = default;
 
   public:
-    AABB() {}
+    AABB() = default;
     virtual ~AABB() {
         ClearBB(m_BBox);
     }
