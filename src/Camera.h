@@ -202,8 +202,8 @@ class Camera {
     //----------------------------------------------------------------------------------
 
     // Privatised copy constructor and assignment operator
-    Camera(const Camera &cam) = default;
-    Camera &operator=(const Camera &cam){};
+    Camera(const Camera &cam) = delete;
+    Camera &operator=(const Camera &cam) = delete;
 };
 
 #endif

@@ -78,8 +78,8 @@ class PlainLinkedList {
     void Delete(PlainNode *before);
 
     // Privatised copy constructor and assignment operator
-    PlainLinkedList(const PlainLinkedList &array){};
-    PlainLinkedList &operator=(const PlainLinkedList &array){};
+    PlainLinkedList(const PlainLinkedList &array) = delete;
+    PlainLinkedList &operator=(const PlainLinkedList &array) = delete;
 };
 
 #endif
