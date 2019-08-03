@@ -9,7 +9,7 @@
 
 //--------------------------------------------------------------------------------------
 
-#define PI 3.1415962654
+//#define PI 3.1415962654
 
 // USE THESE STTEINGS TO CHANGE SPEED (on different spec computers)
 // Set speed (steps)
@@ -17,278 +17,278 @@ GLdouble movementSpeed = 10.0;
 GLdouble rotationSpeed = 0.005;
 
 // TEXTURE IMAGE AXISES
-#define XY 0
-#define XZ 1
-#define YZ 2
-#define YZ_FLIP 3
-#define XY_FLIP 4
+constexpr int XY      = 0;
+constexpr int XZ      = 1;
+constexpr int YZ      = 2;
+constexpr int YZ_FLIP = 3;
+constexpr int XY_FLIP = 4;
 
 // PLAIN TYPES
-#define FLAT_PLAIN 0
-#define XY_PLAIN 1
-#define ZY_PLAIN 2
+constexpr int FLAT_PLAIN = 0;
+constexpr int XY_PLAIN   = 1;
+constexpr int ZY_PLAIN   = 2;
 
 // TEXTURES
 // Grass Textures
-#define GRASS 1
-#define GRASS_2 2
-#define GRASS_HILL 3
+constexpr int GRASS      = 1;
+constexpr int GRASS_2    = 2;
+constexpr int GRASS_HILL = 3;
 // Pavement Textures
-#define PAVEMENT 4
-#define PAVEMENT_TOP 5
-#define PAVEMENTSIDE_LEFT 6
-#define PAVEMENTSIDE_RIGHT 7
-#define PAVEMENTSIDE_TOP 8
-#define PAVEMENT_CORNER_1 9
-#define PAVEMENT_CORNER_2 10
-#define PAVEMENT_FLIP 11
-#define PAVEMENT_TOP_FLIP 12
-#define PAVEMENT_16 13
-#define DOORPAVE_1 14
+constexpr int PAVEMENT           = 4;
+constexpr int PAVEMENT_TOP       = 5;
+constexpr int PAVEMENTSIDE_LEFT  = 6;
+constexpr int PAVEMENTSIDE_RIGHT = 7;
+constexpr int PAVEMENTSIDE_TOP   = 8;
+constexpr int PAVEMENT_CORNER_1  = 9;
+constexpr int PAVEMENT_CORNER_2  = 10;
+constexpr int PAVEMENT_FLIP      = 11;
+constexpr int PAVEMENT_TOP_FLIP  = 12;
+constexpr int PAVEMENT_16        = 13;
+constexpr int DOORPAVE_1         = 14;
 // Wall Brick Textures
-#define WALL_BRICK_YZ 15
-#define WALL_BRICK_XY 16
-#define WALL_BRICK_XY_87WIDTH 17
-#define WALL_BRICK_GAP_YZ 18
-#define WALL_BRICK_GAP2_YZ 19
-#define WALL_BRICK_USD_YZ 20
-#define WALL_BRICK_XY_END 21
-#define WALL_BRICK_YZ_END 22
-#define WALL_GAP_1 23
-#define WALL_BRICK_3_4 24
-#define SHADOW_BRICK 25
-#define WALL_BRICK_SEC_SIGN 216
+constexpr int WALL_BRICK_YZ         = 15;
+constexpr int WALL_BRICK_XY         = 16;
+constexpr int WALL_BRICK_XY_87WIDTH = 17;
+constexpr int WALL_BRICK_GAP_YZ     = 18;
+constexpr int WALL_BRICK_GAP2_YZ    = 19;
+constexpr int WALL_BRICK_USD_YZ     = 20;
+constexpr int WALL_BRICK_XY_END     = 21;
+constexpr int WALL_BRICK_YZ_END     = 22;
+constexpr int WALL_GAP_1            = 23;
+constexpr int WALL_BRICK_3_4        = 24;
+constexpr int SHADOW_BRICK          = 25;
+constexpr int WALL_BRICK_SEC_SIGN   = 216;
 // Window Post Textures
-#define WINDOWPOST_CHANC_FRONT 26
-#define WINDOWPOST_CHANC_RIGHT 27
-#define WINDOWPOST_CHANC_LEFT 28
-#define WINDOWLEDGE_CHANC_FRONT 29
-#define WINDOWLEDGE_CHANC_TOP 30
-#define WINDOWPOST_PHYSSCI_FRONT 31
-#define WINDOWPOST_PHYSSCI_RIGHT 32
-#define WINDOWPOST_PHYSSCI_LEFT 33
-#define WINDOWPOST_LIB_FRONT 34
-#define WINDOWPOST_LIB_LEFT 35
-#define WINDOWPOST_LIB_RIGHT 36
+constexpr int WINDOWPOST_CHANC_FRONT   = 26;
+constexpr int WINDOWPOST_CHANC_RIGHT   = 27;
+constexpr int WINDOWPOST_CHANC_LEFT    = 28;
+constexpr int WINDOWLEDGE_CHANC_FRONT  = 29;
+constexpr int WINDOWLEDGE_CHANC_TOP    = 30;
+constexpr int WINDOWPOST_PHYSSCI_FRONT = 31;
+constexpr int WINDOWPOST_PHYSSCI_RIGHT = 32;
+constexpr int WINDOWPOST_PHYSSCI_LEFT  = 33;
+constexpr int WINDOWPOST_LIB_FRONT     = 34;
+constexpr int WINDOWPOST_LIB_LEFT      = 35;
+constexpr int WINDOWPOST_LIB_RIGHT     = 36;
 // Door Post Textures
-#define DOOR_POST_SECURITY 37
+constexpr int DOOR_POST_SECURITY = 37;
 // Window Ledge Textures
-#define WINDOWLEDGE_PS_FRONT 38
-#define WINDOWLEDGE_PS_TOP 39
-#define WINDOWLEDGE_PS_BOTT 40
-#define WINDOWLEDGE_LIB_A 41
-#define WINDOWLEDGE_LIB_B 42
-#define WINDOWLEDGE_LIB_TOP_A 43
-#define WINDOWLEDGE_LIB_TOP_B 44
-#define WINDOW_LEDGE_END_1 45
-#define WINDOW_LEDGE_END_2 46
+constexpr int WINDOWLEDGE_PS_FRONT  = 38;
+constexpr int WINDOWLEDGE_PS_TOP    = 39;
+constexpr int WINDOWLEDGE_PS_BOTT   = 40;
+constexpr int WINDOWLEDGE_LIB_A     = 41;
+constexpr int WINDOWLEDGE_LIB_B     = 42;
+constexpr int WINDOWLEDGE_LIB_TOP_A = 43;
+constexpr int WINDOWLEDGE_LIB_TOP_B = 44;
+constexpr int WINDOW_LEDGE_END_1    = 45;
+constexpr int WINDOW_LEDGE_END_2    = 46;
 // Main Post Textures
-#define MAIN_POST 47
-#define MAIN_POST_2 48
+constexpr int MAIN_POST   = 47;
+constexpr int MAIN_POST_2 = 48;
 // Door Post Textures
-#define DOOR_POST_CHANC 49
-#define DOOR_SIDEPOST_CHANC 50
-#define DOOR_POST_LIB 215
+constexpr int DOOR_POST_CHANC     = 49;
+constexpr int DOOR_SIDEPOST_CHANC = 50;
+constexpr int DOOR_POST_LIB       = 215;
 // Coloured Posts Textures
-#define PURPLE_POST 51
-#define PURPLE_POSTSIDE 52
-#define RED_POST 53
-#define RED_POSTSIDE 54
+constexpr int PURPLE_POST     = 51;
+constexpr int PURPLE_POSTSIDE = 52;
+constexpr int RED_POST        = 53;
+constexpr int RED_POSTSIDE    = 54;
 // Roof Textures
-#define ROOF_TOP 55
-#define ROOF_TOP_LIB 56
-#define ROOF_PLANKS 57
-#define ROOF_BEAM_1 58
-#define ROOF_PLANKS_2 59
-#define ROOF_BEAM_2 60
-#define BELOW_ROOF_FILL 61
-#define ROOF_BEAM_3 62
-#define ROOF_BEAM_4 63
-#define ROOF_BEAM_3_TOP 64
+constexpr int ROOF_TOP        = 55;
+constexpr int ROOF_TOP_LIB    = 56;
+constexpr int ROOF_PLANKS     = 57;
+constexpr int ROOF_BEAM_1     = 58;
+constexpr int ROOF_PLANKS_2   = 59;
+constexpr int ROOF_BEAM_2     = 60;
+constexpr int BELOW_ROOF_FILL = 61;
+constexpr int ROOF_BEAM_3     = 62;
+constexpr int ROOF_BEAM_4     = 63;
+constexpr int ROOF_BEAM_3_TOP = 64;
 // KBLT Textures
-#define KBLT 65
-#define KBLT_EDGE 66
-#define KBLT_EDGE_2 67
-#define KBLT_EDGE_CORNER 68
-#define KBLT_SIDE_1 69
-#define KBLT_SIDE_2 70
+constexpr int KBLT             = 65;
+constexpr int KBLT_EDGE        = 66;
+constexpr int KBLT_EDGE_2      = 67;
+constexpr int KBLT_EDGE_CORNER = 68;
+constexpr int KBLT_SIDE_1      = 69;
+constexpr int KBLT_SIDE_2      = 70;
 // Sign and Other Textures
-#define NEXUS_SIGN 71
-#define NEXUS_SIDE 72
-#define SECURITY_SIGN 73
-#define SECURITY_SIGN_2 74
-#define SIGN_1 75
-#define SIGN_1_SIDE_1 76
-#define SIGN_1_SIDE_2 77
-#define SIGN_2 78
-#define SIGN_2_SIDE 79
-#define PSC_SIGN 80
-#define PSC_SIGN_2 81
-#define CO_SIGN 82
-#define STA_TRAVEL 83
-#define STA_TRAVEL_EDGE 84
-#define STA_TRAVEL_BRACKET 85
-#define STA_TRAVEL_2 86
-#define STA_TRAVEL_BOTTOM 87
-#define TOILET_MEN 88
-#define TOILET_WOMEN 89
-#define GS_SIGN 90
-#define GS_SIGN_2 91
-#define GS_SIGN_EDGE 92
-#define MAP_2 93
-#define GLASS_BOARD 94
-#define GLASS_BOARD_2 95
-#define GLASS_BOARD_3 96
-#define GLASS_B_SIDE 97
-#define RUSTY_MAN 98
-#define NO_SMOKE_SIGN 99
-#define CARPET 100
+constexpr int NEXUS_SIGN         = 71;
+constexpr int NEXUS_SIDE         = 72;
+constexpr int SECURITY_SIGN      = 73;
+constexpr int SECURITY_SIGN_2    = 74;
+constexpr int SIGN_1             = 75;
+constexpr int SIGN_1_SIDE_1      = 76;
+constexpr int SIGN_1_SIDE_2      = 77;
+constexpr int SIGN_2             = 78;
+constexpr int SIGN_2_SIDE        = 79;
+constexpr int PSC_SIGN           = 80;
+constexpr int PSC_SIGN_2         = 81;
+constexpr int CO_SIGN            = 82;
+constexpr int STA_TRAVEL         = 83;
+constexpr int STA_TRAVEL_EDGE    = 84;
+constexpr int STA_TRAVEL_BRACKET = 85;
+constexpr int STA_TRAVEL_2       = 86;
+constexpr int STA_TRAVEL_BOTTOM  = 87;
+constexpr int TOILET_MEN         = 88;
+constexpr int TOILET_WOMEN       = 89;
+constexpr int GS_SIGN            = 90;
+constexpr int GS_SIGN_2          = 91;
+constexpr int GS_SIGN_EDGE       = 92;
+constexpr int MAP_2              = 93;
+constexpr int GLASS_BOARD        = 94;
+constexpr int GLASS_BOARD_2      = 95;
+constexpr int GLASS_BOARD_3      = 96;
+constexpr int GLASS_B_SIDE       = 97;
+constexpr int RUSTY_MAN          = 98;
+constexpr int NO_SMOKE_SIGN      = 99;
+constexpr int CARPET             = 100;
 // Drinks Machine Textures
-#define DRINKS_SIDE 101
-#define DRINKS_TOP 102
-#define DRINKS_EDGE 103
-#define DRINKS_SIDE_2 104
-#define COKE_MACHINE 105
-#define COFFEE_MACHINE 106
-#define SWEET_MACHINE 107
-#define MACHINE_SIDES 108
-#define MACHINE_SIDES_2 109
+constexpr int DRINKS_SIDE     = 101;
+constexpr int DRINKS_TOP      = 102;
+constexpr int DRINKS_EDGE     = 103;
+constexpr int DRINKS_SIDE_2   = 104;
+constexpr int COKE_MACHINE    = 105;
+constexpr int COFFEE_MACHINE  = 106;
+constexpr int SWEET_MACHINE   = 107;
+constexpr int MACHINE_SIDES   = 108;
+constexpr int MACHINE_SIDES_2 = 109;
 // Telephone Box Textures
-#define TELEPHONE_BACK 110
-#define TELEPHONE_FRONT 111
-#define TELEPHONE_SIDE_1 112
-#define TELEPHONE_FRONT_2 113
-#define TELEPHONE_MAIN_SIDE 114
-#define TELEPHONE_TOP_1 115
-#define TELEPHONE_SIDE_2 116
-#define TELEPHONE_TOP_2 117
-#define TELEPHONE_BOTTOM 118
-#define TELEPHONE_FILL 119
-#define TELEPHONE_FRONT_3 120
+constexpr int TELEPHONE_BACK      = 110;
+constexpr int TELEPHONE_FRONT     = 111;
+constexpr int TELEPHONE_SIDE_1    = 112;
+constexpr int TELEPHONE_FRONT_2   = 113;
+constexpr int TELEPHONE_MAIN_SIDE = 114;
+constexpr int TELEPHONE_TOP_1     = 115;
+constexpr int TELEPHONE_SIDE_2    = 116;
+constexpr int TELEPHONE_TOP_2     = 117;
+constexpr int TELEPHONE_BOTTOM    = 118;
+constexpr int TELEPHONE_FILL      = 119;
+constexpr int TELEPHONE_FRONT_3   = 120;
 // Step Textures
-#define STEPS_LIBRARY 121
-#define STEPS_LIBRARY_TOP 122
-#define STEP_PAVING_1 123
-#define STEP_EDGE 124
+constexpr int STEPS_LIBRARY     = 121;
+constexpr int STEPS_LIBRARY_TOP = 122;
+constexpr int STEP_PAVING_1     = 123;
+constexpr int STEP_EDGE         = 124;
 
 // Larger Window and Door Textures Etc
-#define WINDOW_1 125
-#define WINDOW_2 126
-#define WINDOW_3 127
-#define WINDOW_4 128
-#define WINDOW_5 129
-#define WINDOW_6 130
-#define WINDOW_7 131
-#define WINDOW_8 132
-#define WINDOW_9 133
-#define WINDOW_10 134
-#define WINDOW_11 135
-#define WINDOW_12 136
-#define WINDOW_13 137
-#define WINDOW_14 138
-#define WINDOW_14B 139
-#define WINDOW_15 140
-#define WINDOW_16 141
-#define WINDOW_17 142
-#define WINDOW_2B 143
-#define WINDOW_2C 144
-#define WINDOW_2US 145
-#define WINDOW_3B 146
-#define WINDOW_2USB 147
-#define WINDOW_LIB_1 148
-#define WINDOW_LIB_1A 149
-#define WINDOW_LIB_1B 150
-#define WINDOW_LIB_1C 151
-#define WINDOW_LIB_US_A 152
-#define WINDOW_LIB_US_B 153
-#define WINDOW_LIB_DOOR_1 154
-#define WINDOW_LIB_DOOR_2 155
-#define WINDOW_LIB_LONG 156
-#define ENTRANCE 157
-#define ENTRANCE_2 158
-#define EXIT_EAST 159
-#define EXIT_WEST 220
-#define CHANC_DOOR_1 160
-#define CHANC_DOOR_2 161
-#define WINDOW_2D 162
-#define WINDOW_2E 163
-#define WINDOW_1B 164
-#define STEP_WINDOW 221
+constexpr int WINDOW_1          = 125;
+constexpr int WINDOW_2          = 126;
+constexpr int WINDOW_3          = 127;
+constexpr int WINDOW_4          = 128;
+constexpr int WINDOW_5          = 129;
+constexpr int WINDOW_6          = 130;
+constexpr int WINDOW_7          = 131;
+constexpr int WINDOW_8          = 132;
+constexpr int WINDOW_9          = 133;
+constexpr int WINDOW_10         = 134;
+constexpr int WINDOW_11         = 135;
+constexpr int WINDOW_12         = 136;
+constexpr int WINDOW_13         = 137;
+constexpr int WINDOW_14         = 138;
+constexpr int WINDOW_14B        = 139;
+constexpr int WINDOW_15         = 140;
+constexpr int WINDOW_16         = 141;
+constexpr int WINDOW_17         = 142;
+constexpr int WINDOW_2B         = 143;
+constexpr int WINDOW_2C         = 144;
+constexpr int WINDOW_2US        = 145;
+constexpr int WINDOW_3B         = 146;
+constexpr int WINDOW_2USB       = 147;
+constexpr int WINDOW_LIB_1      = 148;
+constexpr int WINDOW_LIB_1A     = 149;
+constexpr int WINDOW_LIB_1B     = 150;
+constexpr int WINDOW_LIB_1C     = 151;
+constexpr int WINDOW_LIB_US_A   = 152;
+constexpr int WINDOW_LIB_US_B   = 153;
+constexpr int WINDOW_LIB_DOOR_1 = 154;
+constexpr int WINDOW_LIB_DOOR_2 = 155;
+constexpr int WINDOW_LIB_LONG   = 156;
+constexpr int ENTRANCE          = 157;
+constexpr int ENTRANCE_2        = 158;
+constexpr int EXIT_EAST         = 159;
+constexpr int EXIT_WEST         = 220;
+constexpr int CHANC_DOOR_1      = 160;
+constexpr int CHANC_DOOR_2      = 161;
+constexpr int WINDOW_2D         = 162;
+constexpr int WINDOW_2E         = 163;
+constexpr int WINDOW_1B         = 164;
+constexpr int STEP_WINDOW       = 221;
 
 // Above Window Block Textures
-#define ABOVE_WINDOW_BLOCK 165
-#define ABOVE_WINDOW_BLOCK_2 166
-#define ABOVE_WINDOW_BLOCK_3 167
-#define ABOVE_WINDOW_EDGE_3B 168
-#define ABOVE_WINDOW_BLOCK_XY_3 169
-#define ABOVE_LIB 170
-#define ABOVE_UNDER_POSTS 171
-#define ABOVE_UNDER_POSTS_2 172
-#define ABOVE_WINDOW_UNDER_LIB 173
-#define ABOVE_WINDOW_BLOCK_CHANC 174
-#define ABOVE_WINDOW_EDGE_3B_LIB 175
-#define ABOVE_WINDOW_EDGE_4B_LIB 176
-#define ABOVE_UNDER_4B 177
-#define ABOVE_CHANC_TEXT 178
-#define ABOVE_CHANC_TEXT_2 179
-#define ABOVE_PHYS_SCI_TEXT 180
-#define ABOVE_CHANC_TEXT_3 181
-#define ABOVE_LIB_TEXT 182
-#define ABOVE_LIB_TEXT_2 183
-#define ABOVE_TICKETS_TEXT 184
-#define ABOVE_CHANC_EDGE 185
-#define TOILET_DOOR_TOP 186
+constexpr int ABOVE_WINDOW_BLOCK       = 165;
+constexpr int ABOVE_WINDOW_BLOCK_2     = 166;
+constexpr int ABOVE_WINDOW_BLOCK_3     = 167;
+constexpr int ABOVE_WINDOW_EDGE_3B     = 168;
+constexpr int ABOVE_WINDOW_BLOCK_XY_3  = 169;
+constexpr int ABOVE_LIB                = 170;
+constexpr int ABOVE_UNDER_POSTS        = 171;
+constexpr int ABOVE_UNDER_POSTS_2      = 172;
+constexpr int ABOVE_WINDOW_UNDER_LIB   = 173;
+constexpr int ABOVE_WINDOW_BLOCK_CHANC = 174;
+constexpr int ABOVE_WINDOW_EDGE_3B_LIB = 175;
+constexpr int ABOVE_WINDOW_EDGE_4B_LIB = 176;
+constexpr int ABOVE_UNDER_4B           = 177;
+constexpr int ABOVE_CHANC_TEXT         = 178;
+constexpr int ABOVE_CHANC_TEXT_2       = 179;
+constexpr int ABOVE_PHYS_SCI_TEXT      = 180;
+constexpr int ABOVE_CHANC_TEXT_3       = 181;
+constexpr int ABOVE_LIB_TEXT           = 182;
+constexpr int ABOVE_LIB_TEXT_2         = 183;
+constexpr int ABOVE_TICKETS_TEXT       = 184;
+constexpr int ABOVE_CHANC_EDGE         = 185;
+constexpr int TOILET_DOOR_TOP          = 186;
 // Light Fitting Textures
-#define LIGHT 187
-#define LIGHT_SUPPORT 188
-#define LIGHT_SUPPORT_2 189
+constexpr int LIGHT           = 187;
+constexpr int LIGHT_SUPPORT   = 188;
+constexpr int LIGHT_SUPPORT_2 = 189;
 // Bench Textures
-#define BENCH_TOP 190
-#define BENCH_SIDE 191
-#define BENCH_SIDE_2 192
-#define BENCH_EDGE 193
-#define BENCH_EDGE_TOP 194
-#define BENCH_EDGE_SIDE 195
-#define BENCH_EDGE_TOP_2 196
-#define BENCH_EDGE_2 197
-#define BENCH_EDGE_3 198
+constexpr int BENCH_TOP        = 190;
+constexpr int BENCH_SIDE       = 191;
+constexpr int BENCH_SIDE_2     = 192;
+constexpr int BENCH_EDGE       = 193;
+constexpr int BENCH_EDGE_TOP   = 194;
+constexpr int BENCH_EDGE_SIDE  = 195;
+constexpr int BENCH_EDGE_TOP_2 = 196;
+constexpr int BENCH_EDGE_2     = 197;
+constexpr int BENCH_EDGE_3     = 198;
 // Ticket Counter and Ledge Textures
-#define TICKET_COUNTER_TOP 200
-#define TICKET_COUNTER_EDGE 201
-#define TICKET_COUNTER_EDGE_2 202
-#define TICKET_COUNTER_EDGE_3 203
-#define TICKET_LEDGE 204
-#define TICKET_LEDGE_EDGE 205
-#define TICKET_LEDGE_EDGE_2 206
+constexpr int TICKET_COUNTER_TOP    = 200;
+constexpr int TICKET_COUNTER_EDGE   = 201;
+constexpr int TICKET_COUNTER_EDGE_2 = 202;
+constexpr int TICKET_COUNTER_EDGE_3 = 203;
+constexpr int TICKET_LEDGE          = 204;
+constexpr int TICKET_LEDGE_EDGE     = 205;
+constexpr int TICKET_LEDGE_EDGE_2   = 206;
 // Wall by Steps Textures
-#define WALL_BRICK_STEPS_TOP 207
-#define WALL_BRICK_STEPS 208
-#define WALL_BRICK_STEPS_COVER 209
-#define WALL_BRICK_STEPS_EDGE 210
-#define WALL_BRICK_STEPS_EDGE_2 211
+constexpr int WALL_BRICK_STEPS_TOP    = 207;
+constexpr int WALL_BRICK_STEPS        = 208;
+constexpr int WALL_BRICK_STEPS_COVER  = 209;
+constexpr int WALL_BRICK_STEPS_EDGE   = 210;
+constexpr int WALL_BRICK_STEPS_EDGE_2 = 211;
 // Extra Textures
-#define DRAINPIPE 212
-#define COUNTER_TOP 213
-#define COUNTER_SIDE 214
+constexpr int DRAINPIPE    = 212;
+constexpr int COUNTER_TOP  = 213;
+constexpr int COUNTER_SIDE = 214;
 // Welcome, Exit and Map Screens
-#define MAP 217
-#define WELCOME 218
-#define EXIT 219
-#define NO_EXIT 222
+constexpr int MAP     = 217;
+constexpr int WELCOME = 218;
+constexpr int EXIT    = 219;
+constexpr int NO_EXIT = 222;
 
 // 223 Next
 
 //--------------------------------------------------------------------------------------
 
-GLdouble stepIncrement;
-GLdouble angleIncrement;
+GLdouble stepIncrement = 0.0;
+GLdouble angleIncrement = 0.0;
 int frameCount    = 0;
 clock_t lastClock = 0;
 
 // ratio of screen
-float ratio;
+float ratio = 0.0f;
 // screen width and height
-int width, height;
+int width = 0, height = 0;
 
 // display campus map
 bool DisplayMap = false;
@@ -297,18 +297,18 @@ bool DisplayWelcome = true;
 // display exit screen
 bool DisplayExit = false;
 // display light fittings
-bool lightsOn;
+bool lightsOn = false;
 // display ECL block
 bool displayECL = true;
 
 // varibles used for tarnslating graphics etc
-GLdouble step, step2, stepLength;
+GLdouble step = 0.0, step2 = 0.0, stepLength = 0.0;
 
 // Glut Cylinder
-GLUquadricObj *glu_cylinder;
+GLUquadricObj *glu_cylinder = nullptr;
 
 // Stores raw image file
-unsigned char *image = NULL;
+unsigned char *image = nullptr;
 
 // objects
 Camera cam;
@@ -423,8 +423,8 @@ int main(int argc, char **argv) {
     glutMouseFunc(Mouse);
 
     // ONLY USE IF REQUIRE MOUSE MOVEMENT
-    // glutPassiveMotionFunc(mouseMove);
-    // ShowCursor(FALSE);
+    glutPassiveMotionFunc(mouseMove);
+    while(ShowCursor(FALSE) >= 0);
 
     glutReshapeFunc(reshape);
     glutMainLoop();
@@ -530,9 +530,9 @@ void reshape(int w, int h) {
 //--------------------------------------------------------------------------------------
 void movementKeys(int key, int x, int y) {
     switch (key) {
-        case GLUT_KEY_LEFT: cam.DirectionRotateLR(-1); break;
+        case GLUT_KEY_LEFT: cam.DirectionLR(-1); break;
 
-        case GLUT_KEY_RIGHT: cam.DirectionRotateLR(1); break;
+        case GLUT_KEY_RIGHT: cam.DirectionLR(1); break;
 
         case GLUT_KEY_UP: cam.DirectionFB(1); break;
 
@@ -545,7 +545,7 @@ void releaseKey(int key, int x, int y) {
     switch (key) {
         // rotate left or right
         case GLUT_KEY_LEFT:
-        case GLUT_KEY_RIGHT: cam.DirectionRotateLR(0); break;
+        case GLUT_KEY_RIGHT: cam.DirectionLR(0); break;
         // move backwards or forwards
         case GLUT_KEY_UP:
         case GLUT_KEY_DOWN: cam.DirectionFB(0); break;
@@ -557,17 +557,17 @@ void keys(unsigned char key, int x, int y) {
     int i = 0;
     switch (key) {
         // step left
-        case 'Z':
-        case 'z': cam.DirectionLR(-1); break;
-        // step right
-        case 'X':
-        case 'x': cam.DirectionLR(1); break;
-        // look up
-        case 'Q':
-        case 'q': cam.DirectionLookUD(1); break;
-        // look down
         case 'A':
-        case 'a': cam.DirectionLookUD(-1); break;
+        case 'a': cam.DirectionLR(-1); break;
+        // step right
+        case 'D':
+        case 'd': cam.DirectionLR(1); break;
+        // step forward
+        case 'W':
+        case 'w': cam.DirectionFB(1); break;
+		//step backward
+        case 'S':
+        case 's': cam.DirectionFB(-1); break;
         // display campus map
         case 'm':
         case 'M': {
@@ -621,15 +621,15 @@ void keys(unsigned char key, int x, int y) {
 void releaseKeys(unsigned char key, int x, int y) {
     switch (key) {
         // step left or right
-        case 'x':
-        case 'X':
-        case 'z':
-        case 'Z': cam.DirectionLR(0); break;
-        // look left up or down
-        case 'a':
         case 'A':
-        case 'q':
-        case 'Q': cam.DirectionLookUD(0); break;
+        case 'a':
+        case 'D':
+        case 'd': cam.DirectionLR(0); break;
+        // step forward or back
+        case 'W':
+        case 'w':
+        case 'S':
+        case 's': cam.DirectionFB(0); break;
     }
 }
 
@@ -870,58 +870,58 @@ void CreateTextures() {
     image = tp.LoadTexture("res/tex/abovechanctext3.raw", 128, 1024);
     tp.CreateTexture(ABOVE_CHANC_TEXT_3, image, 128, 1024);
 
-    image = tp.LoadTexture("res/tex/aboveLibText.raw", 1024, 256);
+    image = tp.LoadTexture("res/tex/abovelibtext.raw", 1024, 256);
     tp.CreateTexture(ABOVE_LIB_TEXT, image, 1024, 256);
 
-    image = tp.LoadTexture("res/tex/aboveLibraryText2.raw", 1024, 256);
+    image = tp.LoadTexture("res/tex/abovelibrarytext2.raw", 1024, 256);
     tp.CreateTexture(ABOVE_LIB_TEXT_2, image, 1024, 256);
 
-    image = tp.LoadTexture("res/tex/aboveUnder4B.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/aboveunder4b.raw", 256, 128);
     tp.CreateTexture(ABOVE_UNDER_4B, image, 256, 128);
 
-    image = tp.LoadTexture("res/tex/aboveWindows.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/abovewindows.raw", 128, 256);
     tp.CreateTexture(ABOVE_WINDOW_BLOCK, image, 128, 256);
 
-    image = tp.LoadTexture("res/tex/aboveWindows2.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/abovewindows2.raw", 128, 256);
     tp.CreateTexture(ABOVE_WINDOW_BLOCK_2, image, 128, 256);
 
-    image = tp.LoadTexture("res/tex/aboveWindowsChanc.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/abovewindowschanc.raw", 128, 256);
     tp.CreateTexture(ABOVE_WINDOW_BLOCK_CHANC, image, 128, 256);
 
-    image = tp.LoadTexture("res/tex/aboveWindows2posts.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/abovewindows2posts.raw", 128, 256);
     tp.CreateTexture(ABOVE_UNDER_POSTS, image, 128, 256);
 
-    image = tp.LoadTexture("res/tex/aboveWindows2posts2.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/abovewindows2posts2.raw", 128, 256);
     tp.CreateTexture(ABOVE_UNDER_POSTS_2, image, 256, 128);
 
-    image = tp.LoadTexture("res/tex/aboveWindowsLib.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/abovewindowslib.raw", 256, 256);
     tp.CreateTexture(ABOVE_LIB, image, 256, 256);
 
-    image = tp.LoadTexture("res/tex/aboveWindows2lib.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/abovewindows2lib.raw", 256, 128);
     tp.CreateTexture(ABOVE_WINDOW_UNDER_LIB, image, 256, 128);
 
-    image = tp.LoadTexture("res/tex/aboveWindows3bricks.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/abovewindows3bricks.raw", 256, 256);
     tp.CreateTexture(ABOVE_WINDOW_BLOCK_3, image, 256, 256);
 
     image = tp.LoadTexture("res/tex/abovephysscitext.raw", 256, 1024);
     tp.CreateTexture(ABOVE_PHYS_SCI_TEXT, image, 256, 1024);
 
-    image = tp.LoadTexture("res/tex/aboveWindows3bricksXY.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/abovewindows3bricksxy.raw", 256, 256);
     tp.CreateTexture(ABOVE_WINDOW_BLOCK_XY_3, image, 256, 256);
 
-    image = tp.LoadTexture("res/tex/aboveWindowEdge.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/abovewindowedge.raw", 128, 256);
     tp.CreateTexture(ABOVE_WINDOW_EDGE_3B, image, 128, 256);
 
-    image = tp.LoadTexture("res/tex/aboveWindowEdgeLib.raw", 256, 64);
+    image = tp.LoadTexture("res/tex/abovewindowedgelib.raw", 256, 64);
     tp.CreateTexture(ABOVE_WINDOW_EDGE_3B_LIB, image, 256, 64);
 
-    image = tp.LoadTexture("res/tex/aboveWindowsLibEdge.raw", 256, 64);
+    image = tp.LoadTexture("res/tex/abovewindowslibedge.raw", 256, 64);
     tp.CreateTexture(ABOVE_WINDOW_EDGE_4B_LIB, image, 256, 64);
 
-    image = tp.LoadTexture("res/tex/aboveTicketsText.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/aboveticketstext.raw", 256, 256);
     tp.CreateTexture(ABOVE_TICKETS_TEXT, image, 256, 256);
 
-    image = tp.LoadTexture("res/tex/aboveWindowsEdge.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/abovewindowsedge.raw", 128, 128);
     tp.CreateTexture(ABOVE_CHANC_EDGE, image, 128, 128);
 
     image = tp.LoadTexture("res/tex/belowrooffill.raw", 128, 256);
@@ -984,19 +984,19 @@ void CreateTextures() {
     image = tp.LoadTexture("res/tex/brickshadow.raw", 128, 128);
     tp.CreateTexture(SHADOW_BRICK, image, 128, 128);
 
-    image = tp.LoadTexture("res/tex/bricksUSD.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/bricksusd.raw", 128, 128);
     tp.CreateTexture(WALL_BRICK_USD_YZ, image, 128, 128);
 
     image = tp.LoadTexture("res/tex/carpet.raw", 32, 32);
     tp.CreateTexture(CARPET, image, 32, 32);
 
-    image = tp.LoadTexture("res/tex/coffeeMachine.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/coffeemachine.raw", 128, 256);
     tp.CreateTexture(COFFEE_MACHINE, image, 128, 256);
 
-    image = tp.LoadTexture("res/tex/cokeMachine.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/cokemachine.raw", 128, 256);
     tp.CreateTexture(COKE_MACHINE, image, 128, 256);
 
-    image = tp.LoadTexture("res/tex/COsign.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/cosign.raw", 256, 128);
     tp.CreateTexture(CO_SIGN, image, 256, 128);
 
     image = tp.LoadTexture("res/tex/counterside.raw", 4, 16);
@@ -1008,16 +1008,16 @@ void CreateTextures() {
     image = tp.LoadTexture("res/tex/drainpipe.raw", 32, 2);
     tp.CreateTexture(DRAINPIPE, image, 32, 2);
 
-    image = tp.LoadTexture("res/tex/drinksEdge.raw", 16, 2);
+    image = tp.LoadTexture("res/tex/drinksedge.raw", 16, 2);
     tp.CreateTexture(DRINKS_EDGE, image, 16, 2);
 
-    image = tp.LoadTexture("res/tex/drinksSide.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/drinksside.raw", 64, 64);
     tp.CreateTexture(DRINKS_SIDE, image, 64, 64);
 
-    image = tp.LoadTexture("res/tex/drinksSide2.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/drinksside2.raw", 64, 64);
     tp.CreateTexture(DRINKS_SIDE_2, image, 64, 64);
 
-    image = tp.LoadTexture("res/tex/drinksSidetop.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/drinkssidetop.raw", 64, 64);
     tp.CreateTexture(DRINKS_TOP, image, 64, 64);
 
     image = tp.LoadTexture("res/tex/doorpave1.raw", 128, 256);
@@ -1026,13 +1026,13 @@ void CreateTextures() {
     image = tp.LoadTexture("res/tex/doorpost1.raw", 1024, 128);
     tp.CreateTexture(DOOR_POST_CHANC, image, 1024, 128);
 
-    image = tp.LoadTexture("res/tex/doorpostSec.raw", 1024, 128);
+    image = tp.LoadTexture("res/tex/doorpostsec.raw", 1024, 128);
     tp.CreateTexture(DOOR_POST_SECURITY, image, 1024, 128);
 
     image = tp.LoadTexture("res/tex/doorpostside1.raw", 64, 1024);
     tp.CreateTexture(DOOR_SIDEPOST_CHANC, image, 64, 1024);
 
-    image = tp.LoadTexture("res/tex/doorPostLibSide.raw", 512, 64);
+    image = tp.LoadTexture("res/tex/doorpostlibside.raw", 512, 64);
     tp.CreateTexture(DOOR_POST_LIB, image, 512, 64);
 
     image = tp.LoadTexture("res/tex/glassboard.raw", 512, 256);
@@ -1044,7 +1044,7 @@ void CreateTextures() {
     image = tp.LoadTexture("res/tex/glassboard3.raw", 512, 256);
     tp.CreateTexture(GLASS_BOARD_3, image, 512, 256);
 
-    image = tp.LoadTexture("res/tex/glassboardSide.raw", 2, 16);
+    image = tp.LoadTexture("res/tex/glassboardside.raw", 2, 16);
     tp.CreateTexture(GLASS_B_SIDE, image, 2, 16);
 
     image = tp.LoadTexture("res/tex/grass.raw", 64, 64);
@@ -1056,31 +1056,31 @@ void CreateTextures() {
     image = tp.LoadTexture("res/tex/grass3.raw", 64, 64);
     tp.CreateTexture(GRASS_HILL, image, 64, 64);
 
-    image = tp.LoadTexture("res/tex/GSsign.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/gssign.raw", 256, 256);
     tp.CreateTexture(GS_SIGN, image, 256, 256);
 
-    image = tp.LoadTexture("res/tex/GSsign2.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/gssign2.raw", 256, 256);
     tp.CreateTexture(GS_SIGN_2, image, 256, 256);
 
-    image = tp.LoadTexture("res/tex/GSsignedge.raw", 256, 64);
+    image = tp.LoadTexture("res/tex/gssignedge.raw", 256, 64);
     tp.CreateTexture(GS_SIGN_EDGE, image, 256, 64);
 
     image = tp.LoadTexture("res/tex/kbl.raw", 512, 256);
     tp.CreateTexture(KBLT, image, 512, 256);
 
-    image = tp.LoadTexture("res/tex/KBLTside1.raw", 2, 128);
+    image = tp.LoadTexture("res/tex/kbltside1.raw", 2, 128);
     tp.CreateTexture(KBLT_SIDE_1, image, 2, 128);
 
-    image = tp.LoadTexture("res/tex/KBLTside2.raw", 2, 2);
+    image = tp.LoadTexture("res/tex/kbltside2.raw", 2, 2);
     tp.CreateTexture(KBLT_SIDE_2, image, 2, 2);
 
-    image = tp.LoadTexture("res/tex/kblCorner.raw", 1, 1);
+    image = tp.LoadTexture("res/tex/kblcorner.raw", 1, 1);
     tp.CreateTexture(KBLT_EDGE_CORNER, image, 1, 1);
 
-    image = tp.LoadTexture("res/tex/kbltEdge.raw", 16, 32);
+    image = tp.LoadTexture("res/tex/kbltedge.raw", 16, 32);
     tp.CreateTexture(KBLT_EDGE, image, 16, 32);
 
-    image = tp.LoadTexture("res/tex/kbltEdge2.raw", 32, 16);
+    image = tp.LoadTexture("res/tex/kbltedge2.raw", 32, 16);
     tp.CreateTexture(KBLT_EDGE_2, image, 32, 16);
 
     image = tp.LoadTexture("res/tex/light.raw", 256, 64);
@@ -1092,16 +1092,16 @@ void CreateTextures() {
     image = tp.LoadTexture("res/tex/lightsupport2.raw", 2, 8);
     tp.CreateTexture(LIGHT_SUPPORT_2, image, 2, 8);
 
-    image = tp.LoadTexture("res/tex/machineSides.raw", 1, 1);
+    image = tp.LoadTexture("res/tex/machinesides.raw", 1, 1);
     tp.CreateTexture(MACHINE_SIDES, image, 1, 1);
 
-    image = tp.LoadTexture("res/tex/machineSides2.raw", 1, 1);
+    image = tp.LoadTexture("res/tex/machinesides2.raw", 1, 1);
     tp.CreateTexture(MACHINE_SIDES_2, image, 1, 1);
 
-    image = tp.LoadTexture("res/tex/mainPost.raw", 128, 256);
+    image = tp.LoadTexture("res/tex/mainpost.raw", 128, 256);
     tp.CreateTexture(MAIN_POST, image, 128, 256);
 
-    image = tp.LoadTexture("res/tex/mainPost2.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/mainpost2.raw", 256, 128);
     tp.CreateTexture(MAIN_POST_2, image, 256, 128);
 
     image = tp.LoadTexture("res/tex/map2.raw", 256, 512);
@@ -1110,7 +1110,7 @@ void CreateTextures() {
     image = tp.LoadTexture("res/tex/nexus.raw", 512, 256);
     tp.CreateTexture(NEXUS_SIGN, image, 512, 256);
 
-    image = tp.LoadTexture("res/tex/nexusSide.raw", 2, 16);
+    image = tp.LoadTexture("res/tex/nexusside.raw", 2, 16);
     tp.CreateTexture(NEXUS_SIDE, image, 2, 16);
 
     image = tp.LoadTexture("res/tex/noexit.raw", 256, 64);
@@ -1140,13 +1140,13 @@ void CreateTextures() {
     image = tp.LoadTexture("res/tex/pavementtopflip.raw", 64, 128);
     tp.CreateTexture(PAVEMENT_TOP_FLIP, image, 64, 128);
 
-    image = tp.LoadTexture("res/tex/pavementSide.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/pavementside.raw", 64, 64);
     tp.CreateTexture(PAVEMENTSIDE_LEFT, image, 64, 64);
 
-    image = tp.LoadTexture("res/tex/pavementSide2.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/pavementside2.raw", 64, 64);
     tp.CreateTexture(PAVEMENTSIDE_RIGHT, image, 64, 64);
 
-    image = tp.LoadTexture("res/tex/pavementSide3.raw", 64, 64);
+    image = tp.LoadTexture("res/tex/pavementside3.raw", 64, 64);
     tp.CreateTexture(PAVEMENTSIDE_TOP, image, 64, 64);
 
     image = tp.LoadTexture("res/tex/phonefront.raw", 512, 32);
@@ -1173,16 +1173,16 @@ void CreateTextures() {
     image = tp.LoadTexture("res/tex/phonebottom.raw", 512, 128);
     tp.CreateTexture(TELEPHONE_BOTTOM, image, 512, 128);
 
-    image = tp.LoadTexture("res/tex/phoneFill.raw", 2, 2);
+    image = tp.LoadTexture("res/tex/phonefill.raw", 2, 2);
     tp.CreateTexture(TELEPHONE_FILL, image, 2, 2);
 
     image = tp.LoadTexture("res/tex/phonefront3.raw", 16, 512);
     tp.CreateTexture(TELEPHONE_FRONT_3, image, 16, 512);
 
-    image = tp.LoadTexture("res/tex/PSCsign.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/pscsign.raw", 256, 128);
     tp.CreateTexture(PSC_SIGN, image, 256, 128);
 
-    image = tp.LoadTexture("res/tex/PSCsign2.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/pscsign2.raw", 256, 128);
     tp.CreateTexture(PSC_SIGN_2, image, 256, 128);
 
     image = tp.LoadTexture("res/tex/purplepost.raw", 64, 128);
@@ -1212,10 +1212,10 @@ void CreateTextures() {
     image = tp.LoadTexture("res/tex/roofbeam4.raw", 128, 64);
     tp.CreateTexture(ROOF_BEAM_4, image, 128, 64);
 
-    image = tp.LoadTexture("res/tex/roofPlanks.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/roofplanks.raw", 128, 128);
     tp.CreateTexture(ROOF_PLANKS, image, 128, 128);
 
-    image = tp.LoadTexture("res/tex/roofPlanks2.raw", 128, 128);
+    image = tp.LoadTexture("res/tex/roofplanks2.raw", 128, 128);
     tp.CreateTexture(ROOF_PLANKS_2, image, 128, 128);
 
     image = tp.LoadTexture("res/tex/rooftop.raw", 2, 128);
@@ -1290,7 +1290,7 @@ void CreateTextures() {
     image = tp.LoadTexture("res/tex/steppavingedge.raw", 64, 64);
     tp.CreateTexture(STEP_EDGE, image, 64, 64);
 
-    image = tp.LoadTexture("res/tex/sweetMachine.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/sweetmachine.raw", 256, 256);
     tp.CreateTexture(SWEET_MACHINE, image, 256, 256);
 
     image = tp.LoadTexture("res/tex/telephoneback.raw", 512, 512);
@@ -1341,25 +1341,25 @@ void CreateTextures() {
     image = tp.LoadTexture("res/tex/windowledgeend2.raw", 64, 64);
     tp.CreateTexture(WINDOW_LEDGE_END_2, image, 64, 64);
 
-    image = tp.LoadTexture("res/tex/windowledgeLibfa.raw", 1024, 32);
+    image = tp.LoadTexture("res/tex/windowledgelibfa.raw", 1024, 32);
     tp.CreateTexture(WINDOWLEDGE_LIB_A, image, 1024, 32);
 
-    image = tp.LoadTexture("res/tex/windowledgeLibfb.raw", 1024, 32);
+    image = tp.LoadTexture("res/tex/windowledgelibfb.raw", 1024, 32);
     tp.CreateTexture(WINDOWLEDGE_LIB_B, image, 1024, 32);
 
-    image = tp.LoadTexture("res/tex/windowledgeLibta.raw", 1024, 128);
+    image = tp.LoadTexture("res/tex/windowledgelibta.raw", 1024, 128);
     tp.CreateTexture(WINDOWLEDGE_LIB_TOP_A, image, 1024, 128);
 
-    image = tp.LoadTexture("res/tex/windowledgeLibtb.raw", 1024, 128);
+    image = tp.LoadTexture("res/tex/windowledgelibtb.raw", 1024, 128);
     tp.CreateTexture(WINDOWLEDGE_LIB_TOP_B, image, 1024, 128);
 
-    image = tp.LoadTexture("res/tex/windowledgeUS1.raw", 32, 1024);
+    image = tp.LoadTexture("res/tex/windowledgeus1.raw", 32, 1024);
     tp.CreateTexture(WINDOWLEDGE_PS_FRONT, image, 32, 1024);
 
-    image = tp.LoadTexture("res/tex/windowledgeUS2.raw", 128, 1024);
+    image = tp.LoadTexture("res/tex/windowledgeus2.raw", 128, 1024);
     tp.CreateTexture(WINDOWLEDGE_PS_TOP, image, 128, 1024);
 
-    image = tp.LoadTexture("res/tex/windowledgeUS3.raw", 128, 1024);
+    image = tp.LoadTexture("res/tex/windowledgeus3.raw", 128, 1024);
     tp.CreateTexture(WINDOWLEDGE_PS_BOTT, image, 128, 1024);
 
     image = tp.LoadTexture("res/tex/windowpost1.raw", 1024, 128);
@@ -1374,13 +1374,13 @@ void CreateTextures() {
     image = tp.LoadTexture("res/tex/windowpostsmallside.raw", 64, 512);
     tp.CreateTexture(WINDOWPOST_PHYSSCI_LEFT, image, 64, 512);
 
-    image = tp.LoadTexture("res/tex/windowpostLib.raw", 128, 512);
+    image = tp.LoadTexture("res/tex/windowpostlib.raw", 128, 512);
     tp.CreateTexture(WINDOWPOST_LIB_FRONT, image, 128, 512);
 
-    image = tp.LoadTexture("res/tex/windowpostLibside1.raw", 512, 64);
+    image = tp.LoadTexture("res/tex/windowpostlibside1.raw", 512, 64);
     tp.CreateTexture(WINDOWPOST_LIB_LEFT, image, 512, 64);
 
-    image = tp.LoadTexture("res/tex/windowpostLibside2.raw", 512, 64);
+    image = tp.LoadTexture("res/tex/windowpostlibside2.raw", 512, 64);
     tp.CreateTexture(WINDOWPOST_LIB_RIGHT, image, 512, 64);
 
     image = tp.LoadTexture("res/tex/windowposthalf1.raw", 64, 1024);
@@ -1394,10 +1394,10 @@ void CreateTextures() {
     image = tp.LoadTexture("res/tex/windows/stepwindow.raw", 128, 256);
     tp.CreateTexture(STEP_WINDOW, image, 128, 256);
 
-    image = tp.LoadTexture("res/tex/windows/chancDoor1.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/chancdoor1.raw", 256, 256);
     tp.CreateTexture(CHANC_DOOR_1, image, 256, 256);
 
-    image = tp.LoadTexture("res/tex/windows/chancDoor2.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/chancdoor2.raw", 256, 256);
     tp.CreateTexture(CHANC_DOOR_2, image, 256, 256);
 
     image = tp.LoadTexture("res/tex/windows/entrance.raw", 512, 256);
@@ -1490,31 +1490,31 @@ void CreateTextures() {
     image = tp.LoadTexture("res/tex/windows/window17.raw", 128, 256);
     tp.CreateTexture(WINDOW_17, image, 128, 256);
 
-    image = tp.LoadTexture("res/tex/windows/windowLib1.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/windows/windowlib1.raw", 256, 128);
     tp.CreateTexture(WINDOW_LIB_1, image, 256, 128);
 
-    image = tp.LoadTexture("res/tex/windows/windowLib1a.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/windows/windowlib1a.raw", 256, 128);
     tp.CreateTexture(WINDOW_LIB_1A, image, 256, 128);
 
-    image = tp.LoadTexture("res/tex/windows/windowLib1b.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/windows/windowlib1b.raw", 256, 128);
     tp.CreateTexture(WINDOW_LIB_1B, image, 256, 128);
 
-    image = tp.LoadTexture("res/tex/windows/windowLib1c.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/windows/windowlib1c.raw", 256, 128);
     tp.CreateTexture(WINDOW_LIB_1C, image, 256, 128);
 
-    image = tp.LoadTexture("res/tex/windows/windowLibUSa.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/windows/windowlibusa.raw", 256, 128);
     tp.CreateTexture(WINDOW_LIB_US_A, image, 256, 128);
 
-    image = tp.LoadTexture("res/tex/windows/windowLibUSb.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/windows/windowlibusb.raw", 256, 128);
     tp.CreateTexture(WINDOW_LIB_US_B, image, 256, 128);
 
-    image = tp.LoadTexture("res/tex/windows/windowLibDoor1.raw", 256, 256);
+    image = tp.LoadTexture("res/tex/windows/windowlibdoor1.raw", 256, 256);
     tp.CreateTexture(WINDOW_LIB_DOOR_1, image, 256, 256);
 
-    image = tp.LoadTexture("res/tex/windows/windowLibDoor2.raw", 512, 256);
+    image = tp.LoadTexture("res/tex/windows/windowlibdoor2.raw", 512, 256);
     tp.CreateTexture(WINDOW_LIB_DOOR_2, image, 512, 256);
 
-    image = tp.LoadTexture("res/tex/windows/windowLibLong.raw", 256, 128);
+    image = tp.LoadTexture("res/tex/windows/windowliblong.raw", 256, 128);
     tp.CreateTexture(WINDOW_LIB_LONG, image, 256, 128);
 
     image = tp.LoadTexture("res/tex/map.raw", 256, 256);
