@@ -73,18 +73,18 @@ class PlainNode {
 
   private:
     // The address of the next node in the list
-    PlainNode *m_next;
+    PlainNode *m_next = nullptr;
 
     // Stores type of plain:
     // (0: flat plane)
     // (1: incline from z to y)
     // (2: incline from x to y)
-    GLdouble m_type;
+    GLdouble m_type = 0;
 
     // stores start and end co-ordinates of plane on x, y and z axis
-    GLdouble m_xPlainStart, m_xPlainEnd;
-    GLdouble m_yPlainStart, m_yPlainEnd;
-    GLdouble m_zPlainStart, m_zPlainEnd;
+    GLdouble m_xPlainStart = 0, m_xPlainEnd = 0;
+    GLdouble m_yPlainStart = 0, m_yPlainEnd = 0;
+    GLdouble m_zPlainStart = 0, m_zPlainEnd = 0;
 
     //----------------------------------------------------------------------------------
 
