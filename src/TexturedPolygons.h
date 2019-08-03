@@ -19,7 +19,7 @@
 
 class TexturedPolygons {
   public:
-    TexturedPolygons() {}
+    TexturedPolygons() = default;
     virtual ~TexturedPolygons() {
         Clear();
     }
@@ -73,7 +73,7 @@ class TexturedPolygons {
 
   private:
     // pointer to display list
-    GLuint *m_texture;
+    GLuint *m_texture{};
 
     // returns image file
     GLubyte *LoadRawImageFile(char *filename, int width, int height);
@@ -106,8 +106,8 @@ class TexturedPolygons {
     //----------------------------------------------------------------------------------
 
     // Privatised copy constructor and assignment operator
-    TexturedPolygons(const TexturedPolygons &tp){};
-    TexturedPolygons &operator=(const TexturedPolygons &tp){};
+    TexturedPolygons(const TexturedPolygons &tp) = delete;
+    TexturedPolygons &operator=(const TexturedPolygons &tp) = delete;
 };
 
 #endif

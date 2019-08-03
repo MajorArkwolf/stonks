@@ -112,8 +112,8 @@ class Collision {
     //----------------------------------------------------------------------------------
 
     // Privatised copy constructor and assignment operator
-    Collision(const Collision &coll) = default;
-    Collision &operator=(const Collision &coll){};
+    Collision(const Collision &coll) = delete;
+    Collision &operator=(const Collision &coll) = delete;
 };
 
 #endif

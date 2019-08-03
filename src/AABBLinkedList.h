@@ -77,8 +77,8 @@ class AABBLinkedList {
     void Delete(AABBNode *before);
 
     // Privatised copy constructor and assignment operator
-    AABBLinkedList(const AABBLinkedList &ll){};
-    AABBLinkedList &operator=(const AABBLinkedList &ll){};
+    AABBLinkedList(const AABBLinkedList &ll) = delete;
+    AABBLinkedList &operator=(const AABBLinkedList &ll) = delete;
 };
 
 #endif

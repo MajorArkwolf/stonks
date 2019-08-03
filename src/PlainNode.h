@@ -89,8 +89,8 @@ class PlainNode {
     //----------------------------------------------------------------------------------
 
     // Privatised copy constructor and assignment operator
-    PlainNode(const PlainNode &newNode){};
-    PlainNode &operator=(const PlainNode &newNode){};
+    PlainNode(const PlainNode &newNode) = delete;
+    PlainNode &operator=(const PlainNode &newNode) = delete;
 };
 
 #endif

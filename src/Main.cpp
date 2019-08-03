@@ -283,7 +283,7 @@ constexpr int NO_EXIT = 222;
 GLdouble stepIncrement  = 0.0;
 GLdouble angleIncrement = 0.0;
 int frameCount          = 0;
-clock_t lastClock       = 0;
+clock_t lastClock{};
 
 // ratio of screen
 float ratio = 0.0f;
@@ -555,7 +555,6 @@ void releaseKey(int key, int x, int y) {
 
 //--------------------------------------------------------------------------------------
 void keys(unsigned char key, int x, int y) {
-    int i = 0;
     switch (key) {
         // step left
         case 'A':

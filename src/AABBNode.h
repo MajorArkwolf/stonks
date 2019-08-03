@@ -85,8 +85,8 @@ class AABBNode {
     //----------------------------------------------------------------------------------
 
     // Privatised copy constructor and assignment operator
-    AABBNode(const AABBNode &newNode) = default;
-    AABBNode &operator=(const AABBNode &newNode) = default;
+    AABBNode(const AABBNode &newNode) = delete;
+    AABBNode &operator=(const AABBNode &newNode) = delete;
 };
 
 #endif
