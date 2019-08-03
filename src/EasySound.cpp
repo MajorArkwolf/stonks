@@ -122,7 +122,7 @@ void CEasySound::Unload(CSound *sound) {
     for (cs = m_listSound.begin(); cs != m_listSound.end(); ++cs) {
         if ((*cs)->GetSoundID() == sound->GetSoundID()) {
             m_listSound.erase(cs);
-            delete (*cs);
+            //delete *cs;
             return;
         }
     }

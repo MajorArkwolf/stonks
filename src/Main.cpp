@@ -424,8 +424,8 @@ int main(int argc, char **argv) {
 
     // ONLY USE IF REQUIRE MOUSE MOVEMENT
     glutPassiveMotionFunc(mouseMove);
-    while (ShowCursor(FALSE) >= 0)
-        ;
+    while (ShowCursor(FALSE) >= 0) {
+    };
 
     glutReshapeFunc(reshape);
     glutMainLoop();
@@ -843,10 +843,7 @@ void CreatePlains() {
 //  Delete raw image and clear memory
 //--------------------------------------------------------------------------------------
 void DeleteImageFromMemory(unsigned char *tempImage) {
-    tempImage = NULL;
-    if (tempImage == NULL) {
-        delete[] tempImage;
-    }
+        delete tempImage;
 }
 
 //--------------------------------------------------------------------------------------

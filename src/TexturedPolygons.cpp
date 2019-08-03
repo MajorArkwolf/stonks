@@ -57,10 +57,7 @@ void TexturedPolygons::SetTextureCount(const int &textureNo) {
 //--------------------------------------------------------------------------------------
 
 void TexturedPolygons::Clear() {
-    m_texture = NULL;
-    if (m_texture == NULL) {
-        delete[] m_texture;
-    }
+    delete m_texture;
 }
 
 //--------------------------------------------------------------------------------------
