@@ -840,10 +840,7 @@ void CreatePlains() {
 //  Delete raw image and clear memory
 //--------------------------------------------------------------------------------------
 void DeleteImageFromMemory(unsigned char *tempImage) {
-    tempImage = NULL;
-    if (tempImage == NULL) {
-        delete[] tempImage;
-    }
+        delete tempImage;
 }
 
 //--------------------------------------------------------------------------------------
