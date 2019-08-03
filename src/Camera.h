@@ -136,30 +136,30 @@ class Camera {
 
   private:
     // steep incline increments
-    GLdouble m_incrementX;
-    GLdouble m_incrementZ;
-    int m_No_Plains;
-    int m_plainNo;
-    GLdouble m_plainHeight;
+    GLdouble m_incrementX = 0.0;
+    GLdouble m_incrementZ = 0.0;
+    int m_No_Plains = 0;
+    int m_plainNo = 0;
+    GLdouble m_plainHeight = 0.0;
 
     // rotation variables
-    GLdouble m_rotateAngleLR;
-    GLdouble m_deltaAngleLR;
-    GLdouble m_rotateAngleUD;
-    GLdouble m_deltaAngleUD;
+    GLdouble m_rotateAngleLR = 0.0;
+    GLdouble m_deltaAngleLR = 0.0;
+    GLdouble m_rotateAngleUD = 0.0;
+    GLdouble m_deltaAngleUD = 0.0;
 
     // movement variables
-    GLdouble m_x, m_y, m_z, m_zLast, m_xLast;
-    GLdouble m_lookX, m_lookY, m_lookZ;
-    GLdouble m_lookXX, m_lookYY, m_lookZZ;
-    GLdouble m_deltaMoveLR;
-    GLdouble m_deltaMoveFB;
-    GLdouble m_deltaMoveUD;
-    GLdouble m_direction;
+    GLdouble m_x = 0.0, m_y = 0.0, m_z = 0.0, m_zLast = 0.0, m_xLast = 0.0;
+    GLdouble m_lookX = 0.0, m_lookY = 0.0, m_lookZ = 0.0;
+    GLdouble m_lookXX = 0.0, m_lookYY = 0.0, m_lookZZ = 0.0;
+    GLdouble m_deltaMoveLR = 0.0;
+    GLdouble m_deltaMoveFB = 0.0;
+    GLdouble m_deltaMoveUD = 0.0;
+    GLdouble m_direction = 0.0;
 
     // movement speed (step size)
-    GLdouble m_rotateSpeed;
-    GLdouble m_moveSpeed;
+    GLdouble m_rotateSpeed = 0.0;
+    GLdouble m_moveSpeed = 0.0;
 
     // is it ok to move
     bool MoveFBOK();
@@ -183,12 +183,12 @@ class Camera {
     // display new view
     void callGLLookAt();
 
-    bool m_CollisionDetectionOn;
+    bool m_CollisionDetectionOn = true;
 
     // objects
-    Collision m_colDetect;
-    CameraMap m_map;
-    PlainLinkedList m_Plain;
+    Collision m_colDetect{};
+    CameraMap m_map{};
+    PlainLinkedList m_Plain{};
 
     // These functions were set up to climb stairs, but are not used.
     // The Plain object is used instead
@@ -196,13 +196,13 @@ class Camera {
                     GLdouble stepHeight, GLdouble stepWidth, int noSteps);
     void CheckSteps();
 
-    CEasySound *es;
-    CSound *stepSound;
+    CEasySound *es = nullptr;
+    CSound *stepSound = nullptr;
 
     //----------------------------------------------------------------------------------
 
     // Privatised copy constructor and assignment operator
-    Camera(const Camera &cam){};
+    Camera(const Camera &cam) = default;
     Camera &operator=(const Camera &cam){};
 };
 
