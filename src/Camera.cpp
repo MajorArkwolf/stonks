@@ -16,14 +16,14 @@
 // Set initial values
 //--------------------------------------------------------------------------------------
 Camera::Camera() {
-    m_rotateSpeed = 0.0f;
-    m_moveSpeed   = 0.0f;
+    m_rotateSpeed = 0.0;
+    m_moveSpeed   = 0.0;
 
     ResetXYZ();
 
-    m_deltaMoveFB = 0;
-    m_deltaMoveLR = 0;
-    m_deltaMoveUD = 0;
+    m_deltaMoveFB = 0.0;
+    m_deltaMoveLR = 0.0;
+    m_deltaMoveUD = 0.0;
 
     m_rotateAngleLR = 0.0;
     m_rotateAngleUD = 0.0;
