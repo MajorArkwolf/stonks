@@ -530,9 +530,9 @@ void reshape(int w, int h) {
 //--------------------------------------------------------------------------------------
 void movementKeys(int key, int x, int y) {
     switch (key) {
-        case GLUT_KEY_LEFT: cam.DirectionRotateLR(-1); break;
+        case GLUT_KEY_LEFT: cam.DirectionLR(-1); break;
 
-        case GLUT_KEY_RIGHT: cam.DirectionRotateLR(1); break;
+        case GLUT_KEY_RIGHT: cam.DirectionLR(1); break;
 
         case GLUT_KEY_UP: cam.DirectionFB(1); break;
 
@@ -545,7 +545,7 @@ void releaseKey(int key, int x, int y) {
     switch (key) {
         // rotate left or right
         case GLUT_KEY_LEFT:
-        case GLUT_KEY_RIGHT: cam.DirectionRotateLR(0); break;
+        case GLUT_KEY_RIGHT: cam.DirectionLR(0); break;
         // move backwards or forwards
         case GLUT_KEY_UP:
         case GLUT_KEY_DOWN: cam.DirectionFB(0); break;
@@ -557,17 +557,17 @@ void keys(unsigned char key, int x, int y) {
     int i = 0;
     switch (key) {
         // step left
-        case 'Z':
-        case 'z': cam.DirectionLR(-1); break;
-        // step right
-        case 'X':
-        case 'x': cam.DirectionLR(1); break;
-        // look up
-        case 'Q':
-        case 'q': cam.DirectionLookUD(1); break;
-        // look down
         case 'A':
-        case 'a': cam.DirectionLookUD(-1); break;
+        case 'a': cam.DirectionLR(-1); break;
+        // step right
+        case 'D':
+        case 'd': cam.DirectionLR(1); break;
+        // step forward
+        case 'W':
+        case 'w': cam.DirectionFB(1); break;
+		//step backward
+        case 'S':
+        case 's': cam.DirectionFB(0); break;
         // display campus map
         case 'm':
         case 'M': {
@@ -621,15 +621,15 @@ void keys(unsigned char key, int x, int y) {
 void releaseKeys(unsigned char key, int x, int y) {
     switch (key) {
         // step left or right
-        case 'x':
-        case 'X':
-        case 'z':
-        case 'Z': cam.DirectionLR(0); break;
-        // look left up or down
-        case 'a':
         case 'A':
-        case 'q':
-        case 'Q': cam.DirectionLookUD(0); break;
+        case 'a':
+        case 'D':
+        case 'd': cam.DirectionLR(0); break;
+        // step forward or back
+        case 'W':
+        case 'w':
+        case 'S':
+        case 's': cam.DirectionFB(0); break;
     }
 }
 
