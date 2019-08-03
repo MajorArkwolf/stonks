@@ -35,7 +35,7 @@ bool PlainLinkedList::AddToStart(const int tempType, const GLdouble tempXs,
                                  const GLdouble tempXe, const GLdouble tempYs,
                                  const GLdouble tempYe, const GLdouble tempZs,
                                  const GLdouble tempZe) {
-    PlainNode *newNode;
+    PlainNode *newNode = nullptr;
 
     try {
         newNode = new PlainNode;

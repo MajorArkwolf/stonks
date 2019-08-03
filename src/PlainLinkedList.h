@@ -72,7 +72,7 @@ class PlainLinkedList {
 
   private:
     // pointer to first node in list
-    PlainNode *m_first;
+    PlainNode *m_first = nullptr;
 
     // used to clear memory
     void Delete(PlainNode *before);
