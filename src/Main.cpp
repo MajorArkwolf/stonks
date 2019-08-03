@@ -280,15 +280,15 @@ constexpr int NO_EXIT = 222;
 
 //--------------------------------------------------------------------------------------
 
-GLdouble stepIncrement;
-GLdouble angleIncrement;
+GLdouble stepIncrement = 0.0;
+GLdouble angleIncrement = 0.0;
 int frameCount    = 0;
 clock_t lastClock = 0;
 
 // ratio of screen
-float ratio;
+float ratio = 0.0f;
 // screen width and height
-int width, height;
+int width = 0, height = 0;
 
 // display campus map
 bool DisplayMap = false;
@@ -297,18 +297,18 @@ bool DisplayWelcome = true;
 // display exit screen
 bool DisplayExit = false;
 // display light fittings
-bool lightsOn;
+bool lightsOn = false;
 // display ECL block
 bool displayECL = true;
 
 // varibles used for tarnslating graphics etc
-GLdouble step, step2, stepLength;
+GLdouble step = 0.0, step2 = 0.0, stepLength = 0.0;
 
 // Glut Cylinder
-GLUquadricObj *glu_cylinder;
+GLUquadricObj *glu_cylinder = nullptr;
 
 // Stores raw image file
-unsigned char *image = NULL;
+unsigned char *image = nullptr;
 
 // objects
 Camera cam;
