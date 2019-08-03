@@ -424,7 +424,7 @@ int main(int argc, char **argv) {
 
     // ONLY USE IF REQUIRE MOUSE MOVEMENT
     glutPassiveMotionFunc(mouseMove);
-    while(ShowCursor(FALSE) != 0);
+    while(ShowCursor(FALSE) >= 0);
 
     glutReshapeFunc(reshape);
     glutMainLoop();
