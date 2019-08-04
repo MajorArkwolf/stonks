@@ -149,7 +149,7 @@ constexpr int DRINKS_TOP      = 102;
 constexpr int DRINKS_EDGE     = 103;
 constexpr int DRINKS_SIDE_2   = 104;
 constexpr int COKE_MACHINE    = 105;
-constexpr int COfEE_MACHINE   = 106;
+constexpr int COFFEE_MACHINE  = 106;
 constexpr int SWEET_MACHINE   = 107;
 constexpr int MACHINE_SIDES   = 108;
 constexpr int MACHINE_SIDES_2 = 109;
@@ -394,7 +394,7 @@ void IncrementFrameCount();
 void CreateTextures();
 // creates bounding boxes for collsion detection
 void CreateBoundingBoxes();
-// creates diferent plains
+// creates different plains
 void CreatePlains();
 
 // deletes image and clears memory
@@ -501,8 +501,6 @@ void Display() {
     glPopMatrix();
     glDisable(GL_TEXTURE_2D);
 
-    // clear bufers
-    glFlush();
     glutSwapBuffers();
 }
 
@@ -788,7 +786,7 @@ void CreateBoundingBoxes() {
 }
 
 //--------------------------------------------------------------------------------------
-// Set up co-ordinates of diferent plains
+// Set up co-ordinates of different plains
 //--------------------------------------------------------------------------------------
 void CreatePlains() {
     // grass slope
@@ -986,7 +984,7 @@ void CreateTextures() {
     tp.CreateTexture(CARPET, image, 32, 32);
 
     image = tp.LoadTexture("res/tex/coffeemachine.raw", 128, 256);
-    tp.CreateTexture(COfEE_MACHINE, image, 128, 256);
+    tp.CreateTexture(COFFEE_MACHINE, image, 128, 256);
 
     image = tp.LoadTexture("res/tex/cokemachine.raw", 128, 256);
     tp.CreateTexture(COKE_MACHINE, image, 128, 256);
@@ -4841,7 +4839,7 @@ void DisplayLargerTextures() {
     glCallList(369);
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(COKE_MACHINE));
     glCallList(370);
-    glBindTexture(GL_TEXTURE_2D, tp.GetTexture(COfEE_MACHINE));
+    glBindTexture(GL_TEXTURE_2D, tp.GetTexture(COFFEE_MACHINE));
     glCallList(371);
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(SWEET_MACHINE));
     glCallList(372);
@@ -5038,7 +5036,7 @@ void DrawLargerTextures() {
     tp.CreateXtoYWindowList(370, 25016.0, 35458.0, 317.12, 10000.0, 660.0, 0.96,
                             1.0); // Coke Machine
     tp.CreateXtoYWindowList(371, 25016.0, 35163.0, 255.0, 10000.0, 586.2, 0.867,
-                            1.0); // Cofee Machine
+                            1.0); // Coffee Machine
     tp.CreateXtoYWindowList(372, 25016.0, 34778.0, 350.0, 10000.0, 593.22, 0.59,
                             1.0); // Sweet Machine
     // phys sci door 1
