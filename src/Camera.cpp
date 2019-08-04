@@ -11,6 +11,7 @@
 #include <math.h>
 
 #include "Glut.hpp"
+#include "Math.hpp"
 
 //--------------------------------------------------------------------------------------
 // Set initial values
@@ -298,8 +299,8 @@ void Camera::RotateLR() {
     m_rotateAngleLR += m_deltaAngleLR;
     m_lookX  = sin(m_rotateAngleLR);
     m_lookZ  = -cos(m_rotateAngleLR);
-    m_lookXX = sin(m_rotateAngleLR + (float)PI / 2.0);
-    m_lookZZ = -cos(m_rotateAngleLR + (float)PI / 2.0);
+    m_lookXX = sin(m_rotateAngleLR + PI_F / 2.0f);
+    m_lookZZ = -cos(m_rotateAngleLR + PI_F / 2.0f);
     callGLLookAt();
 }
 
@@ -324,11 +325,11 @@ void Camera::Position(GLfloat const &tempX, GLfloat const &tempY,
     m_z = tempZ;
 
     // rotate to correct angle
-    m_rotateAngleLR = tempAngle * (PI / 180);
+    m_rotateAngleLR = tempAngle * (PI_F / 180.0f);
     m_lookX         = sin(m_rotateAngleLR);
     m_lookZ         = -cos(m_rotateAngleLR);
-    m_lookXX        = sin(m_rotateAngleLR + (float)PI / 2.0);
-    m_lookZZ        = -cos(m_rotateAngleLR + (float)PI / 2.0);
+    m_lookXX        = sin(m_rotateAngleLR + PI_F / 2.0f);
+    m_lookZZ        = -cos(m_rotateAngleLR + PI_F / 2.0f);
     m_rotateAngleUD = 0.0;
     m_deltaAngleUD  = 0.0;
 
@@ -357,8 +358,11 @@ void Camera::CheckCamera() {
 //----------------------------------------------------------------------------------------
 void Camera::callGLLookAt() {
     glLoadIdentity();
-    gluLookAt(m_x, m_y, m_z, m_x + m_lookX, m_y + m_lookY, m_z + m_lookZ, 0.0f,
-              1.0f, 0.0f);
+    gluLookAt(static_cast<double>(m_x), static_cast<double>(m_y),
+              static_cast<double>(m_z), static_cast<double>(m_x + m_lookX),
+              static_cast<double>(m_y + m_lookY),
+              static_cast<double>(m_z + m_lookZ), static_cast<double>(0.0f),
+              static_cast<double>(1.0f), static_cast<double>(0.0f));
 }
 
 //--------------------------------------------------------------------------------------

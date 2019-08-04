@@ -27,7 +27,7 @@ class AABBLinkedList {
         m_first = new AABBNode;
     }
 
-    virtual ~AABBLinkedList() {
+    ~AABBLinkedList() {
         Clear();
     }
 
