@@ -1,70 +1,138 @@
-//  AABBLinkedList.h
-//  Header file for the AABBLink class
-//
-//  Instead of using a link list, lets spice things up with a vector
-//	The program splits the world into four quadrants and creates a linked list to
-//  store the bounding box details for each
-//
-//  Author:  Peter
-//  Augest 2019
-//--------------------------------------------------------------------------------------
+/**
+ * @class AABBList
+ * @brief  AABB collision list array
+ *
+ * Updated Shay's Linklist format to a vector improving access speeds.
+ *
+ * @author Peter Crabbe
+ * @version 02
+ * @date 04/08/2019
+ *
+ */
 
 #ifndef AABBLIST_H
 #    define AABBLIST_H
-
-//--------------------------------------------------------------------------------------
 
 #    include <vector>
 
 #    include "AABBNode.h"
 #    include "Glut.hpp"
 
-//--------------------------------------------------------------------------------------
-
 class AABBList {
   public:
-    // constructor creates pointer to first node
+    /**
+     * @brief Default constructor, not required
+     */
     AABBList() = default;
-
+    /**
+     * @brief Default destructor, not required
+     */
     ~AABBList() = default;
 
-    //----------------------------------------------------------------------------------
+	/// Deleting the Copy constructor for safety reasons.
+    AABBList(const AABBList &ll) = delete;
 
-    // add a node to the start of the linked list
+	/// Deleting the Copy assignment for safety reasons.
+    AABBList &operator=(const AABBList &ll) = delete;
+
+    /**
+     * @brief  Attempts to add to the vector, then will push into the last spot
+     *
+     * @param  const int &ptrCount
+     * @param  const GLfloat maxX
+     * @param  const GLfloat minX
+     * @param  const GLfloat maxY
+     * @param  const GLfloat minY
+     * @param  const GLfloat maxZ
+     * @param  const GLfloat minZ
+     * @return bool
+     */
     bool AddToStart(GLfloat maxX, GLfloat minX, GLfloat maxY, GLfloat minY,
                     GLfloat maxZ, GLfloat minZ);
 
-    //  set the values of the node data
+    /**
+     * @brief  Sets the data at the given point in the array.
+     *
+     * @param  const int &ptrCount
+     * @param  const GLfloat maxX
+     * @param  const GLfloat minX
+     * @param  const GLfloat maxY
+     * @param  const GLfloat minY
+     * @param  const GLfloat maxZ
+     * @param  const GLfloat minZ
+     * @return bool
+     */
     void SetData(const int &ptrCount, const GLfloat maxX, const GLfloat minX,
                  const GLfloat maxY, const GLfloat minY, const GLfloat maxZ,
                  const GLfloat minZ);
 
-    //----------------------------------------------------------------------------------
-    //  Get Methods
-    //----------------------------------------------------------------------------------
+    /**
+     * @brief Gets the max X value at the given point in the array
+     * @param int ptrCount
+     * @return GLfloat
+     */
     GLfloat GetMaxX(int ptrCount);
+
+    /**
+     * @brief Gets the max X value at the given point in the array
+     * @param int ptrCount
+     * @return GLfloat
+     */
     GLfloat GetMinX(int ptrCount);
+
+    /**
+     * @brief Gets the max X value at the given point in the array
+     * @param int ptrCount
+     * @return GLfloat
+     */
     GLfloat GetMaxY(int ptrCount);
+
+    /**
+     * @brief Gets the max X value at the given point in the array
+     * @param int ptrCount
+     * @return GLfloat
+     */
     GLfloat GetMinY(int ptrCount);
+
+    /**
+     * @brief Gets the max X value at the given point in the array
+     * @param int ptrCount
+     * @return GLfloat
+     */
     GLfloat GetMaxZ(int ptrCount);
+
+    /**
+     * @brief Gets the max X value at the given point in the array
+     * @param int ptrCount
+     * @return GLfloat
+     */
     GLfloat GetMinZ(int ptrCount);
 
-    // Return size of list
+    /**
+     * @brief Returns the size of the vector as an int.
+     * @return GLfloat
+     */
     int GetListSize();
 
     //--------------------------------------------------------------------------------------
 
   private:
-    // Vector storing the nodes
+    /// Vector storing the nodes.
     std::vector<AABBNode> nodes{};
 
-    // used to clear memory
-    void Delete() {}
-    void Clear() {}
+    /**
+     * @brief Depreciated Function, to be removed.
+     */
+    void Delete() {
+        nodes.clear();
+	}
 
-    // Privatised copy constructor and assignment operator
-    AABBList(const AABBList &ll) = delete;
-    AABBList &operator=(const AABBList &ll) = delete;
+    /**
+     * @brief Depreciated Function, to be removed.
+     */
+    void Clear() {
+        nodes.clear();
+	}
 };
 
 #endif

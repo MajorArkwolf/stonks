@@ -8,24 +8,18 @@
 
 #include "AABBList.h"
 
-//--------------------------------------------------------------------------------------
-
-//--------------------------------------------------------------------------------------
-
 bool AABBList::AddToStart(GLfloat maxX, GLfloat minX, GLfloat maxY,
                           GLfloat minY, GLfloat maxZ, GLfloat minZ) {
-    /// Create a temp node
+    /// Creates a temp node.
     AABBNode newNode{};
 
-    // add the value to the node
+    // adds the values to the node
     newNode.SetData(maxX, minX, maxY, minY, maxZ, minZ);
-    // set the address of the net node
+    // Places the node at the end of the vector.
     nodes.push_back(newNode);
 
     return true;
 }
-
-//--------------------------------------------------------------------------------------
 
 GLfloat AABBList::GetMaxX(int ptrCount) {
     if (ptrCount <= nodes.size())
@@ -33,7 +27,6 @@ GLfloat AABBList::GetMaxX(int ptrCount) {
     else
         return 0;
 }
-//--------------------------------------------------------------------------------------
 
 GLfloat AABBList::GetMinX(int ptrCount) {
     if (ptrCount <= nodes.size())
@@ -42,16 +35,12 @@ GLfloat AABBList::GetMinX(int ptrCount) {
         return 0;
 }
 
-//--------------------------------------------------------------------------------------
-
 GLfloat AABBList::GetMaxY(int ptrCount) {
     if (ptrCount <= nodes.size())
         return nodes[ptrCount].GetMaxY();
     else
         return 0;
 }
-
-//--------------------------------------------------------------------------------------
 
 GLfloat AABBList::GetMinY(int ptrCount) {
     if (ptrCount <= nodes.size())
@@ -60,8 +49,6 @@ GLfloat AABBList::GetMinY(int ptrCount) {
         return 0;
 }
 
-//--------------------------------------------------------------------------------------
-
 GLfloat AABBList::GetMaxZ(int ptrCount) {
     if (ptrCount <= nodes.size())
         return nodes[ptrCount].GetMaxZ();
@@ -69,16 +56,12 @@ GLfloat AABBList::GetMaxZ(int ptrCount) {
         return 0;
 }
 
-//--------------------------------------------------------------------------------------
-
 GLfloat AABBList::GetMinZ(int ptrCount) {
     if (ptrCount <= nodes.size())
         return nodes[ptrCount].GetMinZ();
     else
         return 0;
 }
-
-//--------------------------------------------------------------------------------------
 
 void AABBList::SetData(const int &ptrCount, const GLfloat maxX,
                        const GLfloat minX, const GLfloat maxY, const GLfloat minY,
@@ -88,11 +71,7 @@ void AABBList::SetData(const int &ptrCount, const GLfloat maxX,
     nodes.push_back(temp);
 }
 
-//--------------------------------------------------------------------------------------
-
 int AABBList::GetListSize() {
     int size = int(nodes.size());
     return size;
 }
-
-//--------------------------------------------------------------------------------------
