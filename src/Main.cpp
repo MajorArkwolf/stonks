@@ -556,16 +556,16 @@ void keys(unsigned char key, [[maybe_unused]] int x, [[maybe_unused]] int y) {
     switch (key) {
         // step left
         case 'A':
-        case 'a': cam.DirectionLR(-1); break;
+        case 'a': cam.DirectionLR(-5); break;
         // step right
         case 'D':
-        case 'd': cam.DirectionLR(1); break;
+        case 'd': cam.DirectionLR(5); break;
         // step forward
         case 'W':
-        case 'w': cam.DirectionFB(1); break;
+        case 'w': cam.DirectionFB(5); break;
         // step backward
         case 'S':
-        case 's': cam.DirectionFB(-1); break;
+        case 's': cam.DirectionFB(-5); break;
         // display campus map
         case 'm':
         case 'M': {
@@ -2701,11 +2701,11 @@ void DrawLibraryPosts() {
     tp.CreateDisplayList(XY, 445.0f, 128.0f, 32.0f, 22984.0f, 10286.0f,
                          42992.0f, 9.0f, 0.59f);
 
-    tp.CreateAngledPolygon(446.0f, 128.0f, 256.0f, 22984.0f, 24136.0f, 24136.0f,
+    tp.CreateAngledPolygon(446, 128.0f, 256.0f, 22984.0f, 24136.0f, 24136.0f,
                            22984.0f, 10286.0f, 10286.0f, 10276.0f, 10276.0f,
                            42992.0f, 42992.0f, 43088.0f, 43088.0f, 5.0f, 1.0f);
 
-    tp.CreateAngledPolygon(447.0f, 64.0f, 64.0f, 22984.0f, 22984.0f, 22984.0f,
+    tp.CreateAngledPolygon(447, 64.0f, 64.0f, 22984.0f, 22984.0f, 22984.0f,
                            22984.0f, 10286.0f, 10276.0f, 10305.0f, 10305.0f,
                            42992.0f, 43056.0f, 43056.0f, 42992.0f, 6.0f, 1.0f);
 }
@@ -4618,7 +4618,7 @@ void DrawExtras() {
                          98.0f); // KBLT side
 
     // TELEPHONE ROOF
-    tp.CreateAngledPolygon(337.0f, 512.0f, 256.0f, 33882.0f, 33882.0f, 33882.0f,
+    tp.CreateAngledPolygon(337, 512.0f, 256.0f, 33882.0f, 33882.0f, 33882.0f,
                            33882.0f, 10268.0f, 10268.0f, 10598.24f, 10598.24f,
                            25250.0f, 25345.34f, 25345.34f, 25173.0f, 6.0f, 4.0f);
     glNewList(338, GL_COMPILE);
@@ -5154,41 +5154,41 @@ void DrawGrass() {
                          417.5f, 481.5f);
 
     // Slope ate the entrance
-    tp.CreateAngledPolygon(198.0f, 64.0f, 64.0f, 4848.0f, 31568.0f, 31568.0f,
+    tp.CreateAngledPolygon(198, 64.0f, 64.0f, 4848.0f, 31568.0f, 31568.0f,
                            4848.0f, 9086.0f, 9086.0f, 10000.0f, 10000.0f,
                            6200.0f, 6200.0f, 10000.0f, 10000.0f, 1.0f, 1.0f);
     // Lower hill in the centre
     tp.CreateDisplayList(XZ, 460.0f, 64.0f, 64.0f, 9000.0f, 10200.0f, 19000.0f,
                          203.125f, 281.25f);
-    tp.CreateAngledPolygon(461.0f, 64.0f, 64.0f, 9000.0f, 22000.0f, 22000.0f,
+    tp.CreateAngledPolygon(461, 64.0f, 64.0f, 9000.0f, 22000.0f, 22000.0f,
                            9000.0f, 10000.0f, 10000.0f, 10200.0f, 10200.0f,
                            17000.0f, 17000.0f, 19000.0f, 19000.0f, 1.0f, 1.0f);
 
-    tp.CreateAngledPolygon(462.0f, 64.0f, 64.0f, 9000.0f, 22000.0f, 22000.0f,
+    tp.CreateAngledPolygon(462, 64.0f, 64.0f, 9000.0f, 22000.0f, 22000.0f,
                            9000.0f, 10200.0f, 10200.0f, 10000.0f, 10000.0f,
                            37000.0f, 37000.0f, 40000.0f, 40000.0f, 1.0f, 1.0f);
 
-    tp.CreateAngledPolygon(463.0f, 64.0f, 64.0f, 22000.0f, 27000.0f, 27000.0f,
+    tp.CreateAngledPolygon(463, 64.0f, 64.0f, 22000.0f, 27000.0f, 27000.0f,
                            22000.0f, 10200.0f, 10000.0f, 10000.0f, 10200.0f,
                            19000.0f, 19000.0f, 37000.0f, 37000.0f, 1.0f, 1.0f);
 
-    tp.CreateAngledPolygon(464.0f, 64.0f, 64.0f, 6500.0f, 9000.0f, 9000.0f,
+    tp.CreateAngledPolygon(464, 64.0f, 64.0f, 6500.0f, 9000.0f, 9000.0f,
                            6500.0f, 10000.0f, 10200.0f, 10200.0f, 10000.0f,
                            19000.0f, 19000.0f, 37000.0f, 37000.0f, 1.0f, 1.0f);
 
-    tp.CreateAngledPolygon(465.0f, 64.0f, 64.0f, 9000.0f, 9000.0f, 9000.0f,
+    tp.CreateAngledPolygon(465, 64.0f, 64.0f, 9000.0f, 9000.0f, 9000.0f,
                            6500.0f, 10000.0f, 10000.0f, 10200.0f, 10000.0f,
                            17000.0f, 17000.0f, 19000.0f, 19000.0f, 4.0f, 1.0f);
 
-    tp.CreateAngledPolygon(466.0f, 64.0f, 64.0f, 22000.0f, 22000.0f, 27000.0f,
+    tp.CreateAngledPolygon(466, 64.0f, 64.0f, 22000.0f, 22000.0f, 27000.0f,
                            22000.0f, 10000.0f, 10000.0f, 10000.0f, 10200.0f,
                            17000.0f, 17000.0f, 19000.0f, 19000.0f, 1.0f, 1.0f);
 
-    tp.CreateAngledPolygon(467.0f, 64.0f, 64.0f, 22000.0f, 27000.0f, 22000.0f,
+    tp.CreateAngledPolygon(467, 64.0f, 64.0f, 22000.0f, 27000.0f, 22000.0f,
                            22000.0f, 10200.0f, 10000.0f, 10000.0f, 10000.0f,
                            37000.0f, 37000.0f, 40000.0f, 40000.0f, 4.0f, 1.0f);
 
-    tp.CreateAngledPolygon(468.0f, 64.0f, 64.0f, 6500.0f, 9000.0f, 9000.0f,
+    tp.CreateAngledPolygon(468, 64.0f, 64.0f, 6500.0f, 9000.0f, 9000.0f,
                            9000.0f, 10000.0f, 10200.0f, 10000.0f, 10000.0f,
                            37000.0f, 37000.0f, 40000.0f, 40000.0f, 1.0f, 1.0f);
 
@@ -5196,35 +5196,35 @@ void DrawGrass() {
     tp.CreateDisplayList(XZ, 477.0f, 64.0f, 64.0f, 14000.0f, 10425.0f, 28000.0f,
                          62.5f, 78.125f);
 
-    tp.CreateAngledPolygon(469.0f, 64.0f, 64.0f, 14000.0f, 18000.0f, 18000.0f,
+    tp.CreateAngledPolygon(469, 64.0f, 64.0f, 14000.0f, 18000.0f, 18000.0f,
                            14000.0f, 10200.0f, 10200.0f, 10425.0f, 10425.0f,
                            23000.0f, 23000.0f, 28000.0f, 28000.0f, 1.0f, 1.0f);
 
-    tp.CreateAngledPolygon(470.0f, 64.0f, 64.0f, 14000.0f, 18000.0f, 18000.0f,
+    tp.CreateAngledPolygon(470, 64.0f, 64.0f, 14000.0f, 18000.0f, 18000.0f,
                            14000.0f, 10425.0f, 10425.0f, 10200.0f, 10200.0f,
                            33000.0f, 33000.0f, 36000.0f, 36000.0f, 1.0f, 1.0f);
 
-    tp.CreateAngledPolygon(471.0f, 64.0f, 64.0f, 10000.0f, 14000.0f, 14000.0f,
+    tp.CreateAngledPolygon(471, 64.0f, 64.0f, 10000.0f, 14000.0f, 14000.0f,
                            10000.0f, 10200.0f, 10425.0f, 10425.0f, 10200.0f,
                            28000.0f, 28000.0f, 33000.0f, 33000.0f, 1.0f, 1.0f);
 
-    tp.CreateAngledPolygon(472.0f, 64.0f, 64.0f, 18000.0f, 22000.0f, 22000.0f,
+    tp.CreateAngledPolygon(472, 64.0f, 64.0f, 18000.0f, 22000.0f, 22000.0f,
                            18000.0f, 10425.0f, 10200.0f, 10200.0f, 10425.0f,
                            28000.0f, 28000.0f, 33000.0f, 33000.0f, 1.0f, 1.0f);
 
-    tp.CreateAngledPolygon(473.0f, 64.0f, 64.0f, 14000.0f, 14000.0f, 14000.0f,
+    tp.CreateAngledPolygon(473, 64.0f, 64.0f, 14000.0f, 14000.0f, 14000.0f,
                            10000.0f, 10200.0f, 10200.0f, 10425.0f, 10200.0f,
                            23000.0f, 23000.0f, 28000.0f, 28000.0f, 4.0f, 1.0f);
 
-    tp.CreateAngledPolygon(474.0f, 64.0f, 64.0f, 18000.0f, 18000.0f, 22000.0f,
+    tp.CreateAngledPolygon(474, 64.0f, 64.0f, 18000.0f, 18000.0f, 22000.0f,
                            18000.0f, 10200.0f, 10200.0f, 10200.0f, 10425.0f,
                            23000.0f, 23000.0f, 28000.0f, 28000.0f, 1.0f, 1.0f);
 
-    tp.CreateAngledPolygon(475.0f, 64.0f, 64.0f, 18000.0f, 22000.0f, 18000.0f,
+    tp.CreateAngledPolygon(475, 64.0f, 64.0f, 18000.0f, 22000.0f, 18000.0f,
                            18000.0f, 10425.0f, 10200.0f, 10200.0f, 10200.0f,
                            33000.0f, 33000.0f, 36000.0f, 36000.0f, 1.0f, 1.0f);
 
-    tp.CreateAngledPolygon(476.0f, 64.0f, 64.0f, 10000.0f, 14000.0f, 14000.0f,
+    tp.CreateAngledPolygon(476, 64.0f, 64.0f, 10000.0f, 14000.0f, 14000.0f,
                            14000.0f, 10200.0f, 10425.0f, 10200.0f, 10200.0f,
                            33000.0f, 33000.0f, 36000.0f, 36000.0f, 1.0f, 1.0f);
 }
@@ -5481,9 +5481,9 @@ void DrawStepBricks() {
     tp.CreateDisplayList(YZ, 489.0f, 32.0f, 128.0f, 31582.0f, 9942.0f, 9004.0f,
                          1.0f, 2.55f);
 
-    tp.CreateDisplayList(YZ, 48.0f, 128.0f, 128.0f, 31582.0f, 9350.0f, 7918.0f,
+    tp.CreateDisplayList(YZ, 480.0f, 128.0f, 128.0f, 31582.0f, 9350.0f, 7918.0f,
                          2.90625f, 6.0f);
-    tp.CreateDisplayList(YZ, 49.0f, 32.0f, 128.0f, 31582.0f, 9722.0f, 7916.0f,
+    tp.CreateDisplayList(YZ, 490.0f, 32.0f, 128.0f, 31582.0f, 9722.0f, 7916.0f,
                          1.0f, 3.0f);
 
     tp.CreateDisplayList(YZ, 481.0f, 128.0f, 128.0f, 31582.0f, 9158.0f, 6830.0f,
@@ -5496,25 +5496,25 @@ void DrawStepBricks() {
     tp.CreateDisplayList(YZ, 492.0f, 32.0f, 128.0f, 31582.0f, 9222.0f, 4590.0f,
                          1.0f, 12.0f);
 
-    tp.CreateAngledPolygon(483.0f, 128.0f, 128.0f, 31582.0f, 31582.0f, 31582.0f,
+    tp.CreateAngledPolygon(483, 128.0f, 128.0f, 31582.0f, 31582.0f, 31582.0f,
                            31582.0f, 9094.0f, 9094.0f, 9462.0f, 9094.0f,
                            5742.0f, 6830.0f, 6830.0f, 5742.0f, 5.0f, 1.0f);
     tp.CreateDisplayList(YZ, 493.0f, 32.0f, 128.0f, 31582.0f, 9222.0f, 6126.0f,
                          1.0f, 5.92f);
 
-    tp.CreateAngledPolygon(484.0f, 128.0f, 128.0f, 31582.0f, 31582.0f, 31582.0f,
+    tp.CreateAngledPolygon(484, 128.0f, 128.0f, 31582.0f, 31582.0f, 31582.0f,
                            31582.0f, 9414.0f, 9414.0f, 9722.0f, 9414.0f,
                            7086.0f, 7918.0f, 7918.0f, 7086.0f, 5.0f, 1.0f);
     tp.CreateDisplayList(YZ, 494.0f, 32.0f, 128.0f, 31582.0f, 9462.0f, 7213.0f,
                          1.0f, 5.93f);
 
-    tp.CreateAngledPolygon(485.0f, 128.0f, 128.0f, 31582.0f, 31582.0f, 31582.0f,
+    tp.CreateAngledPolygon(485, 128.0f, 128.0f, 31582.0f, 31582.0f, 31582.0f,
                            31582.0f, 9594.0f, 9594.0f, 9942.0f, 9722.0f,
                            8302.0f, 9006.0f, 9006.0f, 8302.0f, 5.0f, 1.0f);
     tp.CreateDisplayList(YZ, 495.0f, 32.0f, 128.0f, 31582.0f, 9722.0f, 8302.0f,
                          1.0f, 5.82f);
 
-    tp.CreateAngledPolygon(486.0f, 128.0f, 128.0f, 31582.0f, 31582.0f, 31582.0f,
+    tp.CreateAngledPolygon(486, 128.0f, 128.0f, 31582.0f, 31582.0f, 31582.0f,
                            31582.0f, 9914.0f, 9914.0f, 10134.0f, 9914.0f,
                            9262.0f, 9872.0f, 9872.0f, 9262.0f, 5.0f, 1.0f);
     tp.CreateDisplayList(YZ, 496.0f, 32.0f, 128.0f, 31582.0f, 9942.0f, 9332.4f,
@@ -5526,7 +5526,7 @@ void DrawStepBricks() {
                          1.0f, 2.55f);
     tp.CreateDisplayList(XZ, 499.0f, 64.0f, 128.0f, 31518.0f, 9754.0f, 7916.0f,
                          1.0f, 3.0f);
-    tp.CreateDisplayList(XZ, 50.0f, 64.0f, 128.0f, 31518.0f, 9494.0f, 6830.0f,
+    tp.CreateDisplayList(XZ, 500.0f, 64.0f, 128.0f, 31518.0f, 9494.0f, 6830.0f,
                          1.0f, 2.99f);
     tp.CreateDisplayList(XZ, 501.0f, 64.0f, 128.0f, 31518.0f, 9254.0f, 4590.0f,
                          1.0f, 12.0f);
