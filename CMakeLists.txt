@@ -25,14 +25,11 @@ project(shays-world LANGUAGES CXX)
 add_executable(shays-world
     src/Main.cpp
     src/AABBLinkedList.cpp
-    src/EasySound.cpp
     src/PlainNode.cpp
-    src/SoundTime.cpp
     src/CameraMap.cpp
     src/AABB.cpp
     src/AABBNode.cpp
     src/PlainLinkedList.cpp
-    src/Sound.cpp
     src/Camera.cpp
     src/Collision.cpp
     src/TexturedPolygons.cpp

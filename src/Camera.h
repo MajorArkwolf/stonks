@@ -12,7 +12,6 @@
 
 #include "CameraMap.h"
 #include "Collision.h"
-#include "EasySound.h"
 #include "PlainLinkedList.h"
 
 //--------------------------------------------------------------------------------------
@@ -20,9 +19,7 @@
 class Camera {
   public:
     Camera();
-    virtual ~Camera() {
-        es->Unload(stepSound);
-    }
+    virtual ~Camera() {}
 
     //----------------------------------------------------------------------------------
 
@@ -136,17 +133,17 @@ class Camera {
 
   private:
     // steep incline increments
-    GLdouble m_incrementX = 0.0;
-    GLdouble m_incrementZ = 0.0;
-    int m_No_Plains = 0;
-    int m_plainNo = 0;
+    GLdouble m_incrementX  = 0.0;
+    GLdouble m_incrementZ  = 0.0;
+    int m_No_Plains        = 0;
+    int m_plainNo          = 0;
     GLdouble m_plainHeight = 0.0;
 
     // rotation variables
     GLdouble m_rotateAngleLR = 0.0;
-    GLdouble m_deltaAngleLR = 0.0;
+    GLdouble m_deltaAngleLR  = 0.0;
     GLdouble m_rotateAngleUD = 0.0;
-    GLdouble m_deltaAngleUD = 0.0;
+    GLdouble m_deltaAngleUD  = 0.0;
 
     // movement variables
     GLdouble m_x = 0.0, m_y = 0.0, m_z = 0.0, m_zLast = 0.0, m_xLast = 0.0;
@@ -155,11 +152,11 @@ class Camera {
     GLdouble m_deltaMoveLR = 0.0;
     GLdouble m_deltaMoveFB = 0.0;
     GLdouble m_deltaMoveUD = 0.0;
-    GLdouble m_direction = 0.0;
+    GLdouble m_direction   = 0.0;
 
     // movement speed (step size)
     GLdouble m_rotateSpeed = 0.0;
-    GLdouble m_moveSpeed = 0.0;
+    GLdouble m_moveSpeed   = 0.0;
 
     // is it ok to move
     bool MoveFBOK();
@@ -195,9 +192,6 @@ class Camera {
     void ClimbSteps(GLdouble stepStart, GLdouble stepFinish,
                     GLdouble stepHeight, GLdouble stepWidth, int noSteps);
     void CheckSteps();
-
-    CEasySound *es = nullptr;
-    CSound *stepSound = nullptr;
 
     //----------------------------------------------------------------------------------
 
