@@ -1698,18 +1698,17 @@ void DisplayChancPosts() {
 
 void DrawChancPosts() {
     // Front of Window Post Chanc
-    tp.CreateDisplayList(YZ, 11.0f, 1024.0f, 128.0f, 33848.0f, 10237.0f,
-                         9505.0f, 0.586f, 0.7344f);
+    tp.CreateDisplayList(YZ, 11, 1024.0f, 128.0f, 33848.0f, 10237.0f, 9505.0f,
+                         0.586f, 0.7344f);
     // Right side of Window Post Chanc
-    tp.CreateDisplayList(XY, 12.0f, 64.0f, 1024.0f, 33848.0f, 10237.0f, 9599.0f,
+    tp.CreateDisplayList(XY, 12, 64.0f, 1024.0f, 33848.0f, 10237.0f, 9599.0f,
                          0.7344f, 0.585f);
     // Left side of Window Post Chanc
-    tp.CreateDisplayList(XY, 13.0f, 64.0f, 1024.0f, 33848.0f, 10237.0f, 9505.0f,
+    tp.CreateDisplayList(XY, 13, 64.0f, 1024.0f, 33848.0f, 10237.0f, 9505.0f,
                          0.7344f, 0.585f);
 
     // Window ledges of Chanc
-    tp.CreateDisplayList(YZ, 14.0f, 32.0f, 1024.0f, 33808.0f, 10192.0f, 9552.0f,
-                         1.0f,
+    tp.CreateDisplayList(YZ, 14, 32.0f, 1024.0f, 33808.0f, 10192.0f, 9552.0f, 1.0f,
                          0.9375f); // front ledge
     glNewList(15, GL_COMPILE);
     glBegin(GL_QUADS);
@@ -1723,11 +1722,9 @@ void DrawChancPosts() {
     glVertex3f(33928.0f, 10268.0f, 9552.0f);
     glEnd();
     glEndList();
-    tp.CreateDisplayList(YZ, 235.0f, 32.0f, 64.0f, 33808.0f, 10192.0f, 22032.0f,
-                         1.0f,
+    tp.CreateDisplayList(YZ, 235, 32.0f, 64.0f, 33808.0f, 10192.0f, 22032.0f, 1.0f,
                          1.0f); // front ledge
-    tp.CreateDisplayList(XY, 236.0f, 64.0f, 64.0f, 33808.0f, 10192.0f, 22096.0f,
-                         1.35f,
+    tp.CreateDisplayList(XY, 236, 64.0f, 64.0f, 33808.0f, 10192.0f, 22096.0f, 1.35f,
                          0.5f); // front ledge
 
     // Window Edges
@@ -1785,14 +1782,13 @@ void DisplayDoorPosts() {
 
 void DrawDoorPosts() {
     // DOORPOSTS_CHANC
-    tp.CreateDisplayList(YZ_FLIP, 25.0f, 1024.0f, 128.0f, 33848.0f, 10000.0f,
+    tp.CreateDisplayList(YZ_FLIP, 25, 1024.0f, 128.0f, 33848.0f, 10000.0f,
                          10465.0f, 0.83f, 0.7344f); // post
-    tp.CreateDisplayList(YZ, 26.0f, 1024.0f, 128.0f, 33848.0f, 10000.0f,
-                         11425.0f, 0.83f, 0.7344f);
-    tp.CreateDisplayList(XY, 27.0f, 64.0f, 1024.0f, 33848.0f, 10000.0f,
-                         10559.0f, 1.0f,
+    tp.CreateDisplayList(YZ, 26, 1024.0f, 128.0f, 33848.0f, 10000.0f, 11425.0f,
+                         0.83f, 0.7344f);
+    tp.CreateDisplayList(XY, 27, 64.0f, 1024.0f, 33848.0f, 10000.0f, 10559.0f, 1.0f,
                          1.0f); // sidepost
-    tp.CreateDisplayList(YZ_FLIP, 199.0f, 1024.0f, 128.0f, 33848.0f, 10000.0f,
+    tp.CreateDisplayList(YZ_FLIP, 199, 1024.0f, 128.0f, 33848.0f, 10000.0f,
                          10465.0f, 0.83f, 0.7344f); // post
 }
 
@@ -1971,100 +1967,80 @@ void DisplayAboveWindowBlock() {
 }
 
 void DrawAboveWindowBlock() {
-    tp.CreateDisplayList(YZ, 20.0f, 128.0f, 256.0f, 33808.0f, 10832.0f, 9552.0f,
-                         1.0f,
+    tp.CreateDisplayList(YZ, 20, 128.0f, 256.0f, 33808.0f, 10832.0f, 9552.0f, 1.0f,
                          4.0f); // chanc above bottom window
-    tp.CreateDisplayList(YZ, 223.0f, 128.0f, 256.0f, 33808.0f, 10832.0f,
-                         11600.0f, 1.0f,
+    tp.CreateDisplayList(YZ, 223, 128.0f, 256.0f, 33808.0f, 10832.0f, 11600.0f, 1.0f,
                          30.0f); // chanc above bottom window
-    tp.CreateDisplayList(YZ, 229.0f, 128.0f, 256.0f, 33808.0f, 10832.0f,
-                         20304.0f, 1.0f,
+    tp.CreateDisplayList(YZ, 229, 128.0f, 256.0f, 33808.0f, 10832.0f, 20304.0f, 1.0f,
                          3.0f); // chanc above bottom window
-    tp.CreateDisplayList(YZ, 230.0f, 128.0f, 1024.0f, 33808.0f, 10832.0f,
-                         19280.0f, 1.0f,
+    tp.CreateDisplayList(YZ, 230, 128.0f, 1024.0f, 33808.0f, 10832.0f, 19280.0f,
+                         1.0f,
                          1.0f); // chanc above bottom window
-    tp.CreateDisplayList(YZ, 224.0f, 128.0f, 1024.0f, 33808.0f, 10832.0f,
-                         10576.0f, 1.0f,
+    tp.CreateDisplayList(YZ, 224, 128.0f, 1024.0f, 33808.0f, 10832.0f, 10576.0f,
+                         1.0f,
                          1.0f); // chanc above bottom window
-    tp.CreateDisplayList(YZ, 225.0f, 128.0f, 1024.0f, 33808.0f, 10832.0f,
-                         21072.0f, 1.0f,
+    tp.CreateDisplayList(YZ, 225, 128.0f, 1024.0f, 33808.0f, 10832.0f, 21072.0f,
+                         1.0f,
                          1.0f); // chanc above bottom window
-    tp.CreateDisplayList(XY, 424.0f, 128.0f, 128.0f, 33808.0f, 10832.0f,
-                         22096.0f, 0.68f,
+    tp.CreateDisplayList(XY, 424, 128.0f, 128.0f, 33808.0f, 10832.0f, 22096.0f,
+                         0.68f,
                          1.0f); // chanc end edge downstairs
-    tp.CreateDisplayList(XY, 425.0f, 128.0f, 256.0f, 33808.0f, 11856.0f,
-                         22096.0f, 0.68f,
+    tp.CreateDisplayList(XY, 425, 128.0f, 256.0f, 33808.0f, 11856.0f, 22096.0f,
+                         0.68f,
                          0.5625f); // 3 bricks high to edge
 
-    tp.CreateDisplayList(YZ, 21.0f, 256.0f, 256.0f, 33808.0f, 11856.0f, 9552.0f,
-                         0.56f,
+    tp.CreateDisplayList(YZ, 21, 256.0f, 256.0f, 33808.0f, 11856.0f, 9552.0f, 0.56f,
                          49.0f); // chanc above top window chanc
-    tp.CreateDisplayList(XZ, 22.0f, 128.0f, 256.0f, 33808.0f, 10832.0f, 9552.0f,
-                         0.70f,
+    tp.CreateDisplayList(XZ, 22, 128.0f, 256.0f, 33808.0f, 10832.0f, 9552.0f, 0.70f,
                          49.0f); // chanc above under bottom window chanc
 
-    tp.CreateDisplayList(YZ, 23.0f, 256.0f, 256.0f, 33808.0f, 10832.0f,
-                         25344.0f, 0.75f,
+    tp.CreateDisplayList(YZ, 23, 256.0f, 256.0f, 33808.0f, 10832.0f, 25344.0f, 0.75f,
                          5.0f); // phys sci above bottom window
-    tp.CreateDisplayList(YZ, 231.0f, 256.0f, 256.0f, 33808.0f, 11856.0f,
-                         25344.0f, 0.75f,
+    tp.CreateDisplayList(YZ, 231, 256.0f, 256.0f, 33808.0f, 11856.0f, 25344.0f,
+                         0.75f,
                          61.652f); // phys sci above bottom window
 
-    tp.CreateDisplayList(YZ, 226.0f, 256.0f, 1024.0f, 33808.0f, 10832.0f,
-                         26624.0f, 0.75f, 1.0f); // phys sci text
-    tp.CreateDisplayList(YZ, 227.0f, 256.0f, 256.0f, 33808.0f, 10832.0f,
-                         27648.0f, 0.75f,
+    tp.CreateDisplayList(YZ, 226, 256.0f, 1024.0f, 33808.0f, 10832.0f, 26624.0f,
+                         0.75f, 1.0f); // phys sci text
+    tp.CreateDisplayList(YZ, 227, 256.0f, 256.0f, 33808.0f, 10832.0f, 27648.0f,
+                         0.75f,
                          34.0f); // phys sci above bottom window
-    tp.CreateDisplayList(YZ, 228.0f, 256.0f, 256.0f, 33808.0f, 10832.0f,
-                         37376.0f, 0.75f,
+    tp.CreateDisplayList(YZ, 228, 256.0f, 256.0f, 33808.0f, 10832.0f, 37376.0f,
+                         0.75f,
                          14.652f); // phys sci above bottom window
-    tp.CreateDisplayList(XZ, 24.0f, 128.0f, 256.0f, 33808.0f, 10832.0f,
-                         25344.0f, 0.78f,
+    tp.CreateDisplayList(XZ, 24, 128.0f, 256.0f, 33808.0f, 10832.0f, 25344.0f, 0.78f,
                          61.652f); // phys sci above under bottom window
 
-    tp.CreateDisplayList(YZ, 95.0f, 256.0f, 256.0f, 33835.0f, 11856.0f,
-                         41127.0f, 1.0f,
+    tp.CreateDisplayList(YZ, 95, 256.0f, 256.0f, 33835.0f, 11856.0f, 41127.0f, 1.0f,
                          7.6f); // phys sci above top window
-    tp.CreateDisplayList(XZ, 96.0f, 128.0f, 256.0f, 33835.0f, 11856.0f,
-                         41127.0f, 0.78f,
+    tp.CreateDisplayList(XZ, 96, 128.0f, 256.0f, 33835.0f, 11856.0f, 41127.0f, 0.78f,
                          7.6f); // phys sci above under bottom
 
-    tp.CreateDisplayList(YZ, 43.0f, 256.0f, 256.0f, 34256.0f, 10832.0f,
-                         26752.0f, 0.75f,
+    tp.CreateDisplayList(YZ, 43, 256.0f, 256.0f, 34256.0f, 10832.0f, 26752.0f, 0.75f,
                          3.25f); // phys sci above 1st door
-    tp.CreateDisplayList(XZ, 44.0f, 128.0f, 256.0f, 34256.0f, 10832.0f,
-                         26752.0f, 0.70f,
+    tp.CreateDisplayList(XZ, 44, 128.0f, 256.0f, 34256.0f, 10832.0f, 26752.0f, 0.70f,
                          2.25f); // phys sci above under 1st door
-    tp.CreateDisplayList(YZ, 45.0f, 256.0f, 256.0f, 34256.0f, 10832.0f,
-                         36319.0f, 0.75f,
+    tp.CreateDisplayList(YZ, 45, 256.0f, 256.0f, 34256.0f, 10832.0f, 36319.0f, 0.75f,
                          6.125f); // phys sci above 2nd door
-    tp.CreateDisplayList(XZ, 46.0f, 128.0f, 256.0f, 34256.0f, 10832.0f,
-                         36319.0f, 0.70f,
+    tp.CreateDisplayList(XZ, 46, 128.0f, 256.0f, 34256.0f, 10832.0f, 36319.0f, 0.70f,
                          6.125f); // phys sci above under 2nd door
 
-    tp.CreateDisplayList(YZ, 53.0f, 256.0f, 256.0f, 31740.0f, 11142.0f, 8100.0f,
-                         0.75f,
+    tp.CreateDisplayList(YZ, 53, 256.0f, 256.0f, 31740.0f, 11142.0f, 8100.0f, 0.75f,
                          128.955f); // above posts chanc and canteen sides
-    tp.CreateDisplayList(XZ, 54.0f, 128.0f, 256.0f, 31740.0f, 11142.0f, 8100.0f,
-                         1.0f,
+    tp.CreateDisplayList(XZ, 54, 128.0f, 256.0f, 31740.0f, 11142.0f, 8100.0f, 1.0f,
                          128.955f); // above under main posts
-    tp.CreateDisplayList(XZ, 67.0f, 128.0f, 256.0f, 35920.0f, 10832.0f,
-                         41127.0f, 1.0f,
+    tp.CreateDisplayList(XZ, 67, 128.0f, 256.0f, 35920.0f, 10832.0f, 41127.0f, 1.0f,
                          7.6f); // above under steps at end of phys sci
-    tp.CreateDisplayList(YZ, 68.0f, 256.0f, 256.0f, 35920.0f, 10832.0f,
-                         41127.0f, 0.75f,
+    tp.CreateDisplayList(YZ, 68, 256.0f, 256.0f, 35920.0f, 10832.0f, 41127.0f, 0.75f,
                          7.6f); // above steps at end of phys sci
-    tp.CreateDisplayList(YZ, 39.0f, 128.0f, 256.0f, 35990.0f, 11002.0f,
-                         41127.0f, 0.75f,
+    tp.CreateDisplayList(YZ, 39, 128.0f, 256.0f, 35990.0f, 11002.0f, 41127.0f, 0.75f,
                          7.6f); // above steps at end of phys sci (darker back bit)
-    tp.CreateDisplayList(XZ, 69.0f, 256.0f, 128.0f, 4580.0f, 11142.0f, 40985.0f,
+    tp.CreateDisplayList(XZ, 69, 256.0f, 128.0f, 4580.0f, 11142.0f, 40985.0f,
                          106.094f,
                          1.0f); // ABOVE_UNDER_POSTS_2 main posts by library
-    tp.CreateDisplayList(YZ, 71.0f, 256.0f, 256.0f, 35748.0f, 11142.0f,
-                         22096.0f, 0.75f,
+    tp.CreateDisplayList(YZ, 71, 256.0f, 256.0f, 35748.0f, 11142.0f, 22096.0f, 0.75f,
                          12.69f); // above post between chanc and phys sci
-    tp.CreateDisplayList(XZ, 72.0f, 128.0f, 256.0f, 35748.0f, 11142.0f,
-                         22096.0f, 1.0f,
+    tp.CreateDisplayList(XZ, 72, 128.0f, 256.0f, 35748.0f, 11142.0f, 22096.0f, 1.0f,
                          12.69f); // above under post between chanc and phys sci
 
     glNewList(232, GL_COMPILE);
@@ -2107,65 +2083,55 @@ void DrawAboveWindowBlock() {
     glEndList();
 
     // ABOVE_WINDOW_EDGE_3B
-    tp.CreateDisplayList(XY, 49.0f, 128.0f, 256.0f, 33808.0f, 10832.0f,
-                         25344.0f, 1.0f,
+    tp.CreateDisplayList(XY, 49, 128.0f, 256.0f, 33808.0f, 10832.0f, 25344.0f, 1.0f,
                          0.75f); // 3 bricks high
 
     // ABOVE_WINDOW_BLOCK_XY_3
-    tp.CreateDisplayList(XY, 50.0f, 256.0f, 256.0f, 33888.0f, 10832.0f,
-                         26752.0f, 1.5f, 1.0f);
-    tp.CreateDisplayList(XY, 64.0f, 256.0f, 256.0f, 33808.0f, 10832.0f,
-                         41127.0f, 8.5f,
+    tp.CreateDisplayList(XY, 50, 256.0f, 256.0f, 33888.0f, 10832.0f, 26752.0f,
+                         1.5f, 1.0f);
+    tp.CreateDisplayList(XY, 64, 256.0f, 256.0f, 33808.0f, 10832.0f, 41127.0f, 8.5f,
                          0.75f); // above end phys sci
-    tp.CreateDisplayList(XY, 65.0f, 256.0f, 256.0f, 6600.0f, 11856.0f, 43056.0f,
-                         68.5f,
+    tp.CreateDisplayList(XY, 65, 256.0f, 256.0f, 6600.0f, 11856.0f, 43056.0f, 68.5f,
                          0.75f); // top of library
-    tp.CreateDisplayList(XY, 208.0f, 256.0f, 256.0f, 24264.0f, 11856.0f,
-                         43056.0f, 38.5f,
+    tp.CreateDisplayList(XY, 208, 256.0f, 256.0f, 24264.0f, 11856.0f, 43056.0f,
+                         38.5f,
                          0.75f); // top of library
-    tp.CreateDisplayList(XY, 66.0f, 256.0f, 256.0f, 4548.0f, 11142.0f, 40985.0f,
+    tp.CreateDisplayList(XY, 66, 256.0f, 256.0f, 4548.0f, 11142.0f, 40985.0f,
                          106.72f,
                          0.75f); // above library main posts
 
     // ABOVE_LIB
-    tp.CreateDisplayList(XY, 239.0f, 1024.0f, 256.0f, 31504.96f, 10768.0f,
+    tp.CreateDisplayList(XY, 239, 1024.0f, 256.0f, 31504.96f, 10768.0f,
                          43056.0f, 1.0f, 1.0f); // (above KBLT)
-    tp.CreateDisplayList(XY, 238.0f, 256.0f, 256.0f, 32528.96f, 10768.0f,
-                         43056.0f, 13.75f, 1.0f); // (above KBLT)
-    tp.CreateDisplayList(XY, 55.0f, 256.0f, 256.0f, 24264.0f, 10768.0f,
-                         43056.0f, 28.285f, 1.0f); // (above KBLT)
-    tp.CreateDisplayList(XY, 416.0f, 1024.0f, 256.0f, 9416.0f, 10768.0f,
-                         43056.0f, 1.0f,
+    tp.CreateDisplayList(XY, 238, 256.0f, 256.0f, 32528.96f, 10768.0f, 43056.0f,
+                         13.75f, 1.0f); // (above KBLT)
+    tp.CreateDisplayList(XY, 55, 256.0f, 256.0f, 24264.0f, 10768.0f, 43056.0f,
+                         28.285f, 1.0f); // (above KBLT)
+    tp.CreateDisplayList(XY, 416, 1024.0f, 256.0f, 9416.0f, 10768.0f, 43056.0f, 1.0f,
                          1.0f); // (above library text)
-    tp.CreateDisplayList(XY, 415.0f, 256.0f, 256.0f, 10440.0f, 10768.0f,
-                         43056.0f, 49.0f,
+    tp.CreateDisplayList(XY, 415, 256.0f, 256.0f, 10440.0f, 10768.0f, 43056.0f,
+                         49.0f,
                          1.0f); // (above library)
-    tp.CreateDisplayList(XY, 417.0f, 256.0f, 256.0f, 23240.0f, 10768.0f,
-                         43056.0f, 3.5f,
+    tp.CreateDisplayList(XY, 417, 256.0f, 256.0f, 23240.0f, 10768.0f, 43056.0f, 3.5f,
                          1.0f); // (above library)
-    tp.CreateDisplayList(XY, 418.0f, 256.0f, 256.0f, 22984.0f, 10768.0f,
-                         43056.0f, 1.0f,
+    tp.CreateDisplayList(XY, 418, 256.0f, 256.0f, 22984.0f, 10768.0f, 43056.0f, 1.0f,
                          1.0f); // (above library ticket text)
-    tp.CreateDisplayList(XY, 56.0f, 256.0f, 256.0f, 6600.0f, 10768.0f, 43056.0f,
-                         11.0f,
+    tp.CreateDisplayList(XY, 56, 256.0f, 256.0f, 6600.0f, 10768.0f, 43056.0f, 11.0f,
                          1.0f); // (above library)
-    tp.CreateDisplayList(XZ, 70.0f, 256.0f, 128.0f, 8189.0f, 11856.0f, 43056.0f,
-                         62.3f,
+    tp.CreateDisplayList(XZ, 70, 256.0f, 128.0f, 8189.0f, 11856.0f, 43056.0f, 62.3f,
                          0.75f); // above under upstairs
-    tp.CreateDisplayList(YZ, 209.0f, 256.0f, 64.0f, 6600.0f, 11856.0f, 43056.0f,
+    tp.CreateDisplayList(YZ, 209, 256.0f, 64.0f, 6600.0f, 11856.0f, 43056.0f,
                          1.2f, 1.0f);
-    tp.CreateDisplayList(YZ, 210.0f, 256.0f, 64.0f, 6600.0f, 10768.0f, 43056.0f,
+    tp.CreateDisplayList(YZ, 210, 256.0f, 64.0f, 6600.0f, 10768.0f, 43056.0f,
                          1.0f, 1.0f);
-    tp.CreateDisplayList(XZ, 211.0f, 256.0f, 128.0f, 8189.0f, 10768.0f,
-                         43056.0f, 62.3f,
+    tp.CreateDisplayList(XZ, 211, 256.0f, 128.0f, 8189.0f, 10768.0f, 43056.0f, 62.3f,
                          0.75f); // above under downstairs
-    tp.CreateDisplayList(XZ, 212.0f, 256.0f, 128.0f, 32720.0f, 10768.0f,
-                         43056.0f, 3.5f,
+    tp.CreateDisplayList(XZ, 212, 256.0f, 128.0f, 32720.0f, 10768.0f, 43056.0f, 3.5f,
                          0.75f); // above under gcl1
 
     // ABOVE CANTEEN
-    tp.CreateDisplayList(YZ, 213.0f, 256.0f, 256.0f, 2608.0f, 10896.0f,
-                         10000.0f, 0.78f, 139.25f);
+    tp.CreateDisplayList(YZ, 213, 256.0f, 256.0f, 2608.0f, 10896.0f, 10000.0f,
+                         0.78f, 139.25f);
 }
 
 //--------------------------------------------------------------------------------------
@@ -2217,17 +2183,13 @@ void DisplayPurplePosts() {
 }
 
 void DrawPurplePosts() {
-    tp.CreateDisplayList(YZ, 29.0f, 64.0f, 128.0f, 33802.0f, 10000.0f, 31407.0f,
-                         13.0f,
+    tp.CreateDisplayList(YZ, 29, 64.0f, 128.0f, 33802.0f, 10000.0f, 31407.0f, 13.0f,
                          0.875f); // front
-    tp.CreateDisplayList(YZ, 30.0f, 64.0f, 128.0f, 33802.0f, 10000.0f, 32384.0f,
-                         13.0f,
+    tp.CreateDisplayList(YZ, 30, 64.0f, 128.0f, 33802.0f, 10000.0f, 32384.0f, 13.0f,
                          0.61f); // front
-    tp.CreateDisplayList(XY, 31.0f, 128.0f, 64.0f, 33802.0f, 10000.0f, 31519.0f,
-                         0.75f,
+    tp.CreateDisplayList(XY, 31, 128.0f, 64.0f, 33802.0f, 10000.0f, 31519.0f, 0.75f,
                          13.0f); // side
-    tp.CreateDisplayList(XY, 32.0f, 128.0f, 64.0f, 33802.0f, 10000.0f, 36319.0f,
-                         0.58f,
+    tp.CreateDisplayList(XY, 32, 128.0f, 64.0f, 33802.0f, 10000.0f, 36319.0f, 0.58f,
                          13.0f); // side
 }
 
@@ -2272,13 +2234,11 @@ void DisplayRedPosts() {
 }
 
 void DrawRedPosts() {
-    tp.CreateDisplayList(YZ, 33.0f, 64.0f, 128.0f, 33802.0f, 10000.0f, 39200.0f,
-                         13.0f,
+    tp.CreateDisplayList(YZ, 33, 64.0f, 128.0f, 33802.0f, 10000.0f, 39200.0f, 13.0f,
                          0.125f); // front
-    tp.CreateDisplayList(YZ, 34.0f, 64.0f, 128.0f, 33802.0f, 10000.0f, 40055.0f,
-                         13.0f,
+    tp.CreateDisplayList(YZ, 34, 64.0f, 128.0f, 33802.0f, 10000.0f, 40055.0f, 13.0f,
                          0.75f); // front
-    tp.CreateDisplayList(XY, 35.0f, 64.0f, 64.0f, 33802.0f, 10000.0f, 38960.0f, 1.0f,
+    tp.CreateDisplayList(XY, 35, 64.0f, 64.0f, 33802.0f, 10000.0f, 38960.0f, 1.0f,
                          13.0f); // side
 }
 
@@ -2378,13 +2338,13 @@ void DisplayMainPosts() {
 }
 
 void DrawMainPosts() {
-    tp.CreateDisplayList(XY, 18.0f, 128.0f, 256.0f, 31740.0f, 9995.0f, 10105.0f,
+    tp.CreateDisplayList(XY, 18, 128.0f, 256.0f, 31740.0f, 9995.0f, 10105.0f,
                          1.0f, 4.48f);
-    tp.CreateDisplayList(YZ, 19.0f, 256.0f, 128.0f, 31740.0f, 9995.0f, 10105.0f,
+    tp.CreateDisplayList(YZ, 19, 256.0f, 128.0f, 31740.0f, 9995.0f, 10105.0f,
                          4.48f, 1.0f);
-    tp.CreateDisplayList(XY, 51.0f, 128.0f, 256.0f, 31740.0f, 9555.0f, 8100.0f, 1.0f,
+    tp.CreateDisplayList(XY, 51, 128.0f, 256.0f, 31740.0f, 9555.0f, 8100.0f, 1.0f,
                          6.2f); // 1st by steps
-    tp.CreateDisplayList(YZ, 52.0f, 256.0f, 128.0f, 31740.0f, 9555.0f, 8100.0f, 6.2f,
+    tp.CreateDisplayList(YZ, 52, 256.0f, 128.0f, 31740.0f, 9555.0f, 8100.0f, 6.2f,
                          1.0f); // 1st by steps
 }
 
@@ -2488,11 +2448,11 @@ void DisplayPhysSciPosts() {
 
 void DrawPhysSciPosts() {
     // WINDOWPOST_PS
-    tp.CreateDisplayList(YZ, 36.0f, 512.0f, 128.0f, 33848.0f, 11347.0f,
-                         26625.0f, 1.0f, 0.6016f);
-    tp.CreateDisplayList(XY, 37.0f, 64.0f, 512.0f, 33848.0f, 11347.0f, 26625.0f,
+    tp.CreateDisplayList(YZ, 36, 512.0f, 128.0f, 33848.0f, 11347.0f, 26625.0f,
+                         1.0f, 0.6016f);
+    tp.CreateDisplayList(XY, 37, 64.0f, 512.0f, 33848.0f, 11347.0f, 26625.0f,
                          1.0f, 1.0f);
-    tp.CreateDisplayList(XY, 38.0f, 64.0f, 512.0f, 33848.0f, 11347.0f, 26625.0f,
+    tp.CreateDisplayList(XY, 38, 64.0f, 512.0f, 33848.0f, 11347.0f, 26625.0f,
                          1.0f, 1.0f);
 
     // WINDOWLEDGE_PS_FRONT & TOP (shorter phys sci ds)
@@ -2523,12 +2483,12 @@ void DrawPhysSciPosts() {
     glVertex3f(33928.0f, 10332.0f, 38239.0f);
     glEnd();
     glEndList();
-    tp.CreateDisplayList(YZ, 42.0f, 32.0f, 1024.0f, 33808.0f, 10256.0f,
-                         38239.0f, 1.0f, 0.315f);
+    tp.CreateDisplayList(YZ, 42, 32.0f, 1024.0f, 33808.0f, 10256.0f, 38239.0f,
+                         1.0f, 0.315f);
 
     // WINDOWLEDGE_PS_FRONT & TOP
-    tp.CreateDisplayList(YZ, 16.0f, 32.0f, 1024.0f, 33808.0f, 11344.0f,
-                         26663.0f, 1.0f, 0.9375f);
+    tp.CreateDisplayList(YZ, 16, 32.0f, 1024.0f, 33808.0f, 11344.0f, 26663.0f,
+                         1.0f, 0.9375f);
     glNewList(17, GL_COMPILE);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 0.0f);
@@ -2553,11 +2513,9 @@ void DisplayDoorPaving() {
 }
 
 void DrawDoorPaving() {
-    tp.CreateDisplayList(XZ, 47.0f, 128.0f, 256.0f, 33808.0f, 10000.0f,
-                         31508.0f, 0.75f,
+    tp.CreateDisplayList(XZ, 47, 128.0f, 256.0f, 33808.0f, 10000.0f, 31508.0f, 0.75f,
                          7.5f); // phy sci 1st doorway
-    tp.CreateDisplayList(XZ, 48.0f, 128.0f, 256.0f, 33808.0f, 10000.0f,
-                         35324.0f, 0.75f,
+    tp.CreateDisplayList(XZ, 48, 128.0f, 256.0f, 33808.0f, 10000.0f, 35324.0f, 0.75f,
                          3.5f); // phy sci 2nd doorway
 }
 
@@ -2653,18 +2611,18 @@ void DisplayLibraryPosts() {
 
 void DrawLibraryPosts() {
     // WINDOWPOST_LIB_FRONT
-    tp.CreateDisplayList(XY, 57.0f, 128.0f, 512.0f, 24035.0f, 10304.0f,
-                         43096.0f, 0.6016f, 1.0f);
-    tp.CreateDisplayList(YZ, 58.0f, 512.0f, 64.0f, 24035.0f, 10304.0f, 43096.0f,
+    tp.CreateDisplayList(XY, 57, 128.0f, 512.0f, 24035.0f, 10304.0f, 43096.0f,
+                         0.6016f, 1.0f);
+    tp.CreateDisplayList(YZ, 58, 512.0f, 64.0f, 24035.0f, 10304.0f, 43096.0f,
                          1.0f, 1.0f);
-    tp.CreateDisplayList(YZ, 59.0f, 512.0f, 64.0f, 24035.0f, 10304.0f, 43096.0f,
+    tp.CreateDisplayList(YZ, 59, 512.0f, 64.0f, 24035.0f, 10304.0f, 43096.0f,
                          1.0f, 1.0f);
 
     // WINDOWLEDGE_LIB
-    tp.CreateDisplayList(XY, 61.0f, 1024.0f, 32.0f, 21896.0f, 10320.0f,
-                         43056.0f, 0.5313f, 1.0f);
-    tp.CreateDisplayList(XY, 60.0f, 1024.0f, 32.0f, 22440.0f, 10320.0f,
-                         43056.0f, 0.5313f, 1.0f);
+    tp.CreateDisplayList(XY, 61, 1024.0f, 32.0f, 21896.0f, 10320.0f, 43056.0f,
+                         0.5313f, 1.0f);
+    tp.CreateDisplayList(XY, 60, 1024.0f, 32.0f, 22440.0f, 10320.0f, 43056.0f,
+                         0.5313f, 1.0f);
     glNewList(62, GL_COMPILE);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 0.0f);
@@ -2691,23 +2649,23 @@ void DrawLibraryPosts() {
     glEndList();
 
     // Ticket Counter
-    tp.CreateDisplayList(XZ, 442.0f, 128.0f, 256.0f, 22984.0f, 10305.0f,
-                         42992.0f, 9.0f, 0.625f);
-    tp.CreateDisplayList(YZ, 443.0f, 64.0f, 64.0f, 22984.0f, 10256.0f, 43056.0f,
+    tp.CreateDisplayList(XZ, 442, 128.0f, 256.0f, 22984.0f, 10305.0f, 42992.0f,
+                         9.0f, 0.625f);
+    tp.CreateDisplayList(YZ, 443, 64.0f, 64.0f, 22984.0f, 10256.0f, 43056.0f,
                          0.766f, 1.0f);
-    tp.CreateDisplayList(XY, 444.0f, 128.0f, 256.0f, 22984.0f, 10256.0f,
-                         43056.0f, 9.0f, 0.1914f);
+    tp.CreateDisplayList(XY, 444, 128.0f, 256.0f, 22984.0f, 10256.0f, 43056.0f,
+                         9.0f, 0.1914f);
 
-    tp.CreateDisplayList(XY, 445.0f, 128.0f, 32.0f, 22984.0f, 10286.0f,
-                         42992.0f, 9.0f, 0.59f);
+    tp.CreateDisplayList(XY, 445, 128.0f, 32.0f, 22984.0f, 10286.0f, 42992.0f,
+                         9.0f, 0.59f);
 
     tp.CreateAngledPolygon(446, 128.0f, 256.0f, 22984.0f, 24136.0f, 24136.0f,
                            22984.0f, 10286.0f, 10286.0f, 10276.0f, 10276.0f,
-                           42992.0f, 42992.0f, 43088.0f, 43088.0f, 5.0f, 1.0f);
+                           42992.0f, 42992.0f, 43088.0f, 43088.0f, 5, 1);
 
     tp.CreateAngledPolygon(447, 64.0f, 64.0f, 22984.0f, 22984.0f, 22984.0f,
                            22984.0f, 10286.0f, 10276.0f, 10305.0f, 10305.0f,
-                           42992.0f, 43056.0f, 43056.0f, 42992.0f, 6.0f, 1.0f);
+                           42992.0f, 43056.0f, 43056.0f, 42992.0f, 6, 1);
 }
 
 //--------------------------------------------------------------------------------------
@@ -2780,41 +2738,32 @@ void DisplayPavement() {
 
 void DrawPavement() {
     // PAVEMENT
-    tp.CreateDisplayList(XZ, 87.0f, 128.0f, 64.0f, 2608.0f, 10000.0f, 10000.0f,
+    tp.CreateDisplayList(XZ, 87, 128.0f, 64.0f, 2608.0f, 10000.0f, 10000.0f,
                          17.0f, 482.5f);
-    tp.CreateDisplayList(XZ, 73.0f, 128.0f, 64.0f, 31632.0f, 10000.0f, 10000.0f,
+    tp.CreateDisplayList(XZ, 73, 128.0f, 64.0f, 31632.0f, 10000.0f, 10000.0f,
                          17.0f, 482.5f);
-    tp.CreateDisplayList(XZ, 88.0f, 128.0f, 64.0f, 33744.0f, 10000.0f, 41104.0f,
-                         4.75f,
+    tp.CreateDisplayList(XZ, 88, 128.0f, 64.0f, 33744.0f, 10000.0f, 41104.0f, 4.75f,
                          30.5f); // by steps between phys sci and library
-    tp.CreateDisplayList(XZ, 428.0f, 128.0f, 64.0f, 34256.0f, 10000.0f,
-                         26704.0f, 1.0f,
+    tp.CreateDisplayList(XZ, 428, 128.0f, 64.0f, 34256.0f, 10000.0f, 26704.0f, 1.0f,
                          9.5f); // phys sci doorway (behind carpet)
     //
 
     // PAVEMENT_TOP
-    tp.CreateDisplayList(XZ, 74.0f, 64.0f, 128.0f, 4912.0f, 10000.0f, 40880.0f,
+    tp.CreateDisplayList(XZ, 74, 64.0f, 128.0f, 4912.0f, 10000.0f, 40880.0f,
                          416.5f, 17.0f);
-    tp.CreateDisplayList(XZ, 246.0f, 64.0f, 128.0f, 32656.0f, 10000.0f,
-                         42928.0f, 15.0f,
+    tp.CreateDisplayList(XZ, 246, 64.0f, 128.0f, 32656.0f, 10000.0f, 42928.0f, 15.0f,
                          2.0f); // gcl1 door way
-    tp.CreateDisplayList(XZ, 245.0f, 64.0f, 128.0f, 24080.0f, 10000.0f,
-                         42928.0f, 3.0f,
+    tp.CreateDisplayList(XZ, 245, 64.0f, 128.0f, 24080.0f, 10000.0f, 42928.0f, 3.0f,
                          1.5f); // gcl1 door way
-    tp.CreateDisplayList(XZ, 244.0f, 64.0f, 128.0f, 8189.0f, 10000.0f, 42928.0f,
-                         44.8f,
+    tp.CreateDisplayList(XZ, 244, 64.0f, 128.0f, 8189.0f, 10000.0f, 42928.0f, 44.8f,
                          1.80f); // library door way
-    tp.CreateDisplayList(XZ, 243.0f, 64.0f, 128.0f, 2576.0f, 10000.0f, 42928.0f,
-                         36.0f,
+    tp.CreateDisplayList(XZ, 243, 64.0f, 128.0f, 2576.0f, 10000.0f, 42928.0f, 36.0f,
                          21.0f); // entrance to IT block
-    tp.CreateDisplayList(XZ, 242.0f, 64.0f, 128.0f, 4848.0f, 10000.0f, 42928.0f,
-                         27.5f,
+    tp.CreateDisplayList(XZ, 242, 64.0f, 128.0f, 4848.0f, 10000.0f, 42928.0f, 27.5f,
                          21.0f); // entrance to IT block
-    tp.CreateDisplayList(XZ, 241.0f, 128.0f, 64.0f, 2096.0f, 10000.0f, 41168.0f,
-                         4.5f,
+    tp.CreateDisplayList(XZ, 241, 128.0f, 64.0f, 2096.0f, 10000.0f, 41168.0f, 4.5f,
                          29.0f); // entance to psch block
-    tp.CreateDisplayList(XZ, 240.0f, 128.0f, 64.0f, 31568.0f, 10000.0f,
-                         40816.0f, 1.0f,
+    tp.CreateDisplayList(XZ, 240, 128.0f, 64.0f, 31568.0f, 10000.0f, 40816.0f, 1.0f,
                          1.0f); // corner space filler
 
     // PAVEMENT_JOINS
@@ -2895,51 +2844,40 @@ void DrawPavement() {
     glEndList();
 
     // PAVEMENTSIDE_LEFT
-    tp.CreateDisplayList(XZ, 75.0f, 64.0f, 64.0f, 31568.0f, 10000.0f, 10096.0f,
+    tp.CreateDisplayList(XZ, 75, 64.0f, 64.0f, 31568.0f, 10000.0f, 10096.0f,
                          1.0f, 480.0f);
-    tp.CreateDisplayList(XZ, 436.0f, 64.0f, 64.0f, 31568.0f, 9086.0f, 3408.0f, 1.0f,
+    tp.CreateDisplayList(XZ, 436, 64.0f, 64.0f, 31568.0f, 9086.0f, 3408.0f, 1.0f,
                          45.0f); // Side paving at entrance
     // PAVEMENTSIDE_RIGHT
-    tp.CreateDisplayList(XZ, 76.0f, 64.0f, 64.0f, 4784.0f, 10000.0f, 10000.0f,
+    tp.CreateDisplayList(XZ, 76, 64.0f, 64.0f, 4784.0f, 10000.0f, 10000.0f,
                          1.0f, 481.5f);
     // PAVEMENTSIDE_TOP
-    tp.CreateDisplayList(XZ, 77.0f, 64.0f, 64.0f, 4848.0f, 10000.0f, 40816.0f,
+    tp.CreateDisplayList(XZ, 77, 64.0f, 64.0f, 4848.0f, 10000.0f, 40816.0f,
                          417.5f, 1.0f);
     // PAVEMENT_STEPS_CORNER
-    tp.CreateDisplayList(XZ, 78.0f, 128.0f, 64.0f, 31568.0f, 10000.0f, 10000.0f,
-                         1.0f,
+    tp.CreateDisplayList(XZ, 78, 128.0f, 64.0f, 31568.0f, 10000.0f, 10000.0f, 1.0f,
                          1.5f); // corner above chanc steps
-    tp.CreateDisplayList(XZ, 80.0f, 32.0f, 64.0f, 31568.0f, 10000.0f, 9950.0f, 70.0f,
+    tp.CreateDisplayList(XZ, 80, 32.0f, 64.0f, 31568.0f, 10000.0f, 9950.0f, 70.0f,
                          0.797f); // strip along top of chanc steps
-    tp.CreateDisplayList(XZ, 28.0f, 128.0f, 64.0f, 33744.0f, 10000.0f, 22096.0f,
-                         17.2f,
+    tp.CreateDisplayList(XZ, 28, 128.0f, 64.0f, 33744.0f, 10000.0f, 22096.0f, 17.2f,
                          52.0f); // between chanc and phy sci
-    tp.CreateDisplayList(XZ, 248.0f, 128.0f, 64.0f, 33744.0f, 10000.0f,
-                         10449.0f, 1.5f,
+    tp.CreateDisplayList(XZ, 248, 128.0f, 64.0f, 33744.0f, 10000.0f, 10449.0f, 1.5f,
                          16.0f); // doorway to chanc
-    tp.CreateDisplayList(XZ, 247.0f, 128.0f, 64.0f, 33744.0f, 10000.0f,
-                         39185.0f, 1.5f,
+    tp.CreateDisplayList(XZ, 247, 128.0f, 64.0f, 33744.0f, 10000.0f, 39185.0f, 1.5f,
                          23.0f); // doorway to red posts
-    tp.CreateDisplayList(XZ, 249.0f, 128.0f, 64.0f, 31632.0f, 9086.0f, 3408.0f,
-                         18.0f,
+    tp.CreateDisplayList(XZ, 249, 128.0f, 64.0f, 31632.0f, 9086.0f, 3408.0f, 18.0f,
                          45.0f); // entry (bottom of steps)
-    tp.CreateDisplayList(XZ, 81.0f, 128.0f, 64.0f, 33744.0f, 10000.0f, 26704.0f,
-                         2.5f,
+    tp.CreateDisplayList(XZ, 81, 128.0f, 64.0f, 33744.0f, 10000.0f, 26704.0f, 2.5f,
                          11.0f); // phys sci doorway 1
-    tp.CreateDisplayList(XZ, 82.0f, 128.0f, 64.0f, 33744.0f, 10000.0f, 27344.0f,
-                         4.5f,
+    tp.CreateDisplayList(XZ, 82, 128.0f, 64.0f, 33744.0f, 10000.0f, 27344.0f, 4.5f,
                          3.5f); // phys sci doorway 1
-    tp.CreateDisplayList(XZ, 83.0f, 128.0f, 64.0f, 33744.0f, 10000.0f, 36304.0f,
-                         5.0f,
+    tp.CreateDisplayList(XZ, 83, 128.0f, 64.0f, 33744.0f, 10000.0f, 36304.0f, 5.0f,
                          5.3f); // phys sci doorway 2
-    tp.CreateDisplayList(XZ, 84.0f, 128.0f, 64.0f, 33744.0f, 10000.0f, 36624.0f,
-                         2.5f,
+    tp.CreateDisplayList(XZ, 84, 128.0f, 64.0f, 33744.0f, 10000.0f, 36624.0f, 2.5f,
                          9.0f); // phys sci doorway 2
-    tp.CreateDisplayList(XZ, 85.0f, 128.0f, 64.0f, 33744.0f, 10000.0f, 37200.0f,
-                         5.0f,
+    tp.CreateDisplayList(XZ, 85, 128.0f, 64.0f, 33744.0f, 10000.0f, 37200.0f, 5.0f,
                          10.5f); // phys sci doorway 2
-    tp.CreateDisplayList(XZ, 86.0f, 128.0f, 64.0f, 33744.0f, 10000.0f, 28624.0f,
-                         2.5f,
+    tp.CreateDisplayList(XZ, 86, 128.0f, 64.0f, 33744.0f, 10000.0f, 28624.0f, 2.5f,
                          13.5f); // phys sci toilet doorways
 }
 
@@ -3094,336 +3032,260 @@ void DisplayBricks() {
 void DrawBricks() {
     // WALL_BRICK_YZ
     // --------  (Face of Cancerllary Building) --------
-    tp.CreateDisplayList(YZ, 101.0f, 128.0f, 128.0f, 33808.0f, 9872.0f, 9552.0f,
-                         2.5f,
+    tp.CreateDisplayList(YZ, 101, 128.0f, 128.0f, 33808.0f, 9872.0f, 9552.0f, 2.5f,
                          7.5f); // panel 1 (above steps)
-    tp.CreateDisplayList(YZ, 222.0f, 128.0f, 128.0f, 33840.0f, 8976.0f, 5840.0f,
+    tp.CreateDisplayList(YZ, 222, 128.0f, 128.0f, 33840.0f, 8976.0f, 5840.0f,
                          23.625f,
                          5.0f); // panel 1 (before steps)
-    tp.CreateDisplayList(YZ, 102.0f, 128.0f, 128.0f, 33808.0f, 8976.0f, 6480.0f,
+    tp.CreateDisplayList(YZ, 102, 128.0f, 128.0f, 33808.0f, 8976.0f, 6480.0f,
                          23.625f,
                          24.0f); // panel 2 (below steps)
-    tp.CreateDisplayList(YZ, 103.0f, 128.0f, 128.0f, 33808.0f, 10000.0f,
-                         11472.0f, 1.5f,
+    tp.CreateDisplayList(YZ, 103, 128.0f, 128.0f, 33808.0f, 10000.0f, 11472.0f, 1.5f,
                          60.0f); // panel 3 (below window 1)
-    tp.CreateDisplayList(YZ, 104.0f, 128.0f, 128.0f, 33808.0f, 10000.0f,
-                         20112.0f, 1.5f,
+    tp.CreateDisplayList(YZ, 104, 128.0f, 128.0f, 33808.0f, 10000.0f, 20112.0f, 1.5f,
                          15.5f); // panel 4 (below window 2)
-    tp.CreateDisplayList(YZ_FLIP, 105.0f, 128.0f, 128.0f, 33808.0f, 10960.0f,
+    tp.CreateDisplayList(YZ_FLIP, 105, 128.0f, 128.0f, 33808.0f, 10960.0f,
                          9552.0f, 2.0f, 97.5f); // us panel 4
-    tp.CreateDisplayList(YZ, 120.0f, 128.0f, 128.0f, 33808.0f, 10960.0f,
-                         22032.0f, 2.0f,
+    tp.CreateDisplayList(YZ, 120, 128.0f, 128.0f, 33808.0f, 10960.0f, 22032.0f, 2.0f,
                          0.5f); // us panel 4 (last 1/2 brick)
 
     // -------- (Face of Physical Science/Shops Block) --------
-    tp.CreateDisplayList(YZ, 106.0f, 128.0f, 128.0f, 33808.0f, 10000.0f,
-                         25344.0f, 4.525f, 11.0f); // panel 1 (around rusty man)
-    tp.CreateDisplayList(YZ, 107.0f, 128.0f, 128.0f, 33808.0f, 11024.0f,
-                         25344.0f, 6.5f,
+    tp.CreateDisplayList(YZ, 106, 128.0f, 128.0f, 33808.0f, 10000.0f, 25344.0f,
+                         4.525f, 11.0f); // panel 1 (around rusty man)
+    tp.CreateDisplayList(YZ, 107, 128.0f, 128.0f, 33808.0f, 11024.0f, 25344.0f, 6.5f,
                          10.0f); // us panel 1
-    tp.CreateDisplayList(YZ, 108.0f, 128.0f, 128.0f, 33808.0f, 11024.0f,
-                         26624.0f, 2.5f,
+    tp.CreateDisplayList(YZ, 108, 128.0f, 128.0f, 33808.0f, 11024.0f, 26624.0f, 2.5f,
                          113.305f); // us panel 2
-    tp.CreateDisplayList(YZ, 109.0f, 128.0f, 128.0f, 33808.0f, 10000.0f,
-                         27559.0f, 3.5f,
+    tp.CreateDisplayList(YZ, 109, 128.0f, 128.0f, 33808.0f, 10000.0f, 27559.0f, 3.5f,
                          8.5f); // panel 3 (toilets window)
-    tp.CreateDisplayList(YZ, 394.0f, 128.0f, 128.0f, 33808.0f, 10384.0f,
-                         27559.0f, 1.0f,
+    tp.CreateDisplayList(YZ, 394, 128.0f, 128.0f, 33808.0f, 10384.0f, 27559.0f, 1.0f,
                          7.5f); // panel 3 (toilets window)
-    tp.CreateDisplayList(YZ, 110.0f, 128.0f, 128.0f, 33872.0f, 9936.0f,
-                         28967.0f, 6.5f,
+    tp.CreateDisplayList(YZ, 110, 128.0f, 128.0f, 33872.0f, 9936.0f, 28967.0f, 6.5f,
                          4.5f); // panel 4 (toilets door)
-    tp.CreateDisplayList(YZ, 112.0f, 128.0f, 128.0f, 33808.0f, 10000.0f,
-                         33422.0f, 2.0f,
+    tp.CreateDisplayList(YZ, 112, 128.0f, 128.0f, 33808.0f, 10000.0f, 33422.0f, 2.0f,
                          14.4f); // panel 5 (booth)
-    tp.CreateDisplayList(YZ, 113.0f, 128.0f, 128.0f, 33808.0f, 10128.0f,
-                         33422.0f, 3.0f,
+    tp.CreateDisplayList(YZ, 113, 128.0f, 128.0f, 33808.0f, 10128.0f, 33422.0f, 3.0f,
                          5.5f); // panel 5 (booth below window)
-    tp.CreateDisplayList(YZ, 188.0f, 128.0f, 128.0f, 33808.0f, 10128.0f,
-                         34254.0f, 3.0f,
+    tp.CreateDisplayList(YZ, 188, 128.0f, 128.0f, 33808.0f, 10128.0f, 34254.0f, 3.0f,
                          1.0f); // panel 5 (booth below window)
-    tp.CreateDisplayList(YZ, 115.0f, 128.0f, 128.0f, 34260.0f, 10000.0f,
-                         36319.0f, 2.5f,
+    tp.CreateDisplayList(YZ, 115, 128.0f, 128.0f, 34260.0f, 10000.0f, 36319.0f, 2.5f,
                          2.5f); // panel 6 (phys sci doorway)
-    tp.CreateDisplayList(YZ, 191.0f, 128.0f, 128.0f, 34260.0f, 10256.0f,
-                         36319.0f, 4.5f,
+    tp.CreateDisplayList(YZ, 191, 128.0f, 128.0f, 34260.0f, 10256.0f, 36319.0f, 4.5f,
                          1.5f); // panel 6 (phys sci doorway)
-    tp.CreateDisplayList(YZ, 192.0f, 128.0f, 128.0f, 34260.0f, 10576.0f,
-                         36383.0f, 2.0f,
+    tp.CreateDisplayList(YZ, 192, 128.0f, 128.0f, 34260.0f, 10576.0f, 36383.0f, 2.0f,
                          2.0f); // panel 6 (phys sci doorway)
-    tp.CreateDisplayList(YZ, 114.0f, 128.0f, 128.0f, 33808.0f, 10000.0f,
-                         37855.0f, 2.05f,
+    tp.CreateDisplayList(YZ, 114, 128.0f, 128.0f, 33808.0f, 10000.0f, 37855.0f,
+                         2.05f,
                          10.51f); // panel 7 (with window)
-    tp.CreateDisplayList(YZ, 116.0f, 128.0f, 128.0f, 33808.0f, 10128.0f,
-                         37855.0f, 5.5f,
+    tp.CreateDisplayList(YZ, 116, 128.0f, 128.0f, 33808.0f, 10128.0f, 37855.0f, 5.5f,
                          1.05f); // panel 7 (with window)
-    tp.CreateDisplayList(YZ, 396.0f, 128.0f, 128.0f, 33808.0f, 10128.0f,
-                         38111.0f, 5.5f,
+    tp.CreateDisplayList(YZ, 396, 128.0f, 128.0f, 33808.0f, 10128.0f, 38111.0f, 5.5f,
                          1.0f); // panel 7 (with window)
-    tp.CreateDisplayList(YZ, 397.0f, 128.0f, 128.0f, 33808.0f, 10512.0f,
-                         37855.0f, 2.5f,
+    tp.CreateDisplayList(YZ, 397, 128.0f, 128.0f, 33808.0f, 10512.0f, 37855.0f, 2.5f,
                          3.0f); // panel 7 (with window)
-    tp.CreateDisplayList(YZ, 398.0f, 256.0f, 128.0f, 33808.0f, 10256.0f,
-                         37983.0f, 1.05f,
+    tp.CreateDisplayList(YZ, 398, 256.0f, 128.0f, 33808.0f, 10256.0f, 37983.0f,
+                         1.05f,
                          1.1f); // panel 7 (with sign)
-    tp.CreateDisplayList(YZ_FLIP, 117.0f, 128.0f, 128.0f, 33808.0f, 10128.0f,
+    tp.CreateDisplayList(YZ_FLIP, 117, 128.0f, 128.0f, 33808.0f, 10128.0f,
                          38560.0f, 5.5f, 0.5f); // panel 7 (with window)
-    tp.CreateDisplayList(YZ, 118.0f, 128.0f, 128.0f, 33808.0f, 10128.0f,
-                         38624.0f, 5.5f,
+    tp.CreateDisplayList(YZ, 118, 128.0f, 128.0f, 33808.0f, 10128.0f, 38624.0f, 5.5f,
                          4.5f); // panel 7 (with window)
-    tp.CreateDisplayList(YZ, 119.0f, 128.0f, 128.0f, 33808.0f, 10000.0f,
-                         40615.0f, 6.5f,
+    tp.CreateDisplayList(YZ, 119, 128.0f, 128.0f, 33808.0f, 10000.0f, 40615.0f, 6.5f,
                          4.0f); // panel 8 (end panel)
-    tp.CreateDisplayList(YZ, 121.0f, 128.0f, 128.0f, 34256.0f, 9936.0f,
-                         27303.0f, 3.0f,
+    tp.CreateDisplayList(YZ, 121, 128.0f, 128.0f, 34256.0f, 9936.0f, 27303.0f, 3.0f,
                          2.0f); // first doorway panel
-    tp.CreateDisplayList(YZ, 193.0f, 128.0f, 128.0f, 34256.0f, 10576.0f,
-                         27303.0f, 2.0f,
+    tp.CreateDisplayList(YZ, 193, 128.0f, 128.0f, 34256.0f, 10576.0f, 27303.0f, 2.0f,
                          2.0f); // first doorway panel
-    tp.CreateDisplayList(YZ, 194.0f, 128.0f, 128.0f, 34256.0f, 10192.0f,
-                         27431.0f, 3.5f,
+    tp.CreateDisplayList(YZ, 194, 128.0f, 128.0f, 34256.0f, 10192.0f, 27431.0f, 3.5f,
                          1.0f); // first doorway panel
 
     // -------- (Face of Canteen Block) --------
-    tp.CreateDisplayList(YZ, 122.0f, 128.0f, 128.0f, 2608.0f, 10000.0f,
-                         10000.0f, 7.0f,
+    tp.CreateDisplayList(YZ, 122, 128.0f, 128.0f, 2608.0f, 10000.0f, 10000.0f, 7.0f,
                          243.5f); // long downstairs panel
-    tp.CreateDisplayList(YZ, 123.0f, 128.0f, 128.0f, 2608.0f, 10000.0f,
-                         42960.0f, 7.0f,
+    tp.CreateDisplayList(YZ, 123, 128.0f, 128.0f, 2608.0f, 10000.0f, 42960.0f, 7.0f,
                          21.0f); // end downstairs panel
-    tp.CreateDisplayList(YZ, 124.0f, 128.0f, 128.0f, 2608.0f, 11088.0f,
-                         10000.0f, 7.0f,
+    tp.CreateDisplayList(YZ, 124, 128.0f, 128.0f, 2608.0f, 11088.0f, 10000.0f, 7.0f,
                          278.5f); // long upstairs panel
-    tp.CreateDisplayList(XY, 136.0f, 128.0f, 128.0f, 2096.0f, 10000.0f,
-                         42960.0f, 4.0f,
+    tp.CreateDisplayList(XY, 136, 128.0f, 128.0f, 2096.0f, 10000.0f, 42960.0f, 4.0f,
                          7.0f); // corner exit to psc block from canteen
 
     // WALL_BRICK_USD_YZ
-    tp.CreateDisplayList(YZ, 200.0f, 128.0f, 128.0f, 33808.0f, 10576.0f,
-                         25344.0f, 2.0f,
+    tp.CreateDisplayList(YZ, 200, 128.0f, 128.0f, 33808.0f, 10576.0f, 25344.0f, 2.0f,
                          1.0f); // panel 1 (around rusty man)
-    tp.CreateDisplayList(YZ, 201.0f, 128.0f, 128.0f, 33808.0f, 10576.0f,
-                         26496.0f, 2.0f,
+    tp.CreateDisplayList(YZ, 201, 128.0f, 128.0f, 33808.0f, 10576.0f, 26496.0f, 2.0f,
                          2.0f); // panel 1 (around rusty man)
 
     // WALL_BRICK_XY
     // --------  (Cancerllary Building) --------
-    tp.CreateDisplayList(XY, 399.0f, 128.0f, 128.0f, 33840.0f, 8976.0f, 5840.0f,
-                         0.5f,
+    tp.CreateDisplayList(XY, 399, 128.0f, 128.0f, 33840.0f, 8976.0f, 5840.0f, 0.5f,
                          23.625f); // first corner edge (bottom of steps)
-    tp.CreateDisplayList(XY, 130.0f, 128.0f, 128.0f, 33808.0f, 10960.0f,
-                         22096.0f, 0.68f,
+    tp.CreateDisplayList(XY, 130, 128.0f, 128.0f, 33808.0f, 10960.0f, 22096.0f,
+                         0.68f,
                          2.0f); // below us window (end wall)
-    tp.CreateDisplayList(XY, 131.0f, 128.0f, 128.0f, 33808.0f, 10192.0f,
-                         9552.0f, 0.68f,
+    tp.CreateDisplayList(XY, 131, 128.0f, 128.0f, 33808.0f, 10192.0f, 9552.0f, 0.68f,
                          15.5f); // above steps
-    tp.CreateDisplayList(XY, 132.0f, 128.0f, 128.0f, 33808.0f, 10000.0f,
-                         10512.0f, 0.68f,
+    tp.CreateDisplayList(XY, 132, 128.0f, 128.0f, 33808.0f, 10000.0f, 10512.0f,
+                         0.68f,
                          1.5f); // first door (others)
-    tp.CreateDisplayList(XY, 133.0f, 128.0f, 128.0f, 33808.0f, 11344.0f,
-                         26624.0f, 0.68f,
+    tp.CreateDisplayList(XY, 133, 128.0f, 128.0f, 33808.0f, 11344.0f, 26624.0f,
+                         0.68f,
                          4.0f); // next us window phys sci
-    tp.CreateDisplayList(XY, 143.0f, 128.0f, 128.0f, 33895.0f, 10000.0f,
-                         22096.0f, 15.5f,
+    tp.CreateDisplayList(XY, 143, 128.0f, 128.0f, 33895.0f, 10000.0f, 22096.0f,
+                         15.5f,
                          16.0f); // end wall
-    tp.CreateDisplayList(XY, 186.0f, 128.0f, 128.0f, 33808.0f, 10000.0f,
-                         22096.0f, 0.68f,
+    tp.CreateDisplayList(XY, 186, 128.0f, 128.0f, 33808.0f, 10000.0f, 22096.0f,
+                         0.68f,
                          1.5f); // end wall
     // --------  (Phys Science Block) -------
-    tp.CreateDisplayList(XY, 197.0f, 128.0f, 128.0f, 33808.0f, 10640.0f,
-                         25344.0f, 1.5f,
+    tp.CreateDisplayList(XY, 197, 128.0f, 128.0f, 33808.0f, 10640.0f, 25344.0f, 1.5f,
                          1.5f); // end wall above telephones
-    tp.CreateDisplayList(XY, 196.0f, 128.0f, 128.0f, 33936.0f, 10640.0f,
-                         25344.0f, 6.0f,
+    tp.CreateDisplayList(XY, 196, 128.0f, 128.0f, 33936.0f, 10640.0f, 25344.0f, 6.0f,
                          1.505f); // end wall above telephones
-    tp.CreateDisplayList(XY, 195.0f, 128.0f, 128.0f, 34576.0f, 10128.0f,
-                         25344.0f, 1.0f,
+    tp.CreateDisplayList(XY, 195, 128.0f, 128.0f, 34576.0f, 10128.0f, 25344.0f, 1.0f,
                          6.5f); // next to telephones
-    tp.CreateDisplayList(XY, 190.0f, 128.0f, 128.0f, 34704.0f, 10000.0f,
-                         25344.0f, 9.5f,
+    tp.CreateDisplayList(XY, 190, 128.0f, 128.0f, 34704.0f, 10000.0f, 25344.0f, 9.5f,
                          5.75f); // end wall behind drinks machine
-    tp.CreateDisplayList(XY, 189.0f, 128.0f, 128.0f, 34704.0f, 10736.0f,
-                         25344.0f, 9.5f,
+    tp.CreateDisplayList(XY, 189, 128.0f, 128.0f, 34704.0f, 10736.0f, 25344.0f, 9.5f,
                          0.75f); // end wall above drinks machine
-    tp.CreateDisplayList(XY, 144.0f, 128.0f, 128.0f, 33808.0f, 10000.0f,
-                         25344.0f, 7.0f,
+    tp.CreateDisplayList(XY, 144, 128.0f, 128.0f, 33808.0f, 10000.0f, 25344.0f, 7.0f,
                          1.6f); // end wall
-    tp.CreateDisplayList(XY, 145.0f, 128.0f, 128.0f, 33876.0f, 9936.0f,
-                         36319.0f, 3.0f,
+    tp.CreateDisplayList(XY, 145, 128.0f, 128.0f, 33876.0f, 9936.0f, 36319.0f, 3.0f,
                          7.0f); // ps 2nd door(leftside entrance)
-    tp.CreateDisplayList(XY, 146.0f, 128.0f, 128.0f, 33808.0f, 9936.0f,
-                         37855.0f, 4.25f,
+    tp.CreateDisplayList(XY, 146, 128.0f, 128.0f, 33808.0f, 9936.0f, 37855.0f, 4.25f,
                          7.0f); // ps 2nd door(rightside entrance)
-    tp.CreateDisplayList(XY, 147.0f, 128.0f, 128.0f, 33808.0f, 9936.0f,
-                         26752.0f, 4.0f,
+    tp.CreateDisplayList(XY, 147, 128.0f, 128.0f, 33808.0f, 9936.0f, 26752.0f, 4.0f,
                          7.0f); // ps first door (left bottom)
-    tp.CreateDisplayList(XY, 148.0f, 128.0f, 128.0f, 33808.0f, 9936.0f,
-                         27559.0f, 3.5f,
+    tp.CreateDisplayList(XY, 148, 128.0f, 128.0f, 33808.0f, 9936.0f, 27559.0f, 3.5f,
                          4.5f); // ps first door (right bottom)
-    tp.CreateDisplayList(XY, 149.0f, 128.0f, 128.0f, 33872.0f, 10384.0f,
-                         27559.0f, 3.0f,
+    tp.CreateDisplayList(XY, 149, 128.0f, 128.0f, 33872.0f, 10384.0f, 27559.0f, 3.0f,
                          3.5f); // ps first door (right top)
-    tp.CreateDisplayList(XY, 185.0f, 128.0f, 128.0f, 34256.0f, 10000.0f,
-                         27303.0f, 0.5f,
+    tp.CreateDisplayList(XY, 185, 128.0f, 128.0f, 34256.0f, 10000.0f, 27303.0f, 0.5f,
                          6.5f); // ps first door (1/2 inner brick)
-    tp.CreateDisplayList(XY, 166.0f, 128.0f, 128.0f, 33808.0f, 10000.0f,
-                         29479.0f, 0.5f,
+    tp.CreateDisplayList(XY, 166, 128.0f, 128.0f, 33808.0f, 10000.0f, 29479.0f, 0.5f,
                          4.0f); // side of toilet doors phys sci
-    tp.CreateDisplayList(XY, 167.0f, 128.0f, 128.0f, 33808.0f, 10256.0f,
-                         38239.0f, 0.75f,
+    tp.CreateDisplayList(XY, 167, 128.0f, 128.0f, 33808.0f, 10256.0f, 38239.0f,
+                         0.75f,
                          4.5f); // side of small window phys sci
-    tp.CreateDisplayList(XY_FLIP, 152.0f, 128.0f, 128.0f, 33936.0f, 10832.0f,
+    tp.CreateDisplayList(XY_FLIP, 152, 128.0f, 128.0f, 33936.0f, 10832.0f,
                          25344.0f, 15.5f, 2.5f); // end wall panel 2 phys sci
-    tp.CreateDisplayList(XY, 153.0f, 128.0f, 128.0f, 33808.0f, 11024.0f,
-                         25344.0f, 17.5f,
+    tp.CreateDisplayList(XY, 153, 128.0f, 128.0f, 33808.0f, 11024.0f, 25344.0f,
+                         17.5f,
                          6.5f); // end wall panel 3 phys sci
-    tp.CreateDisplayList(XY, 165.0f, 128.0f, 128.0f, 34260.0f, 10000.0f,
-                         36639.0f, 0.7f,
+    tp.CreateDisplayList(XY, 165, 128.0f, 128.0f, 34260.0f, 10000.0f, 36639.0f, 0.7f,
                          6.5f); // ps 2nd door(inner 1/2 brick)
-    tp.CreateDisplayList(XY, 187.0f, 128.0f, 128.0f, 33808.0f, 10256.0f,
-                         34382.0f, 0.5f,
+    tp.CreateDisplayList(XY, 187, 128.0f, 128.0f, 33808.0f, 10256.0f, 34382.0f, 0.5f,
                          2.0f); // side of toilet doors phys sci
 
     // --------  (Library Block) --------
-    tp.CreateDisplayList(XY, 154.0f, 128.0f, 128.0f, 33616.0f, 10000.0f,
-                         43056.0f, 19.0f,
+    tp.CreateDisplayList(XY, 154, 128.0f, 128.0f, 33616.0f, 10000.0f, 43056.0f,
+                         19.0f,
                          6.0f); // first panel
-    tp.CreateDisplayList(XY, 155.0f, 128.0f, 128.0f, 30800.0f, 10000.0f,
-                         43056.0f, 15.0f,
+    tp.CreateDisplayList(XY, 155, 128.0f, 128.0f, 30800.0f, 10000.0f, 43056.0f,
+                         15.0f,
                          6.0f); // 2nd panel
-    tp.CreateDisplayList(XY, 156.0f, 128.0f, 128.0f, 27976.0f, 9936.0f,
-                         43056.0f, 12.0f,
+    tp.CreateDisplayList(XY, 156, 128.0f, 128.0f, 27976.0f, 9936.0f, 43056.0f, 12.0f,
                          3.0f); // 3rd panel (next to KBLT)
-    tp.CreateDisplayList(XY, 217.0f, 128.0f, 128.0f, 29512.0f, 9936.0f,
-                         43056.0f, 10.0f,
+    tp.CreateDisplayList(XY, 217, 128.0f, 128.0f, 29512.0f, 9936.0f, 43056.0f, 10.0f,
                          2.75f); // 3rd panel (below nexus sign)
-    tp.CreateDisplayList(XY, 157.0f, 128.0f, 128.0f, 24264.0f, 10256.0f,
-                         43056.0f, 1.5f,
+    tp.CreateDisplayList(XY, 157, 128.0f, 128.0f, 24264.0f, 10256.0f, 43056.0f, 1.5f,
                          4.0f); // 4th panel (next to KBLT)
-    tp.CreateDisplayList(XY, 218.0f, 128.0f, 128.0f, 24264.0f, 10000.0f,
-                         43056.0f, 11.5f,
+    tp.CreateDisplayList(XY, 218, 128.0f, 128.0f, 24264.0f, 10000.0f, 43056.0f,
+                         11.5f,
                          2.5f); // around glass boards
-    tp.CreateDisplayList(XY, 219.0f, 128.0f, 128.0f, 25352.0f, 10192.0f,
-                         43056.0f, 3.0f,
+    tp.CreateDisplayList(XY, 219, 128.0f, 128.0f, 25352.0f, 10192.0f, 43056.0f, 3.0f,
                          4.5f); // around glass boards
-    tp.CreateDisplayList(XY, 220.0f, 128.0f, 128.0f, 27976.0f, 10192.0f,
-                         43056.0f, 3.0f,
+    tp.CreateDisplayList(XY, 220, 128.0f, 128.0f, 27976.0f, 10192.0f, 43056.0f, 3.0f,
                          4.5f); // around glass boards
-    tp.CreateDisplayList(XY, 221.0f, 128.0f, 128.0f, 29256.0f, 10192.0f,
-                         43056.0f, 2.0f,
+    tp.CreateDisplayList(XY, 221, 128.0f, 128.0f, 29256.0f, 10192.0f, 43056.0f, 2.0f,
                          4.5f); // around glass boards
-    tp.CreateDisplayList(XY, 158.0f, 128.0f, 128.0f, 30800.0f, 11024.0f,
-                         43056.0f, 41.0f,
+    tp.CreateDisplayList(XY, 158, 128.0f, 128.0f, 30800.0f, 11024.0f, 43056.0f,
+                         41.0f,
                          6.5f); // US 1st panel
-    tp.CreateDisplayList(XY, 159.0f, 128.0f, 128.0f, 24264.0f, 11024.0f,
-                         43056.0f, 51.0f,
+    tp.CreateDisplayList(XY, 159, 128.0f, 128.0f, 24264.0f, 11024.0f, 43056.0f,
+                         51.0f,
                          6.5f); // US 2nd panel
-    tp.CreateDisplayList(XY, 160.0f, 128.0f, 128.0f, 22984.0f, 10000.0f,
-                         43056.0f, 9.0f,
+    tp.CreateDisplayList(XY, 160, 128.0f, 128.0f, 22984.0f, 10000.0f, 43056.0f, 9.0f,
                          2.0f); // US 3rd panel (start of ds library)
-    tp.CreateDisplayList(XY, 161.0f, 128.0f, 128.0f, 10952.0f, 10000.0f,
-                         43056.0f, 94.0f,
+    tp.CreateDisplayList(XY, 161, 128.0f, 128.0f, 10952.0f, 10000.0f, 43056.0f,
+                         94.0f,
                          2.5f); // US 4th panel (under of ds library)
-    tp.CreateDisplayList(XY, 162.0f, 128.0f, 128.0f, 6600.0f, 11024.0f,
-                         43056.0f, 137.0f,
+    tp.CreateDisplayList(XY, 162, 128.0f, 128.0f, 6600.0f, 11024.0f, 43056.0f,
+                         137.0f,
                          2.5f); // US 4th panel (under of ds library)
     tp.CreateXtoYWindowList(434, 43056.0, 6856.0, 256.0, 10256.0, 512.0, 1.0,
                             1.0); // End of DS (Map)
-    tp.CreateDisplayList(XY, 433.0f, 128.0f, 128.0f, 7112.0f, 10640.0f,
-                         43056.0f, 8.0f,
+    tp.CreateDisplayList(XY, 433, 128.0f, 128.0f, 7112.0f, 10640.0f, 43056.0f, 8.0f,
                          1.0f); // End DS
-    tp.CreateDisplayList(XY, 432.0f, 128.0f, 128.0f, 7112.0f, 10128.0f,
-                         43056.0f, 1.5f,
+    tp.CreateDisplayList(XY, 432, 128.0f, 128.0f, 7112.0f, 10128.0f, 43056.0f, 1.5f,
                          5.0f); // End DS
-    tp.CreateDisplayList(XY, 431.0f, 128.0f, 128.0f, 8072.0f, 10064.0f,
-                         43056.0f, 0.914f,
+    tp.CreateDisplayList(XY, 431, 128.0f, 128.0f, 8072.0f, 10064.0f, 43056.0f,
+                         0.914f,
                          5.5f); // End DS
-    tp.CreateDisplayList(XY, 430.0f, 128.0f, 128.0f, 6600.0f, 10128.0f,
-                         43056.0f, 2.0f,
+    tp.CreateDisplayList(XY, 430, 128.0f, 128.0f, 6600.0f, 10128.0f, 43056.0f, 2.0f,
                          5.0f); // End DS
-    tp.CreateDisplayList(XY, 163.0f, 128.0f, 128.0f, 6600.0f, 10000.0f,
-                         43056.0f, 12.414f, 2.0f); // End DS
-    tp.CreateDisplayList(XY, 164.0f, 128.0f, 128.0f, 6600.0f, 11024.0f,
-                         43056.0f, 17.29f,
+    tp.CreateDisplayList(XY, 163, 128.0f, 128.0f, 6600.0f, 10000.0f, 43056.0f,
+                         12.414f, 2.0f); // End DS
+    tp.CreateDisplayList(XY, 164, 128.0f, 128.0f, 6600.0f, 11024.0f, 43056.0f,
+                         17.29f,
                          6.5f); // End US
-    tp.CreateDisplayList(YZ, 126.0f, 128.0f, 128.0f, 6600.0f, 10000.0f,
-                         43056.0f, 6.0f,
+    tp.CreateDisplayList(YZ, 126, 128.0f, 128.0f, 6600.0f, 10000.0f, 43056.0f, 6.0f,
                          0.5f); // end panel corner
-    tp.CreateDisplayList(YZ, 125.0f, 128.0f, 128.0f, 6514.0f, 10000.0f,
-                         43120.0f, 14.5f,
+    tp.CreateDisplayList(YZ, 125, 128.0f, 128.0f, 6514.0f, 10000.0f, 43120.0f, 14.5f,
                          20.5f); // end panel
-    tp.CreateDisplayList(YZ, 127.0f, 128.0f, 128.0f, 6600.0f, 11024.0f,
-                         43056.0f, 6.5f,
+    tp.CreateDisplayList(YZ, 127, 128.0f, 128.0f, 6600.0f, 11024.0f, 43056.0f, 6.5f,
                          0.5f); // end panel top
-    tp.CreateDisplayList(YZ, 128.0f, 128.0f, 128.0f, 33616.0f, 9936.0f,
-                         43056.0f, 6.5f,
+    tp.CreateDisplayList(YZ, 128, 128.0f, 128.0f, 33616.0f, 9936.0f, 43056.0f, 6.5f,
                          0.75f); // cgl1 side panel
-    tp.CreateDisplayList(YZ, 129.0f, 128.0f, 128.0f, 24264.0f, 9936.0f,
-                         43056.0f, 6.5f,
+    tp.CreateDisplayList(YZ, 129, 128.0f, 128.0f, 24264.0f, 9936.0f, 43056.0f, 6.5f,
                          0.5f); // gap in middle of library
-    tp.CreateDisplayList(YZ, 168.0f, 128.0f, 128.0f, 24136.0f, 9936.0f,
-                         43056.0f, 2.5f,
+    tp.CreateDisplayList(YZ, 168, 128.0f, 128.0f, 24136.0f, 9936.0f, 43056.0f, 2.5f,
                          0.5f); // gap in middle of library
-    tp.CreateDisplayList(YZ, 169.0f, 128.0f, 128.0f, 8813.12f, 11344.0f,
-                         43056.0f, 4.0f,
+    tp.CreateDisplayList(YZ, 169, 128.0f, 128.0f, 8813.12f, 11344.0f, 43056.0f, 4.0f,
                          0.5f); // edge of first us window post
-    tp.CreateDisplayList(XY, 135.0f, 128.0f, 128.0f, 24072.0f, 10000.0f,
-                         43120.0f, 1.5f,
+    tp.CreateDisplayList(XY, 135, 128.0f, 128.0f, 24072.0f, 10000.0f, 43120.0f, 1.5f,
                          17.0f); // middle of gap
-    tp.CreateDisplayList(XY, 134.0f, 128.0f, 128.0f, 6514.0f, 10000.0f,
-                         43120.0f, 0.75f,
+    tp.CreateDisplayList(XY, 134, 128.0f, 128.0f, 6514.0f, 10000.0f, 43120.0f, 0.75f,
                          14.5f); // end corner
-    tp.CreateDisplayList(XY, 141.0f, 128.0f, 128.0f, 33104.0f, 10000.0f,
-                         43152.0f, 1.0f,
+    tp.CreateDisplayList(XY, 141, 128.0f, 128.0f, 33104.0f, 10000.0f, 43152.0f, 1.0f,
                          6.0f); // brick between gcl1 doors
-    tp.CreateDisplayList(XY, 140.0f, 128.0f, 128.0f, 34448.0f, 9424.0f,
-                         43056.0f, 12.5f,
+    tp.CreateDisplayList(XY, 140, 128.0f, 128.0f, 34448.0f, 9424.0f, 43056.0f, 12.5f,
                          4.5f); // end below stairs
-    tp.CreateDisplayList(YZ, 390.0f, 128.0f, 128.0f, 10952.0f, 10000.0f,
-                         43056.0f, 2.5f,
+    tp.CreateDisplayList(YZ, 390, 128.0f, 128.0f, 10952.0f, 10000.0f, 43056.0f, 2.5f,
                          0.75f); // side of library door
-    tp.CreateDisplayList(YZ, 391.0f, 128.0f, 128.0f, 8189.0f, 10000.0f,
-                         43056.0f, 6.0f,
+    tp.CreateDisplayList(YZ, 391, 128.0f, 128.0f, 8189.0f, 10000.0f, 43056.0f, 6.0f,
                          0.5f); // side of library door
-    tp.CreateDisplayList(XY, 392.0f, 128.0f, 128.0f, 10952.0f, 10320.0f,
-                         43152.0f, 0.25f,
+    tp.CreateDisplayList(XY, 392, 128.0f, 128.0f, 10952.0f, 10320.0f, 43152.0f,
+                         0.25f,
                          3.5f); // side edge of library door
 
     // --------  (Phys Sci Building very end wall by steps) --------
-    tp.CreateDisplayList(XY, 142.0f, 128.0f, 128.0f, 33808.0f, 10000.0f,
-                         41127.0f, 11.5f, 6.5f);
-    tp.CreateDisplayList(XY, 150.0f, 128.0f, 128.0f, 33808.0f, 11024.0f,
-                         41127.0f, 16.5f, 2.5f);
-    tp.CreateDisplayList(XY, 151.0f, 128.0f, 128.0f, 34448.0f, 9360.0f,
-                         41127.0f, 6.5f,
+    tp.CreateDisplayList(XY, 142, 128.0f, 128.0f, 33808.0f, 10000.0f, 41127.0f,
+                         11.5f, 6.5f);
+    tp.CreateDisplayList(XY, 150, 128.0f, 128.0f, 33808.0f, 11024.0f, 41127.0f,
+                         16.5f, 2.5f);
+    tp.CreateDisplayList(XY, 151, 128.0f, 128.0f, 34448.0f, 9360.0f, 41127.0f, 6.5f,
                          5.5f); // below window
-    tp.CreateDisplayList(XY, 137.0f, 128.0f, 128.0f, 35280.0f, 9296.0f,
-                         41127.0f, 6.0f,
+    tp.CreateDisplayList(XY, 137, 128.0f, 128.0f, 35280.0f, 9296.0f, 41127.0f, 6.0f,
                          6.5f); // below window
-    tp.CreateDisplayList(XY, 138.0f, 128.0f, 128.0f, 35600.0f, 10000.0f,
-                         41127.0f, 3.5f, 6.5f);
-    tp.CreateDisplayList(XY, 139.0f, 128.0f, 128.0f, 33872.0f, 11216.0f,
-                         41127.0f, 12.5f, 6.0f);
-    tp.CreateDisplayList(YZ_FLIP, 393.0f, 128.0f, 128.0f, 33872.0f, 11344.0f,
+    tp.CreateDisplayList(XY, 138, 128.0f, 128.0f, 35600.0f, 10000.0f, 41127.0f,
+                         3.5f, 6.5f);
+    tp.CreateDisplayList(XY, 139, 128.0f, 128.0f, 33872.0f, 11216.0f, 41127.0f,
+                         12.5f, 6.0f);
+    tp.CreateDisplayList(YZ_FLIP, 393, 128.0f, 128.0f, 33872.0f, 11344.0f,
                          41063.0f, 4.0f, 0.5f); // upstairs edge of window
 
     // WALL_BRICK_GAP_YZ
-    tp.CreateDisplayList(YZ, 180.0f, 128.0f, 32.0f, 33895.0f, 10192.0f,
-                         22079.0f, 5.0f,
+    tp.CreateDisplayList(YZ, 180, 128.0f, 32.0f, 33895.0f, 10192.0f, 22079.0f, 5.0f,
                          0.530f); // end chanc
-    tp.CreateDisplayList(YZ, 181.0f, 128.0f, 32.0f, 33872.0f, 10512.0f,
-                         30542.0f, 2.5f,
+    tp.CreateDisplayList(YZ, 181, 128.0f, 32.0f, 33872.0f, 10512.0f, 30542.0f, 2.5f,
                          0.80f); // toilets phys sci
     // WALL_BRICK_GAP2_YZ
-    tp.CreateDisplayList(YZ, 182.0f, 128.0f, 32.0f, 33872.0f, 10512.0f,
-                         27559.0f, 2.5f,
+    tp.CreateDisplayList(YZ, 182, 128.0f, 32.0f, 33872.0f, 10512.0f, 27559.0f, 2.5f,
                          0.80f); // toilets phys sci
     // WALL_GAP_1
-    tp.CreateDisplayList(XY, 183.0f, 8.0f, 128.0f, 30792.0f, 10000.0f, 43056.0f,
-                         1.0f,
+    tp.CreateDisplayList(XY, 183, 8.0f, 128.0f, 30792.0f, 10000.0f, 43056.0f, 1.0f,
                          6.0f); // near KBLT
-    tp.CreateDisplayList(XY, 184.0f, 8.0f, 128.0f, 30792.0f, 11024.0f, 43056.0f,
-                         1.0f,
+    tp.CreateDisplayList(XY, 184, 8.0f, 128.0f, 30792.0f, 11024.0f, 43056.0f, 1.0f,
                          6.5f); // as above but upstairs
 }
 
@@ -3842,31 +3704,31 @@ void DrawRoof() {
     glEndList();
 
     // spacer between phys sci
-    tp.CreateDisplayList(YZ, 97.0f, 32.0f, 128.0f, 33808.0f, 12048.0f, 25344.0f,
+    tp.CreateDisplayList(YZ, 97, 32.0f, 128.0f, 33808.0f, 12048.0f, 25344.0f,
                          1.0f, 123.3f);
     // spacer between phys sci amd chanc blocks
-    tp.CreateDisplayList(YZ, 98.0f, 32.0f, 128.0f, 35748.0f, 11334.0f, 22096.0f,
+    tp.CreateDisplayList(YZ, 98, 32.0f, 128.0f, 35748.0f, 11334.0f, 22096.0f,
                          1.0f, 25.38f);
     // spacer above main posts (chanc side)
-    tp.CreateDisplayList(YZ, 99.0f, 32.0f, 128.0f, 31868.0f, 11334.0f, 8100.0f,
+    tp.CreateDisplayList(YZ, 99, 32.0f, 128.0f, 31868.0f, 11334.0f, 8100.0f,
                          1.0f, 257.9f);
     // spacer above library
-    tp.CreateDisplayList(XY, 202.0f, 128.0f, 32.0f, 4541.0f, 12048.0f, 43056.0f,
+    tp.CreateDisplayList(XY, 202, 128.0f, 32.0f, 4541.0f, 12048.0f, 43056.0f,
                          230.0f, 1.0f);
     // spacer above main posts (library side)
-    tp.CreateDisplayList(XY, 203.0f, 128.0f, 32.0f, 4541.0f, 11332.0f, 41114.0f,
+    tp.CreateDisplayList(XY, 203, 128.0f, 32.0f, 4541.0f, 11332.0f, 41114.0f,
                          213.5f, 1.08f);
     // spacer above chanc
-    tp.CreateDisplayList(YZ, 204.0f, 128.0f, 128.0f, 33808.0f, 11999.0f,
-                         8100.0f, 0.64f, 109.35f);
-    tp.CreateYtoZWindowList(205.0f, 33848.0f, 11954.0f, 144.0f, 22096.0f,
-                            3248.0f, 0.64f, 25.375f);
+    tp.CreateDisplayList(YZ, 204, 128.0f, 128.0f, 33808.0f, 11999.0f, 8100.0f,
+                         0.64f, 109.35f);
+    tp.CreateYtoZWindowList(205, 33848.0f, 11954.0f, 144.0f, 22096.0f, 3248.0f,
+                            0.64f, 25.375f);
     // centre beam between chanc and phys sci
-    tp.CreateDisplayList(XZ, 426.0f, 64.0f, 128.0f, 33848.0f, 11954.0f,
-                         22096.0f, 1.0f, 25.375f);
+    tp.CreateDisplayList(XZ, 426, 64.0f, 128.0f, 33848.0f, 11954.0f, 22096.0f,
+                         1.0f, 25.375f);
     // top corner spacer
-    tp.CreateDisplayList(XY, 427.0f, 64.0f, 128.0f, 33808.0f, 11999.0f,
-                         22096.0f, 0.75f, 0.75f);
+    tp.CreateDisplayList(XY, 427, 64.0f, 128.0f, 33808.0f, 11999.0f, 22096.0f,
+                         0.75f, 0.75f);
 
     // Joins where roof slants
     DrawAngledRoofBeam(1, 33848.0f - 1867.0f, 12012.72f - 687.13f, 41226.0, 15.21f);
@@ -4013,10 +3875,10 @@ void DrawEntranceSteps() {
     }
 
     // steps next to GCL1
-    tp.CreateDisplayList(XZ, 206.0f, 128.0f, 1024.0f, 34508.0f, 10000.0f,
-                         41127.0f, 1.0f, 0.942f);
-    tp.CreateDisplayList(XZ, 207.0f, 256.0f, 1024.0f, 34352.0f, 10000.0f,
-                         41127.0f, 0.609f, 0.942f);
+    tp.CreateDisplayList(XZ, 206, 128.0f, 1024.0f, 34508.0f, 10000.0f, 41127.0f,
+                         1.0f, 0.942f);
+    tp.CreateDisplayList(XZ, 207, 256.0f, 1024.0f, 34352.0f, 10000.0f, 41127.0f,
+                         0.609f, 0.942f);
 }
 
 //--------------------------------------------------------------------------------------
@@ -4164,35 +4026,35 @@ void DisplayBench() {
 }
 
 void DrawBench() {
-    tp.CreateDisplayList(XZ, 400.0f, 64.0f, 64.0f, 31760.0f, 10147.0f, 10894.0f,
+    tp.CreateDisplayList(XZ, 400, 64.0f, 64.0f, 31760.0f, 10147.0f, 10894.0f,
                          3.0f, 7.5f);
-    tp.CreateDisplayList(XY, 401.0f, 64.0f, 64.0f, 31760.0f, 10000.0f, 10894.0f,
+    tp.CreateDisplayList(XY, 401, 64.0f, 64.0f, 31760.0f, 10000.0f, 10894.0f,
                          3.0f, 2.3f);
-    tp.CreateDisplayList(XY, 402.0f, 64.0f, 64.0f, 31760.0f, 10000.0f, 10894.0f,
+    tp.CreateDisplayList(XY, 402, 64.0f, 64.0f, 31760.0f, 10000.0f, 10894.0f,
                          3.0f, 1.72f);
-    tp.CreateDisplayList(YZ, 403.0f, 64.0f, 64.0f, 31760.0f, 10000.0f, 10894.0f,
+    tp.CreateDisplayList(YZ, 403, 64.0f, 64.0f, 31760.0f, 10000.0f, 10894.0f,
                          1.72f, 0.78f);
-    tp.CreateDisplayList(YZ, 404.0f, 64.0f, 64.0f, 31760.0f, 10107.0f, 10944.0f,
+    tp.CreateDisplayList(YZ, 404, 64.0f, 64.0f, 31760.0f, 10107.0f, 10944.0f,
                          0.625f, 5.938f);
-    tp.CreateDisplayList(YZ, 405.0f, 64.0f, 64.0f, 31760.0f, 10107.0f, 10894.0f,
+    tp.CreateDisplayList(YZ, 405, 64.0f, 64.0f, 31760.0f, 10107.0f, 10894.0f,
                          0.625f, 0.78f);
-    tp.CreateDisplayList(YZ_FLIP, 406.0f, 64.0f, 64.0f, 31760.0f, 10107.0f,
+    tp.CreateDisplayList(YZ_FLIP, 406, 64.0f, 64.0f, 31760.0f, 10107.0f,
                          11324.0f, 0.625f, 0.78f);
 
-    tp.CreateDisplayList(XZ, 407.0f, 64.0f, 64.0f, 5410.0f, 10147.0f, 41008.0f,
+    tp.CreateDisplayList(XZ, 407, 64.0f, 64.0f, 5410.0f, 10147.0f, 41008.0f,
                          7.5f, 3.0f);
-    tp.CreateDisplayList(YZ, 408.0f, 64.0f, 64.0f, 5410.0f, 10000.0f, 41008.0f,
+    tp.CreateDisplayList(YZ, 408, 64.0f, 64.0f, 5410.0f, 10000.0f, 41008.0f,
                          2.3f, 3.0f);
-    tp.CreateDisplayList(YZ, 409.0f, 64.0f, 64.0f, 5410.0f, 10000.0f, 41008.0f,
+    tp.CreateDisplayList(YZ, 409, 64.0f, 64.0f, 5410.0f, 10000.0f, 41008.0f,
                          1.72f, 3.0f);
-    tp.CreateDisplayList(XY, 410.0f, 64.0f, 64.0f, 5410.0f, 10000.0f, 41008.0f,
+    tp.CreateDisplayList(XY, 410, 64.0f, 64.0f, 5410.0f, 10000.0f, 41008.0f,
                          0.78f, 1.72f);
-    tp.CreateDisplayList(XY, 411.0f, 64.0f, 64.0f, 5460.0f, 10107.0f, 41008.0f,
+    tp.CreateDisplayList(XY, 411, 64.0f, 64.0f, 5460.0f, 10107.0f, 41008.0f,
                          5.938f, 0.625f);
-    tp.CreateDisplayList(XY, 412.0f, 64.0f, 64.0f, 5410.0f, 10107.0f, 41008.0f,
+    tp.CreateDisplayList(XY, 412, 64.0f, 64.0f, 5410.0f, 10107.0f, 41008.0f,
                          0.78f, 0.625f);
-    tp.CreateDisplayList(XY_FLIP, 413.0f, 64.0f, 64.0f, 5410.0f + 430.0f,
-                         10107.0f, 41008.0f, 0.78f, 0.625f);
+    tp.CreateDisplayList(XY_FLIP, 413, 64.0f, 64.0f, 5410.0f + 430.0f, 10107.0f,
+                         41008.0f, 0.78f, 0.625f);
 }
 
 //--------------------------------------------------------------------------------------
@@ -4479,148 +4341,125 @@ void DisplayExtras() {
 }
 
 void DrawExtras() {
-    tp.CreateDisplayList(YZ, 300.0f, 256.0f, 1024.0f, 33808.0f, 10576.0f,
-                         25472.0f, 1.0f,
+    tp.CreateDisplayList(YZ, 300, 256.0f, 1024.0f, 33808.0f, 10576.0f, 25472.0f,
+                         1.0f,
                          1.0f); // Rusty Man
 
-    tp.CreateDisplayList(YZ, 301.0f, 512.0f, 256.0f, 33792.0f, 10320.0f,
-                         40794.0f, 0.75f,
+    tp.CreateDisplayList(YZ, 301, 512.0f, 256.0f, 33792.0f, 10320.0f, 40794.0f,
+                         0.75f,
                          0.609f); // Sign 1 (end of phys sci)
-    tp.CreateDisplayList(XY, 302.0f, 16.0f, 512.0f, 33792.0f, 10320.0f,
-                         40794.0f, 1.0f,
+    tp.CreateDisplayList(XY, 302, 16.0f, 512.0f, 33792.0f, 10320.0f, 40794.0f, 1.0f,
                          0.75f); // side of sign 1
-    tp.CreateDisplayList(XY, 303.0f, 16.0f, 512.0f, 33792.0f, 10320.0f,
-                         40950.0f, 1.0f,
+    tp.CreateDisplayList(XY, 303, 16.0f, 512.0f, 33792.0f, 10320.0f, 40950.0f, 1.0f,
                          0.75f); // side of sign 1
-    tp.CreateDisplayList(XY, 304.0f, 512.0f, 512.0f, 33637.0f, 10410.0f,
-                         43040.0f, 0.75f,
+    tp.CreateDisplayList(XY, 304, 512.0f, 512.0f, 33637.0f, 10410.0f, 43040.0f,
+                         0.75f,
                          0.574f); // Sign 2 (GCL1)
 
-    tp.CreateDisplayList(YZ, 305.0f, 512.0f, 16.0f, 33637.0f, 10410.0f,
-                         43040.0f, 0.574f,
+    tp.CreateDisplayList(YZ, 305, 512.0f, 16.0f, 33637.0f, 10410.0f, 43040.0f,
+                         0.574f,
                          1.0f); // side of sign 2
 
-    tp.CreateDisplayList(XY, 306.0f, 16.0f, 32.0f, 25633.0f, 10902.0f, 42756.0f,
+    tp.CreateDisplayList(XY, 306, 16.0f, 32.0f, 25633.0f, 10902.0f, 42756.0f,
                          152.88f,
                          1.0f); // KBLT edge top
-    tp.CreateDisplayList(XY, 307.0f, 32.0f, 16.0f, 25608.0f, 10000.0f, 42756.0f,
-                         1.0f,
+    tp.CreateDisplayList(XY, 307, 32.0f, 16.0f, 25608.0f, 10000.0f, 42756.0f, 1.0f,
                          56.375f); // KBLT edge left
-    tp.CreateDisplayList(XY_FLIP, 308.0f, 32.0f, 16.0f, 28072.0f, 10000.0f,
+    tp.CreateDisplayList(XY_FLIP, 308, 32.0f, 16.0f, 28072.0f, 10000.0f,
                          42756.0f, 1.0f, 56.375f); // KBLT right
-    tp.CreateDisplayList(XY, 309.0f, 1.0f, 1.0f, 25608.0f, 10902.0f, 42756.0f, 25.0f,
+    tp.CreateDisplayList(XY, 309, 1.0f, 1.0f, 25608.0f, 10902.0f, 42756.0f, 25.0f,
                          32.0f); // KBLT corner
-    tp.CreateDisplayList(YZ, 310.0f, 2.0f, 16.0f, 29512.0f, 10288.0f, 43040.0f,
-                         240.0f,
+    tp.CreateDisplayList(YZ, 310, 2.0f, 16.0f, 29512.0f, 10288.0f, 43040.0f, 240.0f,
                          1.0f); // Side of Nexus
 
-    tp.CreateDisplayList(YZ, 311.0f, 2.0f, 16.0f, 24456.0f, 10320.0f, 43040.0f,
-                         224.0f,
+    tp.CreateDisplayList(YZ, 311, 2.0f, 16.0f, 24456.0f, 10320.0f, 43040.0f, 224.0f,
                          1.0f); // Side of Glassboards
-    tp.CreateDisplayList(YZ, 435.0f, 2.0f, 16.0f, 7304.0f, 10256.0f, 43040.0f,
-                         192.0f,
+    tp.CreateDisplayList(YZ, 435, 2.0f, 16.0f, 7304.0f, 10256.0f, 43040.0f, 192.0f,
                          1.0f); // Side of Glassboards
 
-    tp.CreateDisplayList(XY, 312.0f, 128.0f, 128.0f, 33752.0f, 10659.0f,
-                         10511.0f, 0.75f,
+    tp.CreateDisplayList(XY, 312, 128.0f, 128.0f, 33752.0f, 10659.0f, 10511.0f,
+                         0.75f,
                          0.75f); // security sign
-    tp.CreateDisplayList(XY, 313.0f, 128.0f, 128.0f, 33752.0f, 10659.0f,
-                         10513.0f, 0.75f,
+    tp.CreateDisplayList(XY, 313, 128.0f, 128.0f, 33752.0f, 10659.0f, 10513.0f,
+                         0.75f,
                          0.75f); // security sign
 
-    tp.CreateDisplayList(XY, 314.0f, 256.0f, 128.0f, 33660.0f, 10836.0f,
-                         20111.0f, 0.578f, 0.561f); // PSC sign
-    tp.CreateDisplayList(XY, 315.0f, 256.0f, 128.0f, 33660.0f, 10836.0f,
-                         20113.0f, 0.578f, 0.561f); // PSC sign
+    tp.CreateDisplayList(XY, 314, 256.0f, 128.0f, 33660.0f, 10836.0f, 20111.0f,
+                         0.578f, 0.561f); // PSC sign
+    tp.CreateDisplayList(XY, 315, 256.0f, 128.0f, 33660.0f, 10836.0f, 20113.0f,
+                         0.578f, 0.561f); // PSC sign
 
-    tp.CreateDisplayList(YZ, 316.0f, 256.0f, 128.0f, 33808.0f, 10256.0f,
-                         34126.0f, 1.0f,
+    tp.CreateDisplayList(YZ, 316, 256.0f, 128.0f, 33808.0f, 10256.0f, 34126.0f, 1.0f,
                          1.0f); // CO sign
 
-    tp.CreateDisplayList(YZ, 317.0f, 64.0f, 64.0f, 35856.0f, 10000.0f, 24996.0f,
-                         11.5f,
+    tp.CreateDisplayList(YZ, 317, 64.0f, 64.0f, 35856.0f, 10000.0f, 24996.0f, 11.5f,
                          5.47f); // Drinks Machine
-    tp.CreateDisplayList(XY, 319.0f, 64.0f, 64.0f, 34704.0f, 10672.0f, 24996.0f,
-                         18.0f,
+    tp.CreateDisplayList(XY, 319, 64.0f, 64.0f, 34704.0f, 10672.0f, 24996.0f, 18.0f,
                          1.0f); // Drinks Machine
-    tp.CreateDisplayList(XZ, 318.0f, 64.0f, 64.0f, 34704.0f, 10736.0f, 24996.0f,
-                         18.0f,
+    tp.CreateDisplayList(XZ, 318, 64.0f, 64.0f, 34704.0f, 10736.0f, 24996.0f, 18.0f,
                          5.5f); // Drinks Machine
-    tp.CreateDisplayList(XY, 320.0f, 16.0f, 2.0f, 35840.0f, 10000.0f, 24996.0f, 1.0f,
+    tp.CreateDisplayList(XY, 320, 16.0f, 2.0f, 35840.0f, 10000.0f, 24996.0f, 1.0f,
                          336.0f); // Drinks Machine
-    tp.CreateDisplayList(YZ, 321.0f, 1.0f, 1.0f, 35458.0f, 10000.0f, 25016.0f,
-                         660.0f,
+    tp.CreateDisplayList(YZ, 321, 1.0f, 1.0f, 35458.0f, 10000.0f, 25016.0f, 660.0f,
                          300.0f); // Drinks Machine Sides
-    tp.CreateDisplayList(YZ, 322.0f, 1.0f, 1.0f, 35163.0f, 10000.0f, 25016.0f,
-                         586.2f,
+    tp.CreateDisplayList(YZ, 322, 1.0f, 1.0f, 35163.0f, 10000.0f, 25016.0f, 586.2f,
                          300.0f); // Drinks Machine Sides
-    tp.CreateDisplayList(YZ, 323.0f, 1.0f, 1.0f, 34778.0f, 10000.0f, 25016.0f,
-                         593.22f,
+    tp.CreateDisplayList(YZ, 323, 1.0f, 1.0f, 34778.0f, 10000.0f, 25016.0f, 593.22f,
                          300.0f); // Drinks Machine Sides
 
-    tp.CreateDisplayList(XZ, 324.0f, 32.0f, 32.0f, 34064.0f, 10000.0f, 26704.0f,
-                         6.0f,
+    tp.CreateDisplayList(XZ, 324, 32.0f, 32.0f, 34064.0f, 10000.0f, 26704.0f, 6.0f,
                          20.0f); // Carpet 1st doorway
-    tp.CreateDisplayList(XZ, 429.0f, 32.0f, 32.0f, 34064.0f, 10000.0f, 36643.2f,
-                         9.0f,
+    tp.CreateDisplayList(XZ, 429, 32.0f, 32.0f, 34064.0f, 10000.0f, 36643.2f, 9.0f,
                          17.4f); // Carpet 2nd doorway
 
-    tp.CreateDisplayList(YZ, 326.0f, 256.0f, 128.0f, 34260.0f, 10320.0f,
-                         36511.0f, 1.1f,
+    tp.CreateDisplayList(YZ, 326, 256.0f, 128.0f, 34260.0f, 10320.0f, 36511.0f, 1.1f,
                          1.0f); // No smoke sign doorway 2
-    tp.CreateDisplayList(YZ, 327.0f, 256.0f, 128.0f, 34256.0f, 10320.0f,
-                         27303.0f, 1.1f,
+    tp.CreateDisplayList(YZ, 327, 256.0f, 128.0f, 34256.0f, 10320.0f, 27303.0f, 1.1f,
                          1.1f); // No smoke sign doorway 1
 
-    tp.CreateDisplayList(XY, 328.0f, 256.0f, 256.0f, 33595.0f, 10828.0f,
-                         40071.0f, 0.773f, 0.855f); // Sta Travel sign
-    tp.CreateDisplayList(YZ, 329.0f, 256.0f, 64.0f, 33595.0f, 10828.0f,
-                         40071.0f, 0.855f,
+    tp.CreateDisplayList(XY, 328, 256.0f, 256.0f, 33595.0f, 10828.0f, 40071.0f,
+                         0.773f, 0.855f); // Sta Travel sign
+    tp.CreateDisplayList(YZ, 329, 256.0f, 64.0f, 33595.0f, 10828.0f, 40071.0f,
+                         0.855f,
                          1.0f); // Sta Travel sign edge
-    tp.CreateDisplayList(XY, 330.0f, 16.0f, 2.0f, 33792.0f, 10854.0f, 40071.0f, 1.0f,
+    tp.CreateDisplayList(XY, 330, 16.0f, 2.0f, 33792.0f, 10854.0f, 40071.0f, 1.0f,
                          76.0f); // Sta Travel sign bracket
-    tp.CreateDisplayList(XY, 331.0f, 256.0f, 256.0f, 33595.0f, 10828.0f,
-                         40135.0f, 0.773f, 0.855f); // Sta Travel sign 2
-    tp.CreateDisplayList(XZ, 332.0f, 2.0f, 64.0f, 33595.0f, 10828.0f, 40071.0f,
-                         99.0f,
+    tp.CreateDisplayList(XY, 331, 256.0f, 256.0f, 33595.0f, 10828.0f, 40135.0f,
+                         0.773f, 0.855f); // Sta Travel sign 2
+    tp.CreateDisplayList(XZ, 332, 2.0f, 64.0f, 33595.0f, 10828.0f, 40071.0f, 99.0f,
                          1.0f); // Sta Travel bottom
 
-    tp.CreateDisplayList(XY, 333.0f, 512.0f, 512.0f, 33808.0f, 10192.0f,
-                         25344.0f, 0.752f, 1.05f); // Telephone Back
-    tp.CreateDisplayList(XY, 334.0f, 512.0f, 32.0f, 33882.0f, 10598.0f,
-                         25173.0f, 0.557f,
+    tp.CreateDisplayList(XY, 333, 512.0f, 512.0f, 33808.0f, 10192.0f, 25344.0f,
+                         0.752f, 1.05f); // Telephone Back
+    tp.CreateDisplayList(XY, 334, 512.0f, 32.0f, 33882.0f, 10598.0f, 25173.0f,
+                         0.557f,
                          0.719f); // Telephone front
-    tp.CreateDisplayList(YZ, 335.0f, 32.0f, 256.0f, 33882.0f, 10598.0f,
-                         25173.0f, 0.719f,
+    tp.CreateDisplayList(YZ, 335, 32.0f, 256.0f, 33882.0f, 10598.0f, 25173.0f,
+                         0.719f,
                          0.7f); // Telephone side top
-    tp.CreateDisplayList(XY, 336.0f, 512.0f, 16.0f, 33882.0f, 10621.0f,
-                         25173.0f, 0.557f,
+    tp.CreateDisplayList(XY, 336, 512.0f, 16.0f, 33882.0f, 10621.0f, 25173.0f,
+                         0.557f,
                          0.75f); // Telephone front
-    tp.CreateDisplayList(YZ, 339.0f, 16.0f, 256.0f, 33882.0f, 10621.0f,
-                         25173.0f, 0.75f,
+    tp.CreateDisplayList(YZ, 339, 16.0f, 256.0f, 33882.0f, 10621.0f, 25173.0f, 0.75f,
                          0.7f); // Telephone side
-    tp.CreateDisplayList(XZ, 343.0f, 512.0f, 128.0f, 33882.0f, 10268.0f,
-                         25250.0f, 0.558f, 0.75f); // Telephone bottom
-    tp.CreateDisplayList(XZ, 348.0f, 2.0f, 2.0f, 33918.0f, 10697.84f, 25201.6f,
-                         107.0f,
+    tp.CreateDisplayList(XZ, 343, 512.0f, 128.0f, 33882.0f, 10268.0f, 25250.0f,
+                         0.558f, 0.75f); // Telephone bottom
+    tp.CreateDisplayList(XZ, 348, 2.0f, 2.0f, 33918.0f, 10697.84f, 25201.6f, 107.0f,
                          56.9f); // telephone roof
-    tp.CreateDisplayList(XZ, 349.0f, 2.0f, 2.0f, 33882.0f, 10633.0f, 25173.0f,
-                         142.6f,
+    tp.CreateDisplayList(XZ, 349, 2.0f, 2.0f, 33882.0f, 10633.0f, 25173.0f, 142.6f,
                          2.5f); // telephone roof
-    tp.CreateDisplayList(XZ, 388.0f, 2.0f, 2.0f, 33882.0f, 10633.0f, 25173.0f, 5.0f,
+    tp.CreateDisplayList(XZ, 388, 2.0f, 2.0f, 33882.0f, 10633.0f, 25173.0f, 5.0f,
                          89.6f); // telephone roof
 
-    tp.CreateDisplayList(YZ, 345.0f, 2.0f, 128.0f, 28104.0f, 10000.0f, 42756.0f,
-                         467.0f,
+    tp.CreateDisplayList(YZ, 345, 2.0f, 128.0f, 28104.0f, 10000.0f, 42756.0f, 467.0f,
                          1.0f); // KBLT side
-    tp.CreateDisplayList(YZ, 346.0f, 2.0f, 2.0f, 28014.0f, 10000.0f, 42866.0f,
-                         416.0f,
+    tp.CreateDisplayList(YZ, 346, 2.0f, 2.0f, 28014.0f, 10000.0f, 42866.0f, 416.0f,
                          98.0f); // KBLT side
 
     // TELEPHONE ROOF
     tp.CreateAngledPolygon(337, 512.0f, 256.0f, 33882.0f, 33882.0f, 33882.0f,
                            33882.0f, 10268.0f, 10268.0f, 10598.24f, 10598.24f,
-                           25250.0f, 25345.34f, 25345.34f, 25173.0f, 6.0f, 4.0f);
+                           25250.0f, 25345.34f, 25345.34f, 25173.0f, 6, 4);
     glNewList(338, GL_COMPILE);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 0.0f);
@@ -4682,17 +4521,14 @@ void DrawExtras() {
     glEnd();
     glEndList();
 
-    tp.CreateDisplayList(YZ, 347.0f, 128.0f, 128.0f, 33808.0f, 10384.0f,
-                         28519.0f, 1.0f,
+    tp.CreateDisplayList(YZ, 347, 128.0f, 128.0f, 33808.0f, 10384.0f, 28519.0f, 1.0f,
                          1.0f); // toilets sign
 
-    tp.CreateDisplayList(XZ, 419.0f, 2.0f, 128.0f, 22928.0f, 10870.0f, 42960.0f,
-                         604.0f,
+    tp.CreateDisplayList(XZ, 419, 2.0f, 128.0f, 22928.0f, 10870.0f, 42960.0f, 604.0f,
                          0.78f); // ticket box ledge
-    tp.CreateDisplayList(XY, 420.0f, 2.0f, 32.0f, 22928.0f, 10870.0f, 42960.0f,
-                         604.0f,
+    tp.CreateDisplayList(XY, 420, 2.0f, 32.0f, 22928.0f, 10870.0f, 42960.0f, 604.0f,
                          1.0f); // ticket box ledge edge
-    tp.CreateDisplayList(YZ, 421.0f, 32.0f, 2.0f, 22928.0f, 10870.0f, 42960.0f, 1.0f,
+    tp.CreateDisplayList(YZ, 421, 32.0f, 2.0f, 22928.0f, 10870.0f, 42960.0f, 1.0f,
                          49.0f); // ticket box ledge edge side
 }
 
@@ -4987,142 +4823,121 @@ void DisplayLargerTextures() {
 void DrawLargerTextures() {
     // CHANC
     // Gap between chanc and phy sci y1142 z3248
-    tp.CreateYtoZWindowList(350.0f, 35879.0f, 10000.0f, 1147.0f, 22096.0f,
-                            1540.0f, 0.714f,
+    tp.CreateYtoZWindowList(350, 35879.0f, 10000.0f, 1147.0f, 22096.0f, 1540.0f,
+                            0.714f,
                             0.95f); // w190.63  245
-    tp.CreateYtoZWindowList(351.0f, 35879.0f, 10000.0f, 1147.0f, 23740.0f,
-                            1605.0f, 0.714f,
+    tp.CreateYtoZWindowList(351, 35879.0f, 10000.0f, 1147.0f, 23740.0f, 1605.0f,
+                            0.714f,
                             0.98f); // w183
     // chanc windows
-    tp.CreateYtoZWindowList(352.0f, 33895.0f, 10256.0f, 576.0f, 9599.0f, 867.0f,
-                            0.664f,
+    tp.CreateYtoZWindowList(352, 33895.0f, 10256.0f, 576.0f, 9599.0f, 867.0f, 0.664f,
                             1.0f); // w170
     // chanc doors
-    tp.CreateYtoZWindowList(382.0f, 33895.0f, 10000.0f, 832.0f, 10559.0f,
-                            867.0f, 0.96f,
+    tp.CreateYtoZWindowList(382, 33895.0f, 10000.0f, 832.0f, 10559.0f, 867.0f, 0.96f,
                             1.0f); // w246
 
     // PHYS SCI
     // phys sci upstairs
-    tp.CreateYtoZWindowList(353.0f, 33895.0f, 11411.0f, 445.0f, 26702.0f,
-                            883.0f, 0.504f,
+    tp.CreateYtoZWindowList(353, 33895.0f, 11411.0f, 445.0f, 26702.0f, 883.0f,
+                            0.504f,
                             1.0f); // 129x256
     // phys sci toilets
-    tp.CreateYtoZWindowList(354.0f, 33895.0f, 10576.0f, 255.0f, 27662.0f,
-                            883.0f, 0.578f,
+    tp.CreateYtoZWindowList(354, 33895.0f, 10576.0f, 255.0f, 27662.0f, 883.0f,
+                            0.578f,
                             1.0f); // 73.93x256
     // phys sci toilets 3rd
-    tp.CreateYtoZWindowList(355.0f, 33895.0f, 10576.0f, 255.0f, 33422.0f,
-                            919.0f, 0.57f,
+    tp.CreateYtoZWindowList(355, 33895.0f, 10576.0f, 255.0f, 33422.0f, 919.0f, 0.57f,
                             1.0f); // 71.04x256
     // serving window
-    tp.CreateYtoZWindowList(356.0f, 33895.0f, 10320.0f, 511.0f, 34419.0f,
-                            845.0f, 0.605f,
+    tp.CreateYtoZWindowList(356, 33895.0f, 10320.0f, 511.0f, 34419.0f, 845.0f,
+                            0.605f,
                             1.0f); // 155x256
     // last window
-    tp.CreateYtoZWindowList(357.0f, 33895.0f, 10320.0f, 511.0f, 38239.0f,
-                            320.0f, 1.0f,
+    tp.CreateYtoZWindowList(357, 33895.0f, 10320.0f, 511.0f, 38239.0f, 320.0f, 1.0f,
                             0.626f); // 256x160.3
     // first purple post window
-    tp.CreateYtoZWindowList(358.0f, 33895.0f, 10000.0f, 832.0f, 31519.0f,
-                            865.0f, 0.96f,
+    tp.CreateYtoZWindowList(358, 33895.0f, 10000.0f, 832.0f, 31519.0f, 865.0f, 0.96f,
                             1.0f); // 246.2x256
     // second purple post window
-    tp.CreateYtoZWindowList(359.0f, 33895.0f, 10000.0f, 832.0f, 32461.0f,
-                            883.0f, 0.94f,
+    tp.CreateYtoZWindowList(359, 33895.0f, 10000.0f, 832.0f, 32461.0f, 883.0f, 0.94f,
                             1.0f); // 241.2x256
     // third purple post window
-    tp.CreateYtoZWindowList(360.0f, 33895.0f, 10000.0f, 832.0f, 35341.0f,
-                            867.0f, 0.96f,
+    tp.CreateYtoZWindowList(360, 33895.0f, 10000.0f, 832.0f, 35341.0f, 867.0f, 0.96f,
                             1.0f); // 246.2x256
     // first red window
-    tp.CreateYtoZWindowList(361.0f, 33865.0f, 10000.0f, 832.0f, 39216.0f,
-                            839.0f, 0.992f,
+    tp.CreateYtoZWindowList(361, 33865.0f, 10000.0f, 832.0f, 39216.0f, 839.0f,
+                            0.992f,
                             1.0f); // 254.5x256
     // second red window
-    tp.CreateYtoZWindowList(362.0f, 33865.0f, 10000.0f, 832.0f, 40151.0f,
-                            448.0f, 1.0f,
+    tp.CreateYtoZWindowList(362, 33865.0f, 10000.0f, 832.0f, 40151.0f, 448.0f, 1.0f,
                             0.54f); // 256x138
 
-    tp.CreateXtoYWindowList(363.0f, 43040.0f, 29512.0f, 1280.0f, 10288.0f,
-                            480.0f, 1.0f,
+    tp.CreateXtoYWindowList(363, 43040.0f, 29512.0f, 1280.0f, 10288.0f, 480.0f, 1.0f,
                             0.745f); // NEXUS
-    tp.CreateXtoYWindowList(364.0f, 43040.0f, 28360.0f, 896.0f, 10320.0f,
-                            448.0f, 1.0f,
+    tp.CreateXtoYWindowList(364, 43040.0f, 28360.0f, 896.0f, 10320.0f, 448.0f, 1.0f,
                             1.0f); // Glassboard 1
-    tp.CreateXtoYWindowList(365.0f, 43040.0f, 24456.0f, 896.0f, 10320.0f,
-                            448.0f, 1.0f,
+    tp.CreateXtoYWindowList(365, 43040.0f, 24456.0f, 896.0f, 10320.0f, 448.0f, 1.0f,
                             1.0f); // Glassboard 2
-    tp.CreateXtoYWindowList(366.0f, 43040.0f, 7304.0f, 768.0f, 10256.0f, 384.0f,
-                            1.0f,
+    tp.CreateXtoYWindowList(366, 43040.0f, 7304.0f, 768.0f, 10256.0f, 384.0f, 1.0f,
                             1.0f); // Glassboard 2
-    tp.CreateXtoYWindowList(367.0f, 42756.0f, 25640.0f, 2432.0f, 10000.0f,
-                            902.0f, 1.0f,
+    tp.CreateXtoYWindowList(367, 42756.0f, 25640.0f, 2432.0f, 10000.0f, 902.0f, 1.0f,
                             0.742f); // KBLT
 
-    tp.CreateYtoZWindowList(368.0f, 33840.0f, 9086.0f, 2200.0f, 4688.0f,
-                            1100.0f, 1.0f, 1.0f);
-    tp.CreateXtoYWindowList(369.0f, 4688.0f, 31632.0f, 2208.0f, 9086.0f,
-                            2208.0f, 1.0f, 1.0f);
+    tp.CreateYtoZWindowList(368, 33840.0f, 9086.0f, 2200.0f, 4688.0f, 1100.0f,
+                            1.0f, 1.0f);
+    tp.CreateXtoYWindowList(369, 4688.0f, 31632.0f, 2208.0f, 9086.0f, 2208.0f,
+                            1.0f, 1.0f);
 
-    tp.CreateXtoYWindowList(370.0f, 25016.0, 35458.0, 317.12f, 10000.0f, 660.0f,
-                            0.96f,
+    tp.CreateXtoYWindowList(370, 25016.0, 35458.0, 317.12f, 10000.0f, 660.0f, 0.96f,
                             1.0f); // Coke Machine
-    tp.CreateXtoYWindowList(371.0f, 25016.0f, 35163.0f, 255.0f, 10000.0f,
-                            586.2f, 0.867f,
+    tp.CreateXtoYWindowList(371, 25016.0f, 35163.0f, 255.0f, 10000.0f, 586.2f,
+                            0.867f,
                             1.0f); // Coffee Machine
-    tp.CreateXtoYWindowList(372.0f, 25016.0f, 34778.0f, 350.0f, 10000.0f,
-                            593.22f, 0.59f, 1.0f); // Sweet Machine
+    tp.CreateXtoYWindowList(372, 25016.0f, 34778.0f, 350.0f, 10000.0f, 593.22f,
+                            0.59f, 1.0f); // Sweet Machine
     // phys sci door 1
-    tp.CreateYtoZWindowList(373.0f, 34320.0f, 10000.0f, 832.0f, 26752.0f,
-                            552.0f, 1.0f, 0.66f); // 256x169.85
+    tp.CreateYtoZWindowList(373, 34320.0f, 10000.0f, 832.0f, 26752.0f, 552.0f,
+                            1.0f, 0.66f); // 256x169.85
     // phys sci toilets
-    tp.CreateYtoZWindowList(374.0f, 33872.0f, 10000.0f, 768.0f, 28646.0f,
-                            322.0f, 1.0f, 0.833f); // 256x106.67 toilet doors
+    tp.CreateYtoZWindowList(374, 33872.0f, 10000.0f, 768.0f, 28646.0f, 322.0f,
+                            1.0f, 0.833f); // 256x106.67 toilet doors
     // phys sci door 2
-    tp.CreateYtoZWindowList(375.0f, 34342.0f, 10000.0f, 832.0f, 36639.0f,
-                            1216.0f, 0.68f, 1.0f); // 256x175.16
+    tp.CreateYtoZWindowList(375, 34342.0f, 10000.0f, 832.0f, 36639.0f, 1216.0f,
+                            0.68f, 1.0f); // 256x175.16
 
-    tp.CreateXtoYWindowList(379.0f, 43152.0f, 33232.0f, 384.0f, 10000.0f,
-                            768.0f, 1.0f,
+    tp.CreateXtoYWindowList(379, 43152.0f, 33232.0f, 384.0f, 10000.0f, 768.0f, 1.0f,
                             1.0f); // GCL1 doorway
-    tp.CreateXtoYWindowList(380.0f, 43152.0f, 32720.0f, 384.0f, 10000.0f,
-                            768.0f, 1.0f,
+    tp.CreateXtoYWindowList(380, 43152.0f, 32720.0f, 384.0f, 10000.0f, 768.0f, 1.0f,
                             1.0f); // GCL1 doorway
 
-    tp.CreateYtoZWindowList(381.0f, 36047.0f, 9422.0f, 1410.0f, 41127.0f,
-                            1929.0f, 0.725f, 1.0f); // Exit East  375x512
+    tp.CreateYtoZWindowList(381, 36047.0f, 9422.0f, 1410.0f, 41127.0f, 1929.0f,
+                            0.725f, 1.0f); // Exit East  375x512
 
-    tp.CreateXtoYWindowList(383.0f, 43152.0f, 11055.0f, 1014.0f, 10388.0f,
-                            380.0f, 1.0f,
+    tp.CreateXtoYWindowList(383, 43152.0f, 11055.0f, 1014.0f, 10388.0f, 380.0f, 1.0f,
                             0.75f); // 256x96 Library Window downstairs
-    tp.CreateXtoYWindowList(384.0f, 43152.0f, 8879.0f, 1014.0f, 11412.0f,
-                            444.0f, 1.0f,
+    tp.CreateXtoYWindowList(384, 43152.0f, 8879.0f, 1014.0f, 11412.0f, 444.0f, 1.0f,
                             0.876f); // 256x112 Library Window upstairs
-    tp.CreateXtoYWindowList(385.0f, 43120.0f, 8189.0f, 614.0f, 10000.0f, 768.0f,
-                            0.78f,
+    tp.CreateXtoYWindowList(385, 43120.0f, 8189.0f, 614.0f, 10000.0f, 768.0f, 0.78f,
                             1.0f); // library door 1
-    tp.CreateXtoYWindowList(386.0f, 43152.0f, 8880.0f, 2072.0f, 9998.0f, 770.0f,
-                            1.0f,
+    tp.CreateXtoYWindowList(386, 43152.0f, 8880.0f, 2072.0f, 9998.0f, 770.0f, 1.0f,
                             0.742f); // 256x136 library door 2
-    tp.CreateXtoYWindowList(387.0f, 43152.0f, 23023.0f, 1014.0f, 10305.0f,
-                            464.0f, 1.0f,
+    tp.CreateXtoYWindowList(387, 43152.0f, 23023.0f, 1014.0f, 10305.0f, 464.0f, 1.0f,
                             0.914f); // silver long library window
-    tp.CreateXtoYWindowList(389.0f, 43096.0f, 8803.0f, 77.0f, 9998.0f, 775.0f, 0.6f,
+    tp.CreateXtoYWindowList(389, 43096.0f, 8803.0f, 77.0f, 9998.0f, 775.0f, 0.6f,
                             1.0f); // library post
-    tp.CreateYtoZWindowList(414.0f, 8803.0f, 9998.0f, 775.0f, 43096.0f, 77.0f, 1.0f,
+    tp.CreateYtoZWindowList(414, 8803.0f, 9998.0f, 775.0f, 43096.0f, 77.0f, 1.0f,
                             0.5625f); // library post
-    tp.CreateYtoZWindowList(422.0f, 33872.0f, 10768.0f, 64.0f, 28646.0f, 856.0f,
+    tp.CreateYtoZWindowList(422, 33872.0f, 10768.0f, 64.0f, 28646.0f, 856.0f,
                             1.0f, 1.0f); // top of toilet door female
-    tp.CreateYtoZWindowList(423.0f, 33872.0f, 10768.0f, 64.0f, 30566.0f, 840.0f,
+    tp.CreateYtoZWindowList(423, 33872.0f, 10768.0f, 64.0f, 30566.0f, 840.0f,
                             1.0f, 1.0f); // top of toilet door male
-    tp.CreateYtoZWindowList(450.0f, 2352.0f, 10000.0f, 896.0f, 41168.0f,
-                            1792.0f, 1.0f, 1.0f); // west exit
-    tp.CreateDisplayList(XZ, 451.0f, 400.0f, 256.0f, 2352.0f, 10896.0f,
-                         41168.0f, 0.64f, 7.0f); // above west exit
-    tp.CreateXtoYWindowList(452.0f, 41127.0, 35280.0f, 320.0f, 10128.0f, 704.0f,
-                            0.91f, 1.0f); // w 233 window by steps (end of phys sci)
-    tp.CreateDisplayList(XZ, 453.0f, 2.0f, 2.0f, 35856.0f, 9400.0f, 40500.0f, 180.0f,
+    tp.CreateYtoZWindowList(450, 2352.0f, 10000.0f, 896.0f, 41168.0f, 1792.0f,
+                            1.0f, 1.0f); // west exit
+    tp.CreateDisplayList(XZ, 451, 400.0f, 256.0f, 2352.0f, 10896.0f, 41168.0f,
+                         0.64f, 7.0f); // above west exit
+    tp.CreateXtoYWindowList(452, 41127.0, 35280.0f, 320.0f, 10128.0f, 704.0f, 0.91f,
+                            1.0f); // w 233 window by steps (end of phys sci)
+    tp.CreateDisplayList(XZ, 453, 2.0f, 2.0f, 35856.0f, 9400.0f, 40500.0f, 180.0f,
                          1380.0f); // block at bottom of steps
 }
 
@@ -5148,85 +4963,85 @@ void DisplayGrass() {
 }
 
 void DrawGrass() {
-    tp.CreateDisplayList(XZ, 79.0f, 64.0f, 64.0f, 4848.0f, 9086.0f, 3408.0f,
+    tp.CreateDisplayList(XZ, 79, 64.0f, 64.0f, 4848.0f, 9086.0f, 3408.0f,
                          417.5f, 45.0f);
-    tp.CreateDisplayList(XZ, 111.0f, 64.0f, 64.0f, 4848.0f, 10000.0f, 10000.0f,
+    tp.CreateDisplayList(XZ, 111, 64.0f, 64.0f, 4848.0f, 10000.0f, 10000.0f,
                          417.5f, 481.5f);
 
     // Slope ate the entrance
     tp.CreateAngledPolygon(198, 64.0f, 64.0f, 4848.0f, 31568.0f, 31568.0f,
                            4848.0f, 9086.0f, 9086.0f, 10000.0f, 10000.0f,
-                           6200.0f, 6200.0f, 10000.0f, 10000.0f, 1.0f, 1.0f);
+                           6200.0f, 6200.0f, 10000.0f, 10000.0f, 1, 1);
     // Lower hill in the centre
-    tp.CreateDisplayList(XZ, 460.0f, 64.0f, 64.0f, 9000.0f, 10200.0f, 19000.0f,
+    tp.CreateDisplayList(XZ, 460, 64.0f, 64.0f, 9000.0f, 10200.0f, 19000.0f,
                          203.125f, 281.25f);
     tp.CreateAngledPolygon(461, 64.0f, 64.0f, 9000.0f, 22000.0f, 22000.0f,
                            9000.0f, 10000.0f, 10000.0f, 10200.0f, 10200.0f,
-                           17000.0f, 17000.0f, 19000.0f, 19000.0f, 1.0f, 1.0f);
+                           17000.0f, 17000.0f, 19000.0f, 19000.0f, 1, 1);
 
     tp.CreateAngledPolygon(462, 64.0f, 64.0f, 9000.0f, 22000.0f, 22000.0f,
                            9000.0f, 10200.0f, 10200.0f, 10000.0f, 10000.0f,
-                           37000.0f, 37000.0f, 40000.0f, 40000.0f, 1.0f, 1.0f);
+                           37000.0f, 37000.0f, 40000.0f, 40000.0f, 1, 1);
 
     tp.CreateAngledPolygon(463, 64.0f, 64.0f, 22000.0f, 27000.0f, 27000.0f,
                            22000.0f, 10200.0f, 10000.0f, 10000.0f, 10200.0f,
-                           19000.0f, 19000.0f, 37000.0f, 37000.0f, 1.0f, 1.0f);
+                           19000.0f, 19000.0f, 37000.0f, 37000.0f, 1, 1);
 
     tp.CreateAngledPolygon(464, 64.0f, 64.0f, 6500.0f, 9000.0f, 9000.0f,
                            6500.0f, 10000.0f, 10200.0f, 10200.0f, 10000.0f,
-                           19000.0f, 19000.0f, 37000.0f, 37000.0f, 1.0f, 1.0f);
+                           19000.0f, 19000.0f, 37000.0f, 37000.0f, 1, 1);
 
     tp.CreateAngledPolygon(465, 64.0f, 64.0f, 9000.0f, 9000.0f, 9000.0f,
                            6500.0f, 10000.0f, 10000.0f, 10200.0f, 10000.0f,
-                           17000.0f, 17000.0f, 19000.0f, 19000.0f, 4.0f, 1.0f);
+                           17000.0f, 17000.0f, 19000.0f, 19000.0f, 4, 1);
 
     tp.CreateAngledPolygon(466, 64.0f, 64.0f, 22000.0f, 22000.0f, 27000.0f,
                            22000.0f, 10000.0f, 10000.0f, 10000.0f, 10200.0f,
-                           17000.0f, 17000.0f, 19000.0f, 19000.0f, 1.0f, 1.0f);
+                           17000.0f, 17000.0f, 19000.0f, 19000.0f, 1, 1);
 
     tp.CreateAngledPolygon(467, 64.0f, 64.0f, 22000.0f, 27000.0f, 22000.0f,
                            22000.0f, 10200.0f, 10000.0f, 10000.0f, 10000.0f,
-                           37000.0f, 37000.0f, 40000.0f, 40000.0f, 4.0f, 1.0f);
+                           37000.0f, 37000.0f, 40000.0f, 40000.0f, 4, 1);
 
     tp.CreateAngledPolygon(468, 64.0f, 64.0f, 6500.0f, 9000.0f, 9000.0f,
                            9000.0f, 10000.0f, 10200.0f, 10000.0f, 10000.0f,
-                           37000.0f, 37000.0f, 40000.0f, 40000.0f, 1.0f, 1.0f);
+                           37000.0f, 37000.0f, 40000.0f, 40000.0f, 1, 1);
 
     // higher hilltop
-    tp.CreateDisplayList(XZ, 477.0f, 64.0f, 64.0f, 14000.0f, 10425.0f, 28000.0f,
+    tp.CreateDisplayList(XZ, 477, 64.0f, 64.0f, 14000.0f, 10425.0f, 28000.0f,
                          62.5f, 78.125f);
 
     tp.CreateAngledPolygon(469, 64.0f, 64.0f, 14000.0f, 18000.0f, 18000.0f,
                            14000.0f, 10200.0f, 10200.0f, 10425.0f, 10425.0f,
-                           23000.0f, 23000.0f, 28000.0f, 28000.0f, 1.0f, 1.0f);
+                           23000.0f, 23000.0f, 28000.0f, 28000.0f, 1, 1);
 
     tp.CreateAngledPolygon(470, 64.0f, 64.0f, 14000.0f, 18000.0f, 18000.0f,
                            14000.0f, 10425.0f, 10425.0f, 10200.0f, 10200.0f,
-                           33000.0f, 33000.0f, 36000.0f, 36000.0f, 1.0f, 1.0f);
+                           33000.0f, 33000.0f, 36000.0f, 36000.0f, 1, 1);
 
     tp.CreateAngledPolygon(471, 64.0f, 64.0f, 10000.0f, 14000.0f, 14000.0f,
                            10000.0f, 10200.0f, 10425.0f, 10425.0f, 10200.0f,
-                           28000.0f, 28000.0f, 33000.0f, 33000.0f, 1.0f, 1.0f);
+                           28000.0f, 28000.0f, 33000.0f, 33000.0f, 1, 1);
 
     tp.CreateAngledPolygon(472, 64.0f, 64.0f, 18000.0f, 22000.0f, 22000.0f,
                            18000.0f, 10425.0f, 10200.0f, 10200.0f, 10425.0f,
-                           28000.0f, 28000.0f, 33000.0f, 33000.0f, 1.0f, 1.0f);
+                           28000.0f, 28000.0f, 33000.0f, 33000.0f, 1, 1);
 
     tp.CreateAngledPolygon(473, 64.0f, 64.0f, 14000.0f, 14000.0f, 14000.0f,
                            10000.0f, 10200.0f, 10200.0f, 10425.0f, 10200.0f,
-                           23000.0f, 23000.0f, 28000.0f, 28000.0f, 4.0f, 1.0f);
+                           23000.0f, 23000.0f, 28000.0f, 28000.0f, 4, 1);
 
     tp.CreateAngledPolygon(474, 64.0f, 64.0f, 18000.0f, 18000.0f, 22000.0f,
                            18000.0f, 10200.0f, 10200.0f, 10200.0f, 10425.0f,
-                           23000.0f, 23000.0f, 28000.0f, 28000.0f, 1.0f, 1.0f);
+                           23000.0f, 23000.0f, 28000.0f, 28000.0f, 1, 1);
 
     tp.CreateAngledPolygon(475, 64.0f, 64.0f, 18000.0f, 22000.0f, 18000.0f,
                            18000.0f, 10425.0f, 10200.0f, 10200.0f, 10200.0f,
-                           33000.0f, 33000.0f, 36000.0f, 36000.0f, 1.0f, 1.0f);
+                           33000.0f, 33000.0f, 36000.0f, 36000.0f, 1, 1);
 
     tp.CreateAngledPolygon(476, 64.0f, 64.0f, 10000.0f, 14000.0f, 14000.0f,
                            14000.0f, 10200.0f, 10425.0f, 10200.0f, 10200.0f,
-                           33000.0f, 33000.0f, 36000.0f, 36000.0f, 1.0f, 1.0f);
+                           33000.0f, 33000.0f, 36000.0f, 36000.0f, 1, 1);
 }
 
 // --------------------------------------------------------------------------------------
@@ -5310,10 +5125,9 @@ void DrawLights() {
     glEnd();
     glEndList();
 
-    tp.CreateDisplayList(YZ, 377.0f, 2.0f, 8.0f, 32900.0f, 11330.0f, 11150.0f,
-                         220.0f,
+    tp.CreateDisplayList(YZ, 377, 2.0f, 8.0f, 32900.0f, 11330.0f, 11150.0f, 220.0f,
                          1.0f); // supports
-    tp.CreateDisplayList(XY, 378.0f, 8.0f, 2.0f, 32900.0f, 11330.0f, 11150.0f, 1.0f,
+    tp.CreateDisplayList(XY, 378, 8.0f, 2.0f, 32900.0f, 11330.0f, 11150.0f, 1.0f,
                          220.0f); // supports
 }
 
@@ -5379,9 +5193,9 @@ void DrawCylinders() {
     glEnd();
     glEndList();
 
-    tp.CreateDisplayList(XZ, 439.0f, 1.0f, 1.0f, 33800.0f, 10340.0f, 34710.0f,
+    tp.CreateDisplayList(XZ, 439, 1.0f, 1.0f, 33800.0f, 10340.0f, 34710.0f,
                          120.0f, 276.0f);
-    tp.CreateDisplayList(XY, 440.0f, 4.0f, 16.0f, 33800.0f, 10324.0f, 34710.0f,
+    tp.CreateDisplayList(XY, 440, 4.0f, 16.0f, 33800.0f, 10324.0f, 34710.0f,
                          30.0f, 1.0f);
 }
 
@@ -5471,76 +5285,76 @@ void DisplayStepBricks() {
     glCallList(507);
 }
 void DrawStepBricks() {
-    tp.CreateDisplayList(YZ, 478.0f, 128.0f, 128.0f, 31582.0f, 9914.0f, 9872.0f,
+    tp.CreateDisplayList(YZ, 478, 128.0f, 128.0f, 31582.0f, 9914.0f, 9872.0f,
                          1.7188f, 1.75f);
-    tp.CreateDisplayList(YZ, 488.0f, 32.0f, 128.0f, 31582.0f, 10134.0f, 9868.0f,
+    tp.CreateDisplayList(YZ, 488, 32.0f, 128.0f, 31582.0f, 10134.0f, 9868.0f,
                          1.0f, 1.78f);
 
-    tp.CreateDisplayList(YZ, 479.0f, 128.0f, 128.0f, 31582.0f, 9530.0f, 9006.0f,
+    tp.CreateDisplayList(YZ, 479, 128.0f, 128.0f, 31582.0f, 9530.0f, 9006.0f,
                          3.21875f, 6.0f);
-    tp.CreateDisplayList(YZ, 489.0f, 32.0f, 128.0f, 31582.0f, 9942.0f, 9004.0f,
+    tp.CreateDisplayList(YZ, 489, 32.0f, 128.0f, 31582.0f, 9942.0f, 9004.0f,
                          1.0f, 2.55f);
 
-    tp.CreateDisplayList(YZ, 480.0f, 128.0f, 128.0f, 31582.0f, 9350.0f, 7918.0f,
+    tp.CreateDisplayList(YZ, 480, 128.0f, 128.0f, 31582.0f, 9350.0f, 7918.0f,
                          2.90625f, 6.0f);
-    tp.CreateDisplayList(YZ, 490.0f, 32.0f, 128.0f, 31582.0f, 9722.0f, 7916.0f,
+    tp.CreateDisplayList(YZ, 490, 32.0f, 128.0f, 31582.0f, 9722.0f, 7916.0f,
                          1.0f, 3.0f);
 
-    tp.CreateDisplayList(YZ, 481.0f, 128.0f, 128.0f, 31582.0f, 9158.0f, 6830.0f,
+    tp.CreateDisplayList(YZ, 481, 128.0f, 128.0f, 31582.0f, 9158.0f, 6830.0f,
                          2.375f, 6.0f);
-    tp.CreateDisplayList(YZ, 491.0f, 32.0f, 128.0f, 31582.0f, 9462.0f, 6830.0f,
+    tp.CreateDisplayList(YZ, 491, 32.0f, 128.0f, 31582.0f, 9462.0f, 6830.0f,
                          1.0f, 2.99f);
 
-    tp.CreateDisplayList(YZ, 482.0f, 128.0f, 128.0f, 31582.0f, 8966.0f, 4590.0f,
+    tp.CreateDisplayList(YZ, 482, 128.0f, 128.0f, 31582.0f, 8966.0f, 4590.0f,
                          2.0f, 15.0f);
-    tp.CreateDisplayList(YZ, 492.0f, 32.0f, 128.0f, 31582.0f, 9222.0f, 4590.0f,
+    tp.CreateDisplayList(YZ, 492, 32.0f, 128.0f, 31582.0f, 9222.0f, 4590.0f,
                          1.0f, 12.0f);
 
     tp.CreateAngledPolygon(483, 128.0f, 128.0f, 31582.0f, 31582.0f, 31582.0f,
                            31582.0f, 9094.0f, 9094.0f, 9462.0f, 9094.0f,
-                           5742.0f, 6830.0f, 6830.0f, 5742.0f, 5.0f, 1.0f);
-    tp.CreateDisplayList(YZ, 493.0f, 32.0f, 128.0f, 31582.0f, 9222.0f, 6126.0f,
+                           5742.0f, 6830.0f, 6830.0f, 5742.0f, 5, 1);
+    tp.CreateDisplayList(YZ, 493, 32.0f, 128.0f, 31582.0f, 9222.0f, 6126.0f,
                          1.0f, 5.92f);
 
     tp.CreateAngledPolygon(484, 128.0f, 128.0f, 31582.0f, 31582.0f, 31582.0f,
                            31582.0f, 9414.0f, 9414.0f, 9722.0f, 9414.0f,
-                           7086.0f, 7918.0f, 7918.0f, 7086.0f, 5.0f, 1.0f);
-    tp.CreateDisplayList(YZ, 494.0f, 32.0f, 128.0f, 31582.0f, 9462.0f, 7213.0f,
+                           7086.0f, 7918.0f, 7918.0f, 7086.0f, 5, 1);
+    tp.CreateDisplayList(YZ, 494, 32.0f, 128.0f, 31582.0f, 9462.0f, 7213.0f,
                          1.0f, 5.93f);
 
     tp.CreateAngledPolygon(485, 128.0f, 128.0f, 31582.0f, 31582.0f, 31582.0f,
                            31582.0f, 9594.0f, 9594.0f, 9942.0f, 9722.0f,
-                           8302.0f, 9006.0f, 9006.0f, 8302.0f, 5.0f, 1.0f);
-    tp.CreateDisplayList(YZ, 495.0f, 32.0f, 128.0f, 31582.0f, 9722.0f, 8302.0f,
+                           8302.0f, 9006.0f, 9006.0f, 8302.0f, 5, 1);
+    tp.CreateDisplayList(YZ, 495, 32.0f, 128.0f, 31582.0f, 9722.0f, 8302.0f,
                          1.0f, 5.82f);
 
     tp.CreateAngledPolygon(486, 128.0f, 128.0f, 31582.0f, 31582.0f, 31582.0f,
                            31582.0f, 9914.0f, 9914.0f, 10134.0f, 9914.0f,
-                           9262.0f, 9872.0f, 9872.0f, 9262.0f, 5.0f, 1.0f);
-    tp.CreateDisplayList(YZ, 496.0f, 32.0f, 128.0f, 31582.0f, 9942.0f, 9332.4f,
+                           9262.0f, 9872.0f, 9872.0f, 9262.0f, 5, 1);
+    tp.CreateDisplayList(YZ, 496, 32.0f, 128.0f, 31582.0f, 9942.0f, 9332.4f,
                          1.0f, 4.545f);
 
-    tp.CreateDisplayList(XZ, 497.0f, 64.0f, 128.0f, 31518.0f, 10166.0f, 9868.0f,
+    tp.CreateDisplayList(XZ, 497, 64.0f, 128.0f, 31518.0f, 10166.0f, 9868.0f,
                          1.0f, 1.78f);
-    tp.CreateDisplayList(XZ, 498.0f, 64.0f, 128.0f, 31518.0f, 9974.0f, 9004.0f,
+    tp.CreateDisplayList(XZ, 498, 64.0f, 128.0f, 31518.0f, 9974.0f, 9004.0f,
                          1.0f, 2.55f);
-    tp.CreateDisplayList(XZ, 499.0f, 64.0f, 128.0f, 31518.0f, 9754.0f, 7916.0f,
+    tp.CreateDisplayList(XZ, 499, 64.0f, 128.0f, 31518.0f, 9754.0f, 7916.0f,
                          1.0f, 3.0f);
-    tp.CreateDisplayList(XZ, 500.0f, 64.0f, 128.0f, 31518.0f, 9494.0f, 6830.0f,
+    tp.CreateDisplayList(XZ, 500, 64.0f, 128.0f, 31518.0f, 9494.0f, 6830.0f,
                          1.0f, 2.99f);
-    tp.CreateDisplayList(XZ, 501.0f, 64.0f, 128.0f, 31518.0f, 9254.0f, 4590.0f,
+    tp.CreateDisplayList(XZ, 501, 64.0f, 128.0f, 31518.0f, 9254.0f, 4590.0f,
                          1.0f, 12.0f);
-    tp.CreateDisplayList(XZ, 502.0f, 64.0f, 128.0f, 31518.0f, 9254.0f, 6126.0f,
+    tp.CreateDisplayList(XZ, 502, 64.0f, 128.0f, 31518.0f, 9254.0f, 6126.0f,
                          1.0f, 5.92f);
-    tp.CreateDisplayList(XZ, 503.0f, 64.0f, 128.0f, 31518.0f, 9494.0f, 7213.0f,
+    tp.CreateDisplayList(XZ, 503, 64.0f, 128.0f, 31518.0f, 9494.0f, 7213.0f,
                          1.0f, 5.95f);
-    tp.CreateDisplayList(XZ, 504.0f, 64.0f, 128.0f, 31518.0f, 9754.0f, 8302.0f,
+    tp.CreateDisplayList(XZ, 504, 64.0f, 128.0f, 31518.0f, 9754.0f, 8302.0f,
                          1.0f, 5.82f);
-    tp.CreateDisplayList(XZ, 505.0f, 64.0f, 128.0f, 31518.0f, 9974.0f, 9332.4f,
+    tp.CreateDisplayList(XZ, 505, 64.0f, 128.0f, 31518.0f, 9974.0f, 9332.4f,
                          1.0f, 4.545f);
-    tp.CreateDisplayList(XY, 506.0f, 64.0f, 32.0f, 31518.0f, 10134.0f,
-                         10095.84f, 1.0f, 1.0f);
-    tp.CreateDisplayList(XY, 507.0f, 64.0f, 64.0f, 31518.0f, 9914.0f, 10095.84f,
+    tp.CreateDisplayList(XY, 506, 64.0f, 32.0f, 31518.0f, 10134.0f, 10095.84f,
+                         1.0f, 1.0f);
+    tp.CreateDisplayList(XY, 507, 64.0f, 64.0f, 31518.0f, 9914.0f, 10095.84f,
                          1.0f, 3.4376f);
 }
 
@@ -5548,11 +5362,11 @@ void DrawStepBricks() {
 //  Map and Welcome screens
 //--------------------------------------------------------------------------------------
 void DrawMapExit() {
-    tp.CreateDisplayList(0, 448.0f, 256.0f, 256.0f, 10.0f, 10.0f, 0.0f, 0.855f,
+    tp.CreateDisplayList(0, 448, 256.0f, 256.0f, 10.0f, 10.0f, 0.0f, 0.855f,
                          1.0f); // map
-    tp.CreateDisplayList(0, 449.0f, 512.0f, 512.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+    tp.CreateDisplayList(0, 449, 512.0f, 512.0f, 0.0f, 0.0f, 0.0f, 1.0f,
                          1.0f); // welcome screen
-    tp.CreateDisplayList(0, 454.0f, 256.0f, 64.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+    tp.CreateDisplayList(0, 454, 256.0f, 64.0f, 0.0f, 0.0f, 0.0f, 1.0f,
                          1.0f); // welcome screen
 }
 

@@ -17,19 +17,19 @@
 // Set initial values
 //--------------------------------------------------------------------------------------
 Camera::Camera() {
-    m_rotateSpeed = 0.0;
-    m_moveSpeed   = 0.0;
+    m_rotateSpeed = 0.0f;
+    m_moveSpeed   = 0.0f;
 
     ResetXYZ();
 
-    m_deltaMoveFB = 0.0;
-    m_deltaMoveLR = 0.0;
-    m_deltaMoveUD = 0.0;
+    m_deltaMoveFB = 0.0f;
+    m_deltaMoveLR = 0.0f;
+    m_deltaMoveUD = 0.0f;
 
-    m_rotateAngleLR = 0.0;
-    m_rotateAngleUD = 0.0;
-    m_deltaAngleLR  = 0.0;
-    m_deltaAngleUD  = 0.0;
+    m_rotateAngleLR = 0.0f;
+    m_rotateAngleUD = 0.0f;
+    m_deltaAngleLR  = 0.0f;
+    m_deltaAngleUD  = 0.0f;
 
     m_CollisionDetectionOn = true;
 }
@@ -54,26 +54,26 @@ void Camera::ResetXYZ() {
 //--------------------------------------------------------------------------------------
 //  Determine direction
 //--------------------------------------------------------------------------------------
-void Camera::DirectionFB(int const &tempMove) {
+void Camera::DirectionFB(GLfloat tempMove) {
     m_deltaMoveFB = tempMove;
 }
 //--------------------------------------------------------------------------------------
-void Camera::DirectionLR(int const &tempMove) {
+void Camera::DirectionLR(GLfloat tempMove) {
     m_deltaMoveLR = tempMove;
 }
 //--------------------------------------------------------------------------------------
 // Not used but allows up and don movement
-void Camera::DirectionUD(int const &tempMove) {
+void Camera::DirectionUD(GLfloat tempMove) {
     m_deltaMoveUD = tempMove;
 }
 
 //--------------------------------------------------------------------------------------
-void Camera::DirectionRotateLR(GLfloat const &tempMove) {
+void Camera::DirectionRotateLR(GLfloat tempMove) {
     m_deltaAngleLR = tempMove * m_rotateSpeed;
 }
 
 //--------------------------------------------------------------------------------------
-void Camera::DirectionLookUD(int const &tempMove) {
+void Camera::DirectionLookUD(GLfloat tempMove) {
     m_deltaAngleUD = tempMove * m_rotateSpeed;
 }
 
@@ -279,7 +279,7 @@ void Camera::SetPlains(const int &moveX, const int &moveZ) {
 //----------------------------------------------------------------------------------------
 void Camera::MoveUD() {
     if (m_CollisionDetectionOn) {
-        GLfloat startY = m_y + m_deltaMoveUD * (m_lookYY)*m_moveSpeed * 5.0;
+        GLfloat startY = m_y + m_deltaMoveUD * (m_lookYY)*m_moveSpeed * 5.0f;
 
         if (!(m_colDetect.Collide(m_x + m_lookXX, startY + m_lookYY,
                                   m_z + m_lookZZ))) {
