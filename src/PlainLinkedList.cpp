@@ -4,177 +4,87 @@
 //  Defines all the methods declared, but not defined, in PlainLinkedList.h
 //
 //  Shay Leary, April 2005
+//  Modified by Peter Crabbe, 04/08/2019
 //--------------------------------------------------------------------------------------
 
 #include "PlainLinkedList.h"
 
-//--------------------------------------------------------------------------------------
-
-void PlainLinkedList::Clear() {
-    PlainNode *ptr = m_first;
-
-    while (ptr->GetNext() != NULL)
-
-        // clear memory
-        Delete(ptr);
-}
-
-//--------------------------------------------------------------------------------------
-
-void PlainLinkedList::Delete(PlainNode *before) {
-    PlainNode *temp = before->GetNext();
-
-    before->SetNext(temp->GetNext());
-
-    delete temp;
-}
-
-//--------------------------------------------------------------------------------------
+void PlainLinkedList::Clear() {}
 
 bool PlainLinkedList::AddToStart(const int tempType, const GLfloat tempXs,
                                  const GLfloat tempXe, const GLfloat tempYs,
                                  const GLfloat tempYe, const GLfloat tempZs,
                                  const GLfloat tempZe) {
-    PlainNode *newNode = nullptr;
-
-    try {
-        newNode = new PlainNode;
-    } catch (...) {
-        return false;
-    }
+    PlainNode newNode{};
 
     // add the value to the node
-    newNode->SetData(tempType, tempXs, tempXe, tempYs, tempYe, tempZs, tempZe);
-    // set the address of the net node
-    newNode->SetNext(m_first->GetNext());
+    newNode.SetData(tempType, tempXs, tempXe, tempYs, tempYe, tempZs, tempZe);
     // reset the address of the first node
-    m_first->SetNext(newNode);
+    nodes.push_back(newNode);
 
     return true;
 }
 
-//--------------------------------------------------------------------------------------
-
 GLfloat PlainLinkedList::GetType(int ptrCount) {
-    PlainNode *ptr = (m_first);
-    for (int count = 0; count < ptrCount; count++) {
-        ptr = ptr->GetNext();
-    }
-
-    if (ptr->GetNext() != NULL)
-        return ptr->GetNext()->GetType();
+    if (ptrCount <= nodes.size())
+        return nodes[ptrCount].GetType();
     else
-        return NULL;
+        return 0;
 }
-
-//--------------------------------------------------------------------------------------
 
 GLfloat PlainLinkedList::GetXstart(int ptrCount) {
-    PlainNode *ptr = (m_first);
-    for (int count = 0; count < ptrCount; count++) {
-        ptr = ptr->GetNext();
-    }
-
-    if (ptr->GetNext() != NULL)
-        return ptr->GetNext()->GetXstart();
+    if (ptrCount <= nodes.size())
+        return nodes[ptrCount].GetXstart();
     else
-        return NULL;
+        return 0;
 }
-
-//--------------------------------------------------------------------------------------
 
 GLfloat PlainLinkedList::GetXend(int ptrCount) {
-    PlainNode *ptr = (m_first);
-    for (int count = 0; count < ptrCount; count++) {
-        ptr = ptr->GetNext();
-    }
-
-    if (ptr->GetNext() != NULL)
-        return ptr->GetNext()->GetXend();
+    if (ptrCount <= nodes.size())
+        return nodes[ptrCount].GetXend();
     else
-        return NULL;
+        return 0;
 }
-
-//--------------------------------------------------------------------------------------
 
 GLfloat PlainLinkedList::GetYstart(int ptrCount) {
-    PlainNode *ptr = (m_first);
-    for (int count = 0; count < ptrCount; count++) {
-        ptr = ptr->GetNext();
-    }
-
-    if (ptr->GetNext() != NULL)
-        return ptr->GetNext()->GetYstart();
+    if (ptrCount <= nodes.size())
+        return nodes[ptrCount].GetYstart();
     else
-        return NULL;
+        return 0;
 }
-
-//--------------------------------------------------------------------------------------
 
 GLfloat PlainLinkedList::GetYend(int ptrCount) {
-    PlainNode *ptr = (m_first);
-    for (int count = 0; count < ptrCount; count++) {
-        ptr = ptr->GetNext();
-    }
-
-    if (ptr->GetNext() != NULL)
-        return ptr->GetNext()->GetYend();
+    if (ptrCount <= nodes.size())
+        return nodes[ptrCount].GetYend();
     else
-        return NULL;
+        return 0;
 }
-
-//--------------------------------------------------------------------------------------
 
 GLfloat PlainLinkedList::GetZstart(int ptrCount) {
-    PlainNode *ptr = (m_first);
-    for (int count = 0; count < ptrCount; count++) {
-        ptr = ptr->GetNext();
-    }
-
-    if (ptr->GetNext() != NULL)
-        return ptr->GetNext()->GetZstart();
+    if (ptrCount <= nodes.size())
+        return nodes[ptrCount].GetZstart();
     else
-        return NULL;
+        return 0;
 }
-
-//--------------------------------------------------------------------------------------
 
 GLfloat PlainLinkedList::GetZend(int ptrCount) {
-    PlainNode *ptr = (m_first);
-    for (int count = 0; count < ptrCount; count++) {
-        ptr = ptr->GetNext();
-    }
-
-    if (ptr->GetNext() != NULL)
-        return ptr->GetNext()->GetZend();
+    if (ptrCount <= nodes.size())
+        return nodes[ptrCount].GetZend();
     else
-        return NULL;
+        return 0;
 }
-
-//--------------------------------------------------------------------------------------
 
 void PlainLinkedList::SetData(const int &ptrCount, const int tempType,
                               const GLfloat tempXs, const GLfloat tempXe,
                               const GLfloat tempYs, const GLfloat tempYe,
                               const GLfloat tempZs, const GLfloat tempZe) {
-    PlainNode *ptr = (m_first);
+    PlainNode temp{};
 
-    for (int count = 0; count < ptrCount; count++) {
-        ptr = ptr->GetNext();
-    }
-    ptr->GetNext()->SetData(tempType, tempXs, tempXe, tempYs, tempYe, tempZs,
+    temp.SetData(tempType, tempXs, tempXe, tempYs, tempYe, tempZs,
                             tempZe);
+    nodes[ptrCount] = temp;
 }
-
-//--------------------------------------------------------------------------------------
 
 int PlainLinkedList::GetListSize() {
-    int tmpSize = 0;
-    // count size of list
-    for (PlainNode *ptr = (m_first); ptr->GetNext() != NULL; ptr = ptr->GetNext()) {
-        tmpSize++;
-    }
-    return tmpSize;
+    return int(nodes.size());
 }
-
-//--------------------------------------------------------------------------------------
