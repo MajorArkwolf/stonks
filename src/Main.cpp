@@ -625,7 +625,7 @@ void keys(unsigned char key, int x, int y) {
 }
 
 // Draws a string to screen character by character
-void renderBitmapString(float x, float y, float z, void *font, char *string) {
+void renderBitmapString (void *font, char *string) {
     char *c;
     for (c = string; *c != '\0'; c++) {
         glutBitmapCharacter(font, *c);
@@ -646,7 +646,7 @@ void drawDebug() {
     glRasterPos2f(-0.99, 0.95); // relative screen location to place text
     char loc[50];
     sprintf(loc, "x: %f, y: %f, z: %f", cam.GetLR(), cam.GetUD(), cam.GetFB());
-    renderBitmapString(0, 0, 0, GLUT_BITMAP_8_BY_13, loc);
+    renderBitmapString(GLUT_BITMAP_8_BY_13, loc);
 
     glEnable(GL_DEPTH_TEST);
     glMatrixMode(GL_PROJECTION);
