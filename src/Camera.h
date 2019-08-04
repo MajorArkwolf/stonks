@@ -113,11 +113,11 @@ class Camera {
     void CheckCamera();
 
     // Used to pass direction to move or rotate  (i.e. 1, -1 or 0)
-    void DirectionFB(int const &tempMove);
-    void DirectionLR(int const &tempMove);
-    void DirectionUD(int const &tempMove);
-    void DirectionRotateLR(GLfloat const &tempMove);
-    void DirectionLookUD(int const &tempMove);
+    void DirectionFB(GLfloat tempMove);
+    void DirectionLR(GLfloat tempMove);
+    void DirectionUD(GLfloat tempMove);
+    void DirectionRotateLR(GLfloat tempMove);
+    void DirectionLookUD(GLfloat tempMove);
 
     // display map
     void DisplayMap(const int &screenWidth, const int &screenHeight,
@@ -133,8 +133,8 @@ class Camera {
     // steep incline increments
     GLfloat m_incrementX  = 0.0;
     GLfloat m_incrementZ  = 0.0;
-    int m_No_Plains        = 0;
-    int m_plainNo          = 0;
+    int m_No_Plains       = 0;
+    int m_plainNo         = 0;
     GLfloat m_plainHeight = 0.0;
 
     // rotation variables
@@ -187,8 +187,8 @@ class Camera {
 
     // These functions were set up to climb stairs, but are not used.
     // The Plain object is used instead
-    void ClimbSteps(GLfloat stepStart, GLfloat stepFinish,
-                    GLfloat stepHeight, GLfloat stepWidth, int noSteps);
+    void ClimbSteps(GLfloat stepStart, GLfloat stepFinish, GLfloat stepHeight,
+                    GLfloat stepWidth, int noSteps);
     void CheckSteps();
 
     //----------------------------------------------------------------------------------
