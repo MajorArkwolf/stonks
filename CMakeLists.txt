@@ -49,7 +49,7 @@ set_target_properties(shays-world PROPERTIES
 # Set compiler and linker flags.
 target_compile_options(shays-world PUBLIC
     $<$<CXX_COMPILER_ID:Clang>:-Weverything -Wno-c++98-compat
-    -Wno-c++98-compat-pedantic -Wno-shadow -Wno-padded -Wno-deprecated-declarations
+    -Wno-c++98-compat-pedantic -Wno-padded -Wno-deprecated-declarations
     -fcolor-diagnostics>)
 target_compile_options(shays-world PUBLIC
     $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
@@ -61,7 +61,7 @@ target_compile_options(shays-world PUBLIC $<$<CXX_COMPILER_ID:Gnu>:-Wall
     -Wextra -Wpedantic -fdiagnostics-color=always>)
 
 # MSVC
-target_compile_options(shays-world PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/W4 /wd4458>)
+target_compile_options(shays-world PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/W4>)
 
 # Include header files.
 target_include_directories(shays-world PRIVATE src)
@@ -93,15 +93,6 @@ if (APPLE)
 endif()
 
 target_link_libraries(shays-world PRIVATE GLUT::GLUT)
-
-# Custom target to run the project.
-add_custom_target(run
-  COMMAND shays-world
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-  COMMENT "Running project"
-)
-
-add_dependencies(run shays-world)
 
 add_custom_command(TARGET shays-world POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
