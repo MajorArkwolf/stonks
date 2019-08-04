@@ -299,9 +299,9 @@ static bool DisplayExit = false;
 // display light fittings
 static bool lightsOn = false;
 // display ECL block
-bool displayECL = true;
+static bool displayECL = true;
 // display debug menu
-bool displayDebug = false;
+static bool displayDebug = false;
 // current fps
 static int calcFPS = 0;
 
