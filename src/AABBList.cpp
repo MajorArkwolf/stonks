@@ -12,9 +12,9 @@
 
 //--------------------------------------------------------------------------------------
 
-bool AABBList::AddToStart(GLdouble maxX, GLdouble minX, GLdouble maxY,
-                                GLdouble minY, GLdouble maxZ, GLdouble minZ) {
-    ///Create a temp node
+bool AABBList::AddToStart(GLfloat maxX, GLfloat minX, GLfloat maxY,
+                          GLfloat minY, GLfloat maxZ, GLfloat minZ) {
+    /// Create a temp node
     AABBNode newNode{};
 
     // add the value to the node
@@ -27,7 +27,7 @@ bool AABBList::AddToStart(GLdouble maxX, GLdouble minX, GLdouble maxY,
 
 //--------------------------------------------------------------------------------------
 
-GLdouble AABBList::GetMaxX(int ptrCount) {
+GLfloat AABBList::GetMaxX(int ptrCount) {
     if (ptrCount <= nodes.size())
         return nodes[ptrCount].GetMaxX();
     else
@@ -35,7 +35,7 @@ GLdouble AABBList::GetMaxX(int ptrCount) {
 }
 //--------------------------------------------------------------------------------------
 
-GLdouble AABBList::GetMinX(int ptrCount) {
+GLfloat AABBList::GetMinX(int ptrCount) {
     if (ptrCount <= nodes.size())
         return nodes[ptrCount].GetMinX();
     else
@@ -44,7 +44,7 @@ GLdouble AABBList::GetMinX(int ptrCount) {
 
 //--------------------------------------------------------------------------------------
 
-GLdouble AABBList::GetMaxY(int ptrCount) {
+GLfloat AABBList::GetMaxY(int ptrCount) {
     if (ptrCount <= nodes.size())
         return nodes[ptrCount].GetMaxY();
     else
@@ -53,7 +53,7 @@ GLdouble AABBList::GetMaxY(int ptrCount) {
 
 //--------------------------------------------------------------------------------------
 
-GLdouble AABBList::GetMinY(int ptrCount) {
+GLfloat AABBList::GetMinY(int ptrCount) {
     if (ptrCount <= nodes.size())
         return nodes[ptrCount].GetMinY();
     else
@@ -62,7 +62,7 @@ GLdouble AABBList::GetMinY(int ptrCount) {
 
 //--------------------------------------------------------------------------------------
 
-GLdouble AABBList::GetMaxZ(int ptrCount) {
+GLfloat AABBList::GetMaxZ(int ptrCount) {
     if (ptrCount <= nodes.size())
         return nodes[ptrCount].GetMaxZ();
     else
@@ -71,7 +71,7 @@ GLdouble AABBList::GetMaxZ(int ptrCount) {
 
 //--------------------------------------------------------------------------------------
 
-GLdouble AABBList::GetMinZ(int ptrCount) {
+GLfloat AABBList::GetMinZ(int ptrCount) {
     if (ptrCount <= nodes.size())
         return nodes[ptrCount].GetMinZ();
     else
@@ -80,10 +80,9 @@ GLdouble AABBList::GetMinZ(int ptrCount) {
 
 //--------------------------------------------------------------------------------------
 
-void AABBList::SetData(const int &ptrCount, const GLdouble maxX,
-                             const GLdouble minX, const GLdouble maxY,
-                             const GLdouble minY, const GLdouble maxZ,
-                             const GLdouble minZ) {
+void AABBList::SetData(const int &ptrCount, const GLfloat maxX,
+                       const GLfloat minX, const GLfloat maxY, const GLfloat minY,
+                       const GLfloat maxZ, const GLfloat minZ) {
     AABBNode temp{};
     temp.SetData(maxX, minX, maxY, minY, maxZ, minZ);
     nodes.push_back(temp);
@@ -93,7 +92,7 @@ void AABBList::SetData(const int &ptrCount, const GLdouble maxX,
 
 int AABBList::GetListSize() {
     int size = int(nodes.size());
-	return size;
+    return size;
 }
 
 //--------------------------------------------------------------------------------------

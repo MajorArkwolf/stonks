@@ -29,7 +29,7 @@ class AABBList {
     ~AABBList() = default;
 
     //----------------------------------------------------------------------------------
-	
+
     // add a node to the start of the linked list
     bool AddToStart(GLfloat maxX, GLfloat minX, GLfloat maxY, GLfloat minY,
                     GLfloat maxZ, GLfloat minZ);
@@ -55,11 +55,11 @@ class AABBList {
     //--------------------------------------------------------------------------------------
 
   private:
-	//Vector storing the nodes
+    // Vector storing the nodes
     std::vector<AABBNode> nodes{};
 
     // used to clear memory
-    void Delete(){}
+    void Delete() {}
     void Clear() {}
 
     // Privatised copy constructor and assignment operator
