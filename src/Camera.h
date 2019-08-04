@@ -8,8 +8,6 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#define PI 3.1415962654
-
 #include "CameraMap.h"
 #include "Collision.h"
 #include "PlainLinkedList.h"
@@ -19,7 +17,7 @@
 class Camera {
   public:
     Camera();
-    virtual ~Camera() {}
+    ~Camera() {}
 
     //----------------------------------------------------------------------------------
 

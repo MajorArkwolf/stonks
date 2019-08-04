@@ -21,7 +21,7 @@ class PlainNode {
     PlainNode() {
         Clear();
     }
-    virtual ~PlainNode() {
+    ~PlainNode() {
         Clear();
     }
 

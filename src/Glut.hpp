@@ -1,5 +1,9 @@
 #pragma once
 
+#if __APPLE__
+#    define GL_SILENCE_DEPRECATION
+#endif
+
 #if __has_include(<GL/glut.h>)
 #    include <GL/glut.h>
 #elif __has_include(<GLUT/glut.h>)
