@@ -14,7 +14,8 @@
 //  Declares datatype to store a raw image file and calls method to load image
 //--------------------------------------------------------------------------------------
 
-GLubyte *TexturedPolygons::LoadTexture(char *filename, int imgWidth, int imgHeight) {
+GLubyte *TexturedPolygons::LoadTexture(const char *filename, size_t imgWidth,
+                                       size_t imgHeight) {
     //
     unsigned char *image = NULL;
     image                = LoadRawImageFile(filename, imgWidth, imgHeight);
@@ -27,18 +28,20 @@ GLubyte *TexturedPolygons::LoadTexture(char *filename, int imgWidth, int imgHeig
 //  Creates memory space to store raw image file and reads in file from disk.
 //--------------------------------------------------------------------------------------
 
-GLubyte *TexturedPolygons::LoadRawImageFile(char *filename, int width, int height) {
+GLubyte *TexturedPolygons::LoadRawImageFile(const char *filename, size_t width,
+                                            size_t height) {
     FILE *file;
     unsigned char *image;
     // create memory space w x h x 3 (3 stores RGB values)
-    image = (unsigned char *)malloc(sizeof(unsigned char) * width * height * 3);
-    file  = fopen(filename, "rb");
+    image = static_cast<unsigned char *>(
+        malloc(sizeof(unsigned char) * width * height * 3));
+    file = fopen(filename, "rb");
     // exit program if image not found and inform user
     if (file == NULL) {
         std::cout << "ERROR loading image file: " << filename << "...\n";
         exit(0);
     }
-    fread(image, width * height * 3, 1, file);
+    fread(image, static_cast<size_t>(width * height * 3), 1, file);
     fclose(file);
     return image;
 }
@@ -48,7 +51,7 @@ GLubyte *TexturedPolygons::LoadRawImageFile(char *filename, int width, int heigh
 //--------------------------------------------------------------------------------------
 
 void TexturedPolygons::SetTextureCount(const int &textureNo) {
-    m_texture = new GLuint[textureNo];
+    m_texture = new GLuint[static_cast<size_t>(textureNo)];
     glGenTextures(textureNo, &m_texture[0]);
 }
 
@@ -65,12 +68,13 @@ void TexturedPolygons::Clear() {
 //--------------------------------------------------------------------------------------
 
 void TexturedPolygons::CreateTexture(int textureNo, unsigned char *image,
-                                     int imgWidth, int imgHeight) {
+                                     size_t imgWidth, size_t imgHeight) {
     glBindTexture(GL_TEXTURE_2D, m_texture[textureNo]);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-    gluBuild2DMipmaps(GL_TEXTURE_2D, 3, imgWidth, imgHeight, GL_RGB,
-                      GL_UNSIGNED_BYTE, image);
+    gluBuild2DMipmaps(GL_TEXTURE_2D, 3, static_cast<GLsizei>(imgWidth),
+                      static_cast<GLsizei>(imgHeight), GL_RGB, GL_UNSIGNED_BYTE,
+                      image);
 }
 
 //--------------------------------------------------------------------------------------
@@ -80,10 +84,10 @@ void TexturedPolygons::CreateTexture(int textureNo, unsigned char *image,
 //--------------------------------------------------------------------------------------
 
 void TexturedPolygons::CreateDisplayList(
-    const int &XYZ, const int &listNo, const GLdouble &xImgSize,
-    const GLdouble &zImgSize, const GLdouble &xStart, const GLdouble &yStart,
-    const GLdouble &zStart, const GLdouble &xTimes, const GLdouble &zTimes) {
-    glNewList(listNo, GL_COMPILE);
+    const int &XYZ, const int &listNo, const GLfloat &xImgSize,
+    const GLfloat &zImgSize, const GLfloat &xStart, const GLfloat &yStart,
+    const GLfloat &zStart, const GLfloat &xTimes, const GLfloat &zTimes) {
+    glNewList(static_cast<GLuint>(listNo), GL_COMPILE);
     glBegin(GL_QUADS);
     switch (XYZ) {
         case 0:
@@ -121,9 +125,9 @@ void TexturedPolygons::CreateDisplayList(
 //--------------------------------------------------------------------------------------
 
 void TexturedPolygons::CreateXtoZTextureList(
-    const GLdouble &xImgSize, const GLdouble &zImgSize, const GLdouble &xStart,
-    const GLdouble &yStart, const GLdouble &zStart, const GLdouble &xTimes,
-    const GLdouble &zTimes) {
+    const GLfloat &xImgSize, const GLfloat &zImgSize, const GLfloat &xStart,
+    const GLfloat &yStart, const GLfloat &zStart, const GLfloat &xTimes,
+    const GLfloat &zTimes) {
     glTexCoord2f(0.0, 0.0);
     glVertex3f(xStart, yStart, zStart);
     glTexCoord2f(0.0, zTimes);
@@ -139,11 +143,11 @@ void TexturedPolygons::CreateXtoZTextureList(
 //--------------------------------------------------------------------------------------
 
 void TexturedPolygons::CreateXtoYTextureList(
-    const GLdouble &xImgSize, const GLdouble &yImgSize, const GLdouble &xStart,
-    const GLdouble &yStart, const GLdouble &zStart, const GLdouble &xTimes,
-    const GLdouble &yTimes, const bool &flip) {
-    GLdouble flipX = 0.0;
-    GLdouble tempX = xTimes;
+    const GLfloat &xImgSize, const GLfloat &yImgSize, const GLfloat &xStart,
+    const GLfloat &yStart, const GLfloat &zStart, const GLfloat &xTimes,
+    const GLfloat &yTimes, const bool &flip) {
+    GLfloat flipX = 0.0;
+    GLfloat tempX = xTimes;
     // if image is required to be flipped (this will be improved)
     if (flip) {
         flipX = xTimes;
@@ -164,11 +168,11 @@ void TexturedPolygons::CreateXtoYTextureList(
 //--------------------------------------------------------------------------------------
 
 void TexturedPolygons::CreateYtoZTextureList(
-    const GLdouble &yImgSize, const GLdouble &zImgSize, const GLdouble &xStart,
-    const GLdouble &yStart, const GLdouble &zStart, const GLdouble &yTimes,
-    const GLdouble &zTimes, const bool &flip) {
-    GLdouble flipZ = 0.0;
-    GLdouble tempZ = zTimes;
+    const GLfloat &yImgSize, const GLfloat &zImgSize, const GLfloat &xStart,
+    const GLfloat &yStart, const GLfloat &zStart, const GLfloat &yTimes,
+    const GLfloat &zTimes, const bool &flip) {
+    GLfloat flipZ = 0.0;
+    GLfloat tempZ = zTimes;
     // if image is required to be flipped
     if (flip) {
         flipZ = zTimes;
@@ -191,10 +195,10 @@ void TexturedPolygons::CreateYtoZTextureList(
 //--------------------------------------------------------------------------------------
 
 void TexturedPolygons::CreateYtoZWindowList(
-    const int &listNo, const GLdouble &xStart, const GLdouble &yStart,
-    const GLdouble &ySize, const GLdouble &zStart, const GLdouble &zSize,
-    const GLdouble &yImgSize, const GLdouble &zImgSize) {
-    glNewList(listNo, GL_COMPILE);
+    const int &listNo, const GLfloat &xStart, const GLfloat &yStart,
+    const GLfloat &ySize, const GLfloat &zStart, const GLfloat &zSize,
+    const GLfloat &yImgSize, const GLfloat &zImgSize) {
+    glNewList(static_cast<GLuint>(listNo), GL_COMPILE);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0, zImgSize);
     glVertex3f(xStart, yStart, zStart);
@@ -211,10 +215,10 @@ void TexturedPolygons::CreateYtoZWindowList(
 //--------------------------------------------------------------------------------------
 
 void TexturedPolygons::CreateXtoYWindowList(
-    const int &listNo, const GLdouble &zStart, const GLdouble &xStart,
-    const GLdouble &xSize, const GLdouble &yStart, const GLdouble &ySize,
-    const GLdouble &xImgSize, const GLdouble &yImgSize) {
-    glNewList(listNo, GL_COMPILE);
+    const int &listNo, const GLfloat &zStart, const GLfloat &xStart,
+    const GLfloat &xSize, const GLfloat &yStart, const GLfloat &ySize,
+    const GLfloat &xImgSize, const GLfloat &yImgSize) {
+    glNewList(static_cast<GLuint>(listNo), GL_COMPILE);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0, 0.0);
     glVertex3f(xStart, yStart, zStart);
@@ -239,19 +243,19 @@ void TexturedPolygons::CreateXtoYWindowList(
 //--------------------------------------------------------------------------------------
 
 void TexturedPolygons::CreateAngledPolygon(
-    const int &listNo, const GLdouble &imageWidth, const GLdouble &imageHeight,
-    const GLdouble &x1, const GLdouble &x2, const GLdouble &x3,
-    const GLdouble &x4, const GLdouble &y1, const GLdouble &y2, const GLdouble &y3,
-    const GLdouble &y4, const GLdouble &z1, const GLdouble &z2, const GLdouble &z3,
-    const GLdouble &z4, const int &smallestX, const int &smallestZ) {
-    GLdouble xImage1 = x1;
-    GLdouble xImage2 = x2;
-    GLdouble xImage3 = x3;
-    GLdouble xImage4 = x4;
-    GLdouble zImage1 = z1;
-    GLdouble zImage2 = z2;
-    GLdouble zImage3 = z3;
-    GLdouble zImage4 = z4;
+    const int &listNo, const GLfloat &imageWidth, const GLfloat &imageHeight,
+    const GLfloat &x1, const GLfloat &x2, const GLfloat &x3, const GLfloat &x4,
+    const GLfloat &y1, const GLfloat &y2, const GLfloat &y3, const GLfloat &y4,
+    const GLfloat &z1, const GLfloat &z2, const GLfloat &z3, const GLfloat &z4,
+    const int &smallestX, const int &smallestZ) {
+    GLfloat xImage1 = x1;
+    GLfloat xImage2 = x2;
+    GLfloat xImage3 = x3;
+    GLfloat xImage4 = x4;
+    GLfloat zImage1 = z1;
+    GLfloat zImage2 = z2;
+    GLfloat zImage3 = z3;
+    GLfloat zImage4 = z4;
 
     if (smallestX == 1) {
         CreateTextureScale(xImage1, xImage2, xImage3, xImage4, imageWidth);
@@ -300,7 +304,7 @@ void TexturedPolygons::CreateAngledPolygon(
         }
     }
     // create display list
-    glNewList(listNo, GL_COMPILE);
+    glNewList(static_cast<GLuint>(listNo), GL_COMPILE);
     glBegin(GL_QUADS);
     glTexCoord2f(xImage1, zImage1);
     glVertex3f(x1, y1, z1);
@@ -318,9 +322,9 @@ void TexturedPolygons::CreateAngledPolygon(
 //  Called from	CreateAngledPolygon determine how images are displayed
 //--------------------------------------------------------------------------------------
 
-void TexturedPolygons::CreateTextureScale(GLdouble &xzImage1, GLdouble &xzImage2,
-                                          GLdouble &xzImage3, GLdouble &xzImage4,
-                                          const GLdouble &imageSize) {
+void TexturedPolygons::CreateTextureScale(GLfloat &xzImage1, GLfloat &xzImage2,
+                                          GLfloat &xzImage3, GLfloat &xzImage4,
+                                          const GLfloat &imageSize) {
     xzImage2 = ((xzImage2 - xzImage1) / imageSize);
     xzImage3 = ((xzImage3 - xzImage1) / imageSize);
     xzImage4 = ((xzImage4 - xzImage1) / imageSize);

@@ -27,30 +27,30 @@ class Camera {
     //  Set Methods
     //----------------------------------------------------------------------------------
     // sets initial value for bounding boxes (in the array AABB)
-    void SetAABBMaxX(const int &tempIndex, const GLdouble &tempX) {
+    void SetAABBMaxX(const int &tempIndex, const GLfloat &tempX) {
         m_colDetect.SetAABBMaxX(tempIndex, tempX);
     }
-    void SetAABBMinX(const int &tempIndex, const GLdouble &tempX) {
+    void SetAABBMinX(const int &tempIndex, const GLfloat &tempX) {
         m_colDetect.SetAABBMinX(tempIndex, tempX);
     }
-    void SetAABBMaxY(const int &tempIndex, const GLdouble &tempY) {
+    void SetAABBMaxY(const int &tempIndex, const GLfloat &tempY) {
         m_colDetect.SetAABBMaxY(tempIndex, tempY);
     }
-    void SetAABBMinY(const int &tempIndex, const GLdouble &tempY) {
+    void SetAABBMinY(const int &tempIndex, const GLfloat &tempY) {
         m_colDetect.SetAABBMinY(tempIndex, tempY);
     }
-    void SetAABBMaxZ(const int &tempIndex, const GLdouble &tempZ) {
+    void SetAABBMaxZ(const int &tempIndex, const GLfloat &tempZ) {
         m_colDetect.SetAABBMaxZ(tempIndex, tempZ);
     }
-    void SetAABBMinZ(const int &tempIndex, const GLdouble &tempZ) {
+    void SetAABBMinZ(const int &tempIndex, const GLfloat &tempZ) {
         m_colDetect.SetAABBMinZ(tempIndex, tempZ);
     }
 
     // set step and rotation size
-    void SetRotateSpeed(const GLdouble &tempSpeed) {
+    void SetRotateSpeed(const GLfloat &tempSpeed) {
         m_rotateSpeed = tempSpeed;
     }
-    void SetMoveSpeed(const GLdouble &tempSpeed) {
+    void SetMoveSpeed(const GLfloat &tempSpeed) {
         m_moveSpeed = tempSpeed;
     }
 
@@ -64,7 +64,7 @@ class Camera {
         m_colDetect.SetNoBoundingBoxes(tempSize);
     }
     // set the co-ordinates of the world
-    void SetWorldCoordinates(const GLdouble &tempX, const GLdouble &tempZ);
+    void SetWorldCoordinates(const GLfloat &tempX, const GLfloat &tempZ);
     // creates a linked list for each quadrant of the world and places the
     // bounding box data in each.  Then clears and deletes AABB array.
     void InitiateBoundingBoxes() {
@@ -72,44 +72,44 @@ class Camera {
     }
 
     // sets the co-ordinate of each plain
-    void SetPlains(const int tempType, const GLdouble tempXs, const GLdouble tempXe,
-                   const GLdouble tempYs, const GLdouble tempYe,
-                   const GLdouble tempZs, const GLdouble tempZe);
+    void SetPlains(const int tempType, const GLfloat tempXs, const GLfloat tempXe,
+                   const GLfloat tempYs, const GLfloat tempYe,
+                   const GLfloat tempZs, const GLfloat tempZe);
 
     //----------------------------------------------------------------------------------
     //  Get Methods
     //----------------------------------------------------------------------------------
-    GLdouble GetLR() {
+    GLfloat GetLR() {
         return m_x;
     }
-    GLdouble GetUD() {
+    GLfloat GetUD() {
         return m_y;
     }
-    GLdouble GetFB() {
+    GLfloat GetFB() {
         return m_z;
     }
-    GLdouble GetAABBMaxX(const int &tempIndex) {
+    GLfloat GetAABBMaxX(const int &tempIndex) {
         return m_colDetect.GetAABBMaxX(tempIndex);
     }
-    GLdouble GetAABBMinX(const int &tempIndex) {
+    GLfloat GetAABBMinX(const int &tempIndex) {
         return m_colDetect.GetAABBMinX(tempIndex);
     }
-    GLdouble GetAABBMaxY(const int &tempIndex) {
+    GLfloat GetAABBMaxY(const int &tempIndex) {
         return m_colDetect.GetAABBMaxY(tempIndex);
     }
-    GLdouble GetAABBMinY(const int &tempIndex) {
+    GLfloat GetAABBMinY(const int &tempIndex) {
         return m_colDetect.GetAABBMinY(tempIndex);
     }
-    GLdouble GetAABBMaxZ(const int &tempIndex) {
+    GLfloat GetAABBMaxZ(const int &tempIndex) {
         return m_colDetect.GetAABBMaxZ(tempIndex);
     }
-    GLdouble GetAABBMinZ(const int &tempIndex) {
+    GLfloat GetAABBMinZ(const int &tempIndex) {
         return m_colDetect.GetAABBMinZ(tempIndex);
     }
 
     // position the camera
-    void Position(GLdouble const &tempX, GLdouble const &tempY,
-                  GLdouble const &tempZ, GLdouble const &tempAngle);
+    void Position(GLfloat const &tempX, GLfloat const &tempY,
+                  GLfloat const &tempZ, GLfloat const &tempAngle);
 
     // check whether ok to move
     void CheckCamera();
@@ -118,7 +118,7 @@ class Camera {
     void DirectionFB(int const &tempMove);
     void DirectionLR(int const &tempMove);
     void DirectionUD(int const &tempMove);
-    void DirectionRotateLR(GLdouble const &tempMove);
+    void DirectionRotateLR(GLfloat const &tempMove);
     void DirectionLookUD(int const &tempMove);
 
     // display map
@@ -133,30 +133,30 @@ class Camera {
 
   private:
     // steep incline increments
-    GLdouble m_incrementX  = 0.0;
-    GLdouble m_incrementZ  = 0.0;
+    GLfloat m_incrementX  = 0.0;
+    GLfloat m_incrementZ  = 0.0;
     int m_No_Plains        = 0;
     int m_plainNo          = 0;
-    GLdouble m_plainHeight = 0.0;
+    GLfloat m_plainHeight = 0.0;
 
     // rotation variables
-    GLdouble m_rotateAngleLR = 0.0;
-    GLdouble m_deltaAngleLR  = 0.0;
-    GLdouble m_rotateAngleUD = 0.0;
-    GLdouble m_deltaAngleUD  = 0.0;
+    GLfloat m_rotateAngleLR = 0.0;
+    GLfloat m_deltaAngleLR  = 0.0;
+    GLfloat m_rotateAngleUD = 0.0;
+    GLfloat m_deltaAngleUD  = 0.0;
 
     // movement variables
-    GLdouble m_x = 0.0, m_y = 0.0, m_z = 0.0, m_zLast = 0.0, m_xLast = 0.0;
-    GLdouble m_lookX = 0.0, m_lookY = 0.0, m_lookZ = 0.0;
-    GLdouble m_lookXX = 0.0, m_lookYY = 0.0, m_lookZZ = 0.0;
-    GLdouble m_deltaMoveLR = 0.0;
-    GLdouble m_deltaMoveFB = 0.0;
-    GLdouble m_deltaMoveUD = 0.0;
-    GLdouble m_direction   = 0.0;
+    GLfloat m_x = 0.0, m_y = 0.0, m_z = 0.0, m_zLast = 0.0, m_xLast = 0.0;
+    GLfloat m_lookX = 0.0, m_lookY = 0.0, m_lookZ = 0.0;
+    GLfloat m_lookXX = 0.0, m_lookYY = 0.0, m_lookZZ = 0.0;
+    GLfloat m_deltaMoveLR = 0.0;
+    GLfloat m_deltaMoveFB = 0.0;
+    GLfloat m_deltaMoveUD = 0.0;
+    GLfloat m_direction   = 0.0;
 
     // movement speed (step size)
-    GLdouble m_rotateSpeed = 0.0;
-    GLdouble m_moveSpeed   = 0.0;
+    GLfloat m_rotateSpeed = 0.0;
+    GLfloat m_moveSpeed   = 0.0;
 
     // is it ok to move
     bool MoveFBOK();
@@ -189,8 +189,8 @@ class Camera {
 
     // These functions were set up to climb stairs, but are not used.
     // The Plain object is used instead
-    void ClimbSteps(GLdouble stepStart, GLdouble stepFinish,
-                    GLdouble stepHeight, GLdouble stepWidth, int noSteps);
+    void ClimbSteps(GLfloat stepStart, GLfloat stepFinish,
+                    GLfloat stepHeight, GLfloat stepWidth, int noSteps);
     void CheckSteps();
 
     //----------------------------------------------------------------------------------
