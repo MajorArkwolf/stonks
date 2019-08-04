@@ -17,16 +17,8 @@
 
 class AABBNode {
   public:
-    AABBNode() {
-        Clear();
-    }
-    virtual ~AABBNode() {
-        Clear();
-    }
-
-    //----------------------------------------------------------------------------------
-
-    void Clear();
+    AABBNode()          = default;
+    virtual ~AABBNode() = default;
 
     //----------------------------------------------------------------------------------
     //  Get Methods
@@ -50,26 +42,13 @@ class AABBNode {
         return m_BBox.min.z;
     }
 
-    // Return the address of the link to the next node in the list
-    AABBNode *GetNext() const {
-        return m_next;
-    }
-
     //----------------------------------------------------------------------------------
     //  Set Methods
     //----------------------------------------------------------------------------------
     void SetData(const GLdouble maxX, const GLdouble minX, const GLdouble maxY,
                  const GLdouble minY, const GLdouble maxZ, const GLdouble minZ);
 
-    // Set the address of the link to the next node in the list
-    void SetNext(AABBNode *next) {
-        m_next = next;
-    }
-
   private:
-    // The address of the next node in the list
-    AABBNode *m_next = nullptr;
-
     // stores x,y,z co-ordinates
     struct XYZ {
         GLdouble x = 0.0, y = 0.0, z = 0.0;

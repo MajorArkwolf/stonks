@@ -24,7 +24,7 @@ project(shays-world LANGUAGES CXX)
 # Define executable source files.
 add_executable(shays-world
     src/Main.cpp
-    src/AABBLinkedList.cpp
+    src/AABBList.cpp
     src/PlainNode.cpp
     src/CameraMap.cpp
     src/AABB.cpp
