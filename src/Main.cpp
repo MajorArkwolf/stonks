@@ -624,6 +624,25 @@ void keys(unsigned char key, int x, int y) {
     }
 }
 
+//--------------------------------------------------------------------------------------
+void releaseKeys(unsigned char key, int x, int y) {
+    switch (key) {
+        // step left or right
+        case 'A':
+        case 'a':
+        case 'D':
+        case 'd': cam.DirectionLR(0); break;
+        // step forward or back
+        case 'W':
+        case 'w':
+        case 'S':
+        case 's': cam.DirectionFB(0); break;
+    }
+}
+
+//--------------------------------------------------------------------------------------
+// Debug Menu
+//--------------------------------------------------------------------------------------
 // Draws a string to screen character by character
 void renderBitmapString(void *font, char *string) {
     char *c;
@@ -632,22 +651,24 @@ void renderBitmapString(void *font, char *string) {
     }
 }
 
+//--------------------------------------------------------------------------------------
+// Draws 3-dimension spatial axis at origin (0,0,0)
 void drawAxis() {
-	//Positive Z-direction = Red
+    // Positive Z-direction = Red
     glColor3f(255, 0, 0);
     glBegin(GL_LINES);
     glVertex3f(0, 0, 0);
     glVertex3f(0, 0, 100000);
     glEnd();
 
-	//Positive Y-Direction = Green
+    // Positive Y-Direction = Green
     glColor3f(0, 255, 0);
     glBegin(GL_LINES);
     glVertex3f(0, 0, 0);
     glVertex3f(0, 100000, 0);
     glEnd();
 
-	//Positive X-Direction = Blue
+    // Positive X-Direction = Blue
     glColor3f(0, 0, 255);
     glBegin(GL_LINES);
     glVertex3f(0, 0, 0);
@@ -655,6 +676,7 @@ void drawAxis() {
     glEnd();
 }
 
+//--------------------------------------------------------------------------------------
 void drawDebug() {
     drawAxis();
     glColor3f(1, 1, 1);
@@ -678,22 +700,6 @@ void drawDebug() {
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
 }
-//--------------------------------------------------------------------------------------
-void releaseKeys(unsigned char key, int x, int y) {
-    switch (key) {
-        // step left or right
-        case 'A':
-        case 'a':
-        case 'D':
-        case 'd': cam.DirectionLR(0); break;
-        // step forward or back
-        case 'W':
-        case 'w':
-        case 'S':
-        case 's': cam.DirectionFB(0); break;
-    }
-}
-
 //--------------------------------------------------------------------------------------
 //  Mouse Buttons
 //--------------------------------------------------------------------------------------
