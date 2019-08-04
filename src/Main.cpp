@@ -633,6 +633,8 @@ void renderBitmapString(float x, float y, float z, void *font, char *string) {
 }
 
 void drawDebug() {
+
+	// really shitty way of doing this - probably a better way
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
@@ -641,7 +643,7 @@ void drawDebug() {
     glLoadIdentity();
     glDisable(GL_DEPTH_TEST);
 
-    glRasterPos2f(-0.99, 0.95);
+    glRasterPos2f(-0.99, 0.95); // relative screen location to place text
     char loc[50];
     sprintf(loc, "x: %f, y: %f, z: %f", cam.GetLR(), cam.GetUD(), cam.GetFB());
     renderBitmapString(0, 0, 0, GLUT_BITMAP_8_BY_13, loc);
