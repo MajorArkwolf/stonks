@@ -1,5 +1,3 @@
-#define GL_SILENCE_DEPRECATION
-
 #include <math.h>
 #include <time.h>
 
