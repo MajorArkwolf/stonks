@@ -26,7 +26,7 @@ class PlainLinkedList {
         m_first = new PlainNode;
     }
 
-    virtual ~PlainLinkedList() {
+    ~PlainLinkedList() {
         Clear();
     }
 
