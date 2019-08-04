@@ -11,24 +11,25 @@
 #include <math.h>
 
 #include "Glut.hpp"
+#include "Math.hpp"
 
 //--------------------------------------------------------------------------------------
 // Set initial values
 //--------------------------------------------------------------------------------------
 Camera::Camera() {
-    m_rotateSpeed = 0.0;
-    m_moveSpeed   = 0.0;
+    m_rotateSpeed = 0.0f;
+    m_moveSpeed   = 0.0f;
 
     ResetXYZ();
 
-    m_deltaMoveFB = 0.0;
-    m_deltaMoveLR = 0.0;
-    m_deltaMoveUD = 0.0;
+    m_deltaMoveFB = 0.0f;
+    m_deltaMoveLR = 0.0f;
+    m_deltaMoveUD = 0.0f;
 
-    m_rotateAngleLR = 0.0;
-    m_rotateAngleUD = 0.0;
-    m_deltaAngleLR  = 0.0;
-    m_deltaAngleUD  = 0.0;
+    m_rotateAngleLR = 0.0f;
+    m_rotateAngleUD = 0.0f;
+    m_deltaAngleLR  = 0.0f;
+    m_deltaAngleUD  = 0.0f;
 
     m_CollisionDetectionOn = true;
 }
@@ -53,26 +54,26 @@ void Camera::ResetXYZ() {
 //--------------------------------------------------------------------------------------
 //  Determine direction
 //--------------------------------------------------------------------------------------
-void Camera::DirectionFB(int const &tempMove) {
+void Camera::DirectionFB(GLfloat tempMove) {
     m_deltaMoveFB = tempMove;
 }
 //--------------------------------------------------------------------------------------
-void Camera::DirectionLR(int const &tempMove) {
+void Camera::DirectionLR(GLfloat tempMove) {
     m_deltaMoveLR = tempMove;
 }
 //--------------------------------------------------------------------------------------
 // Not used but allows up and don movement
-void Camera::DirectionUD(int const &tempMove) {
+void Camera::DirectionUD(GLfloat tempMove) {
     m_deltaMoveUD = tempMove;
 }
 
 //--------------------------------------------------------------------------------------
-void Camera::DirectionRotateLR(GLfloat const &tempMove) {
+void Camera::DirectionRotateLR(GLfloat tempMove) {
     m_deltaAngleLR = tempMove * m_rotateSpeed;
 }
 
 //--------------------------------------------------------------------------------------
-void Camera::DirectionLookUD(int const &tempMove) {
+void Camera::DirectionLookUD(GLfloat tempMove) {
     m_deltaAngleUD = tempMove * m_rotateSpeed;
 }
 
@@ -278,7 +279,7 @@ void Camera::SetPlains(const int &moveX, const int &moveZ) {
 //----------------------------------------------------------------------------------------
 void Camera::MoveUD() {
     if (m_CollisionDetectionOn) {
-        GLfloat startY = m_y + m_deltaMoveUD * (m_lookYY)*m_moveSpeed * 5.0;
+        GLfloat startY = m_y + m_deltaMoveUD * (m_lookYY)*m_moveSpeed * 5.0f;
 
         if (!(m_colDetect.Collide(m_x + m_lookXX, startY + m_lookYY,
                                   m_z + m_lookZZ))) {
@@ -298,8 +299,8 @@ void Camera::RotateLR() {
     m_rotateAngleLR += m_deltaAngleLR;
     m_lookX  = sin(m_rotateAngleLR);
     m_lookZ  = -cos(m_rotateAngleLR);
-    m_lookXX = sin(m_rotateAngleLR + (float)PI / 2.0);
-    m_lookZZ = -cos(m_rotateAngleLR + (float)PI / 2.0);
+    m_lookXX = sin(m_rotateAngleLR + PI_F / 2.0f);
+    m_lookZZ = -cos(m_rotateAngleLR + PI_F / 2.0f);
     callGLLookAt();
 }
 
@@ -324,11 +325,11 @@ void Camera::Position(GLfloat const &tempX, GLfloat const &tempY,
     m_z = tempZ;
 
     // rotate to correct angle
-    m_rotateAngleLR = tempAngle * (PI / 180);
+    m_rotateAngleLR = tempAngle * (PI_F / 180.0f);
     m_lookX         = sin(m_rotateAngleLR);
     m_lookZ         = -cos(m_rotateAngleLR);
-    m_lookXX        = sin(m_rotateAngleLR + (float)PI / 2.0);
-    m_lookZZ        = -cos(m_rotateAngleLR + (float)PI / 2.0);
+    m_lookXX        = sin(m_rotateAngleLR + PI_F / 2.0f);
+    m_lookZZ        = -cos(m_rotateAngleLR + PI_F / 2.0f);
     m_rotateAngleUD = 0.0;
     m_deltaAngleUD  = 0.0;
 
@@ -357,8 +358,11 @@ void Camera::CheckCamera() {
 //----------------------------------------------------------------------------------------
 void Camera::callGLLookAt() {
     glLoadIdentity();
-    gluLookAt(m_x, m_y, m_z, m_x + m_lookX, m_y + m_lookY, m_z + m_lookZ, 0.0f,
-              1.0f, 0.0f);
+    gluLookAt(static_cast<double>(m_x), static_cast<double>(m_y),
+              static_cast<double>(m_z), static_cast<double>(m_x + m_lookX),
+              static_cast<double>(m_y + m_lookY),
+              static_cast<double>(m_z + m_lookZ), static_cast<double>(0.0f),
+              static_cast<double>(1.0f), static_cast<double>(0.0f));
 }
 
 //--------------------------------------------------------------------------------------

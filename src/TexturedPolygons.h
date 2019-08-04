@@ -20,14 +20,14 @@
 class TexturedPolygons {
   public:
     TexturedPolygons() = default;
-    virtual ~TexturedPolygons() {
+    ~TexturedPolygons() {
         Clear();
     }
 
     //----------------------------------------------------------------------------------
 
     // returns texture
-    GLuint GetTexture(const int &tempIndex) {
+    GLuint GetTexture(const GLuint &tempIndex) {
         return m_texture[tempIndex];
     }
 
@@ -35,33 +35,33 @@ class TexturedPolygons {
     GLubyte *LoadTexture(const char *filename, size_t imgWidth, size_t imgHeight);
 
     // set the number of textures to be used
-    void SetTextureCount(const int &textureNo);
+    void SetTextureCount(const GLuint &textureNo);
 
     // creates texture and set required values for texture mapping
-    void CreateTexture(int textureNo, unsigned char *image, size_t imgWidth,
+    void CreateTexture(GLuint textureNo, unsigned char *image, size_t imgWidth,
                        size_t imgHeight);
 
     // calls function to creates display list to contain image
-    void CreateDisplayList(const int &XYZ, const int &listNo,
+    void CreateDisplayList(const int &XYZ, const GLuint &listNo,
                            const GLfloat &xImgSize, const GLfloat &zImgSize,
                            const GLfloat &xStart, const GLfloat &yStart,
                            const GLfloat &zStart, const GLfloat &xTimes,
                            const GLfloat &zTimes);
 
     // used to create display lists where image is larger than world scale on YZ axis
-    void CreateYtoZWindowList(const int &listNo, const GLfloat &xStart,
+    void CreateYtoZWindowList(const GLuint &listNo, const GLfloat &xStart,
                               const GLfloat &yStart, const GLfloat &ySize,
                               const GLfloat &zStart, const GLfloat &zSize,
                               const GLfloat &yImgSize, const GLfloat &zImgSize);
 
     // used to create display lists where image is larger than world scale on XY axis
-    void CreateXtoYWindowList(const int &listNo, const GLfloat &zStart,
+    void CreateXtoYWindowList(const GLuint &listNo, const GLfloat &zStart,
                               const GLfloat &xStart, const GLfloat &xSize,
                               const GLfloat &yStart, const GLfloat &ySize,
                               const GLfloat &xImgSize, const GLfloat &yImgSize);
 
     // used to create display lists where image is on an angle
-    void CreateAngledPolygon(const int &listNo, const GLfloat &imageWidth,
+    void CreateAngledPolygon(const GLuint &listNo, const GLfloat &imageWidth,
                              const GLfloat &imageHeight, const GLfloat &x1,
                              const GLfloat &x2, const GLfloat &x3,
                              const GLfloat &x4, const GLfloat &y1,

@@ -20,7 +20,7 @@ class AABBNode {
     AABBNode() {
         Clear();
     }
-    virtual ~AABBNode() {
+    ~AABBNode() {
         Clear();
     }
 

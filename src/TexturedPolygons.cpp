@@ -50,7 +50,7 @@ GLubyte *TexturedPolygons::LoadRawImageFile(const char *filename, size_t width,
 //  Set number of textures to be used in program
 //--------------------------------------------------------------------------------------
 
-void TexturedPolygons::SetTextureCount(const int &textureNo) {
+void TexturedPolygons::SetTextureCount(const GLuint &textureNo) {
     m_texture = new GLuint[static_cast<size_t>(textureNo)];
     glGenTextures(textureNo, &m_texture[0]);
 }
@@ -67,7 +67,7 @@ void TexturedPolygons::Clear() {
 //  Creates texture and set required values for texture mapping
 //--------------------------------------------------------------------------------------
 
-void TexturedPolygons::CreateTexture(int textureNo, unsigned char *image,
+void TexturedPolygons::CreateTexture(GLuint textureNo, unsigned char *image,
                                      size_t imgWidth, size_t imgHeight) {
     glBindTexture(GL_TEXTURE_2D, m_texture[textureNo]);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -84,10 +84,10 @@ void TexturedPolygons::CreateTexture(int textureNo, unsigned char *image,
 //--------------------------------------------------------------------------------------
 
 void TexturedPolygons::CreateDisplayList(
-    const int &XYZ, const int &listNo, const GLfloat &xImgSize,
+    const int &XYZ, const GLuint &listNo, const GLfloat &xImgSize,
     const GLfloat &zImgSize, const GLfloat &xStart, const GLfloat &yStart,
     const GLfloat &zStart, const GLfloat &xTimes, const GLfloat &zTimes) {
-    glNewList(static_cast<GLuint>(listNo), GL_COMPILE);
+    glNewList(listNo, GL_COMPILE);
     glBegin(GL_QUADS);
     switch (XYZ) {
         case 0:
@@ -195,10 +195,10 @@ void TexturedPolygons::CreateYtoZTextureList(
 //--------------------------------------------------------------------------------------
 
 void TexturedPolygons::CreateYtoZWindowList(
-    const int &listNo, const GLfloat &xStart, const GLfloat &yStart,
+    const GLuint &listNo, const GLfloat &xStart, const GLfloat &yStart,
     const GLfloat &ySize, const GLfloat &zStart, const GLfloat &zSize,
     const GLfloat &yImgSize, const GLfloat &zImgSize) {
-    glNewList(static_cast<GLuint>(listNo), GL_COMPILE);
+    glNewList(listNo, GL_COMPILE);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0, zImgSize);
     glVertex3f(xStart, yStart, zStart);
@@ -215,10 +215,10 @@ void TexturedPolygons::CreateYtoZWindowList(
 //--------------------------------------------------------------------------------------
 
 void TexturedPolygons::CreateXtoYWindowList(
-    const int &listNo, const GLfloat &zStart, const GLfloat &xStart,
+    const GLuint &listNo, const GLfloat &zStart, const GLfloat &xStart,
     const GLfloat &xSize, const GLfloat &yStart, const GLfloat &ySize,
     const GLfloat &xImgSize, const GLfloat &yImgSize) {
-    glNewList(static_cast<GLuint>(listNo), GL_COMPILE);
+    glNewList(listNo, GL_COMPILE);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0, 0.0);
     glVertex3f(xStart, yStart, zStart);
@@ -243,7 +243,7 @@ void TexturedPolygons::CreateXtoYWindowList(
 //--------------------------------------------------------------------------------------
 
 void TexturedPolygons::CreateAngledPolygon(
-    const int &listNo, const GLfloat &imageWidth, const GLfloat &imageHeight,
+    const GLuint &listNo, const GLfloat &imageWidth, const GLfloat &imageHeight,
     const GLfloat &x1, const GLfloat &x2, const GLfloat &x3, const GLfloat &x4,
     const GLfloat &y1, const GLfloat &y2, const GLfloat &y3, const GLfloat &y4,
     const GLfloat &z1, const GLfloat &z2, const GLfloat &z3, const GLfloat &z4,

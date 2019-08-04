@@ -27,11 +27,11 @@ class PlainNode {
     PlainNode() {
         Clear();
     }
-
+  
     /**
      * @brief Default Destructor, not required
      */
-    virtual ~PlainNode() {
+    ~PlainNode() {
         Clear();
     }
 
