@@ -36,6 +36,7 @@ add_executable(shays-world
     src/Camera.cpp
     src/Collision.cpp
     src/TexturedPolygons.cpp
+    src/Workaround.cpp
 )
 
 # Set C++ standard.
