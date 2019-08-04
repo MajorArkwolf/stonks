@@ -505,7 +505,7 @@ void Display() {
     DrawBackdrop();
     glPopMatrix();
     glDisable(GL_TEXTURE_2D);
-
+	// display debug menu
     if (displayDebug) {
         drawDebug();
     }
