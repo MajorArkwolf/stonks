@@ -505,7 +505,7 @@ void Display() {
     DrawBackdrop();
     glPopMatrix();
     glDisable(GL_TEXTURE_2D);
-	  // display debug menu
+    // display debug menu
     if (displayDebug) {
         drawDebug();
     }
@@ -625,16 +625,40 @@ void keys(unsigned char key, int x, int y) {
 }
 
 // Draws a string to screen character by character
-void renderBitmapString (void *font, char *string) {
+void renderBitmapString(void *font, char *string) {
     char *c;
     for (c = string; *c != '\0'; c++) {
         glutBitmapCharacter(font, *c);
     }
 }
 
-void drawDebug() {
+void drawAxis() {
+	//Positive Z-direction = Red
+    glColor3f(255, 0, 0);
+    glBegin(GL_LINES);
+    glVertex3f(0, 0, 0);
+    glVertex3f(0, 0, 100000);
+    glEnd();
 
-	// really shitty way of doing this - probably a better way
+	//Positive Y-Direction = Green
+    glColor3f(0, 255, 0);
+    glBegin(GL_LINES);
+    glVertex3f(0, 0, 0);
+    glVertex3f(0, 100000, 0);
+    glEnd();
+
+	//Positive X-Direction = Blue
+    glColor3f(0, 0, 255);
+    glBegin(GL_LINES);
+    glVertex3f(0, 0, 0);
+    glVertex3f(100000, 0, 0);
+    glEnd();
+}
+
+void drawDebug() {
+    drawAxis();
+    glColor3f(1, 1, 1);
+    // really shitty way of doing this - probably a better way
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
