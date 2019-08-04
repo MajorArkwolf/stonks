@@ -11,7 +11,7 @@
 //--------------------------------------------------------------------------------------
 
 void AABB::SetNoBoundingBoxes(const int &tempSize) {
-    m_BBox      = new BoundingBox[tempSize];
+    m_BBox      = new BoundingBox[static_cast<size_t>(tempSize)];
     m_NoOfBoxes = tempSize;
 }
 

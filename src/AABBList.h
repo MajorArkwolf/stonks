@@ -31,23 +31,23 @@ class AABBList {
     //----------------------------------------------------------------------------------
 	
     // add a node to the start of the linked list
-    bool AddToStart(GLdouble maxX, GLdouble minX, GLdouble maxY, GLdouble minY,
-                    GLdouble maxZ, GLdouble minZ);
+    bool AddToStart(GLfloat maxX, GLfloat minX, GLfloat maxY, GLfloat minY,
+                    GLfloat maxZ, GLfloat minZ);
 
     //  set the values of the node data
-    void SetData(const int &ptrCount, const GLdouble maxX, const GLdouble minX,
-                 const GLdouble maxY, const GLdouble minY, const GLdouble maxZ,
-                 const GLdouble minZ);
+    void SetData(const int &ptrCount, const GLfloat maxX, const GLfloat minX,
+                 const GLfloat maxY, const GLfloat minY, const GLfloat maxZ,
+                 const GLfloat minZ);
 
     //----------------------------------------------------------------------------------
     //  Get Methods
     //----------------------------------------------------------------------------------
-    GLdouble GetMaxX(int ptrCount);
-    GLdouble GetMinX(int ptrCount);
-    GLdouble GetMaxY(int ptrCount);
-    GLdouble GetMinY(int ptrCount);
-    GLdouble GetMaxZ(int ptrCount);
-    GLdouble GetMinZ(int ptrCount);
+    GLfloat GetMaxX(int ptrCount);
+    GLfloat GetMinX(int ptrCount);
+    GLfloat GetMaxY(int ptrCount);
+    GLfloat GetMinY(int ptrCount);
+    GLfloat GetMaxZ(int ptrCount);
+    GLfloat GetMinZ(int ptrCount);
 
     // Return size of list
     int GetListSize();

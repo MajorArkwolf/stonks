@@ -24,30 +24,30 @@ class Collision {
     //----------------------------------------------------------------------------------
     // sets initial co-ordinates of bounding boxes (these set the co-ords is AABB, the array,
     // the values for the list are copied from the array using CreateLinkedList).
-    void SetAABBMaxX(const int &tempIndex, const double &tempX) {
+    void SetAABBMaxX(const int &tempIndex, const float &tempX) {
         m_AABB.SetMaxX(tempIndex, tempX);
     }
-    void SetAABBMinX(const int &tempIndex, const double &tempX) {
+    void SetAABBMinX(const int &tempIndex, const float &tempX) {
         m_AABB.SetMinX(tempIndex, tempX);
     }
-    void SetAABBMaxY(const int &tempIndex, const double &tempY) {
+    void SetAABBMaxY(const int &tempIndex, const float &tempY) {
         m_AABB.SetMaxY(tempIndex, tempY);
     }
-    void SetAABBMinY(const int &tempIndex, const double &tempY) {
+    void SetAABBMinY(const int &tempIndex, const float &tempY) {
         m_AABB.SetMinY(tempIndex, tempY);
     }
-    void SetAABBMaxZ(const int &tempIndex, const double &tempZ) {
+    void SetAABBMaxZ(const int &tempIndex, const float &tempZ) {
         m_AABB.SetMaxZ(tempIndex, tempZ);
     }
-    void SetAABBMinZ(const int &tempIndex, const double &tempZ) {
+    void SetAABBMinZ(const int &tempIndex, const float &tempZ) {
         m_AABB.SetMinZ(tempIndex, tempZ);
     }
 
     // sets the actual world co-ordinates
-    void SetWorldX(const double &tempX) {
+    void SetWorldX(const float &tempX) {
         m_worldSizeX = tempX;
     }
-    void SetWorldZ(const double &tempZ) {
+    void SetWorldZ(const float &tempZ) {
         m_worldSizeZ = tempZ;
     }
 
@@ -60,22 +60,22 @@ class Collision {
     //  Returns Methods
     //----------------------------------------------------------------------------------
     // returns co-ordinates of bounding boxes
-    double GetAABBMaxX(const int &tempIndex) {
+    float GetAABBMaxX(const int &tempIndex) {
         return m_AABB.GetMaxX(tempIndex);
     }
-    double GetAABBMinX(const int &tempIndex) {
+    float GetAABBMinX(const int &tempIndex) {
         return m_AABB.GetMinX(tempIndex);
     }
-    double GetAABBMaxY(const int &tempIndex) {
+    float GetAABBMaxY(const int &tempIndex) {
         return m_AABB.GetMaxY(tempIndex);
     }
-    double GetAABBMinY(const int &tempIndex) {
+    float GetAABBMinY(const int &tempIndex) {
         return m_AABB.GetMinY(tempIndex);
     }
-    double GetAABBMaxZ(const int &tempIndex) {
+    float GetAABBMaxZ(const int &tempIndex) {
         return m_AABB.GetMaxZ(tempIndex);
     }
-    double GetAABBMinZ(const int &tempIndex) {
+    float GetAABBMinZ(const int &tempIndex) {
         return m_AABB.GetMinZ(tempIndex);
     }
 
@@ -85,7 +85,7 @@ class Collision {
     }
 
     // returns TRUE if a collsion occurred
-    bool Collide(GLdouble endX, GLdouble endY, GLdouble endZ);
+    bool Collide(GLfloat endX, GLfloat endY, GLfloat endZ);
 
     // reads the BB info from AABB (dynamic array) and creates a Linked List
     // containing BB data
@@ -103,11 +103,11 @@ class Collision {
     int m_listSize[4] = {};
 
     // stores world co-ordinates
-    double m_worldSizeX = 0.0;
-    double m_worldSizeZ = 0.0;
+    float m_worldSizeX = 0.0;
+    float m_worldSizeZ = 0.0;
 
     // checks if collsion occurred (called from Collide)
-    bool CheckCollision(int index, GLdouble endX, GLdouble endY, GLdouble endZ);
+    bool CheckCollision(int index, GLfloat endX, GLfloat endY, GLfloat endZ);
 
     //----------------------------------------------------------------------------------
 

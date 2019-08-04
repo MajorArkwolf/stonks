@@ -22,35 +22,35 @@ class AABBNode {
     //----------------------------------------------------------------------------------
     //  Get Methods
     //----------------------------------------------------------------------------------
-    GLdouble GetMaxX() {
+    GLfloat GetMaxX() {
         return m_BBox.max.x;
     }
-    GLdouble GetMinX() {
+    GLfloat GetMinX() {
         return m_BBox.min.x;
     }
-    GLdouble GetMaxY() {
+    GLfloat GetMaxY() {
         return m_BBox.max.y;
     }
-    GLdouble GetMinY() {
+    GLfloat GetMinY() {
         return m_BBox.min.y;
     }
-    GLdouble GetMaxZ() {
+    GLfloat GetMaxZ() {
         return m_BBox.max.z;
     }
-    GLdouble GetMinZ() {
+    GLfloat GetMinZ() {
         return m_BBox.min.z;
     }
 
     //----------------------------------------------------------------------------------
     //  Set Methods
     //----------------------------------------------------------------------------------
-    void SetData(const GLdouble maxX, const GLdouble minX, const GLdouble maxY,
-                 const GLdouble minY, const GLdouble maxZ, const GLdouble minZ);
+    void SetData(const GLfloat maxX, const GLfloat minX, const GLfloat maxY,
+                 const GLfloat minY, const GLfloat maxZ, const GLfloat minZ);
 
   private:
     // stores x,y,z co-ordinates
     struct XYZ {
-        GLdouble x = 0.0, y = 0.0, z = 0.0;
+        GLfloat x = 0.0, y = 0.0, z = 0.0;
     };
     // stores max and min values of co-ordinates
     struct BoundingBox {

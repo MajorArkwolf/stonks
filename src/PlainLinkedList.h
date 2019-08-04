@@ -36,25 +36,25 @@ class PlainLinkedList {
     void Clear();
 
     // add a node to the start of the linked list
-    bool AddToStart(const int tempType, const GLdouble tempXs, const GLdouble tempXe,
-                    const GLdouble tempYs, const GLdouble tempYe,
-                    const GLdouble tempZs, const GLdouble tempZe);
+    bool AddToStart(const int tempType, const GLfloat tempXs, const GLfloat tempXe,
+                    const GLfloat tempYs, const GLfloat tempYe,
+                    const GLfloat tempZs, const GLfloat tempZe);
 
     // set the values of the node data
-    void SetData(const int &ptrCount, const int tempType, const GLdouble tempXs,
-                 const GLdouble tempXe, const GLdouble tempYs, const GLdouble tempYe,
-                 const GLdouble tempZs, const GLdouble tempZe);
+    void SetData(const int &ptrCount, const int tempType, const GLfloat tempXs,
+                 const GLfloat tempXe, const GLfloat tempYs, const GLfloat tempYe,
+                 const GLfloat tempZs, const GLfloat tempZe);
 
     //----------------------------------------------------------------------------------
     //  Get Methods
     //----------------------------------------------------------------------------------
-    GLdouble GetType(int ptrCount);
-    GLdouble GetXstart(int ptrCount);
-    GLdouble GetXend(int ptrCount);
-    GLdouble GetYstart(int ptrCount);
-    GLdouble GetYend(int ptrCount);
-    GLdouble GetZstart(int ptrCount);
-    GLdouble GetZend(int ptrCount);
+    GLfloat GetType(int ptrCount);
+    GLfloat GetXstart(int ptrCount);
+    GLfloat GetXend(int ptrCount);
+    GLfloat GetYstart(int ptrCount);
+    GLfloat GetYend(int ptrCount);
+    GLfloat GetZstart(int ptrCount);
+    GLfloat GetZend(int ptrCount);
 
     // Return size of list
     int GetListSize();
