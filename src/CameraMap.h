@@ -14,14 +14,14 @@
 
 class CameraMap {
   public:
-    CameraMap(){};
-    virtual ~CameraMap(){};
+    CameraMap() {}
+    virtual ~CameraMap() {}
 
     //----------------------------------------------------------------------------------
 
     // display the map
     void DisplayMap(const int &screenWidth, const int &screenHeight,
-                    const GLdouble &xPos, const GLdouble &zPos,
+                    const GLfloat &xPos, const GLfloat &zPos,
                     const GLuint &tempImage);
 
     // display the welcome screen

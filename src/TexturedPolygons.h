@@ -32,43 +32,43 @@ class TexturedPolygons {
     }
 
     // loads a raw image file into memory
-    GLubyte *LoadTexture(char *filename, int imgWidth, int imgHeight);
+    GLubyte *LoadTexture(const char *filename, size_t imgWidth, size_t imgHeight);
 
     // set the number of textures to be used
     void SetTextureCount(const int &textureNo);
 
     // creates texture and set required values for texture mapping
-    void CreateTexture(int textureNo, unsigned char *image, int imgWidth,
-                       int imgHeight);
+    void CreateTexture(int textureNo, unsigned char *image, size_t imgWidth,
+                       size_t imgHeight);
 
     // calls function to creates display list to contain image
     void CreateDisplayList(const int &XYZ, const int &listNo,
-                           const GLdouble &xImgSize, const GLdouble &zImgSize,
-                           const GLdouble &xStart, const GLdouble &yStart,
-                           const GLdouble &zStart, const GLdouble &xTimes,
-                           const GLdouble &zTimes);
+                           const GLfloat &xImgSize, const GLfloat &zImgSize,
+                           const GLfloat &xStart, const GLfloat &yStart,
+                           const GLfloat &zStart, const GLfloat &xTimes,
+                           const GLfloat &zTimes);
 
     // used to create display lists where image is larger than world scale on YZ axis
-    void CreateYtoZWindowList(const int &listNo, const GLdouble &xStart,
-                              const GLdouble &yStart, const GLdouble &ySize,
-                              const GLdouble &zStart, const GLdouble &zSize,
-                              const GLdouble &yImgSize, const GLdouble &zImgSize);
+    void CreateYtoZWindowList(const int &listNo, const GLfloat &xStart,
+                              const GLfloat &yStart, const GLfloat &ySize,
+                              const GLfloat &zStart, const GLfloat &zSize,
+                              const GLfloat &yImgSize, const GLfloat &zImgSize);
 
     // used to create display lists where image is larger than world scale on XY axis
-    void CreateXtoYWindowList(const int &listNo, const GLdouble &zStart,
-                              const GLdouble &xStart, const GLdouble &xSize,
-                              const GLdouble &yStart, const GLdouble &ySize,
-                              const GLdouble &xImgSize, const GLdouble &yImgSize);
+    void CreateXtoYWindowList(const int &listNo, const GLfloat &zStart,
+                              const GLfloat &xStart, const GLfloat &xSize,
+                              const GLfloat &yStart, const GLfloat &ySize,
+                              const GLfloat &xImgSize, const GLfloat &yImgSize);
 
     // used to create display lists where image is on an angle
-    void CreateAngledPolygon(const int &listNo, const GLdouble &imageWidth,
-                             const GLdouble &imageHeight, const GLdouble &x1,
-                             const GLdouble &x2, const GLdouble &x3,
-                             const GLdouble &x4, const GLdouble &y1,
-                             const GLdouble &y2, const GLdouble &y3,
-                             const GLdouble &y4, const GLdouble &z1,
-                             const GLdouble &z2, const GLdouble &z3,
-                             const GLdouble &z4, const int &smallestX,
+    void CreateAngledPolygon(const int &listNo, const GLfloat &imageWidth,
+                             const GLfloat &imageHeight, const GLfloat &x1,
+                             const GLfloat &x2, const GLfloat &x3,
+                             const GLfloat &x4, const GLfloat &y1,
+                             const GLfloat &y2, const GLfloat &y3,
+                             const GLfloat &y4, const GLfloat &z1,
+                             const GLfloat &z2, const GLfloat &z3,
+                             const GLfloat &z4, const int &smallestX,
                              const int &smallestZ);
 
   private:
@@ -76,32 +76,31 @@ class TexturedPolygons {
     GLuint *m_texture{};
 
     // returns image file
-    GLubyte *LoadRawImageFile(char *filename, int width, int height);
+    GLubyte *LoadRawImageFile(const char *filename, size_t width, size_t height);
 
     void Clear();
 
     // creates display list to contain image on X Z axis
-    void CreateXtoZTextureList(const GLdouble &xImgSize,
-                               const GLdouble &zImgSize, const GLdouble &xStart,
-                               const GLdouble &yStart, const GLdouble &zStart,
-                               const GLdouble &xTimes, const GLdouble &zTimes);
+    void CreateXtoZTextureList(const GLfloat &xImgSize, const GLfloat &zImgSize,
+                               const GLfloat &xStart, const GLfloat &yStart,
+                               const GLfloat &zStart, const GLfloat &xTimes,
+                               const GLfloat &zTimes);
 
     // creates display list to contain image on X Y axis
-    void CreateXtoYTextureList(const GLdouble &xImgSize, const GLdouble &yImgSize,
-                               const GLdouble &xStart, const GLdouble &yStart,
-                               const GLdouble &zStart, const GLdouble &xTimes,
-                               const GLdouble &yTimes, const bool &flip);
+    void CreateXtoYTextureList(const GLfloat &xImgSize, const GLfloat &yImgSize,
+                               const GLfloat &xStart, const GLfloat &yStart,
+                               const GLfloat &zStart, const GLfloat &xTimes,
+                               const GLfloat &yTimes, const bool &flip);
 
     // creates display list to contain image on Y Z axis
-    void CreateYtoZTextureList(const GLdouble &yImgSize, const GLdouble &zImgSize,
-                               const GLdouble &xStart, const GLdouble &yStart,
-                               const GLdouble &zStart, const GLdouble &yTimes,
-                               const GLdouble &zTimes, const bool &flip);
+    void CreateYtoZTextureList(const GLfloat &yImgSize, const GLfloat &zImgSize,
+                               const GLfloat &xStart, const GLfloat &yStart,
+                               const GLfloat &zStart, const GLfloat &yTimes,
+                               const GLfloat &zTimes, const bool &flip);
 
     // called from	CreateAngledPolygon determine how images are displayed
-    void CreateTextureScale(GLdouble &xzImage1, GLdouble &xzImage2,
-                            GLdouble &xzImage3, GLdouble &xzImage4,
-                            const GLdouble &imageSize);
+    void CreateTextureScale(GLfloat &xzImage1, GLfloat &xzImage2, GLfloat &xzImage3,
+                            GLfloat &xzImage4, const GLfloat &imageSize);
 
     //----------------------------------------------------------------------------------
 

@@ -31,10 +31,10 @@ void PlainLinkedList::Delete(PlainNode *before) {
 
 //--------------------------------------------------------------------------------------
 
-bool PlainLinkedList::AddToStart(const int tempType, const GLdouble tempXs,
-                                 const GLdouble tempXe, const GLdouble tempYs,
-                                 const GLdouble tempYe, const GLdouble tempZs,
-                                 const GLdouble tempZe) {
+bool PlainLinkedList::AddToStart(const int tempType, const GLfloat tempXs,
+                                 const GLfloat tempXe, const GLfloat tempYs,
+                                 const GLfloat tempYe, const GLfloat tempZs,
+                                 const GLfloat tempZe) {
     PlainNode *newNode = nullptr;
 
     try {
@@ -55,7 +55,7 @@ bool PlainLinkedList::AddToStart(const int tempType, const GLdouble tempXs,
 
 //--------------------------------------------------------------------------------------
 
-GLdouble PlainLinkedList::GetType(int ptrCount) {
+GLfloat PlainLinkedList::GetType(int ptrCount) {
     PlainNode *ptr = (m_first);
     for (int count = 0; count < ptrCount; count++) {
         ptr = ptr->GetNext();
@@ -69,7 +69,7 @@ GLdouble PlainLinkedList::GetType(int ptrCount) {
 
 //--------------------------------------------------------------------------------------
 
-GLdouble PlainLinkedList::GetXstart(int ptrCount) {
+GLfloat PlainLinkedList::GetXstart(int ptrCount) {
     PlainNode *ptr = (m_first);
     for (int count = 0; count < ptrCount; count++) {
         ptr = ptr->GetNext();
@@ -83,7 +83,7 @@ GLdouble PlainLinkedList::GetXstart(int ptrCount) {
 
 //--------------------------------------------------------------------------------------
 
-GLdouble PlainLinkedList::GetXend(int ptrCount) {
+GLfloat PlainLinkedList::GetXend(int ptrCount) {
     PlainNode *ptr = (m_first);
     for (int count = 0; count < ptrCount; count++) {
         ptr = ptr->GetNext();
@@ -97,7 +97,7 @@ GLdouble PlainLinkedList::GetXend(int ptrCount) {
 
 //--------------------------------------------------------------------------------------
 
-GLdouble PlainLinkedList::GetYstart(int ptrCount) {
+GLfloat PlainLinkedList::GetYstart(int ptrCount) {
     PlainNode *ptr = (m_first);
     for (int count = 0; count < ptrCount; count++) {
         ptr = ptr->GetNext();
@@ -111,7 +111,7 @@ GLdouble PlainLinkedList::GetYstart(int ptrCount) {
 
 //--------------------------------------------------------------------------------------
 
-GLdouble PlainLinkedList::GetYend(int ptrCount) {
+GLfloat PlainLinkedList::GetYend(int ptrCount) {
     PlainNode *ptr = (m_first);
     for (int count = 0; count < ptrCount; count++) {
         ptr = ptr->GetNext();
@@ -125,7 +125,7 @@ GLdouble PlainLinkedList::GetYend(int ptrCount) {
 
 //--------------------------------------------------------------------------------------
 
-GLdouble PlainLinkedList::GetZstart(int ptrCount) {
+GLfloat PlainLinkedList::GetZstart(int ptrCount) {
     PlainNode *ptr = (m_first);
     for (int count = 0; count < ptrCount; count++) {
         ptr = ptr->GetNext();
@@ -139,7 +139,7 @@ GLdouble PlainLinkedList::GetZstart(int ptrCount) {
 
 //--------------------------------------------------------------------------------------
 
-GLdouble PlainLinkedList::GetZend(int ptrCount) {
+GLfloat PlainLinkedList::GetZend(int ptrCount) {
     PlainNode *ptr = (m_first);
     for (int count = 0; count < ptrCount; count++) {
         ptr = ptr->GetNext();
@@ -154,9 +154,9 @@ GLdouble PlainLinkedList::GetZend(int ptrCount) {
 //--------------------------------------------------------------------------------------
 
 void PlainLinkedList::SetData(const int &ptrCount, const int tempType,
-                              const GLdouble tempXs, const GLdouble tempXe,
-                              const GLdouble tempYs, const GLdouble tempYe,
-                              const GLdouble tempZs, const GLdouble tempZe) {
+                              const GLfloat tempXs, const GLfloat tempXe,
+                              const GLfloat tempYs, const GLfloat tempYe,
+                              const GLfloat tempZs, const GLfloat tempZe) {
     PlainNode *ptr = (m_first);
 
     for (int count = 0; count < ptrCount; count++) {
