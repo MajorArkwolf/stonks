@@ -302,6 +302,8 @@ bool lightsOn = false;
 bool displayECL = true;
 // display debug menu
 bool displayDebug = false;
+// current fps
+static int calcFPS = 0;
 
 // varibles used for tarnslating graphics etc
 GLfloat step = 0.0, step2 = 0.0, stepLength = 0.0;
@@ -318,6 +320,7 @@ TexturedPolygons tp;
 
 // debug display
 void drawDebug();
+void calculateFrameRate();
 
 // initializes setting
 void myinit();
@@ -508,6 +511,7 @@ void Display() {
     // display debug menu
     if (displayDebug) {
         drawDebug();
+        calculateFrameRate();
     }
     // clear buffers
     glutSwapBuffers();
@@ -677,9 +681,22 @@ void drawAxis() {
 }
 
 //--------------------------------------------------------------------------------------
+void calculateFrameRate() {
+    static int frameCount = 0; // This will store our fps
+    static int prevTime = 0; // This will hold the time from the last frame
+    int currentTime     = glutGet(GLUT_ELAPSED_TIME) / 1000;
+    ++frameCount;
+    if (currentTime - prevTime > 0) {
+        calcFPS    = frameCount/(currentTime - prevTime);
+        frameCount = 0;
+        prevTime   = currentTime;
+    }
+}
+//--------------------------------------------------------------------------------------
 void drawDebug() {
     drawAxis();
     glColor3f(1, 1, 1);
+
     // really shitty way of doing this - probably a better way
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
@@ -689,10 +706,14 @@ void drawDebug() {
     glLoadIdentity();
     glDisable(GL_DEPTH_TEST);
 
+    char loc[50];               // coordinates
+    char fps[15];               // fps
     glRasterPos2f(-0.99, 0.95); // relative screen location to place text
-    char loc[50];
     sprintf(loc, "x: %f, y: %f, z: %f", cam.GetLR(), cam.GetUD(), cam.GetFB());
     renderBitmapString(GLUT_BITMAP_8_BY_13, loc);
+    glRasterPos2f(-0.99, 0.90); // relative screen location to place text
+    sprintf(fps, "FPS: %d", calcFPS);
+    renderBitmapString(GLUT_BITMAP_8_BY_13, fps);
 
     glEnable(GL_DEPTH_TEST);
     glMatrixMode(GL_PROJECTION);
