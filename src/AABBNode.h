@@ -9,16 +9,13 @@
 #ifndef AABBNODE_H
 #    define AABBNODE_H
 
-#    include <vector>
-
 #    include "Glut.hpp"
 
 //--------------------------------------------------------------------------------------
 
 class AABBNode {
   public:
-    AABBNode()          = default;
-    virtual ~AABBNode() = default;
+    AABBNode() = default;
 
     //----------------------------------------------------------------------------------
     //  Get Methods

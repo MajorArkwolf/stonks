@@ -26,9 +26,7 @@ class AABBList {
     // constructor creates pointer to first node
     AABBList() = default;
 
-    virtual ~AABBList() {
-        delete nodes;
-    }
+    ~AABBList() = default;
 
     //----------------------------------------------------------------------------------
 	
@@ -54,15 +52,6 @@ class AABBList {
     // Return size of list
     int GetListSize();
 
-    // Return the address of the link to the next node in the list
-    AABBNode *GetNext() const {
-        return m_first->GetNext();
-    }
-    // Return the address of the link to the first node in the list
-    AABBNode *GetFirst() const {
-        return m_first;
-    }
-
     //--------------------------------------------------------------------------------------
 
   private:
@@ -70,7 +59,8 @@ class AABBList {
     std::vector<AABBNode> nodes{};
 
     // used to clear memory
-    void Delete(~AABBList(););
+    void Delete(){}
+    void Clear() {}
 
     // Privatised copy constructor and assignment operator
     AABBList(const AABBList &ll) = delete;
