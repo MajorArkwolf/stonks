@@ -300,6 +300,8 @@ bool DisplayExit = false;
 bool lightsOn = false;
 // display ECL block
 bool displayECL = true;
+// display debug menu
+bool displayDebug = false;
 
 // varibles used for tarnslating graphics etc
 GLdouble step = 0.0, step2 = 0.0, stepLength = 0.0;
@@ -313,6 +315,9 @@ unsigned char *image = nullptr;
 // objects
 Camera cam;
 TexturedPolygons tp;
+
+// debug display
+void drawDebug();
 
 // initializes setting
 void myinit();
@@ -501,6 +506,9 @@ void Display() {
     glPopMatrix();
     glDisable(GL_TEXTURE_2D);
 
+    if (displayDebug) {
+        drawDebug();
+    }
     // clear buffers
     glFlush();
     glutSwapBuffers();
@@ -554,6 +562,8 @@ void releaseKey(int key, int x, int y) {
 //--------------------------------------------------------------------------------------
 void keys(unsigned char key, int x, int y) {
     switch (key) {
+        // toggle debug menu
+        case 'j': displayDebug = (displayDebug == 1) ? 0 : 1; break;
         // step left
         case 'A':
         case 'a': cam.DirectionLR(-1); break;
@@ -615,6 +625,34 @@ void keys(unsigned char key, int x, int y) {
     }
 }
 
+// Draws a string to screen character by character
+void renderBitmapString(float x, float y, float z, void *font, char *string) {
+    char *c;
+    for (c = string; *c != '\0'; c++) {
+        glutBitmapCharacter(font, *c);
+    }
+}
+
+void drawDebug() {
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glDisable(GL_DEPTH_TEST);
+
+    glRasterPos2f(-0.99, 0.95);
+    char loc[50];
+    sprintf(loc, "x: %f, y: %f, z: %f", cam.GetLR(), cam.GetUD(), cam.GetFB());
+    renderBitmapString(0, 0, 0, GLUT_BITMAP_8_BY_13, loc);
+
+    glEnable(GL_DEPTH_TEST);
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+}
 //--------------------------------------------------------------------------------------
 void releaseKeys(unsigned char key, int x, int y) {
     switch (key) {
@@ -840,7 +878,7 @@ void CreatePlains() {
 //  Delete raw image and clear memory
 //--------------------------------------------------------------------------------------
 void DeleteImageFromMemory(unsigned char *tempImage) {
-        delete tempImage;
+    delete tempImage;
 }
 
 //--------------------------------------------------------------------------------------
