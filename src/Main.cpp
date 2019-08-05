@@ -300,7 +300,7 @@ static bool lightsOn = false;
 // display ECL block
 static bool displayECL = true;
 // display debug menu
-static bool displayDebug = false;
+static bool displayDebug = true;
 // current fps
 static int calcFPS = 0;
 
