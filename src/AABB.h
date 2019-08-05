@@ -15,21 +15,16 @@
 #ifndef AABB_H
 #    define AABB_H
 
-//--------------------------------------------------------------------------------------
-
 #    include <cmath>
-
 #    include "Glut.hpp"
-
-//--------------------------------------------------------------------------------------
 
 class AABB {
   private:
-    // stores x,y,z co-ordinates
+    /// stores x,y,z co-ordinates
     struct XYZ {
         GLfloat x = 0.0, y = 0.0, z = 0.0;
     };
-    // stores max and min values of co-ordinates
+    /// stores max and min values of co-ordinates
     struct BoundingBox {
         XYZ max{};
         XYZ min{};
@@ -41,8 +36,6 @@ class AABB {
     // deletes arrays and clears memory
     void ClearBB(BoundingBox *&tempArray);
 
-    //----------------------------------------------------------------------------------
-
     // Privatised copy constructor and assignment operator
     AABB(const AABB &aabb) = default;
     AABB &operator=(const AABB &aabb) = default;
@@ -53,54 +46,21 @@ class AABB {
         ClearBB(m_BBox);
     }
 
-    //----------------------------------------------------------------------------------
-    //  Set Methods
-    //----------------------------------------------------------------------------------
-    void SetMaxX(const int &tempIndex, const GLfloat &tempX) {
-        m_BBox[tempIndex].max.x = tempX;
-    }
-    void SetMinX(const int &tempIndex, const GLfloat &tempX) {
-        m_BBox[tempIndex].min.x = tempX;
-    }
-    void SetMaxY(const int &tempIndex, const GLfloat &tempY) {
-        m_BBox[tempIndex].max.y = tempY;
-    }
-    void SetMinY(const int &tempIndex, const GLfloat &tempY) {
-        m_BBox[tempIndex].min.y = tempY;
-    }
-    void SetMaxZ(const int &tempIndex, const GLfloat &tempZ) {
-        m_BBox[tempIndex].max.z = tempZ;
-    }
-    void SetMinZ(const int &tempIndex, const GLfloat &tempZ) {
-        m_BBox[tempIndex].min.z = tempZ;
-    }
+    void SetMaxX(const int &tempIndex, const GLfloat &tempX);
+    void SetMinX(const int &tempIndex, const GLfloat &tempX);
+    void SetMaxY(const int &tempIndex, const GLfloat &tempY);
+    void SetMinY(const int &tempIndex, const GLfloat &tempY);
+    void SetMaxZ(const int &tempIndex, const GLfloat &tempZ);
+    void SetMinZ(const int &tempIndex, const GLfloat &tempZ);
     void SetNoBoundingBoxes(const int &tempSize);
 
-    //----------------------------------------------------------------------------------
-    //  Get Methods
-    //----------------------------------------------------------------------------------
-    GLfloat GetMaxX(const int &tempIndex) {
-        return m_BBox[tempIndex].max.x;
-    }
-    GLfloat GetMinX(const int &tempIndex) {
-        return m_BBox[tempIndex].min.x;
-    }
-    GLfloat GetMaxY(const int &tempIndex) {
-        return m_BBox[tempIndex].max.y;
-    }
-    GLfloat GetMinY(const int &tempIndex) {
-        return m_BBox[tempIndex].min.y;
-    }
-    GLfloat GetMaxZ(const int &tempIndex) {
-        return m_BBox[tempIndex].max.z;
-    }
-    GLfloat GetMinZ(const int &tempIndex) {
-        return m_BBox[tempIndex].min.z;
-    }
-    int GetNoBoundingBoxes() {
-        return m_NoOfBoxes;
-    }
+    GLfloat GetMaxX(const int &tempIndex);
+    GLfloat GetMinX(const int &tempIndex);
+    GLfloat GetMaxY(const int &tempIndex);
+    GLfloat GetMinY(const int &tempIndex);
+    GLfloat GetMaxZ(const int &tempIndex);
+    GLfloat GetMinZ(const int &tempIndex);
+    int GetNoBoundingBoxes();
 };
 
 #endif
-//--------------------------------------------------------------------------------------
