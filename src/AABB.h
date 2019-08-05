@@ -1,22 +1,22 @@
-//  AABH.h
-//  Header file for the AABB class
-//  Dynamic Array used to store the co-ordinates of the bounding boxes used for
-//  collsion detection.  The array is only used initially before being copied
-//  into AABB Linked Lists. The array is then terminated.
-//
-//  I created this class originally before using linked lists to store the BB
-//  info. But decided to keep it has the stored data can be easily copied across
-//  into different linked lists in any prefered order. (i.e. the data is copied
-//  into across into linked lists for different quadrants)
-//
-//  Shay Leary, March 2005
-//--------------------------------------------------------------------------------------
+/**
+ * @class AABB
+ * @brief  Stores data relating to collision information
+ *
+ * Collission detection used in the program.
+ *
+ * @author Peter Crabbe
+ * @version 02
+ * @date 04/08/2019
+ *
+ */
 
 #ifndef AABB_H
-#    define AABB_H
+#define AABB_H
 
-#    include <cmath>
-#    include "Glut.hpp"
+#include <cmath>
+#include <vector>
+
+#include "Glut.hpp"
 
 class AABB {
   private:
@@ -29,21 +29,25 @@ class AABB {
         XYZ max{};
         XYZ min{};
     };
-    // dynamic array to store info
-    BoundingBox *m_BBox = nullptr;
-    // number of BB created (i.e. array size)
-    int m_NoOfBoxes = 0;
-    // deletes arrays and clears memory
-    void ClearBB(BoundingBox *&tempArray);
+    /// dynamic array to store info
+    std::vector<BoundingBox> m_BBox{};
 
-    // Privatised copy constructor and assignment operator
+    /**
+     * @brief Copy constructor.
+     * @param aabb Other AABB.
+     */
     AABB(const AABB &aabb) = default;
+
+    /**
+     * @brief Copy assignment.
+     * @param aabb Other AABB.
+     */
     AABB &operator=(const AABB &aabb) = default;
 
   public:
     AABB() = default;
     ~AABB() {
-        ClearBB(m_BBox);
+        m_BBox.clear();
     }
 
     void SetMaxX(const int &tempIndex, const GLfloat &tempX);
@@ -52,7 +56,7 @@ class AABB {
     void SetMinY(const int &tempIndex, const GLfloat &tempY);
     void SetMaxZ(const int &tempIndex, const GLfloat &tempZ);
     void SetMinZ(const int &tempIndex, const GLfloat &tempZ);
-    void SetNoBoundingBoxes(const int &tempSize);
+    void SetNoBoundingBoxes(const int &size);
 
     GLfloat GetMaxX(const int &tempIndex);
     GLfloat GetMinX(const int &tempIndex);

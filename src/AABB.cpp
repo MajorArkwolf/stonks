@@ -8,16 +8,9 @@
 
 #include "AABB.h"
 
-void AABB::SetNoBoundingBoxes(const int &tempSize) {
-    m_BBox      = new BoundingBox[static_cast<size_t>(tempSize)];
-    m_NoOfBoxes = tempSize;
-}
-
-void AABB::ClearBB(BoundingBox *&tempArray) {
-    tempArray = NULL;
-    if (tempArray == NULL) {
-        delete[] tempArray;
-    }
+void AABB::SetNoBoundingBoxes(const int &size) {
+    m_BBox.clear();
+    m_BBox.resize(size);
 }
 
 void AABB::SetMaxX(const int &tempIndex, const GLfloat &tempX) {
@@ -59,5 +52,5 @@ GLfloat AABB::GetMinZ(const int &tempIndex) {
     return m_BBox[tempIndex].min.z;
 }
 int AABB::GetNoBoundingBoxes() {
-    return m_NoOfBoxes;
+    return m_BBox.size();
 }
