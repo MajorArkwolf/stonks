@@ -27,7 +27,7 @@ class PlainNode {
     PlainNode() {
         Clear();
     }
-  
+
     /**
      * @brief Default Destructor, not required
      */
@@ -50,57 +50,41 @@ class PlainNode {
 
     /*
      * @brief Gets the Type value from the node
-     * @param GLfloat
      */
     GLfloat GetType();
 
     /*
      * @brief Gets the X start value from the node
-     * @param GLfloat
      */
     GLfloat GetXstart();
 
     /*
      * @brief Gets the X end value from the node
-     * @param GLfloat
      */
     GLfloat GetXend();
 
     /*
      * @brief Gets the Y start value from the node
-     * @param GLfloat
      */
     GLfloat GetYstart();
 
     /*
      * @brief Gets the Y end value from the node
-     * @param GLfloat
      */
     GLfloat GetYend();
 
     /*
      * @brief Gets the Z start value from the node
-     * @param GLfloat
      */
     GLfloat GetZstart();
 
     /*
      * @brief Gets the Z end value from the node
-     * @param GLfloat
      */
     GLfloat GetZend();
 
     /**
      * @brief  Sets the data at the given point in the array.
-     *
-     * @param  const int &ptrCount
-     * @param  const GLfloat maxX
-     * @param  const GLfloat minX
-     * @param  const GLfloat maxY
-     * @param  const GLfloat minY
-     * @param  const GLfloat maxZ
-     * @param  const GLfloat minZ
-     * @return bool
      */
     void SetData(const int tempType, const GLfloat tempXs, const GLfloat tempXe,
                  const GLfloat tempYs, const GLfloat tempYe,
@@ -108,11 +92,9 @@ class PlainNode {
 
     /**
      * @brief  Deprecated code, to be deleted.
-     *
-     * @param  PlainNode *next
      */
     void SetNext(PlainNode *next) {
-        //m_next = next;
+        // m_next = next;
     }
 
   private:
