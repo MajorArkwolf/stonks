@@ -682,13 +682,13 @@ void drawAxis() {
 
 //--------------------------------------------------------------------------------------
 void calculateFrameRate() {
-    static int frameCount = 0; // This will store our fps
+    static int frameCounter = 0; // This will store our fps
     static int prevTime = 0; // This will hold the time from the last frame
     int currentTime     = glutGet(GLUT_ELAPSED_TIME) / 1000;
-    ++frameCount;
+    ++frameCounter;
     if (currentTime - prevTime > 0) {
-        calcFPS    = frameCount/(currentTime - prevTime);
-        frameCount = 0;
+        calcFPS    = frameCounter/(currentTime - prevTime);
+        frameCounter = 0;
         prevTime   = currentTime;
     }
 }
@@ -708,11 +708,11 @@ void drawDebug() {
 
     char loc[50];               // coordinates
     char fps[15];               // fps
-    glRasterPos2f(-0.99, 0.95); // relative screen location to place text
-    sprintf(loc, "x: %f, y: %f, z: %f", cam.GetLR(), cam.GetUD(), cam.GetFB());
+    glRasterPos2f(-0.99f, 0.95f); // relative screen location to place text
+    sprintf_s(loc, "x: %f, y: %f, z: %f", cam.GetLR(), cam.GetUD(), cam.GetFB());
     renderBitmapString(GLUT_BITMAP_8_BY_13, loc);
-    glRasterPos2f(-0.99, 0.90); // relative screen location to place text
-    sprintf(fps, "FPS: %d", calcFPS);
+    glRasterPos2f(-0.99f, 0.90f); // relative screen location to place text
+    sprintf_s(fps, "FPS: %d", calcFPS);
     renderBitmapString(GLUT_BITMAP_8_BY_13, fps);
 
     glEnable(GL_DEPTH_TEST);
