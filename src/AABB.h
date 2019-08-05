@@ -45,11 +45,23 @@ class AABB {
     AABB &operator=(const AABB &aabb) = default;
 
   public:
+    /**
+     * @brief Default constructor.
+     */
     AABB() = default;
+
+    /**
+     * @brief Default constructor.
+     */
     ~AABB() {
         m_BBox.clear();
     }
 
+    /**
+     * @brief Setter for Max X variable.
+	 * @param tempIndex Access to element in vector.
+	 * @param temp Sets the value to
+     */
     void SetMaxX(const int &tempIndex, const GLfloat &tempX);
     void SetMinX(const int &tempIndex, const GLfloat &tempX);
     void SetMaxY(const int &tempIndex, const GLfloat &tempY);
