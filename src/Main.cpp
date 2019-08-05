@@ -644,10 +644,11 @@ void releaseKeys(unsigned char key, [[maybe_unused]] int x, [[maybe_unused]] int
     }
 }
 
-//--------------------------------------------------------------------------------------
-// Debug Menu
-//--------------------------------------------------------------------------------------
-// Draws a string to screen character by character
+/**
+ *  @brief Takes in a font and c-style string to print to the openGL window
+ *	@param font pointer to OpenGL font to use
+ *	@param string c-style string to print to screen
+ */
 void renderBitmapString(void *font, char *string) {
     char *c;
     for (c = string; *c != '\0'; c++) {
@@ -655,8 +656,9 @@ void renderBitmapString(void *font, char *string) {
     }
 }
 
-//--------------------------------------------------------------------------------------
-// Draws 3-dimension spatial axis at origin (0,0,0)
+/**
+ * @brief Draws 3-dimension spatial axis at origin (0,0,0)
+ */
 void drawAxis() {
     // Positive Z-direction = Red
     glColor3f(255, 0, 0);
@@ -680,19 +682,23 @@ void drawAxis() {
     glEnd();
 }
 
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Counts the number of times this function is called in a second to calculate frame rate
+ */
 void calculateFrameRate() {
     static int frameCounter = 0; // This will store our fps
-    static int prevTime = 0; // This will hold the time from the last frame
-    int currentTime     = glutGet(GLUT_ELAPSED_TIME) / 1000;
+    static int prevTime     = 0; // This will hold the time from the last frame
+    int currentTime         = glutGet(GLUT_ELAPSED_TIME) / 1000;
     ++frameCounter;
     if (currentTime - prevTime > 0) {
-        calcFPS    = frameCounter/(currentTime - prevTime);
+        calcFPS      = frameCounter / (currentTime - prevTime);
         frameCounter = 0;
-        prevTime   = currentTime;
+        prevTime     = currentTime;
     }
 }
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Draws the debug menu/ui on screen
+ */
 void drawDebug() {
     drawAxis();
     glColor3f(1, 1, 1);
@@ -706,8 +712,8 @@ void drawDebug() {
     glLoadIdentity();
     glDisable(GL_DEPTH_TEST);
 
-    char loc[50];               // coordinates
-    char fps[15];               // fps
+    char loc[50];                 // coordinates
+    char fps[15];                 // fps
     glRasterPos2f(-0.99f, 0.95f); // relative screen location to place text
     sprintf_s(loc, "x: %f, y: %f, z: %f", cam.GetLR(), cam.GetUD(), cam.GetFB());
     renderBitmapString(GLUT_BITMAP_8_BY_13, loc);
