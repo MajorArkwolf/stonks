@@ -1,4 +1,5 @@
 #include <math.h>
+#include <string>
 #include <time.h>
 
 #include "Glut.hpp"
@@ -649,10 +650,9 @@ void releaseKeys(unsigned char key, [[maybe_unused]] int x, [[maybe_unused]] int
  *	@param font pointer to OpenGL font to use
  *	@param string c-style string to print to screen
  */
-void renderBitmapString(void *font, char *string) {
-    char *c;
-    for (c = string; *c != '\0'; c++) {
-        glutBitmapCharacter(font, *c);
+void renderBitmapString(void *font, std::string text) {
+    for (char &c : text) {
+        glutBitmapCharacter(font, c);
     }
 }
 
@@ -712,13 +712,13 @@ void drawDebug() {
     glLoadIdentity();
     glDisable(GL_DEPTH_TEST);
 
-    char loc[50];                 // coordinates
-    char fps[15];                 // fps
+    std::string loc = "x: " + std::to_string(cam.GetLR()) +
+                      ", y: " + std::to_string(cam.GetUD()) +
+                      ", z: " + std::to_string(cam.GetFB()); // coordinates
+    std::string fps = "FPS: " + std::to_string(calcFPS);       // fps
     glRasterPos2f(-0.99f, 0.95f); // relative screen location to place text
-    sprintf_s(loc, "x: %f, y: %f, z: %f", cam.GetLR(), cam.GetUD(), cam.GetFB());
     renderBitmapString(GLUT_BITMAP_8_BY_13, loc);
     glRasterPos2f(-0.99f, 0.90f); // relative screen location to place text
-    sprintf_s(fps, "FPS: %d", calcFPS);
     renderBitmapString(GLUT_BITMAP_8_BY_13, fps);
 
     glEnable(GL_DEPTH_TEST);
