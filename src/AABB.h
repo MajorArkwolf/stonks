@@ -62,21 +62,21 @@ class AABB {
 	 * @param tempIndex Access to element in vector.
 	 * @param temp Sets the value to
      */
-    void SetMaxX(const int &tempIndex, const GLfloat &tempX);
-    void SetMinX(const int &tempIndex, const GLfloat &tempX);
-    void SetMaxY(const int &tempIndex, const GLfloat &tempY);
-    void SetMinY(const int &tempIndex, const GLfloat &tempY);
-    void SetMaxZ(const int &tempIndex, const GLfloat &tempZ);
-    void SetMinZ(const int &tempIndex, const GLfloat &tempZ);
-    void SetNoBoundingBoxes(const int &size);
+    void SetMaxX(size_t index, GLfloat tempX);
+    void SetMinX(size_t index, GLfloat tempX);
+    void SetMaxY(size_t index, GLfloat tempY);
+    void SetMinY(size_t index, GLfloat tempY);
+    void SetMaxZ(size_t index, GLfloat tempZ);
+    void SetMinZ(size_t index, GLfloat tempZ);
+    void SetNoBoundingBoxes(size_t size);
 
-    GLfloat GetMaxX(const int &tempIndex);
-    GLfloat GetMinX(const int &tempIndex);
-    GLfloat GetMaxY(const int &tempIndex);
-    GLfloat GetMinY(const int &tempIndex);
-    GLfloat GetMaxZ(const int &tempIndex);
-    GLfloat GetMinZ(const int &tempIndex);
-    int GetNoBoundingBoxes();
+    GLfloat GetMaxX(size_t index);
+    GLfloat GetMinX(size_t index);
+    GLfloat GetMaxY(size_t index);
+    GLfloat GetMinY(size_t index);
+    GLfloat GetMaxZ(size_t index);
+    GLfloat GetMinZ(size_t index);
+    size_t GetNoBoundingBoxes();
 };
 
 #endif

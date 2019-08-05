@@ -8,49 +8,49 @@
 
 #include "AABB.h"
 
-void AABB::SetNoBoundingBoxes(const int &size) {
+void AABB::SetNoBoundingBoxes(size_t size) {
     m_BBox.clear();
     m_BBox.resize(size);
 }
 
-void AABB::SetMaxX(const int &tempIndex, const GLfloat &tempX) {
-    m_BBox[tempIndex].max.x = tempX;
+void AABB::SetMaxX(size_t index, GLfloat tempX) {
+    m_BBox[index].max.x = tempX;
 }
-void AABB::SetMinX(const int &tempIndex, const GLfloat &tempX) {
-    m_BBox[tempIndex].min.x = tempX;
+void AABB::SetMinX(size_t index, GLfloat tempX) {
+    m_BBox[index].min.x = tempX;
 }
-void AABB::SetMaxY(const int &tempIndex, const GLfloat &tempY) {
-    m_BBox[tempIndex].max.y = tempY;
+void AABB::SetMaxY(size_t index, GLfloat tempY) {
+    m_BBox[index].max.y = tempY;
 }
-void AABB::SetMinY(const int &tempIndex, const GLfloat &tempY) {
-    m_BBox[tempIndex].min.y = tempY;
+void AABB::SetMinY(size_t index, GLfloat tempY) {
+    m_BBox[index].min.y = tempY;
 }
-void AABB::SetMaxZ(const int &tempIndex, const GLfloat &tempZ) {
-    m_BBox[tempIndex].max.z = tempZ;
+void AABB::SetMaxZ(size_t index, GLfloat tempZ) {
+    m_BBox[index].max.z = tempZ;
 }
-void AABB::SetMinZ(const int &tempIndex, const GLfloat &tempZ) {
-    m_BBox[tempIndex].min.z = tempZ;
+void AABB::SetMinZ(size_t index, GLfloat tempZ) {
+    m_BBox[index].min.z = tempZ;
 }
 
 
-GLfloat AABB::GetMaxX(const int &tempIndex) {
-    return m_BBox[tempIndex].max.x;
+GLfloat AABB::GetMaxX(size_t index) {
+    return m_BBox[index].max.x;
 }
-GLfloat AABB::GetMinX(const int &tempIndex) {
-    return m_BBox[tempIndex].min.x;
+GLfloat AABB::GetMinX(size_t index) {
+    return m_BBox[index].min.x;
 }
-GLfloat AABB::GetMaxY(const int &tempIndex) {
-    return m_BBox[tempIndex].max.y;
+GLfloat AABB::GetMaxY(size_t index) {
+    return m_BBox[index].max.y;
 }
-GLfloat AABB::GetMinY(const int &tempIndex) {
-    return m_BBox[tempIndex].min.y;
+GLfloat AABB::GetMinY(size_t index) {
+    return m_BBox[index].min.y;
 }
-GLfloat AABB::GetMaxZ(const int &tempIndex) {
-    return m_BBox[tempIndex].max.z;
+GLfloat AABB::GetMaxZ(size_t index) {
+    return m_BBox[index].max.z;
 }
-GLfloat AABB::GetMinZ(const int &tempIndex) {
-    return m_BBox[tempIndex].min.z;
+GLfloat AABB::GetMinZ(size_t index) {
+    return m_BBox[index].min.z;
 }
-int AABB::GetNoBoundingBoxes() {
+size_t AABB::GetNoBoundingBoxes() {
     return m_BBox.size();
 }
