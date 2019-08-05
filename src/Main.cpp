@@ -1,4 +1,5 @@
 #include <math.h>
+#include <string>
 #include <time.h>
 
 #include "Glut.hpp"
@@ -298,6 +299,10 @@ static bool DisplayExit = false;
 static bool lightsOn = false;
 // display ECL block
 static bool displayECL = true;
+// display debug menu
+static bool displayDebug = true;
+// current fps
+static int calcFPS = 0;
 
 // varibles used for tarnslating graphics etc
 static GLfloat step       = 0.0f;
@@ -313,6 +318,10 @@ static unsigned char *image = nullptr;
 // objects
 static Camera cam;
 static TexturedPolygons tp;
+
+// debug display
+void drawDebug();
+void calculateFrameRate();
 
 // initializes setting
 void myinit();
@@ -500,7 +509,12 @@ void Display() {
     DrawBackdrop();
     glPopMatrix();
     glDisable(GL_TEXTURE_2D);
-
+    // display debug menu
+    if (displayDebug) {
+        drawDebug();
+        calculateFrameRate();
+    }
+    // clear buffers
     glutSwapBuffers();
 }
 
@@ -552,6 +566,8 @@ void releaseKey(int key, [[maybe_unused]] int x, [[maybe_unused]] int y) {
 //--------------------------------------------------------------------------------------
 void keys(unsigned char key, [[maybe_unused]] int x, [[maybe_unused]] int y) {
     switch (key) {
+        // toggle debug menu
+        case 'j': displayDebug = (displayDebug == 1) ? 0 : 1; break;
         // step left
         case 'A':
         case 'a': cam.DirectionLR(-5); break;
@@ -629,6 +645,88 @@ void releaseKeys(unsigned char key, [[maybe_unused]] int x, [[maybe_unused]] int
     }
 }
 
+/**
+ *  @brief Takes in a font and c-style string to print to the openGL window
+ *	@param font pointer to OpenGL font to use
+ *	@param string c-style string to print to screen
+ */
+void renderBitmapString(void *font, std::string text) {
+    for (char &c : text) {
+        glutBitmapCharacter(font, c);
+    }
+}
+
+/**
+ * @brief Draws 3-dimension spatial axis at origin (0,0,0)
+ */
+void drawAxis() {
+    // Positive Z-direction = Red
+    glColor3f(255, 0, 0);
+    glBegin(GL_LINES);
+    glVertex3f(0, 0, 0);
+    glVertex3f(0, 0, 100000);
+    glEnd();
+
+    // Positive Y-Direction = Green
+    glColor3f(0, 255, 0);
+    glBegin(GL_LINES);
+    glVertex3f(0, 0, 0);
+    glVertex3f(0, 100000, 0);
+    glEnd();
+
+    // Positive X-Direction = Blue
+    glColor3f(0, 0, 255);
+    glBegin(GL_LINES);
+    glVertex3f(0, 0, 0);
+    glVertex3f(100000, 0, 0);
+    glEnd();
+}
+
+/**
+ * @brief Counts the number of times this function is called in a second to calculate frame rate
+ */
+void calculateFrameRate() {
+    static int frameCounter = 0; // This will store our fps
+    static int prevTime     = 0; // This will hold the time from the last frame
+    int currentTime         = glutGet(GLUT_ELAPSED_TIME) / 1000;
+    ++frameCounter;
+    if (currentTime - prevTime > 0) {
+        calcFPS      = frameCounter / (currentTime - prevTime);
+        frameCounter = 0;
+        prevTime     = currentTime;
+    }
+}
+/**
+ * @brief Draws the debug menu/ui on screen
+ */
+void drawDebug() {
+    drawAxis();
+    glColor3f(1, 1, 1);
+
+    // really shitty way of doing this - probably a better way
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glDisable(GL_DEPTH_TEST);
+
+    std::string loc = "x: " + std::to_string(cam.GetLR()) +
+                      ", y: " + std::to_string(cam.GetUD()) +
+                      ", z: " + std::to_string(cam.GetFB()); // coordinates
+    std::string fps = "FPS: " + std::to_string(calcFPS);       // fps
+    glRasterPos2f(-0.99f, 0.95f); // relative screen location to place text
+    renderBitmapString(GLUT_BITMAP_8_BY_13, loc);
+    glRasterPos2f(-0.99f, 0.90f); // relative screen location to place text
+    renderBitmapString(GLUT_BITMAP_8_BY_13, fps);
+
+    glEnable(GL_DEPTH_TEST);
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+}
 //--------------------------------------------------------------------------------------
 //  Mouse Buttons
 //--------------------------------------------------------------------------------------
