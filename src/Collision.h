@@ -17,7 +17,7 @@
 class Collision {
   public:
     Collision() {}
-    virtual ~Collision() {}
+    ~Collision() {}
 
     //----------------------------------------------------------------------------------
     //  Set Methods

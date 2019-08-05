@@ -49,7 +49,7 @@ class AABB {
 
   public:
     AABB() = default;
-    virtual ~AABB() {
+    ~AABB() {
         ClearBB(m_BBox);
     }
 

@@ -15,7 +15,7 @@
 class CameraMap {
   public:
     CameraMap() {}
-    virtual ~CameraMap() {}
+    ~CameraMap() {}
 
     //----------------------------------------------------------------------------------
 
