@@ -66,11 +66,7 @@ target_include_directories(shays-world PRIVATE src)
 # Find, include, and link against dependencies.
 find_package(OpenGL REQUIRED COMPONENTS OpenGL)
 find_package(GLUT REQUIRED)
-find_package(SDL REQUIRED)
-add_dependencies(shays-world OpenGL::GL GLUT::GLUT)
-target_include_directories(shays-world PRIVATE ${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS}
-    ${SDL_INCLUDE_DIR})
-target_link_libraries(shays-world PRIVATE OpenGL::GL ${SDL_LIBRARY})
+find_package(GLM REQUIRED)
 
 # Hack to fix Linux Glu library paths.
 if (LINUX)
@@ -89,8 +85,15 @@ if (APPLE)
     target_link_libraries(shays-world PRIVATE ${APP_SERVICES})
 endif()
 
-target_link_libraries(shays-world PRIVATE GLUT::GLUT)
+# Set dependencies.
+add_dependencies(shays-world OpenGL::GL GLUT::GLUT)
+# Set includes.
+target_include_directories(shays-world PRIVATE ${OPENGL_INCLUDE_DIRS}
+    ${GLUT_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS})
+# Set link libraries.
+target_link_libraries(shays-world PRIVATE OpenGL::GL GLUT::GLUT)
 
+# Copy the resources to the binary location.
 add_custom_command(TARGET shays-world POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                        ${CMAKE_SOURCE_DIR}/res
