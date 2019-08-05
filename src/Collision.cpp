@@ -65,9 +65,6 @@ void Collision::CreateLinkedList()
             m_list[3].AddToStart(maxX, minX, maxY, minY, maxZ, minZ);
         }
     }
-    // Call AABB constructor the delete array and clear memory
-    // (the array AABB is not required once the lists have been created)
-    m_AABB.~AABB();
 }
 
 //--------------------------------------------------------------------------------------

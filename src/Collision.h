@@ -16,8 +16,7 @@
 
 class Collision {
   public:
-    Collision() {}
-    ~Collision() {}
+    Collision() = default;
 
     //----------------------------------------------------------------------------------
     //  Set Methods
