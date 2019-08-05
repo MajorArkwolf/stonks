@@ -1,6 +1,6 @@
 #pragma once
 
-#if __APPLE__
+#if defined(__APPLE__)
 #    define GL_SILENCE_DEPRECATION
 #endif
 
@@ -10,9 +10,9 @@
 #    include <GLUT/glut.h>
 #endif
 
-#if __APPLE__
+#if defined(__APPLE__)
 #    include <ApplicationServices/ApplicationServices.h>
-#elif _WIN32
+#elif defined(_WIN32)
 /* windows.h *helpfully* declares a macro for near and far. */
 #    undef near
 #    undef far

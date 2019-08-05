@@ -8,8 +8,6 @@
 
 #include "AABB.h"
 
-#include <iostream>
-
 //--------------------------------------------------------------------------------------
 
 void AABB::SetNoBoundingBoxes(const int &tempSize) {
