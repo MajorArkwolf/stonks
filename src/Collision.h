@@ -10,7 +10,7 @@
 //--------------------------------------------------------------------------------------
 
 #    include "AABB.h"
-#    include "AABBLinkedList.h"
+#    include "AABBList.h"
 
 //--------------------------------------------------------------------------------------
 
@@ -96,7 +96,7 @@ class Collision {
     AABB m_AABB = {};
 
     // lists to store bounding box info in each quadrant
-    AABBLinkedList m_list[4] = {};
+    AABBList m_list[4] = {};
 
     // Stores the list size of each linked list
     // Set to 4 has the world is split into 4 quadrants
