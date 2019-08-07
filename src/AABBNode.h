@@ -1,93 +1,85 @@
-//  AABBNODE.h
-//  Header file for the AABBNODE class
-//  Stores details for each bounding box used for collsion detection.  Each node
-//  is stored in each link of the AABB Linked List
-
-//  Shay Leary, March 2005
-//--------------------------------------------------------------------------------------
+/**
+ * @class AABBNode
+ * @brief  Stores data relating to collision information
+ *
+ * Used inside of the AABBList file
+ *
+ * @author Peter Crabbe
+ * @version 02
+ * @date 04/08/2019
+ *
+ */
 
 #ifndef AABBNODE_H
-#    define AABBNODE_H
+#define AABBNODE_H
 
-#    include <vector>
-
-#    include "Glut.hpp"
-
-//--------------------------------------------------------------------------------------
+#include "Glut.hpp"
 
 class AABBNode {
   public:
-    AABBNode() {
-        Clear();
-    }
-    virtual ~AABBNode() {
-        Clear();
-    }
+    /**
+     * @brief Default constructor, not required
+     */
+    AABBNode() = default;
 
-    //----------------------------------------------------------------------------------
+    /**
+     * @brief Default Copy Constructor
+     */
+    AABBNode(const AABBNode &newNode) = default;
 
-    void Clear();
+    /**
+     * @brief Default Copy assignment
+     */
+    AABBNode &operator=(const AABBNode &newNode) = default;
 
-    //----------------------------------------------------------------------------------
-    //  Get Methods
-    //----------------------------------------------------------------------------------
-    GLdouble GetMaxX() {
-        return m_BBox.max.x;
-    }
-    GLdouble GetMinX() {
-        return m_BBox.min.x;
-    }
-    GLdouble GetMaxY() {
-        return m_BBox.max.y;
-    }
-    GLdouble GetMinY() {
-        return m_BBox.min.y;
-    }
-    GLdouble GetMaxZ() {
-        return m_BBox.max.z;
-    }
-    GLdouble GetMinZ() {
-        return m_BBox.min.z;
-    }
+    /*
+     * @brief Gets the Max X value from the node
+     */
+    GLfloat GetMaxX();
 
-    // Return the address of the link to the next node in the list
-    AABBNode *GetNext() const {
-        return m_next;
-    }
+    /*
+     * @brief Gets the Min X value from the node
+     */
+    GLfloat GetMinX();
 
-    //----------------------------------------------------------------------------------
-    //  Set Methods
-    //----------------------------------------------------------------------------------
-    void SetData(const GLdouble maxX, const GLdouble minX, const GLdouble maxY,
-                 const GLdouble minY, const GLdouble maxZ, const GLdouble minZ);
+    /*
+     * @brief Gets the Max Y value from the node
+     */
+    GLfloat GetMaxY();
 
-    // Set the address of the link to the next node in the list
-    void SetNext(AABBNode *next) {
-        m_next = next;
-    }
+    /*
+     * @brief Gets the Min Y value from the node
+     */
+    GLfloat GetMinY();
+
+    /*
+     * @brief Gets the Max Z value from the node
+     */
+    GLfloat GetMaxZ();
+
+    /*
+     * @brief Gets the Min Z value from the node
+     */
+    GLfloat GetMinZ();
+
+    /**
+     * @brief  Sets the data at the given point in the array.
+     */
+    void SetData(const GLfloat maxX, const GLfloat minX, const GLfloat maxY,
+                 const GLfloat minY, const GLfloat maxZ, const GLfloat minZ);
 
   private:
-    // The address of the next node in the list
-    AABBNode *m_next;
-
-    // stores x,y,z co-ordinates
+    /// stores x,y,z co-ordinates
     struct XYZ {
-        GLdouble x, y, z;
+        GLfloat x = 0.0, y = 0.0, z = 0.0;
     };
-    // stores max and min values of co-ordinates
+    /// stores max and min values of co-ordinates
     struct BoundingBox {
-        XYZ max;
-        XYZ min;
+        XYZ max{};
+        XYZ min{};
     };
-    // stores above info
-    BoundingBox m_BBox;
-
-    //----------------------------------------------------------------------------------
-
-    // Privatised copy constructor and assignment operator
-    AABBNode(const AABBNode &newNode){};
-    AABBNode &operator=(const AABBNode &newNode){};
+    /// stores above info
+    BoundingBox m_BBox{};
 };
 
 #endif
-//--------------------------------------------------------------------------------------

@@ -2,33 +2,37 @@
 ICT290 Group Project Part 1
 
 ## Building
-* Clone the repo:
+### Prerequisites
+* macOS: [brew](https://brew.sh)
+* Windows: [vcpkg](https://github.com/microsoft/vcpkg)
+
+### Clone the repo
 ```
 git clone https://github.com/opeik/ICT290.git
 ```
 
-* Install dependencies:
-    * Linux: `sudo apt-get install cmake freeglut3-dev libsdl1.2-dev ninja-build clang`
-    * macOS: `brew install cmake sdl ninja`
-    * Windows: `.\vcpkg.exe install --triplet x64-windows freeglut sdl1`
+### Dependencies
+* macOS: `brew install cmake sdl ninja`
+* Linux: `sudo apt-get install cmake freeglut3-dev libsdl1.2-dev ninja-build clang`
+* Windows: `.\vcpkg.exe install --triplet x64-windows freeglut sdl1`
 
-* Configure the build:
-    * Unix:
+### Configure build
+* Unix:
     ```
     mkdir build
     cd build
     CXX=clang++ cmake -GNinja ..
     ```
-    * Windows:
-        * In Visual Studio, select Open → CMake, select `CMakeLists.txt`
+* Windows:
+    * In Visual Studio, select Open → CMake, select `CMakeLists.txt`
 
-* Build:
-    * Unix:
+### Build
+* Unix:
     ```
     make && ./shays-world
     ```
-    * Windows:
-        * Select Build in Visual Studio
+* Windows:
+    * Select Build in Visual Studio
 
 ## Contributing
 * Ensure your editor uses Unix line endings and leaves an empty new line at

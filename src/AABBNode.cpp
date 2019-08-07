@@ -4,21 +4,13 @@
 //  Defines all the methods declared, but not defined, in AABBNode.h
 //
 //  Shay Leary, March 2005
+//	Fixed by Peter Crabbe, 04/08/2019
 //--------------------------------------------------------------------------------------
 
 #include "AABBNode.h"
 
-//----------------------------------------------------------------
-
-void AABBNode::Clear() {
-    m_next = NULL;
-}
-
-//----------------------------------------------------------------
-
-void AABBNode::SetData(const GLdouble maxX, const GLdouble minX,
-                       const GLdouble maxY, const GLdouble minY,
-                       const GLdouble maxZ, const GLdouble minZ) {
+void AABBNode::SetData(const GLfloat maxX, const GLfloat minX, const GLfloat maxY,
+                       const GLfloat minY, const GLfloat maxZ, const GLfloat minZ) {
     m_BBox.max.x = maxX;
     m_BBox.min.x = minX;
     m_BBox.max.y = maxY;
@@ -27,4 +19,22 @@ void AABBNode::SetData(const GLdouble maxX, const GLdouble minX,
     m_BBox.min.z = minZ;
 }
 
-//----------------------------------------------------------------
+GLfloat AABBNode::GetMaxX() {
+    return m_BBox.max.x;
+}
+
+GLfloat AABBNode::GetMinX() {
+    return m_BBox.min.x;
+}
+GLfloat AABBNode::GetMaxY() {
+    return m_BBox.max.y;
+}
+GLfloat AABBNode::GetMinY() {
+    return m_BBox.min.y;
+}
+GLfloat AABBNode::GetMaxZ() {
+    return m_BBox.max.z;
+}
+GLfloat AABBNode::GetMinZ() {
+    return m_BBox.min.z;
+}

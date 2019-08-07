@@ -1,87 +1,100 @@
-//  PlainLinkedList.h
-//  Header file for the PlainLinkedList class
-//  Linked List used to store nodes (PlainNode) which contain the co-ordinates of the
-//  of each plain used in the program.
-//
-//	The program will split the world into four quadrants and creates a linked list to
-//  store the bounding box details for each
-//
-//  Author:  Shay Leary
-//  April 2005
-//--------------------------------------------------------------------------------------
+/**
+ * @class PlainLinkedList
+ * @brief  PlainLinkedList collision list array
+ *
+ * Updated Shay's Linklist format to a vector improving access speeds.
+ *
+ * @author Peter Crabbe
+ * @version 02
+ * @date 04/08/2019
+ *
+ */
 
 #ifndef PLAINLINKED_LIST_H
-#    define PLAINLINKED_LIST_H
+#define PLAINLINKED_LIST_H
+#include <vector>
 
-//--------------------------------------------------------------------------------------
-
-#    include "PlainNode.h"
-
-//--------------------------------------------------------------------------------------
+#include "PlainNode.h"
 
 class PlainLinkedList {
   public:
-    // constructor creates pointer to first node
-    PlainLinkedList() {
-        m_first = new PlainNode;
-    }
+    /**
+     * @brief Default constructor, not required
+     */
+    PlainLinkedList() = default;
 
-    virtual ~PlainLinkedList() {
-        Clear();
-    }
+    /**
+     * @brief Copy Constructor, not required
+     */
+    PlainLinkedList(const PlainLinkedList &array) = default;
 
-    //----------------------------------------------------------------------------------
+    /**
+     * @brief Copy assignment
+     */
+    PlainLinkedList &operator=(const PlainLinkedList &array) = default;
 
-    // clears linked list and frees memory
+    /// No longer used, to be removed when safe to do so.
     void Clear();
 
-    // add a node to the start of the linked list
-    bool AddToStart(const int tempType, const GLdouble tempXs, const GLdouble tempXe,
-                    const GLdouble tempYs, const GLdouble tempYe,
-                    const GLdouble tempZs, const GLdouble tempZe);
+    /**
+     * @brief  Attempts to add to the vector, then will push into the last spot
+     */
+    bool AddToStart(const int tempType, const GLfloat tempXs, const GLfloat tempXe,
+                    const GLfloat tempYs, const GLfloat tempYe,
+                    const GLfloat tempZs, const GLfloat tempZe);
 
-    // set the values of the node data
-    void SetData(const int &ptrCount, const int tempType, const GLdouble tempXs,
-                 const GLdouble tempXe, const GLdouble tempYs, const GLdouble tempYe,
-                 const GLdouble tempZs, const GLdouble tempZe);
+    /**
+     * @brief  Sets a given value at a set point
+     */
+    void SetData(const int &ptrCount, const int tempType, const GLfloat tempXs,
+                 const GLfloat tempXe, const GLfloat tempYs, const GLfloat tempYe,
+                 const GLfloat tempZs, const GLfloat tempZe);
 
-    //----------------------------------------------------------------------------------
-    //  Get Methods
-    //----------------------------------------------------------------------------------
-    GLdouble GetType(int ptrCount);
-    GLdouble GetXstart(int ptrCount);
-    GLdouble GetXend(int ptrCount);
-    GLdouble GetYstart(int ptrCount);
-    GLdouble GetYend(int ptrCount);
-    GLdouble GetZstart(int ptrCount);
-    GLdouble GetZend(int ptrCount);
+    /**
+     * @brief Gets the Type value at the given point in the array
+     */
+    GLfloat GetType(int ptrCount);
 
-    // Return size of list
+    /**
+     * @brief Gets the X start value at the given point in the array
+     */
+    GLfloat GetXstart(int ptrCount);
+
+    /**
+     * @brief Gets the X end value at the given point in the array
+     */
+    GLfloat GetXend(int ptrCount);
+
+    /**
+     * @brief Gets the Y start value at the given point in the array
+     */
+    GLfloat GetYstart(int ptrCount);
+
+    /**
+     * @brief Gets the Y end value at the given point in the array
+     */
+    GLfloat GetYend(int ptrCount);
+
+    /**
+     * @brief Gets the Z start value at the given point in the array
+     */
+    GLfloat GetZstart(int ptrCount);
+
+    /**
+     * @brief Gets the Z end value at the given point in the array
+     */
+    GLfloat GetZend(int ptrCount);
+
+    /**
+     * @brief Returns the size of the vector as an int.
+     */
     int GetListSize();
 
-    // Return the address of the link to the next node in the list
-    PlainNode *GetNext() const {
-        return m_first->GetNext();
-    }
-    // Return the address of the link to the first node in the list
-    PlainNode *GetFirst() const {
-        return m_first;
-    }
-
-    //--------------------------------------------------------------------------------------
-
   private:
-    // pointer to first node in list
-    PlainNode *m_first;
+    /// Vector used to store nodes.
+    std::vector<PlainNode> nodes{};
 
-    // used to clear memory
-    void Delete(PlainNode *before);
-
-    // Privatised copy constructor and assignment operator
-    PlainLinkedList(const PlainLinkedList &array){};
-    PlainLinkedList &operator=(const PlainLinkedList &array){};
+    /// Depreciated code, to be removed when safe to do so.
+    void Delete(PlainNode *before) {}
 };
-
 #endif
-
-//--------------------------------------------------------------------------------------

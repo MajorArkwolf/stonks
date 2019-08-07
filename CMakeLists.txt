@@ -24,18 +24,16 @@ project(shays-world LANGUAGES CXX)
 # Define executable source files.
 add_executable(shays-world
     src/Main.cpp
-    src/AABBLinkedList.cpp
-    src/EasySound.cpp
+    src/AABBList.cpp
     src/PlainNode.cpp
-    src/SoundTime.cpp
     src/CameraMap.cpp
     src/AABB.cpp
     src/AABBNode.cpp
     src/PlainLinkedList.cpp
-    src/Sound.cpp
     src/Camera.cpp
     src/Collision.cpp
     src/TexturedPolygons.cpp
+    src/Workaround.cpp
 )
 
 # Set C++ standard.
@@ -48,7 +46,7 @@ set_target_properties(shays-world PROPERTIES
 # Set compiler and linker flags.
 target_compile_options(shays-world PUBLIC
     $<$<CXX_COMPILER_ID:Clang>:-Weverything -Wno-c++98-compat
-    -Wno-c++98-compat-pedantic -Wno-shadow -Wno-padded -Wno-deprecated-declarations
+    -Wno-c++98-compat-pedantic -Wno-padded -Wno-deprecated-declarations
     -fcolor-diagnostics>)
 target_compile_options(shays-world PUBLIC
     $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
@@ -60,7 +58,7 @@ target_compile_options(shays-world PUBLIC $<$<CXX_COMPILER_ID:Gnu>:-Wall
     -Wextra -Wpedantic -fdiagnostics-color=always>)
 
 # MSVC
-target_compile_options(shays-world PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/W4 /wd4458>)
+target_compile_options(shays-world PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/W4>)
 
 # Include header files.
 target_include_directories(shays-world PRIVATE src)
@@ -68,11 +66,7 @@ target_include_directories(shays-world PRIVATE src)
 # Find, include, and link against dependencies.
 find_package(OpenGL REQUIRED COMPONENTS OpenGL)
 find_package(GLUT REQUIRED)
-find_package(SDL REQUIRED)
-add_dependencies(shays-world OpenGL::GL GLUT::GLUT)
-target_include_directories(shays-world PRIVATE ${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS}
-    ${SDL_INCLUDE_DIR})
-target_link_libraries(shays-world PRIVATE OpenGL::GL ${SDL_LIBRARY})
+find_package(glm REQUIRED)
 
 # Hack to fix Linux Glu library paths.
 if (LINUX)
@@ -91,17 +85,15 @@ if (APPLE)
     target_link_libraries(shays-world PRIVATE ${APP_SERVICES})
 endif()
 
-target_link_libraries(shays-world PRIVATE GLUT::GLUT)
+# Set dependencies.
+add_dependencies(shays-world OpenGL::GL GLUT::GLUT)
+# Set includes.
+target_include_directories(shays-world PRIVATE ${OPENGL_INCLUDE_DIRS}
+    ${GLUT_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS})
+# Set link libraries.
+target_link_libraries(shays-world PRIVATE OpenGL::GL GLUT::GLUT)
 
-# Custom target to run the project.
-add_custom_target(run
-  COMMAND shays-world
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-  COMMENT "Running project"
-)
-
-add_dependencies(run shays-world)
-
+# Copy the resources to the binary location.
 add_custom_command(TARGET shays-world POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                        ${CMAKE_SOURCE_DIR}/res

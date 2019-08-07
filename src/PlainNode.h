@@ -1,98 +1,113 @@
-//  PlainNode.h
-//  Header file for the PlainNode class
-//  Stores details for each plain.  Each node is stored in each link of the Plain Linked List
-
-//  Shay Leary, April 2005
-//--------------------------------------------------------------------------------------
+/**
+ * @class PlainNode
+ * @brief  Stores data relating to collision information
+ *
+ * Used inside of the PlainLinkedList
+ *
+ * @author Peter Crabbe
+ * @version 02
+ * @date 04/08/2019
+ *
+ */
 
 #ifndef PLAINNODE_H
-#    define PLAINNODE_H
+#define PLAINNODE_H
 
-//--------------------------------------------------------------------------------------
+#include <cmath>
+#include <iostream>
 
-#    include <cmath>
-#    include <iostream>
-
-#    include "Glut.hpp"
+#include "Glut.hpp"
 
 class PlainNode {
 
   public:
+    /**
+     * @brief Default constructor, not required
+     */
     PlainNode() {
         Clear();
     }
-    virtual ~PlainNode() {
+
+    /**
+     * @brief Default Destructor, not required
+     */
+    ~PlainNode() {
         Clear();
     }
 
-    //----------------------------------------------------------------------------------
+    /**
+     * @brief Copy Constructor, defaulted
+     */
+    PlainNode(const PlainNode &newNode) = default;
 
+    /**
+     * @brief Copy assignment, defaulted
+     */
+    PlainNode &operator=(const PlainNode &newNode) = default;
+
+    // Depreciated, to be deleted when safe to do so.
     void Clear();
 
-    //----------------------------------------------------------------------------------
-    //  Get Methods
-    //----------------------------------------------------------------------------------
-    GLdouble GetType() {
-        return m_type;
-    }
-    GLdouble GetXstart() {
-        return m_xPlainStart;
-    }
-    GLdouble GetXend() {
-        return m_xPlainEnd;
-    }
-    GLdouble GetYstart() {
-        return m_yPlainStart;
-    }
-    GLdouble GetYend() {
-        return m_yPlainEnd;
-    }
-    GLdouble GetZstart() {
-        return m_zPlainStart;
-    }
-    GLdouble GetZend() {
-        return m_zPlainEnd;
-    }
+    /*
+     * @brief Gets the Type value from the node
+     */
+    GLfloat GetType();
 
-    // Return the address of the link to the next node in the list
-    PlainNode *GetNext() const {
-        return m_next;
-    }
+    /*
+     * @brief Gets the X start value from the node
+     */
+    GLfloat GetXstart();
 
-    //----------------------------------------------------------------------------------
-    //  Set Methods
-    //----------------------------------------------------------------------------------
-    void SetData(const int tempType, const GLdouble tempXs, const GLdouble tempXe,
-                 const GLdouble tempYs, const GLdouble tempYe,
-                 const GLdouble tempZs, const GLdouble tempZe);
+    /*
+     * @brief Gets the X end value from the node
+     */
+    GLfloat GetXend();
 
-    // Set the address of the link to the next node in the list
+    /*
+     * @brief Gets the Y start value from the node
+     */
+    GLfloat GetYstart();
+
+    /*
+     * @brief Gets the Y end value from the node
+     */
+    GLfloat GetYend();
+
+    /*
+     * @brief Gets the Z start value from the node
+     */
+    GLfloat GetZstart();
+
+    /*
+     * @brief Gets the Z end value from the node
+     */
+    GLfloat GetZend();
+
+    /**
+     * @brief  Sets the data at the given point in the array.
+     */
+    void SetData(const int tempType, const GLfloat tempXs, const GLfloat tempXe,
+                 const GLfloat tempYs, const GLfloat tempYe,
+                 const GLfloat tempZs, const GLfloat tempZe);
+
+    /**
+     * @brief  Deprecated code, to be deleted.
+     */
     void SetNext(PlainNode *next) {
-        m_next = next;
+        // m_next = next;
     }
 
   private:
-    // The address of the next node in the list
-    PlainNode *m_next;
+    /// Stores type of plain:
+    /// (0: flat plane)
+    /// (1: incline from z to y)
+    /// (2: incline from x to y)
+    GLfloat m_type = 0;
 
-    // Stores type of plain:
-    // (0: flat plane)
-    // (1: incline from z to y)
-    // (2: incline from x to y)
-    GLdouble m_type;
-
-    // stores start and end co-ordinates of plane on x, y and z axis
-    GLdouble m_xPlainStart, m_xPlainEnd;
-    GLdouble m_yPlainStart, m_yPlainEnd;
-    GLdouble m_zPlainStart, m_zPlainEnd;
-
-    //----------------------------------------------------------------------------------
-
-    // Privatised copy constructor and assignment operator
-    PlainNode(const PlainNode &newNode){};
-    PlainNode &operator=(const PlainNode &newNode){};
+    /// stores start and end co-ordinates of plane on x, y and z axis
+    GLfloat m_xPlainStart = 0, m_xPlainEnd = 0;
+    GLfloat m_yPlainStart = 0, m_yPlainEnd = 0;
+    GLfloat m_zPlainStart = 0, m_zPlainEnd = 0;
 };
 
 #endif
-
-//--------------------------------------------------------------------------------------

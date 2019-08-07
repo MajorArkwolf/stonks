@@ -14,14 +14,14 @@
 
 class CameraMap {
   public:
-    CameraMap(){};
-    virtual ~CameraMap(){};
+    CameraMap() {}
+    ~CameraMap() {}
 
     //----------------------------------------------------------------------------------
 
     // display the map
     void DisplayMap(const int &screenWidth, const int &screenHeight,
-                    const GLdouble &xPos, const GLdouble &zPos,
+                    const GLfloat &xPos, const GLfloat &zPos,
                     const GLuint &tempImage);
 
     // display the welcome screen
@@ -33,8 +33,8 @@ class CameraMap {
 
   private:
     // Privatised copy constructor and assignment operator
-    CameraMap(const CameraMap &cam){};
-    CameraMap &operator=(const CameraMap &cam){};
+    CameraMap(const CameraMap &cam) = delete;
+    CameraMap &operator=(const CameraMap &cam) = delete;
 };
 
 #endif

@@ -13,10 +13,10 @@
 //--------------------------------------------------------------------------------------
 
 void CameraMap::DisplayMap(const int &screenWidth, const int &screenHeight,
-                           const GLdouble &xPos, const GLdouble &zPos,
+                           const GLfloat &xPos, const GLfloat &zPos,
                            const GLuint &tempImage) {
-    GLdouble tempX = xPos / 163.0 - 2096 / 163;
-    GLdouble tempZ = zPos / 164.0 - 4688 / 164;
+    GLfloat tempX = xPos / 163.0f - 2096.0f / 163.0f;
+    GLfloat tempZ = zPos / 164.0f - 4688.0f / 164.0f;
     glPushMatrix();
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
@@ -33,10 +33,10 @@ void CameraMap::DisplayMap(const int &screenWidth, const int &screenHeight,
 
     // display the cursor of the camera position
     glBegin(GL_QUADS);
-    glVertex3f(219.0 - tempX - 2.0, 256.0 - tempZ - 2.0, 0.0);
-    glVertex3f(219.0 - tempX + 2.0, 256.0 - tempZ - 2.0, 0.0);
-    glVertex3f(219.0 - tempX + 2.0, 256.0 - tempZ + 2.0, 0.0);
-    glVertex3f(219.0 - tempX - 2.0, 256.0 - tempZ + 2.0, 0.0);
+    glVertex3f(219.0f - tempX - 2.0f, 256.0f - tempZ - 2.0f, 0.0f);
+    glVertex3f(219.0f - tempX + 2.0f, 256.0f - tempZ - 2.0f, 0.0f);
+    glVertex3f(219.0f - tempX + 2.0f, 256.0f - tempZ + 2.0f, 0.0f);
+    glVertex3f(219.0f - tempX - 2.0f, 256.0f - tempZ + 2.0f, 0.0f);
     glEnd();
 
     // display map
@@ -64,7 +64,7 @@ void CameraMap::DisplayWelcomeScreen(const int &screenWidth,
     glScalef(1, -1, 1);
 
     // move to centre of screen
-    glTranslatef(screenWidth / 2 - 256.0, -screenHeight / 2 - 256.0, 0);
+    glTranslatef(screenWidth / 2.0f - 256.0f, -screenHeight / 2.0f - 256.0f, 0.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     // display exit screen or welcome screen
@@ -92,7 +92,7 @@ void CameraMap::DisplayNoExit(const int &screenWidth, const int &screenHeight,
     glScalef(1, -1, 1);
 
     // move to centre of screen
-    glTranslatef(screenWidth / 2 - 128.0, -screenHeight / 2 - 32.0, 0);
+    glTranslatef(screenWidth / 2.0f - 128.0f, -screenHeight / 2.0f - 32.0f, 0.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     // display sign

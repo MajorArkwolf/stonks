@@ -11,6 +11,7 @@
 #include <math.h>
 
 #include "Glut.hpp"
+#include "Math.hpp"
 
 //--------------------------------------------------------------------------------------
 // Set initial values
@@ -21,20 +22,16 @@ Camera::Camera() {
 
     ResetXYZ();
 
-    m_deltaMoveFB = 0;
-    m_deltaMoveLR = 0;
-    m_deltaMoveUD = 0;
+    m_deltaMoveFB = 0.0f;
+    m_deltaMoveLR = 0.0f;
+    m_deltaMoveUD = 0.0f;
 
-    m_rotateAngleLR = 0.0;
-    m_rotateAngleUD = 0.0;
-    m_deltaAngleLR  = 0.0;
-    m_deltaAngleUD  = 0.0;
+    m_rotateAngleLR = 0.0f;
+    m_rotateAngleUD = 0.0f;
+    m_deltaAngleLR  = 0.0f;
+    m_deltaAngleUD  = 0.0f;
 
     m_CollisionDetectionOn = true;
-
-    // sound objects
-    es        = CEasySound::Instance();
-    stepSound = es->GetSound(es->Load("res/sound/step.wav"));
 }
 
 //--------------------------------------------------------------------------------------
@@ -57,26 +54,26 @@ void Camera::ResetXYZ() {
 //--------------------------------------------------------------------------------------
 //  Determine direction
 //--------------------------------------------------------------------------------------
-void Camera::DirectionFB(int const &tempMove) {
+void Camera::DirectionFB(GLfloat tempMove) {
     m_deltaMoveFB = tempMove;
 }
 //--------------------------------------------------------------------------------------
-void Camera::DirectionLR(int const &tempMove) {
+void Camera::DirectionLR(GLfloat tempMove) {
     m_deltaMoveLR = tempMove;
 }
 //--------------------------------------------------------------------------------------
 // Not used but allows up and don movement
-void Camera::DirectionUD(int const &tempMove) {
+void Camera::DirectionUD(GLfloat tempMove) {
     m_deltaMoveUD = tempMove;
 }
 
 //--------------------------------------------------------------------------------------
-void Camera::DirectionRotateLR(GLdouble const &tempMove) {
+void Camera::DirectionRotateLR(GLfloat tempMove) {
     m_deltaAngleLR = tempMove * m_rotateSpeed;
 }
 
 //--------------------------------------------------------------------------------------
-void Camera::DirectionLookUD(int const &tempMove) {
+void Camera::DirectionLookUD(GLfloat tempMove) {
     m_deltaAngleUD = tempMove * m_rotateSpeed;
 }
 
@@ -125,7 +122,7 @@ bool Camera::MoveUDOK() {
 bool Camera::RotateLROK() {
     bool tempReturn = false;
 
-    if (m_rotateSpeed != 0.0) {
+    if (m_rotateSpeed != 0.0f) {
         if ((m_deltaAngleLR / m_rotateSpeed) < 0 ||
             (m_deltaAngleLR / m_rotateSpeed) > 0) {
             tempReturn = true;
@@ -143,7 +140,7 @@ bool Camera::RotateLROK() {
 bool Camera::LookUDOK() {
     bool tempReturn = false;
 
-    if (m_rotateSpeed != 0.0) {
+    if (m_rotateSpeed != 0.0f) {
         if ((m_deltaAngleUD / m_rotateSpeed) < 0 ||
             (m_deltaAngleUD / m_rotateSpeed) > 0) {
             tempReturn = true;
@@ -164,12 +161,12 @@ void Camera::MoveFB() {
     m_zLast = m_z;
 
     // set movement step
-    GLdouble moveZ = (m_deltaMoveFB * (m_lookZ)*m_moveSpeed);
-    GLdouble moveX = (m_deltaMoveFB * (m_lookX)*m_moveSpeed);
+    GLfloat moveZ = (m_deltaMoveFB * (m_lookZ)*m_moveSpeed);
+    GLfloat moveX = (m_deltaMoveFB * (m_lookX)*m_moveSpeed);
 
     if (m_CollisionDetectionOn) {
-        GLdouble startX = m_x + moveX * 5.0;
-        GLdouble startZ = m_z + moveZ * 5.0;
+        GLfloat startX = m_x + moveX * 5.0f;
+        GLfloat startZ = m_z + moveZ * 5.0f;
 
         // check if collsion
         if (!(m_colDetect.Collide(startX + m_lookX, m_y + m_lookY,
@@ -178,7 +175,7 @@ void Camera::MoveFB() {
             m_x += moveX;
             m_z += moveZ;
             // check plain
-            SetPlains(moveX, moveZ);
+            SetPlains(static_cast<int>(moveX), static_cast<int>(moveZ));
             // redisplay
             callGLLookAt();
         }
@@ -187,7 +184,7 @@ void Camera::MoveFB() {
         m_x += moveX;
         m_z += moveZ;
         // check plain
-        SetPlains(moveX, moveZ);
+        SetPlains(static_cast<int>(moveX), static_cast<int>(moveZ));
         // redisplay
         callGLLookAt();
     }
@@ -202,12 +199,12 @@ void Camera::MoveLR() {
     m_xLast = m_x;
 
     // set movement step
-    GLdouble moveZ = (m_deltaMoveLR * (m_lookZZ)*m_moveSpeed);
-    GLdouble moveX = (m_deltaMoveLR * (m_lookXX)*m_moveSpeed);
+    GLfloat moveZ = (m_deltaMoveLR * (m_lookZZ)*m_moveSpeed);
+    GLfloat moveX = (m_deltaMoveLR * (m_lookXX)*m_moveSpeed);
 
     if (m_CollisionDetectionOn) {
-        GLdouble startX = m_x + moveX * 1.0;
-        GLdouble startZ = m_z + moveZ * m_moveSpeed * 1.0;
+        GLfloat startX = m_x + moveX * 1.0f;
+        GLfloat startZ = m_z + moveZ * m_moveSpeed * 1.0f;
 
         // check if collsion
         if (!(m_colDetect.Collide(startX + m_lookXX, m_y + m_lookYY,
@@ -216,7 +213,7 @@ void Camera::MoveLR() {
             m_x += moveX;
             m_z += moveZ;
             // check plain
-            SetPlains(moveX, moveZ);
+            SetPlains(static_cast<int>(moveX), static_cast<int>(moveZ));
             // redisplay
             callGLLookAt();
         }
@@ -224,7 +221,7 @@ void Camera::MoveLR() {
         // increment position
         m_x += moveX;
         m_z += moveZ;
-        SetPlains(moveX, moveZ);
+        SetPlains(static_cast<int>(moveX), static_cast<int>(moveZ));
         // redisplay
         callGLLookAt();
     }
@@ -245,10 +242,6 @@ void Camera::SetPlains(const int &moveX, const int &moveZ) {
             // if flat plain
             if (m_Plain.GetType(i) == 0) {
                 m_y = m_Plain.GetYstart(i);
-
-                if ((m_plainNo != i) && m_plainHeight != m_Plain.GetYstart(i)) {
-                    stepSound->Play();
-                }
 
                 m_plainNo     = i;
                 m_plainHeight = m_Plain.GetYstart(i);
@@ -286,7 +279,7 @@ void Camera::SetPlains(const int &moveX, const int &moveZ) {
 //----------------------------------------------------------------------------------------
 void Camera::MoveUD() {
     if (m_CollisionDetectionOn) {
-        GLdouble startY = m_y + m_deltaMoveUD * (m_lookYY)*m_moveSpeed * 5.0;
+        GLfloat startY = m_y + m_deltaMoveUD * (m_lookYY)*m_moveSpeed * 5.0f;
 
         if (!(m_colDetect.Collide(m_x + m_lookXX, startY + m_lookYY,
                                   m_z + m_lookZZ))) {
@@ -306,8 +299,8 @@ void Camera::RotateLR() {
     m_rotateAngleLR += m_deltaAngleLR;
     m_lookX  = sin(m_rotateAngleLR);
     m_lookZ  = -cos(m_rotateAngleLR);
-    m_lookXX = sin(m_rotateAngleLR + (float)PI / 2.0);
-    m_lookZZ = -cos(m_rotateAngleLR + (float)PI / 2.0);
+    m_lookXX = sin(m_rotateAngleLR + PI_F / 2.0f);
+    m_lookZZ = -cos(m_rotateAngleLR + PI_F / 2.0f);
     callGLLookAt();
 }
 
@@ -323,8 +316,8 @@ void Camera::LookUD() {
 //----------------------------------------------------------------------------------------
 // Positions camera at co-ordinates of parameters
 //----------------------------------------------------------------------------------------
-void Camera::Position(GLdouble const &tempX, GLdouble const &tempY,
-                      GLdouble const &tempZ, GLdouble const &tempAngle) {
+void Camera::Position(GLfloat const &tempX, GLfloat const &tempY,
+                      GLfloat const &tempZ, GLfloat const &tempAngle) {
     ResetXYZ();
 
     m_x = tempX;
@@ -332,11 +325,11 @@ void Camera::Position(GLdouble const &tempX, GLdouble const &tempY,
     m_z = tempZ;
 
     // rotate to correct angle
-    m_rotateAngleLR = tempAngle * (PI / 180);
+    m_rotateAngleLR = tempAngle * (PI_F / 180.0f);
     m_lookX         = sin(m_rotateAngleLR);
     m_lookZ         = -cos(m_rotateAngleLR);
-    m_lookXX        = sin(m_rotateAngleLR + (float)PI / 2.0);
-    m_lookZZ        = -cos(m_rotateAngleLR + (float)PI / 2.0);
+    m_lookXX        = sin(m_rotateAngleLR + PI_F / 2.0f);
+    m_lookZZ        = -cos(m_rotateAngleLR + PI_F / 2.0f);
     m_rotateAngleUD = 0.0;
     m_deltaAngleUD  = 0.0;
 
@@ -365,8 +358,11 @@ void Camera::CheckCamera() {
 //----------------------------------------------------------------------------------------
 void Camera::callGLLookAt() {
     glLoadIdentity();
-    gluLookAt(m_x, m_y, m_z, m_x + m_lookX, m_y + m_lookY, m_z + m_lookZ, 0.0f,
-              1.0f, 0.0f);
+    gluLookAt(static_cast<double>(m_x), static_cast<double>(m_y),
+              static_cast<double>(m_z), static_cast<double>(m_x + m_lookX),
+              static_cast<double>(m_y + m_lookY),
+              static_cast<double>(m_z + m_lookZ), static_cast<double>(0.0f),
+              static_cast<double>(1.0f), static_cast<double>(0.0f));
 }
 
 //--------------------------------------------------------------------------------------
@@ -398,17 +394,17 @@ void Camera::DisplayNoExit(const int &screenWidth, const int &screenHeight,
 
 //----------------------------------------------------------------------------------------
 
-void Camera::SetWorldCoordinates(const GLdouble &tempX, const GLdouble &tempZ) {
+void Camera::SetWorldCoordinates(const GLfloat &tempX, const GLfloat &tempZ) {
     m_colDetect.SetWorldX(tempX);
     m_colDetect.SetWorldZ(tempZ);
 }
 
 //----------------------------------------------------------------------------------------
 
-void Camera::SetPlains(const int tempType, const GLdouble tempXs,
-                       const GLdouble tempXe, const GLdouble tempYs,
-                       const GLdouble tempYe, const GLdouble tempZs,
-                       const GLdouble tempZe) {
+void Camera::SetPlains(const int tempType, const GLfloat tempXs,
+                       const GLfloat tempXe, const GLfloat tempYs,
+                       const GLfloat tempYe, const GLfloat tempZs,
+                       const GLfloat tempZe) {
     m_Plain.AddToStart(tempType, tempXs, tempXe, tempYs, tempYe, tempZs, tempZe);
 }
 
@@ -427,9 +423,9 @@ void Camera::CheckSteps() {
 
 //----------------------------------------------------------------------------------------
 
-void Camera::ClimbSteps(GLdouble stepStart, GLdouble stepFinish,
-                        GLdouble stepHeight, GLdouble stepWidth, int noSteps) {
-    GLdouble tempUpSteps;
+void Camera::ClimbSteps(GLfloat stepStart, GLfloat stepFinish,
+                        GLfloat stepHeight, GLfloat stepWidth, int noSteps) {
+    GLfloat tempUpSteps;
     if ((m_z < stepStart) && (m_z > stepFinish)) {
         bool stepped = false;
         if (m_z > m_zLast) {

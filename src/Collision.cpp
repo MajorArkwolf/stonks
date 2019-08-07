@@ -26,48 +26,45 @@ void Collision::CreateLinkedList()
     m_listSize[3] = 0;
 
     for (int count = 0; count < tempNoBoxes; count++) {
-        GLdouble maxX = GetAABBMaxX(count);
-        GLdouble minX = GetAABBMinX(count);
-        GLdouble maxY = GetAABBMaxY(count);
-        GLdouble minY = GetAABBMinY(count);
-        GLdouble maxZ = GetAABBMaxZ(count);
-        GLdouble minZ = GetAABBMinZ(count);
+        GLfloat maxX = GetAABBMaxX(count);
+        GLfloat minX = GetAABBMinX(count);
+        GLfloat maxY = GetAABBMaxY(count);
+        GLfloat minY = GetAABBMinY(count);
+        GLfloat maxZ = GetAABBMaxZ(count);
+        GLfloat minZ = GetAABBMinZ(count);
         // 1st quadrant
-        if (((minX <= m_worldSizeX / 2.0) || (maxX <= m_worldSizeX / 2.0)) &&
-            ((minZ <= m_worldSizeZ / 2.0) || (maxZ <= m_worldSizeZ / 2.0))) {
+        if (((minX <= m_worldSizeX / 2.0f) || (maxX <= m_worldSizeX / 2.0f)) &&
+            ((minZ <= m_worldSizeZ / 2.0f) || (maxZ <= m_worldSizeZ / 2.0f))) {
             // increment list size
             m_listSize[0]++;
             // add bb data to list
             m_list[0].AddToStart(maxX, minX, maxY, minY, maxZ, minZ);
         }
         // 2nd quadrant
-        if (((minX <= m_worldSizeX / 2.0) || (maxX <= m_worldSizeX / 2.0)) &&
-            ((minZ >= m_worldSizeZ / 2.0) || (maxZ >= m_worldSizeZ / 2.0))) {
+        if (((minX <= m_worldSizeX / 2.0f) || (maxX <= m_worldSizeX / 2.0f)) &&
+            ((minZ >= m_worldSizeZ / 2.0f) || (maxZ >= m_worldSizeZ / 2.0f))) {
             // increment list size
             m_listSize[1]++;
             // add bb data to list
             m_list[1].AddToStart(maxX, minX, maxY, minY, maxZ, minZ);
         }
         // 3rd quadrant
-        if (((minX >= m_worldSizeX / 2.0) || (maxX >= m_worldSizeX / 2.0)) &&
-            ((minZ <= m_worldSizeZ / 2.0) || (maxZ <= m_worldSizeZ / 2.0))) {
+        if (((minX >= m_worldSizeX / 2.0f) || (maxX >= m_worldSizeX / 2.0f)) &&
+            ((minZ <= m_worldSizeZ / 2.0f) || (maxZ <= m_worldSizeZ / 2.0f))) {
             // increment list size
             m_listSize[2]++;
             // add bb data to list
             m_list[2].AddToStart(maxX, minX, maxY, minY, maxZ, minZ);
         }
         // 4th quadrant
-        if (((minX >= m_worldSizeX / 2.0) || (maxX >= m_worldSizeX / 2.0)) &&
-            ((minZ >= m_worldSizeZ / 2.0) || (maxZ >= m_worldSizeZ / 2.0))) {
+        if (((minX >= m_worldSizeX / 2.0f) || (maxX >= m_worldSizeX / 2.0f)) &&
+            ((minZ >= m_worldSizeZ / 2.0f) || (maxZ >= m_worldSizeZ / 2.0f))) {
             // increment list size
             m_listSize[3]++;
             // add bb data to list
             m_list[3].AddToStart(maxX, minX, maxY, minY, maxZ, minZ);
         }
     }
-    // Call AABB constructor the delete array and clear memory
-    // (the array AABB is not required once the lists have been created)
-    m_AABB.~AABB();
 }
 
 //--------------------------------------------------------------------------------------
@@ -78,26 +75,26 @@ void Collision::CreateLinkedList()
 //  levels) are stored in a list or tree data structure.
 //--------------------------------------------------------------------------------------
 
-bool Collision::Collide(GLdouble endX, GLdouble endY, GLdouble endZ) {
+bool Collision::Collide(GLfloat endX, GLfloat endY, GLfloat endZ) {
     bool Collision = false;
     // check 1st quadrant (1st linked list)
-    if (((endX <= m_worldSizeX / 2.0) || (endX <= m_worldSizeX / 2.0)) &&
-        ((endZ <= m_worldSizeZ / 2.0) || (endZ <= m_worldSizeZ / 2.0))) {
+    if (((endX <= m_worldSizeX / 2.0f) || (endX <= m_worldSizeX / 2.0f)) &&
+        ((endZ <= m_worldSizeZ / 2.0f) || (endZ <= m_worldSizeZ / 2.0f))) {
         Collision = CheckCollision(0, endX, endY, endZ);
     }
     // check 2nd quadrant (2nd linked list)
-    if (((endX <= m_worldSizeX / 2.0) || (endX <= m_worldSizeX / 2.0)) &&
-        ((endZ >= m_worldSizeZ / 2.0) || (endZ >= m_worldSizeZ / 2.0))) {
+    if (((endX <= m_worldSizeX / 2.0f) || (endX <= m_worldSizeX / 2.0f)) &&
+        ((endZ >= m_worldSizeZ / 2.0f) || (endZ >= m_worldSizeZ / 2.0f))) {
         Collision = CheckCollision(1, endX, endY, endZ);
     }
     // check 3rd quadrant (3rd linked list)
-    if (((endX >= m_worldSizeX / 2.0) || (endX >= m_worldSizeX / 2.0)) &&
-        ((endZ <= m_worldSizeZ / 2.0) || (endZ <= m_worldSizeZ / 2.0))) {
+    if (((endX >= m_worldSizeX / 2.0f) || (endX >= m_worldSizeX / 2.0f)) &&
+        ((endZ <= m_worldSizeZ / 2.0f) || (endZ <= m_worldSizeZ / 2.0f))) {
         Collision = CheckCollision(2, endX, endY, endZ);
     }
     // check 4th quadrant (4th linked list)
-    if (((endX >= m_worldSizeX / 2.0) || (endX >= m_worldSizeX / 2.0)) &&
-        ((endZ >= m_worldSizeZ / 2.0) || (endZ >= m_worldSizeZ / 2.0))) {
+    if (((endX >= m_worldSizeX / 2.0f) || (endX >= m_worldSizeX / 2.0f)) &&
+        ((endZ >= m_worldSizeZ / 2.0f) || (endZ >= m_worldSizeZ / 2.0f))) {
         Collision = CheckCollision(3, endX, endY, endZ);
     }
     return Collision;
@@ -106,8 +103,7 @@ bool Collision::Collide(GLdouble endX, GLdouble endY, GLdouble endZ) {
 //--------------------------------------------------------------------------------------
 // Called from above function to check if collsion occurred.
 //--------------------------------------------------------------------------------------
-bool Collision::CheckCollision(int index, GLdouble endX, GLdouble endY,
-                               GLdouble endZ) {
+bool Collision::CheckCollision(int index, GLfloat endX, GLfloat endY, GLfloat endZ) {
     bool CollisionFound = false;
     for (int count = 0; count < m_listSize[index]; count++) {
         if (((endX < m_list[index].GetMaxX(count)) &&
