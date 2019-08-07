@@ -66,7 +66,7 @@ target_include_directories(shays-world PRIVATE src)
 # Find, include, and link against dependencies.
 find_package(OpenGL REQUIRED COMPONENTS OpenGL)
 find_package(GLUT REQUIRED)
-find_package(GLM REQUIRED)
+find_package(glm REQUIRED)
 
 # Hack to fix Linux Glu library paths.
 if (LINUX)
