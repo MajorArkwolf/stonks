@@ -1,3 +1,5 @@
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
 #include <math.h>
 #include <string>
 #include <time.h>
@@ -413,29 +415,51 @@ void DeleteImageFromMemory(unsigned char *tempImage);
 //  Main function
 //--------------------------------------------------------------------------------------
 int main(int argc, char **argv) {
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-    glutInitWindowPosition(-1, -1);
-    glutInitWindowSize(800, 500);
-    glutCreateWindow("Murdoch University Campus Tour");
+    SDL_Init(SDL_INIT_VIDEO);
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+    auto shouldRun = true;
+    auto *window   = SDL_CreateWindow("Shay's World", SDL_WINDOWPOS_CENTERED,
+                                    SDL_WINDOWPOS_CENTERED, 1280, 720,
+                                    SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+    if (window == nullptr) {
+        std::cout << "AAAAA\n";
+    }
+
+    auto *context = SDL_GL_CreateContext(window);
+
+    if (context == nullptr) {
+        std::cout << "AAAAA\n";
+    }
+
+    SDL_GL_MakeCurrent(window, context);
+
+    SDL_GL_SetSwapInterval(1);
+
+    auto event = SDL_Event{};
 
     myinit();
 
-    glutIgnoreKeyRepeat(1);
-    glutSpecialFunc(movementKeys);
-    glutSpecialUpFunc(releaseKey);
-    glutKeyboardUpFunc(releaseKeys);
-    glutKeyboardFunc(keys);
+    while (shouldRun) {
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                shouldRun = false;
+            }
+        }
 
-    glutDisplayFunc(Display);
-    glutIdleFunc(Display);
-    glutMouseFunc(Mouse);
+        Display();
+        SDL_GL_SwapWindow(0);
+        SDL_GL_SwapWindow(window);
+    }
 
-    // ONLY USE IF REQUIRE MOUSE MOVEMENT
-    glutPassiveMotionFunc(mouseMove);
+    SDL_GL_DeleteContext(context);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
 
-    glutReshapeFunc(reshape);
-    glutMainLoop();
     return (0);
 }
 
@@ -515,7 +539,6 @@ void Display() {
         calculateFrameRate();
     }
     // clear buffers
-    glutSwapBuffers();
 }
 
 //--------------------------------------------------------------------------------------
@@ -715,7 +738,7 @@ void drawDebug() {
     std::string loc = "x: " + std::to_string(cam.GetLR()) +
                       ", y: " + std::to_string(cam.GetUD()) +
                       ", z: " + std::to_string(cam.GetFB()); // coordinates
-    std::string fps = "FPS: " + std::to_string(calcFPS);       // fps
+    std::string fps = "FPS: " + std::to_string(calcFPS);     // fps
     glRasterPos2f(-0.99f, 0.95f); // relative screen location to place text
     renderBitmapString(GLUT_BITMAP_8_BY_13, loc);
     glRasterPos2f(-0.99f, 0.90f); // relative screen location to place text
