@@ -525,6 +525,7 @@ void Display() {
     glPopMatrix();
     glDisable(GL_TEXTURE_2D);
 
+    SDL_GL_SwapWindow(0);
     SDL_GL_SwapWindow(stonk.window.get());
 }
 
