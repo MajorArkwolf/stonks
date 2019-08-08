@@ -2,6 +2,10 @@
 
 #if defined(__APPLE__)
 #    define GL_SILENCE_DEPRECATION
+#elif defined(_WIN32)
+#    include <windows.h>
+#    undef near
+#    undef far
 #endif
 
 #if __has_include(<OpenGL/gl.h>)
