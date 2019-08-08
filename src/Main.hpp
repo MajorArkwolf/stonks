@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Gl.hpp"
+#include <SDL2/SDL_opengl.h>
 
 // initializes setting
 void myinit();

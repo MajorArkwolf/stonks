@@ -36,12 +36,7 @@ add_executable(shays-world
     src/Camera.cpp
     src/Collision.cpp
     src/TexturedPolygons.cpp
-
-    src/Stonk/Collision.cpp
-    src/Stonk/Stonk.cpp
-    src/Stonk/Player.cpp
-    src/Stonk/Viewport.cpp
-    src/Stonk/Physics.cpp
+    src/Workaround.cpp
 )
 
 # Set C++ standard.
@@ -55,7 +50,7 @@ set_target_properties(shays-world PROPERTIES
 target_compile_options(shays-world PUBLIC
     $<$<CXX_COMPILER_ID:Clang>:-Weverything -Wno-c++98-compat
     -Wno-c++98-compat-pedantic -Wno-padded -Wno-deprecated-declarations
-    -fcolor-diagnostics --system-header-prefix=SDL>)
+    -fcolor-diagnostics>)
 target_compile_options(shays-world PUBLIC
     $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
 target_link_libraries(shays-world PUBLIC
@@ -73,15 +68,23 @@ target_include_directories(shays-world PRIVATE src)
 
 # Find, include, and link against dependencies.
 find_package(OpenGL REQUIRED COMPONENTS OpenGL)
+find_package(GLUT REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(glm REQUIRED)
 
-# Hack to fix Linux Glu library paths.
-if (LINUX)
-    target_link_libraries(shays-world PRIVATE ${OPENGL_glu_LIBRARY})
+# Hack to fix macOS GLUT framework paths.
+if (APPLE)
+    find_library(APP_SERVICES ApplicationServices)
+
+    set_target_properties(GLUT::GLUT PROPERTIES
+        IMPORTED_LOCATION "/System/Library/Frameworks/GLUT.framework/GLUT")
+    set_target_properties(GLUT::Cocoa PROPERTIES
+        IMPORTED_LOCATION "/System/Library/Frameworks/Cocoa.framework/Cocoa")
+
+    target_link_libraries(shays-world PRIVATE ${APP_SERVICES})
 endif()
 
 # Set dependencies.
@@ -91,7 +94,7 @@ target_include_directories(shays-world PRIVATE ${OPENGL_INCLUDE_DIRS}
     ${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR}
     ${SDL2_TTF_INCLUDE_DIR} ${SDL2_MIXER_INCLUDE_DIR})
 # Set link libraries.
-target_link_libraries(shays-world PRIVATE OpenGL::GL OpenGL::GLU glm ${SDL2_LIBRARY}
+target_link_libraries(shays-world PRIVATE OpenGL::GL OpenGL::GLU GLUT::GLUT glm ${SDL2_LIBRARY}
     ${SDL2_IMAGE_LIBRARIES} ${SDL2_TTF_LIBRARIES} ${SDL2_MIXER_LIBRARIES})
 
 # Copy the resources to the binary location.
