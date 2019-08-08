@@ -10,7 +10,7 @@
 
 #include <math.h>
 
-#include "Glut.hpp"
+#include "Gl.hpp"
 #include "Math.hpp"
 
 //--------------------------------------------------------------------------------------

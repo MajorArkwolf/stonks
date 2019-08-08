@@ -16,7 +16,7 @@
 #include <cmath>
 #include <iostream>
 
-#include "Glut.hpp"
+#include "Gl.hpp"
 
 class PlainNode {
 
