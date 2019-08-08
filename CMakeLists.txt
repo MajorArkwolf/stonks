@@ -85,13 +85,13 @@ if (LINUX)
 endif()
 
 # Set dependencies.
-add_dependencies(shays-world OpenGL::GL )
+add_dependencies(shays-world OpenGL::GL)
 # Set includes.
 target_include_directories(shays-world PRIVATE ${OPENGL_INCLUDE_DIRS}
-    ${GLM_INCLUDE_DIRS} ${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR}
+    ${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR}
     ${SDL2_TTF_INCLUDE_DIR} ${SDL2_MIXER_INCLUDE_DIR})
 # Set link libraries.
-target_link_libraries(shays-world PRIVATE OpenGL::GL ${SDL2_LIBRARY}
+target_link_libraries(shays-world PRIVATE OpenGL::GL OpenGL::GLU glm ${SDL2_LIBRARY}
     ${SDL2_IMAGE_LIBRARIES} ${SDL2_TTF_LIBRARIES} ${SDL2_MIXER_LIBRARIES})
 
 # Copy the resources to the binary location.
