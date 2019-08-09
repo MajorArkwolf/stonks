@@ -15,17 +15,6 @@
 using std::runtime_error;
 using std::string;
 
-auto Stonk::handleKeyboardEvent() -> void {
-    const Uint8 *state = SDL_GetKeyboardState(NULL);
-
-    if (state[SDL_SCANCODE_RETURN]) { // If 'return' / 'enter' key pressed'
-        printf("'Enter' key pressed\n");
-    } 
-	if (state[SDL_SCANCODE_2] && state[SDL_SCANCODE_1]) { //If '1' and '2' are both pressed
-        printf("Key '1' and '2' have been pressed together\n");
-	}
-}
-
 auto shayHack() -> void {
     auto width  = 1280;
     auto height = 720;
@@ -61,9 +50,6 @@ auto Stonk::run() -> void {
         if (frameTime > 0.25) {
             frameTime = 0.25;
         }
-
-        
-		handleKeyboardEvent();
 
         currentTime = newTime;
         accumulator += frameTime;
@@ -146,6 +132,22 @@ auto Stonk::processInput() -> void {
 
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
+            case SDL_KEYDOWN: { // Key press events
+                switch (event.key.keysym.scancode) {
+                        // Use SDL Scancodes that correspond to keyboard keys
+                    case SDL_SCANCODE_RETURN: {
+                        printf("'Enter' key pressed\n");
+                    } break;
+                }
+            } break;
+            case SDL_KEYUP: { // Key Release Events
+                switch (event.key.keysym.scancode) {
+                        // Use SDL Scancodes that correspond to keyboard keys
+                    case SDL_SCANCODE_RETURN: {
+                        printf("'Enter' key released\n");
+                    } break;
+                }
+            } break;
             case SDL_QUIT: this->isRunning = false; break;
             default: break;
         }
