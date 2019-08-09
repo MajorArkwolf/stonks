@@ -15,6 +15,15 @@
 using std::runtime_error;
 using std::string;
 
+auto Stonk::handleKeyboardEvent() -> void {
+    const Uint8 *state = SDL_GetKeyboardState(NULL);
+    if (state[SDL_SCANCODE_RETURN]) {
+        printf("'enter' pressed \n");
+    } else if (state[SDL_SCANCODE_0]) {
+        printf("'0' pressed \n");
+    }
+}
+
 auto shayHack() -> void {
     auto width  = 1280;
     auto height = 720;
@@ -50,6 +59,9 @@ auto Stonk::run() -> void {
         if (frameTime > 0.25) {
             frameTime = 0.25;
         }
+
+        
+		handleKeyboardEvent();
 
         currentTime = newTime;
         accumulator += frameTime;

@@ -47,6 +47,7 @@ class Stonk {
     auto operator=(Stonk &&) -> Stonk & = default;
     auto operator=(const Stonk &) -> Stonk & = delete;
 
+	static auto handleKeyboardEvent() -> void;
     auto getIsRunning() const -> bool;
     auto processInput() -> void;
     auto update(State &state, double dt) -> void;
