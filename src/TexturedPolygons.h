@@ -13,7 +13,7 @@
 #    include <stdio.h> // should really be using c++, but didn't get time to change
 #    include <stdlib.h>
 
-#    include "Glut.hpp"
+#    include "Gl.hpp"
 
 //--------------------------------------------------------------------------------------
 

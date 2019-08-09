@@ -34,19 +34,21 @@ class Stonk {
   private:
     bool isRunning = true;
 
-  public:
     Stonk();
+
+  public:
     Stonk(Stonk &&)      = default;
     Stonk(const Stonk &) = delete;
     ~Stonk();
 
     static auto get() -> Stonk &;
+    static auto run() -> void;
 
     auto operator=(Stonk &&) -> Stonk & = default;
     auto operator=(const Stonk &) -> Stonk & = delete;
 
     auto getIsRunning() const -> bool;
     auto processInput() -> void;
-    auto integrateState(State &state, double dt) -> void;
+    auto update(State &state, double dt) -> void;
     auto render(const State &state) const -> void;
 };

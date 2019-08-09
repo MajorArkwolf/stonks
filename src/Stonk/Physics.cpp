@@ -4,7 +4,7 @@
 
 #include "Stonk/Stonk.hpp"
 
-auto Physics::integrateState(State &state, double dt) -> void {
+auto Physics::update(State &state, double dt) -> void {
     for (auto i : state.entities) {
         i.velocity += i.acceleration * dt;
         i.position += i.velocity * dt;

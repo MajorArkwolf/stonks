@@ -1,13 +1,12 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
 #include <math.h>
 #include <string>
 #include <time.h>
 
-#include "Glut.hpp"
+#include "Gl.hpp"
 
 //#include <windows.h> // only used if mouse is required (not portable)
 #include "Camera.h"
+#include "Stonk/Stonk.hpp"
 #include "TexturedPolygons.h"
 
 //--------------------------------------------------------------------------------------
@@ -287,9 +286,10 @@ static int frameCount         = 0;
 static clock_t lastClock{};
 
 // ratio of screen
-static float ratio = 0.0f;
 // screen width and height
-static int width = 0, height = 0;
+// TODO: Strip shays code
+static int width = 1280, height = 720;
+static float ratio = static_cast<double>(width) / static_cast<double>(height);
 
 // display campus map
 static bool DisplayMap = false;
@@ -415,51 +415,31 @@ void DeleteImageFromMemory(unsigned char *tempImage);
 //  Main function
 //--------------------------------------------------------------------------------------
 int main(int argc, char **argv) {
-    SDL_Init(SDL_INIT_VIDEO);
+    Stonk::run();
 
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    // glutInit(&argc, argv);
+    // glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
+    // glutInitWindowPosition(-1, -1);
+    // glutInitWindowSize(800, 500);
+    // glutCreateWindow("Murdoch University Campus Tour");
 
-    auto shouldRun = true;
-    auto *window   = SDL_CreateWindow("Shay's World", SDL_WINDOWPOS_CENTERED,
-                                    SDL_WINDOWPOS_CENTERED, 1280, 720,
-                                    SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
-    if (window == nullptr) {
-        std::cout << "AAAAA\n";
-    }
+    // myinit();
 
-    auto *context = SDL_GL_CreateContext(window);
+    // glutIgnoreKeyRepeat(1);
+    // glutSpecialFunc(movementKeys);
+    // glutSpecialUpFunc(releaseKey);
+    // glutKeyboardUpFunc(releaseKeys);
+    // glutKeyboardFunc(keys);
 
-    if (context == nullptr) {
-        std::cout << "AAAAA\n";
-    }
+    // glutDisplayFunc(Display);
+    // glutIdleFunc(Display);
+    // glutMouseFunc(Mouse);
 
-    SDL_GL_MakeCurrent(window, context);
+    // // ONLY USE IF REQUIRE MOUSE MOVEMENT
+    // glutPassiveMotionFunc(mouseMove);
 
-    SDL_GL_SetSwapInterval(1);
-
-    auto event = SDL_Event{};
-
-    myinit();
-
-    while (shouldRun) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                shouldRun = false;
-            }
-        }
-
-        Display();
-        SDL_GL_SwapWindow(0);
-        SDL_GL_SwapWindow(window);
-    }
-
-    SDL_GL_DeleteContext(context);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-
+    // glutReshapeFunc(reshape);
+    // glutMainLoop();
     return (0);
 }
 
@@ -533,12 +513,8 @@ void Display() {
     DrawBackdrop();
     glPopMatrix();
     glDisable(GL_TEXTURE_2D);
-    // display debug menu
-    if (displayDebug) {
-        drawDebug();
-        calculateFrameRate();
-    }
     // clear buffers
+    // glutSwapBuffers();
 }
 
 //--------------------------------------------------------------------------------------
@@ -562,29 +538,10 @@ void reshape(int w, int h) {
 //--------------------------------------------------------------------------------------
 // Keyboard Functions
 //--------------------------------------------------------------------------------------
-void movementKeys(int key, [[maybe_unused]] int x, [[maybe_unused]] int y) {
-    switch (key) {
-        case GLUT_KEY_LEFT: cam.DirectionLR(-1); break;
-
-        case GLUT_KEY_RIGHT: cam.DirectionLR(1); break;
-
-        case GLUT_KEY_UP: cam.DirectionFB(1); break;
-
-        case GLUT_KEY_DOWN: cam.DirectionFB(-1); break;
-    }
-}
+void movementKeys(int key, [[maybe_unused]] int x, [[maybe_unused]] int y) {}
 
 //--------------------------------------------------------------------------------------
-void releaseKey(int key, [[maybe_unused]] int x, [[maybe_unused]] int y) {
-    switch (key) {
-        // rotate left or right
-        case GLUT_KEY_LEFT:
-        case GLUT_KEY_RIGHT: cam.DirectionLR(0); break;
-        // move backwards or forwards
-        case GLUT_KEY_UP:
-        case GLUT_KEY_DOWN: cam.DirectionFB(0); break;
-    }
-}
+void releaseKey(int key, [[maybe_unused]] int x, [[maybe_unused]] int y) {}
 
 //--------------------------------------------------------------------------------------
 void keys(unsigned char key, [[maybe_unused]] int x, [[maybe_unused]] int y) {
@@ -669,17 +626,6 @@ void releaseKeys(unsigned char key, [[maybe_unused]] int x, [[maybe_unused]] int
 }
 
 /**
- *  @brief Takes in a font and c-style string to print to the openGL window
- *	@param font pointer to OpenGL font to use
- *	@param string c-style string to print to screen
- */
-void renderBitmapString(void *font, std::string text) {
-    for (char &c : text) {
-        glutBitmapCharacter(font, c);
-    }
-}
-
-/**
  * @brief Draws 3-dimension spatial axis at origin (0,0,0)
  */
 void drawAxis() {
@@ -705,103 +651,16 @@ void drawAxis() {
     glEnd();
 }
 
-/**
- * @brief Counts the number of times this function is called in a second to calculate frame rate
- */
-void calculateFrameRate() {
-    static int frameCounter = 0; // This will store our fps
-    static int prevTime     = 0; // This will hold the time from the last frame
-    int currentTime         = glutGet(GLUT_ELAPSED_TIME) / 1000;
-    ++frameCounter;
-    if (currentTime - prevTime > 0) {
-        calcFPS      = frameCounter / (currentTime - prevTime);
-        frameCounter = 0;
-        prevTime     = currentTime;
-    }
-}
-/**
- * @brief Draws the debug menu/ui on screen
- */
-void drawDebug() {
-    drawAxis();
-    glColor3f(1, 1, 1);
-
-    // really shitty way of doing this - probably a better way
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-    glDisable(GL_DEPTH_TEST);
-
-    std::string loc = "x: " + std::to_string(cam.GetLR()) +
-                      ", y: " + std::to_string(cam.GetUD()) +
-                      ", z: " + std::to_string(cam.GetFB()); // coordinates
-    std::string fps = "FPS: " + std::to_string(calcFPS);     // fps
-    glRasterPos2f(-0.99f, 0.95f); // relative screen location to place text
-    renderBitmapString(GLUT_BITMAP_8_BY_13, loc);
-    glRasterPos2f(-0.99f, 0.90f); // relative screen location to place text
-    renderBitmapString(GLUT_BITMAP_8_BY_13, fps);
-
-    glEnable(GL_DEPTH_TEST);
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
-}
 //--------------------------------------------------------------------------------------
 //  Mouse Buttons
 //--------------------------------------------------------------------------------------
-void Mouse(int button, int state, int x, int y) {
-    // exit tour if clicked on exit splash screen
-    if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN)) {
-        if ((DisplayExit) && (x <= width / 2.0 + 256.0) &&
-            (x >= width / 2.0 - 256.0) && (y <= height / 2.0 + 256.0) &&
-            (y >= height / 2.0 - 256.0)) {
-            DeleteImageFromMemory(image);
-            exit(1);
-        }
-    }
-}
+void Mouse(int button, int state, int x, int y) {}
 
 //--------------------------------------------------------------------------------------
 //  Mouse Movements (NOT USED)
 //  Can be used to rotate around screen using mouse, but keyboard used instead
 //--------------------------------------------------------------------------------------
-void mouseMove(int x, int y) {
-    if (x < 0)
-        cam.DirectionRotateLR(0);
-    else if (x > width)
-        cam.DirectionRotateLR(0);
-    else if (x > width / 2.0) {
-        cam.DirectionRotateLR(1);
-        Display();
-        glutWarpPointer(static_cast<int>(width / 2.0),
-                        static_cast<int>(height / 2.0));
-    } else if (x < width / 2.0) {
-        cam.DirectionRotateLR(-1);
-        Display();
-        glutWarpPointer(static_cast<int>(width / 2.0),
-                        static_cast<int>(height / 2.0));
-    } else
-        cam.DirectionRotateLR(0);
-    if (y < 0 || y > height)
-        cam.DirectionLookUD(0);
-
-    else if (y > height / 2.0) {
-        cam.DirectionLookUD(-1);
-        Display();
-        glutWarpPointer(static_cast<int>(width / 2.0),
-                        static_cast<int>(height / 2.0));
-    } else if (y < height / 2.0) {
-        cam.DirectionLookUD(1);
-        Display();
-        glutWarpPointer(static_cast<int>(width / 2.0),
-                        static_cast<int>(height / 2.0));
-    } else
-        cam.DirectionLookUD(0);
-}
+void mouseMove(int x, int y) {}
 
 //--------------------------------------------------------------------------------------
 // Set up bounding boxes for collsion detection
@@ -1654,7 +1513,7 @@ void DrawBackdrop() {
     DisplayBench();
     DisplayBricks();
     DisplayChancPosts();
-    DisplayCylinders();
+    // DisplayCylinders();
     DisplayDoorPaving();
     DisplayDoorPosts();
     DisplayEntranceSteps();

@@ -19,5 +19,5 @@ auto operator+(const State &lhs, const State &rhs) -> State;
 
 class Physics {
   public:
-    auto integrateState(State &state, double dt) -> void;
+    auto update(State &state, double dt) -> void;
 };

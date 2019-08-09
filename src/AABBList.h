@@ -16,7 +16,7 @@
 #    include <vector>
 
 #    include "AABBNode.h"
-#    include "Glut.hpp"
+#    include "Gl.hpp"
 
 class AABBList {
   public:

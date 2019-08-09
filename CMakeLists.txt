@@ -1,5 +1,5 @@
 # Set cmake minimum version.
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.13)
 
 # Disable in-source builds.
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
@@ -36,7 +36,11 @@ add_executable(shays-world
     src/Camera.cpp
     src/Collision.cpp
     src/TexturedPolygons.cpp
-    src/Workaround.cpp
+
+    src/Stonk/Collision.cpp
+    src/Stonk/Physics.cpp
+    src/Stonk/Stonk.cpp
+    src/Stonk/Viewport.cpp
 )
 
 # Set C++ standard.
@@ -68,24 +72,11 @@ target_include_directories(shays-world PRIVATE src)
 
 # Find, include, and link against dependencies.
 find_package(OpenGL REQUIRED COMPONENTS OpenGL)
-find_package(GLUT REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(glm REQUIRED)
-
-# Hack to fix macOS GLUT framework paths.
-if (APPLE)
-    find_library(APP_SERVICES ApplicationServices)
-
-    set_target_properties(GLUT::GLUT PROPERTIES
-        IMPORTED_LOCATION "/System/Library/Frameworks/GLUT.framework/GLUT")
-    set_target_properties(GLUT::Cocoa PROPERTIES
-        IMPORTED_LOCATION "/System/Library/Frameworks/Cocoa.framework/Cocoa")
-
-    target_link_libraries(shays-world PRIVATE ${APP_SERVICES})
-endif()
 
 # Set dependencies.
 add_dependencies(shays-world OpenGL::GL)
@@ -94,11 +85,11 @@ target_include_directories(shays-world PRIVATE ${OPENGL_INCLUDE_DIRS}
     ${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR}
     ${SDL2_TTF_INCLUDE_DIR} ${SDL2_MIXER_INCLUDE_DIR})
 # Set link libraries.
-target_link_libraries(shays-world PRIVATE OpenGL::GL OpenGL::GLU GLUT::GLUT glm ${SDL2_LIBRARY}
+target_link_libraries(shays-world PRIVATE OpenGL::GL OpenGL::GLU glm ${SDL2_LIBRARY}
     ${SDL2_IMAGE_LIBRARIES} ${SDL2_TTF_LIBRARIES} ${SDL2_MIXER_LIBRARIES})
 
 # Copy the resources to the binary location.
 add_custom_command(TARGET shays-world POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                   COMMAND ${CMAKE_COMMAND} -E create_symlink
                        ${CMAKE_SOURCE_DIR}/res
                        $<TARGET_FILE_DIR:shays-world>/res)

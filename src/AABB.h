@@ -16,7 +16,7 @@
 #include <cmath>
 #include <vector>
 
-#include "Glut.hpp"
+#include "Gl.hpp"
 
 class AABB {
   private:
