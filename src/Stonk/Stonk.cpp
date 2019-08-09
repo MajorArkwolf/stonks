@@ -126,6 +126,23 @@ auto Stonk::get() -> Stonk & {
 auto Stonk::getIsRunning() const -> bool {
     return this->isRunning;
 }
+auto Stonk::handleKeyPress(SDL_Event &event) -> void {
+    switch (event.key.keysym.scancode) {
+            // Use SDL Scancodes that correspond to keyboard keys
+        case SDL_SCANCODE_RETURN: {
+            printf("'Enter' key pressed\n");
+        } break;
+    }
+}
+
+auto Stonk::handleKeyRelease(SDL_Event &event) -> void {
+    switch (event.key.keysym.scancode) {
+            // Use SDL Scancodes that correspond to keyboard keys
+        case SDL_SCANCODE_RETURN: {
+            printf("'Enter' key released\n");
+        } break;
+    }
+}
 
 auto Stonk::processInput() -> void {
     auto event = SDL_Event{};
@@ -133,20 +150,10 @@ auto Stonk::processInput() -> void {
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_KEYDOWN: { // Key press events
-                switch (event.key.keysym.scancode) {
-                        // Use SDL Scancodes that correspond to keyboard keys
-                    case SDL_SCANCODE_RETURN: {
-                        printf("'Enter' key pressed\n");
-                    } break;
-                }
+                handleKeyPress(event);
             } break;
             case SDL_KEYUP: { // Key Release Events
-                switch (event.key.keysym.scancode) {
-                        // Use SDL Scancodes that correspond to keyboard keys
-                    case SDL_SCANCODE_RETURN: {
-                        printf("'Enter' key released\n");
-                    } break;
-                }
+                handleKeyRelease(event);
             } break;
             case SDL_QUIT: this->isRunning = false; break;
             default: break;
