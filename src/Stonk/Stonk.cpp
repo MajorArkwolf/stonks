@@ -1,6 +1,7 @@
 #include "Stonk/Stonk.hpp"
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_Opengl.h>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -143,6 +144,6 @@ auto Stonk::update(State &state, double dt) -> void {
 
 auto Stonk::render(const State &state) const -> void {
     Display();
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    // glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
     SDL_GL_SwapWindow(this->window.get());
 }
