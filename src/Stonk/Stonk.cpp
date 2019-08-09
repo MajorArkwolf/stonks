@@ -17,11 +17,13 @@ using std::string;
 
 auto Stonk::handleKeyboardEvent() -> void {
     const Uint8 *state = SDL_GetKeyboardState(NULL);
-    if (state[SDL_SCANCODE_RETURN]) {
-        printf("'enter' pressed \n");
-    } else if (state[SDL_SCANCODE_0]) {
-        printf("'0' pressed \n");
-    }
+
+    if (state[SDL_SCANCODE_RETURN]) { // If 'return' / 'enter' key pressed'
+        printf("'Enter' key pressed\n");
+    } 
+	if (state[SDL_SCANCODE_2] && state[SDL_SCANCODE_1]) { //If '1' and '2' are both pressed
+        printf("Key '1' and '2' have been pressed together\n");
+	}
 }
 
 auto shayHack() -> void {
