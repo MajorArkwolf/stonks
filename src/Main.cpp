@@ -1516,7 +1516,7 @@ void DrawBackdrop() {
     DisplayBench();
     DisplayBricks();
     DisplayChancPosts();
-    // DisplayCylinders();
+    DisplayCylinders();
     DisplayDoorPaving();
     DisplayDoorPosts();
     DisplayEntranceSteps();
