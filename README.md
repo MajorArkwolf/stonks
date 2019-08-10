@@ -39,6 +39,7 @@ git clone --recurse-submodules https://github.com/opeik/ICT290.git
     cd ICT290 && cmake -B build . && cd build && cmake --build
     ```
 * Windows:
+    * Open Visual Studio as Administrator (required to make symbolic links)
     * In Visual Studio, select Open → CMake, select `CMakeLists.txt`
     * Select Build
 
