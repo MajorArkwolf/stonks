@@ -30,6 +30,8 @@ add_executable(${PROJECT_NAME}
     src/Collision.cpp
     src/TexturedPolygons.cpp
 
+	src/Shay.cpp
+
     src/Stonk/Collision.cpp
     src/Stonk/Physics.cpp
     src/Stonk/Stonk.cpp
