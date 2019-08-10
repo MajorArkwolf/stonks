@@ -1,10 +1,20 @@
-[VS2019-dl]: https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&rel=16
-[vcpkg-dl]: https://github.com/microsoft/vcpkg
-[brew-dl]: https://brew.sh
+<h1 align="center">
+  <br>
+  <img src="https://i.imgur.com/r9L3Px0.png" alt="stonks" width="200"></a>
+  <br>
+    Stonks
+  <br>
+</h1>
 
+<p align=center>
+  <b> ICT290 Assignment 1 </b>
+</p>
 
-# Stonks
-ICT290 Group Project Part 1
+<p align="center">
+  <a href="#building">Building</a> •
+  <a href="#contributing">Contributing</a> •
+  <a href="#license">License</a>
+</p>
 
 ## Building
 ### Tools
@@ -47,3 +57,11 @@ git clone --recurse-submodules https://github.com/opeik/ICT290.git
         * [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=xaver.clang-format)
     * Make sure to configure the extension to automatically apply formatting on
         save
+
+## License
+This project is licensed under the ISC license. Please see the `LICENSE.md` file
+for details.
+
+[VS2019-dl]: https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&rel=16
+[vcpkg-dl]: https://github.com/microsoft/vcpkg
+[brew-dl]: https://brew.sh
