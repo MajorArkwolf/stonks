@@ -80,8 +80,3 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E create_symlink
                        ${CMAKE_SOURCE_DIR}/res
                        $<TARGET_FILE_DIR:${PROJECT_NAME}>/res)
-
-# Set Visual Studio to build inside the "build" directory, not inside the users
-# home directory.
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/build")
