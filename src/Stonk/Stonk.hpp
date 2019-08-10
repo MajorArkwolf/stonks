@@ -47,7 +47,7 @@ class Stonk {
     auto operator=(Stonk &&) -> Stonk & = default;
     auto operator=(const Stonk &) -> Stonk & = delete;
 
-	auto handleKeyPress(SDL_Event &event) -> void;
+    auto handleKeyPress(SDL_Event &event) -> void;
     auto handleKeyRelease(SDL_Event &event) -> void;
     auto getIsRunning() const -> bool;
     auto processInput() -> void;
