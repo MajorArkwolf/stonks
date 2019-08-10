@@ -1,38 +1,49 @@
-# Stonks
-ICT290 Group Project Part 1
+<h1 align="center">
+  <br>
+  <img src="https://i.imgur.com/r9L3Px0.png" alt="stonks" width="200"></a>
+  <br>
+    Stonks
+  <br>
+</h1>
+
+<p align=center>
+  <b> ICT290 Assignment 1 </b>
+</p>
+
+<p align="center">
+  <a href="#building">Building</a> •
+  <a href="#contributing">Contributing</a> •
+  <a href="#license">License</a>
+</p>
 
 ## Building
-### Prerequisites
-* macOS: [brew](https://brew.sh)
-* Windows: [vcpkg](https://github.com/microsoft/vcpkg)
-
-### Clone the repo
-```
-git clone https://github.com/opeik/ICT290.git
-```
+### Tools
+* macOS: [brew][brew-dl]
+* Windows: [vcpkg][vcpkg-dl], [Visual Studio 2019][VS2019-dl]
 
 ### Dependencies
-* macOS: `brew install cmake sdl ninja`
-* Linux: `sudo apt-get install cmake freeglut3-dev libsdl1.2-dev ninja-build clang`
-* Windows: `.\vcpkg.exe install --triplet x64-windows freeglut sdl1`
+* macOS: `brew install cmake sdl2 sdl2_image sdl2_ttf sdl2_mixer glm`
+* Linux: `sudo apt-get install cmake libsdl2-dev libsdl2-image-dev
+    libsdl2-ttf-dev libsdl2-mixer-dev libglm-dev`
+* Windows: `.\vcpkg.exe install --triplet x64-windows sdl2 sdl2-image sdl2-ttf
+    sdl2-mixer glm`
 
-### Configure build
+### Cloning
+```
+git clone --recurse-submodules https://github.com/opeik/ICT290.git
+# For the add-stonk-engine branch
+git checkout add-stronk-branch && git submodule update --init
+```
+
+### Building
 * Unix:
     ```
-    mkdir build
-    cd build
-    CXX=clang++ cmake -GNinja ..
+    cd ICT290 && cmake -B build . && cd build && cmake --build
     ```
 * Windows:
+    * Open Visual Studio as Administrator (required to make symbolic links)
     * In Visual Studio, select Open → CMake, select `CMakeLists.txt`
-
-### Build
-* Unix:
-    ```
-    make && ./shays-world
-    ```
-* Windows:
-    * Select Build in Visual Studio
+    * Select Build
 
 ## Contributing
 * Ensure your editor uses Unix line endings and leaves an empty new line at
@@ -46,9 +57,14 @@ git clone https://github.com/opeik/ICT290.git
     * Install a clang-format extension to your editor of choice
         * [vim](https://github.com/rhysd/vim-clang-format)
         * [Atom](https://atom.io/packages/clang-format)
-        * [Visual Studio 2017](https://marketplace.visualstudio.com/items?itemName=mynkow.FormatdocumentonSave)
-            * VS17 includes support for clang-format, but won't format
-                unless you do it manually, so use this extension
         * [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=xaver.clang-format)
     * Make sure to configure the extension to automatically apply formatting on
         save
+
+## License
+This project is licensed under the ISC license. Please see the `LICENSE.md` file
+for details.
+
+[VS2019-dl]: https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&rel=16
+[vcpkg-dl]: https://github.com/microsoft/vcpkg
+[brew-dl]: https://brew.sh

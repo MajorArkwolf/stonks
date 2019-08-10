@@ -7,7 +7,7 @@
 //--------------------------------------------------------------------------------------
 
 #include "CameraMap.h"
-#include "Gl.hpp"
+#include "OpenGl.hpp"
 
 //--------------------------------------------------------------------------------------
 //  Display a map with a cursor on it, which moves with the camera

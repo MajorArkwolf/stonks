@@ -1,31 +1,24 @@
 # Set cmake minimum version.
 cmake_minimum_required(VERSION 3.13)
 
+# Set the project details.
+set(PROJECT_NAME shays-world)
+project(${PROJECT_NAME} LANGUAGES CXX)
+
 # Disable in-source builds.
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 set(CMAKE_DISABLE_SOURCE_CHANGES ON)
 
-# Set the cmake script locations.
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/sdl2")
+# Set the cmake module paths.
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/sdl2)
 
-# Detect Linux.
-if(UNIX AND NOT APPLE)
-    set(LINUX TRUE)
-endif()
-
-# Set build type to Debug by default.
+# Set build type to debug by default.
 if(NOT CMAKE_BUILD_TYPE)
-    message(STATUS "Build type not set, defaulting to 'Debug'")
     set(CMAKE_BUILD_TYPE Debug)
-else()
-    message(STATUS "Build type: '${CMAKE_BUILD_TYPE}'")
 endif()
-
-# Define project.
-project(shays-world LANGUAGES CXX)
 
 # Define executable source files.
-add_executable(shays-world
+add_executable(${PROJECT_NAME}
     src/Main.cpp
     src/AABBList.cpp
     src/PlainNode.cpp
@@ -44,33 +37,30 @@ add_executable(shays-world
 )
 
 # Set C++ standard.
-set_target_properties(shays-world PROPERTIES
+set_target_properties(${PROJECT_NAME} PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
 
-# Set compiler and linker flags.
-target_compile_options(shays-world PUBLIC
+# Set clang compile flags.
+target_compile_options(${PROJECT_NAME} PUBLIC
     $<$<CXX_COMPILER_ID:Clang>:-Weverything -Wno-c++98-compat
     -Wno-c++98-compat-pedantic -Wno-padded -Wno-deprecated-declarations
     -fcolor-diagnostics>)
-target_compile_options(shays-world PUBLIC
-    $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
-target_link_libraries(shays-world PUBLIC
-    $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
-
-# GCC
-target_compile_options(shays-world PUBLIC $<$<CXX_COMPILER_ID:Gnu>:-Wall
+# Set gcc compile flags.
+target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:Gnu>:-Wall
     -Wextra -Wpedantic -fdiagnostics-color=always>)
+# Set MSVC compile flags.
+target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/W4>)
 
-# MSVC
-target_compile_options(shays-world PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/W4>)
+# Enable clang's address and memory sanitizers.
+target_compile_options(${PROJECT_NAME} PUBLIC
+    $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
+target_link_libraries(${PROJECT_NAME} PUBLIC
+    $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
 
-# Include header files.
-target_include_directories(shays-world PRIVATE src)
-
-# Find, include, and link against dependencies.
+# Find dependencies.
 find_package(OpenGL REQUIRED COMPONENTS OpenGL)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
@@ -78,18 +68,15 @@ find_package(SDL2_ttf REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(glm REQUIRED)
 
-# Set dependencies.
-add_dependencies(shays-world OpenGL::GL)
-# Set includes.
-target_include_directories(shays-world PRIVATE ${OPENGL_INCLUDE_DIRS}
-    ${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR}
-    ${SDL2_TTF_INCLUDE_DIR} ${SDL2_MIXER_INCLUDE_DIR})
-# Set link libraries.
-target_link_libraries(shays-world PRIVATE OpenGL::GL OpenGL::GLU glm ${SDL2_LIBRARY}
-    ${SDL2_IMAGE_LIBRARIES} ${SDL2_TTF_LIBRARIES} ${SDL2_MIXER_LIBRARIES})
+# Include project header files.
+target_include_directories(${PROJECT_NAME} PRIVATE src)
 
-# Copy the resources to the binary location.
-add_custom_command(TARGET shays-world POST_BUILD
+# Include and link against dependencies.
+target_link_libraries(${PROJECT_NAME} PUBLIC OpenGL::GL OpenGL::GLU
+    SDL2::Main SDL2::Image SDL2::TTF SDL2::Mixer glm)
+
+# Symlink the resources to the binary location.
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E create_symlink
                        ${CMAKE_SOURCE_DIR}/res
-                       $<TARGET_FILE_DIR:shays-world>/res)
+                       $<TARGET_FILE_DIR:${PROJECT_NAME}>/res)

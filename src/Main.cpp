@@ -2,7 +2,7 @@
 #include <string>
 #include <time.h>
 
-#include "Gl.hpp"
+#include "OpenGl.hpp"
 
 //#include <windows.h> // only used if mouse is required (not portable)
 #include "Camera.h"
@@ -447,6 +447,8 @@ int main(int argc, char **argv) {
 //  Initialize Settings
 //--------------------------------------------------------------------------------------
 void myinit() {
+    auto &stonk = Stonk::get();
+
     // set background (sky colour)
     glClearColor(97.0f / 255.0f, 140.0f / 255.0f, 185.0f / 255.0f, 1.0f);
 
@@ -500,7 +502,8 @@ void Display() {
     // displays the map
     if (DisplayMap)
         cam.DisplayMap(width, height, tp.GetTexture(MAP));
-    // display no exit sign (position check should really be in an object, but didn't have time)
+    // display no exit sign (position check should really be in an object, but
+    // didn't have time)
     if (((cam.GetLR() > 35500.0f) && (cam.GetFB() < 25344.0f)) ||
         ((cam.GetLR() > 34100.0f) && (cam.GetFB() > 41127.0f))) {
         cam.DisplayNoExit(width, height, tp.GetTexture(NO_EXIT));
@@ -1513,7 +1516,7 @@ void DrawBackdrop() {
     DisplayBench();
     DisplayBricks();
     DisplayChancPosts();
-    // DisplayCylinders();
+    DisplayCylinders();
     DisplayDoorPaving();
     DisplayDoorPosts();
     DisplayEntranceSteps();
@@ -1888,12 +1891,14 @@ void DisplayAboveWindowBlock() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(BELOW_ROOF_FILL));
     glCallList(39);
 
-    // -------------------------------- Above under Mainpost by Library -----------------------
+    // -------------------------------- Above under Mainpost by Library
+    // -----------------------
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ABOVE_UNDER_POSTS_2));
     glCallList(69);
     glCallList(232);
 
-    // -------------------------------- Above Library ------------------------------------
+    // -------------------------------- Above Library
+    // ------------------------------------
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ABOVE_LIB));
     for (GLuint i = 55; i < 57; i++)
         glCallList(i);
@@ -5356,7 +5361,8 @@ void CreateTextureList() {
     DrawGrass();            // 79, 111, 198, 460-477
     DrawChancPosts();       // 11-15, 235-237
     DrawDoorPosts();        // 25-27, 199
-    DrawAboveWindowBlock(); // 20-24, 39, 43-46, 49-50, 53-56, 64-72, 95-96 208-213, 223-234, 238-239, 415, 424-425
+    DrawAboveWindowBlock(); // 20-24, 39, 43-46, 49-50, 53-56, 64-72, 95-96
+                            // 208-213, 223-234, 238-239, 415, 424-425
     DrawPurplePosts();      // 29-32
     DrawRedPosts();         // 33-35
     DrawPhysSciPosts();     // 16-17, 36-38, 40-42
@@ -5365,7 +5371,8 @@ void CreateTextureList() {
     DrawMainPosts();        // 18-19, 51-52
     DrawPavement();         // 28, 73-94, 240-249, 428, 436
     DrawBricks(); // 101-110, 112-169, 180-197, 200-201, 390-399, 430-434
-    DrawRoof(); // 1-10, 97-100, 170-179, 202-205, 214-222, 250-257, 296-299, 426-427
+    DrawRoof();   // 1-10, 97-100, 170-179, 202-205, 214-222, 250-257, 296-299,
+                  // 426-427
     DrawEntranceSteps();  // 258-295, 206-207
     DrawExtras();         // 300-349, 388, 395, 419-421, 429, 435
     DrawLargerTextures(); // 350-375, 379-387, 389, 414-418, 422-423, 450-453
