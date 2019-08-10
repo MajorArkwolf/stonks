@@ -1,24 +1,29 @@
+[VS2019-dl]: https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&rel=16
+[vcpkg-dl]: https://github.com/microsoft/vcpkg
+[brew-dl]: https://brew.sh
+
+
 # Stonks
 ICT290 Group Project Part 1
 
 ## Building
-### Prerequisites
-* macOS: [brew](https://brew.sh)
-* Windows: [vcpkg](https://github.com/microsoft/vcpkg)
+### Tools
+* macOS: [brew][brew-dl]
+* Windows: [vcpkg][vcpkg-dl], [Visual Studio 2019][VS2019-dl]
 
-### Clone the repo
+### Dependencies
+* macOS: `brew install cmake sdl2 sdl2_image sdl2_ttf sdl2_mixer glm`
+* Linux: `sudo apt-get install cmake libsdl2-dev libsdl2-image-dev
+    libsdl2-ttf-dev libsdl2-mixer-dev libglm-dev`
+* Windows: `.\vcpkg.exe install --triplet x64-windows sdl2 sdl2-image sdl2-ttf
+    sdl2-mixer glm`
+
+### Cloning
 ```
 git clone --recurse-submodules https://github.com/opeik/ICT290.git
 ```
 
-### Dependencies
-* macOS: `brew install cmake sdl2 sdl2_image sdl2_ttf sdl2_mixer`
-* Linux: `sudo apt-get install cmake libsdl2-dev libsdl2-image-dev
-    libsdl2-ttf-dev libsdl2-mixer-dev`
-* Windows: `.\vcpkg.exe install --triplet x64-windows sdl2 sdl2-image sdl2-ttf
-    sdl2-mixer`
-
-### Build
+### Building
 * Unix:
     ```
     cd ICT290 && cmake -B build . && cd build && cmake --build
@@ -39,9 +44,6 @@ git clone --recurse-submodules https://github.com/opeik/ICT290.git
     * Install a clang-format extension to your editor of choice
         * [vim](https://github.com/rhysd/vim-clang-format)
         * [Atom](https://atom.io/packages/clang-format)
-        * [Visual Studio 2017](https://marketplace.visualstudio.com/items?itemName=mynkow.FormatdocumentonSave)
-            * VS17 includes support for clang-format, but won't format
-                unless you do it manually, so use this extension
         * [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=xaver.clang-format)
     * Make sure to configure the extension to automatically apply formatting on
         save
