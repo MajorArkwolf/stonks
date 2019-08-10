@@ -1,23 +1,21 @@
 # Set cmake minimum version.
 cmake_minimum_required(VERSION 3.13)
 
+# Set the project details.
+set(PROJECT_NAME shays-world)
+project(${PROJECT_NAME} LANGUAGES CXX)
+
 # Disable in-source builds.
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 set(CMAKE_DISABLE_SOURCE_CHANGES ON)
 
-# Set the project details.
-set(PROJECT_NAME shays-world)
-
-# Set the cmake script locations.
+# Set the cmake module paths.
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/sdl2)
 
 # Set build type to debug by default.
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
-
-# Define project.
-project(${PROJECT_NAME} LANGUAGES CXX)
 
 # Define executable source files.
 add_executable(${PROJECT_NAME}
@@ -50,18 +48,17 @@ target_compile_options(${PROJECT_NAME} PUBLIC
     $<$<CXX_COMPILER_ID:Clang>:-Weverything -Wno-c++98-compat
     -Wno-c++98-compat-pedantic -Wno-padded -Wno-deprecated-declarations
     -fcolor-diagnostics>)
-# Enable clang's ASAN.
+# Set gcc compile flags.
+target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:Gnu>:-Wall
+    -Wextra -Wpedantic -fdiagnostics-color=always>)
+# Set MSVC compile flags.
+target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/W4>)
+
+# Enable clang's address and memory sanitizers.
 target_compile_options(${PROJECT_NAME} PUBLIC
     $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
 target_link_libraries(${PROJECT_NAME} PUBLIC
     $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
-
-# Set gcc compile flags.
-target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:Gnu>:-Wall
-    -Wextra -Wpedantic -fdiagnostics-color=always>)
-
-# Set MSVC compile flags.
-target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/W4>)
 
 # Find dependencies.
 find_package(OpenGL REQUIRED COMPONENTS OpenGL)
@@ -83,3 +80,8 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E create_symlink
                        ${CMAKE_SOURCE_DIR}/res
                        $<TARGET_FILE_DIR:${PROJECT_NAME}>/res)
+
+# Set Visual Studio to build inside the "build" directory, not inside the users
+# home directory.
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/build")

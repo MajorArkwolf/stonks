@@ -13,7 +13,7 @@
 #ifndef AABBNODE_H
 #define AABBNODE_H
 
-#include "Gl.hpp"
+#include "OpenGl.hpp"
 
 class AABBNode {
   public:

@@ -16,12 +16,12 @@
  */
 class Stonk {
   public:
-    using Window = std::shared_ptr<SDL_Window>;
-    using Gl     = std::shared_ptr<void>;
+    using Window  = std::shared_ptr<SDL_Window>;
+    using Context = std::shared_ptr<void>;
 
     /* SDL handles. */
-    Window window = nullptr;
-    Gl gl         = nullptr;
+    Window window   = nullptr;
+    Context context = nullptr;
 
     /* Game state. */
     State state = {};

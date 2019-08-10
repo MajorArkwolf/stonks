@@ -1,28 +1,28 @@
 #include "Stonk/Stonk.hpp"
 
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_Opengl.h>
 #include <iostream>
 #include <stdexcept>
 #include <string>
 
-// TODO: REMOVE
-#include "Gl.hpp"
-#include "Main.hpp"
+#include "OpenGl.hpp"
 #include "Stonk/Camera.hpp"
 #include "Stonk/Collision.hpp"
+
+// TODO: REMOVE
+#include "Main.hpp"
 
 using std::runtime_error;
 using std::string;
 
 auto shayHack() -> void {
-    auto width  = 1280;
-    auto height = 720;
+    auto width  = 800;
+    auto height = 500;
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    // glViewport(0, 0, width, height);
-    gluPerspective(45, static_cast<double>(width) / static_cast<double>(height),
+    glViewport(0, 0, width, height);
+    gluPerspective(60, static_cast<double>(width) / static_cast<double>(height),
                    1, 250000);
     glMatrixMode(GL_MODELVIEW);
 }
@@ -31,8 +31,8 @@ auto Stonk::run() -> void {
     auto &stonk = Stonk::get();
 
     // Setup Shay's world.
-    shayHack();
     myinit();
+    shayHack();
 
     auto t  = 0.0;
     auto dt = 0.01;
@@ -80,19 +80,21 @@ Stonk::Stonk() {
         throw runtime_error{string{"Unable to initialize SDL: "} + SDL_GetError()};
     }
 
-    // Set OpenGL attributes.
+    // Set OpenGL settings.
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
+                        SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+    SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
     // Enable Vsync.
-    SDL_GL_SetSwapInterval(1);
+    // SDL_GL_SetSwapInterval(1);
 
     // Create window.
     this->window =
         Stonk::Window{SDL_CreateWindow("Shay's World", SDL_WINDOWPOS_CENTERED,
-                                       SDL_WINDOWPOS_CENTERED, 1280, 720,
+                                       SDL_WINDOWPOS_CENTERED, 800, 500,
                                        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN),
                       &SDL_DestroyWindow};
 
@@ -101,16 +103,13 @@ Stonk::Stonk() {
     }
 
     // Create OpenGL context.
-    this->gl = Stonk::Gl{SDL_GL_CreateContext(this->window.get()),
-                         &SDL_GL_DeleteContext};
+    this->context = Stonk::Context{SDL_GL_CreateContext(this->window.get()),
+                                   &SDL_GL_DeleteContext};
 
-    if (this->gl.get() == nullptr) {
+    if (this->context.get() == nullptr) {
         throw runtime_error{string{"Unable to create OpenGL context: "} +
                             SDL_GetError()};
     }
-
-    // Set the current OpenGL context.
-    SDL_GL_MakeCurrent(this->window.get(), this->gl.get());
 }
 
 Stonk::~Stonk() {
@@ -144,6 +143,5 @@ auto Stonk::update(State &state, double dt) -> void {
 
 auto Stonk::render(const State &state) const -> void {
     Display();
-    // glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
     SDL_GL_SwapWindow(this->window.get());
 }
