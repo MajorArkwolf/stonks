@@ -8,31 +8,24 @@ ICT290 Group Project Part 1
 
 ### Clone the repo
 ```
-git clone https://github.com/opeik/ICT290.git
+git clone --recurse-submodules https://github.com/opeik/ICT290.git
 ```
 
 ### Dependencies
-* macOS: `brew install cmake sdl ninja`
-* Linux: `sudo apt-get install cmake freeglut3-dev libsdl1.2-dev ninja-build clang`
-* Windows: `.\vcpkg.exe install --triplet x64-windows freeglut sdl1`
-
-### Configure build
-* Unix:
-    ```
-    mkdir build
-    cd build
-    CXX=clang++ cmake -GNinja ..
-    ```
-* Windows:
-    * In Visual Studio, select Open → CMake, select `CMakeLists.txt`
+* macOS: `brew install cmake sdl2 sdl2_image sdl2_ttf sdl2_mixer`
+* Linux: `sudo apt-get install cmake libsdl2-dev libsdl2-image-dev
+    libsdl2-ttf-dev libsdl2-mixer-dev`
+* Windows: `.\vcpkg.exe install --triplet x64-windows sdl2 sdl2-image sdl2-ttf
+    sdl2-mixer`
 
 ### Build
 * Unix:
     ```
-    make && ./shays-world
+    cd ICT290 && cmake -B build . && cd build && cmake --build
     ```
 * Windows:
-    * Select Build in Visual Studio
+    * In Visual Studio, select Open → CMake, select `CMakeLists.txt`
+    * Select Build
 
 ## Contributing
 * Ensure your editor uses Unix line endings and leaves an empty new line at
