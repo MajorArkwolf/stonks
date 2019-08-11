@@ -126,7 +126,6 @@ auto Stonk::getIsRunning() const -> bool {
     return this->isRunning;
 }
 auto Stonk::handleKeyPress(SDL_Event &event) -> void {
-    // https://wiki.libsdl.org/SDL_KeyboardEvent
     switch (event.key.keysym.scancode) { // Use SDL Scancodes that correspond to keyboard keys
         case SDL_SCANCODE_ESCAPE: {
             this->isRunning = false;
@@ -150,7 +149,6 @@ auto Stonk::handleKeyPress(SDL_Event &event) -> void {
 }
 
 auto Stonk::handleKeyRelease(SDL_Event &event) -> void {
-    // https://wiki.libsdl.org/SDL_KeyboardEvent
     switch (event.key.keysym.scancode) { // Use SDL Scancodes that correspond to keyboard keys
         case SDL_SCANCODE_W: {
 
@@ -168,14 +166,12 @@ auto Stonk::handleKeyRelease(SDL_Event &event) -> void {
 }
 
 auto Stonk::handleMouseMovement(SDL_Event &event) -> void {
-    // https://wiki.libsdl.org/SDL_MouseMotionEvent
     int mouseXPos     = event.motion.x;
     int mouseYPos     = event.motion.y;
     int relativeXMove = event.motion.xrel;
     int relativeYMove = event.motion.yrel;
 }
 auto Stonk::handleMouseButtonPress(SDL_Event &event) -> void {
-    // https://wiki.libsdl.org/SDL_MouseButtonEvent
     int numClicks =
         event.button.clicks; // Number of clicks received as event   e.g. 1 = single click, 2 = double click
     int releaseXPos = event.button.x; // X-position of mouse when pressed
@@ -194,7 +190,6 @@ auto Stonk::handleMouseButtonPress(SDL_Event &event) -> void {
     }
 }
 auto Stonk::handleMouseButtonRelease(SDL_Event &event) -> void {
-    // https://wiki.libsdl.org/SDL_MouseButtonEvent
     int numClicks =
         event.button.clicks; // Number of clicks received as event   e.g. 1 = single click, 2 = double click
     int releaseXPos = event.button.x; // X-position of mouse when pressed
@@ -213,13 +208,11 @@ auto Stonk::handleMouseButtonRelease(SDL_Event &event) -> void {
     }
 }
 auto Stonk::handleMouseWheelMotion(SDL_Event &event) -> void {
-    // https://wiki.libsdl.org/SDL_MouseWheelEvent
     int amountScrolledX = event.wheel.x; // Amount scrolled left or right
     int amountScrolledY = event.wheel.y; // Amount scrolled up or down
 }
 
 auto Stonk::processInput() -> void {
-    // https://wiki.libsdl.org/SDL_Event
     auto event = SDL_Event{};
 
     while (SDL_PollEvent(&event)) {
