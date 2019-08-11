@@ -15,7 +15,7 @@
         {
             "name": "x64-Release",
             "generator": "Ninja",
-            "configurationType": "RelWithDebInfo",
+            "configurationType": "Release",
             "buildRoot": "${workspaceRoot}\\build\\${name}",
             "installRoot": "${workspaceRoot}\\build\\${name}",
             "cmakeCommandArgs": "--no-warn-unused-cli",
