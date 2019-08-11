@@ -165,14 +165,14 @@ auto Stonk::handleKeyRelease(SDL_Event &event) -> void {
     }
 }
 
-auto handleMouseMovement(SDL_Event &event) -> void {
+auto Stonk::handleMouseMovement(SDL_Event &event) -> void {
     // https://wiki.libsdl.org/SDL_MouseMotionEvent
     int mouseXPos     = event.motion.x;
     int mouseYPos     = event.motion.y;
     int relativeXMove = event.motion.xrel;
     int relativeYMove = event.motion.yrel;
 }
-auto handleMouseButtonPress(SDL_Event &event) -> void {
+auto Stonk::handleMouseButtonPress(SDL_Event &event) -> void {
     // https://wiki.libsdl.org/SDL_MouseButtonEvent
     int numClicks =
         event.button.clicks; // Number of clicks received as event   e.g. 1 = single click, 2 = double click
@@ -191,7 +191,7 @@ auto handleMouseButtonPress(SDL_Event &event) -> void {
         } break;
     }
 }
-auto handleMouseButtonRelease(SDL_Event &event) -> void {
+auto Stonk::handleMouseButtonRelease(SDL_Event &event) -> void {
     // https://wiki.libsdl.org/SDL_MouseButtonEvent
     int numClicks =
         event.button.clicks; // Number of clicks received as event   e.g. 1 = single click, 2 = double click
@@ -210,7 +210,7 @@ auto handleMouseButtonRelease(SDL_Event &event) -> void {
         } break;
     }
 }
-auto handleMouseWheelMotion(SDL_Event &event) -> void {
+auto Stonk::handleMouseWheelMotion(SDL_Event &event) -> void {
 	//https: // wiki.libsdl.org/SDL_MouseWheelEvent
     int amountScrolledX = event.wheel.x; // Amount scrolled left or right
     int amountScrolledY = event.wheel.y; // Amount scrolled up or down
@@ -229,16 +229,16 @@ auto Stonk::processInput() -> void {
                 this->handleKeyRelease(event);
             } break;
             case SDL_MOUSEBUTTONDOWN: {
-
+                this->handleMouseButtonPress(event);
             } break;
             case SDL_MOUSEBUTTONUP: {
-
+                this->handleMouseButtonRelease(event);
             } break;
             case SDL_MOUSEMOTION: {
-
+                this->handleMouseMovement(event);
             } break;
             case SDL_MOUSEWHEEL: {
-
+                this->handleMouseWheelMotion(event);
             } break;
             case SDL_QUIT: this->isRunning = false; break;
             default: break;
