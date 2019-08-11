@@ -47,7 +47,7 @@ class Stonk {
     auto operator=(Stonk &&) -> Stonk & = default;
     auto operator=(const Stonk &) -> Stonk & = delete;
 
-	auto handleMouseMovement(SDL_Event &event) -> void;
+    auto handleMouseMovement(SDL_Event &event) -> void;
     auto handleMouseButtonPress(SDL_Event &event) -> void;
     auto handleMouseButtonRelease(SDL_Event &event) -> void;
     auto handleMouseWheelMotion(SDL_Event &event) -> void;
