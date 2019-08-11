@@ -73,7 +73,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE src)
 
 # Include and link against dependencies.
 target_link_libraries(${PROJECT_NAME} PUBLIC OpenGL::GL OpenGL::GLU
-    SDL2::Main SDL2::Image SDL2::TTF SDL2::Mixer glm)
+    SDL2::SDL2 SDL2::Image SDL2::TTF SDL2::Mixer glm)
 
 # Symlink the resources to the binary location.
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
