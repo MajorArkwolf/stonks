@@ -32,7 +32,7 @@
 ```
 git clone --recurse-submodules https://github.com/opeik/ICT290.git
 # For the add-stonk-engine branch
-git checkout add-stronk-engine && git submodule update --init
+git checkout add-stonk-engine && git submodule update --init
 ```
 
 ### Building
