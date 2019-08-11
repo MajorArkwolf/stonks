@@ -126,6 +126,7 @@ auto Stonk::getIsRunning() const -> bool {
     return this->isRunning;
 }
 auto Stonk::handleKeyPress(SDL_Event &event) -> void {
+    // https://wiki.libsdl.org/SDL_KeyboardEvent
     switch (event.key.keysym.scancode) { // Use SDL Scancodes that correspond to keyboard keys
         case SDL_SCANCODE_ESCAPE: {
             this->isRunning = false;
@@ -149,6 +150,7 @@ auto Stonk::handleKeyPress(SDL_Event &event) -> void {
 }
 
 auto Stonk::handleKeyRelease(SDL_Event &event) -> void {
+    // https://wiki.libsdl.org/SDL_KeyboardEvent
     switch (event.key.keysym.scancode) { // Use SDL Scancodes that correspond to keyboard keys
         case SDL_SCANCODE_W: {
 
@@ -211,7 +213,7 @@ auto Stonk::handleMouseButtonRelease(SDL_Event &event) -> void {
     }
 }
 auto Stonk::handleMouseWheelMotion(SDL_Event &event) -> void {
-	//https: // wiki.libsdl.org/SDL_MouseWheelEvent
+    // https://wiki.libsdl.org/SDL_MouseWheelEvent
     int amountScrolledX = event.wheel.x; // Amount scrolled left or right
     int amountScrolledY = event.wheel.y; // Amount scrolled up or down
 }
@@ -228,16 +230,16 @@ auto Stonk::processInput() -> void {
             case SDL_KEYUP: { // Key Release Events
                 this->handleKeyRelease(event);
             } break;
-            case SDL_MOUSEBUTTONDOWN: {
+            case SDL_MOUSEBUTTONDOWN: { // Mouse button press events
                 this->handleMouseButtonPress(event);
             } break;
-            case SDL_MOUSEBUTTONUP: {
+            case SDL_MOUSEBUTTONUP: { // Mouse button release events
                 this->handleMouseButtonRelease(event);
             } break;
-            case SDL_MOUSEMOTION: {
+            case SDL_MOUSEMOTION: { // Mouse movement events
                 this->handleMouseMovement(event);
             } break;
-            case SDL_MOUSEWHEEL: {
+            case SDL_MOUSEWHEEL: { // Mouse wheel scroll events
                 this->handleMouseWheelMotion(event);
             } break;
             case SDL_QUIT: this->isRunning = false; break;
