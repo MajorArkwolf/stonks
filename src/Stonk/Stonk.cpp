@@ -165,7 +165,59 @@ auto Stonk::handleKeyRelease(SDL_Event &event) -> void {
     }
 }
 
+auto handleMouseMovement(SDL_Event &event) -> void {
+    // https://wiki.libsdl.org/SDL_MouseMotionEvent
+    int mouseXPos     = event.motion.x;
+    int mouseYPos     = event.motion.y;
+    int relativeXMove = event.motion.xrel;
+    int relativeYMove = event.motion.yrel;
+}
+auto handleMouseButtonPress(SDL_Event &event) -> void {
+    // https://wiki.libsdl.org/SDL_MouseButtonEvent
+    int numClicks =
+        event.button.clicks; // Number of clicks received as event   e.g. 1 = single click, 2 = double click
+    int releaseXPos = event.button.x; // X-position of mouse when pressed
+    int releaseYPos = event.button.y; // Y-position of mouse when pressed
+
+    switch (event.button.button) {
+        case SDL_BUTTON_LEFT: { // Left mouse button
+
+        } break;
+        case SDL_BUTTON_RIGHT: { // Right mouse button
+
+        } break;
+        case SDL_BUTTON_MIDDLE: { // Middle mouse button
+
+        } break;
+    }
+}
+auto handleMouseButtonRelease(SDL_Event &event) -> void {
+    // https://wiki.libsdl.org/SDL_MouseButtonEvent
+    int numClicks =
+        event.button.clicks; // Number of clicks received as event   e.g. 1 = single click, 2 = double click
+    int releaseXPos = event.button.x; // X-position of mouse when pressed
+    int releaseYPos = event.button.y; // Y-position of mouse when pressed
+
+    switch (event.button.button) {
+        case SDL_BUTTON_LEFT: { // Left mouse button
+
+        } break;
+        case SDL_BUTTON_RIGHT: { // Right mouse button
+
+        } break;
+        case SDL_BUTTON_MIDDLE: { // Middle mouse button
+
+        } break;
+    }
+}
+auto handleMouseWheelMotion(SDL_Event &event) -> void {
+	//https: // wiki.libsdl.org/SDL_MouseWheelEvent
+    int amountScrolledX = event.wheel.x; // Amount scrolled left or right
+    int amountScrolledY = event.wheel.y; // Amount scrolled up or down
+}
+
 auto Stonk::processInput() -> void {
+    // https://wiki.libsdl.org/SDL_Event
     auto event = SDL_Event{};
 
     while (SDL_PollEvent(&event)) {
@@ -175,6 +227,18 @@ auto Stonk::processInput() -> void {
             } break;
             case SDL_KEYUP: { // Key Release Events
                 this->handleKeyRelease(event);
+            } break;
+            case SDL_MOUSEBUTTONDOWN: {
+
+            } break;
+            case SDL_MOUSEBUTTONUP: {
+
+            } break;
+            case SDL_MOUSEMOTION: {
+
+            } break;
+            case SDL_MOUSEWHEEL: {
+
             } break;
             case SDL_QUIT: this->isRunning = false; break;
             default: break;
