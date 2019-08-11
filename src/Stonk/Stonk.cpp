@@ -125,12 +125,116 @@ auto Stonk::get() -> Stonk & {
 auto Stonk::getIsRunning() const -> bool {
     return this->isRunning;
 }
+auto Stonk::handleKeyPress(SDL_Event &event) -> void {
+    switch (event.key.keysym.scancode) { // Use SDL Scancodes that correspond to keyboard keys
+        case SDL_SCANCODE_ESCAPE: {
+            this->isRunning = false;
+        } break;
+        case SDL_SCANCODE_SPACE: {
+            // DisplayWelcome = (DisplayWelcome == 1) ? 0 : 1; // Ternary operator toggle for welcome screen
+        } break;
+        case SDL_SCANCODE_W: {
+
+        } break;
+        case SDL_SCANCODE_A: {
+
+        } break;
+        case SDL_SCANCODE_S: {
+
+        } break;
+        case SDL_SCANCODE_D: {
+
+        } break;
+    }
+}
+
+auto Stonk::handleKeyRelease(SDL_Event &event) -> void {
+    switch (event.key.keysym.scancode) { // Use SDL Scancodes that correspond to keyboard keys
+        case SDL_SCANCODE_W: {
+
+        } break;
+        case SDL_SCANCODE_A: {
+
+        } break;
+        case SDL_SCANCODE_S: {
+
+        } break;
+        case SDL_SCANCODE_D: {
+
+        } break;
+    }
+}
+
+auto Stonk::handleMouseMovement(SDL_Event &event) -> void {
+    int mouseXPos     = event.motion.x;
+    int mouseYPos     = event.motion.y;
+    int relativeXMove = event.motion.xrel;
+    int relativeYMove = event.motion.yrel;
+}
+auto Stonk::handleMouseButtonPress(SDL_Event &event) -> void {
+    int numClicks =
+        event.button.clicks; // Number of clicks received as event   e.g. 1 = single click, 2 = double click
+    int releaseXPos = event.button.x; // X-position of mouse when pressed
+    int releaseYPos = event.button.y; // Y-position of mouse when pressed
+
+    switch (event.button.button) {
+        case SDL_BUTTON_LEFT: { // Left mouse button
+
+        } break;
+        case SDL_BUTTON_RIGHT: { // Right mouse button
+
+        } break;
+        case SDL_BUTTON_MIDDLE: { // Middle mouse button
+
+        } break;
+    }
+}
+auto Stonk::handleMouseButtonRelease(SDL_Event &event) -> void {
+    int numClicks =
+        event.button.clicks; // Number of clicks received as event   e.g. 1 = single click, 2 = double click
+    int releaseXPos = event.button.x; // X-position of mouse when pressed
+    int releaseYPos = event.button.y; // Y-position of mouse when pressed
+
+    switch (event.button.button) {
+        case SDL_BUTTON_LEFT: { // Left mouse button
+
+        } break;
+        case SDL_BUTTON_RIGHT: { // Right mouse button
+
+        } break;
+        case SDL_BUTTON_MIDDLE: { // Middle mouse button
+
+        } break;
+    }
+}
+auto Stonk::handleMouseWheelMotion(SDL_Event &event) -> void {
+    int amountScrolledX = event.wheel.x; // Amount scrolled left or right
+    int amountScrolledY = event.wheel.y; // Amount scrolled up or down
+}
 
 auto Stonk::processInput() -> void {
     auto event = SDL_Event{};
 
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
+            case SDL_KEYDOWN: { // Key press events
+                this->handleKeyPress(event);
+            } break;
+            case SDL_KEYUP: { // Key Release Events
+                this->handleKeyRelease(event);
+            } break;
+            case SDL_MOUSEBUTTONDOWN: { // Mouse button press events
+                this->handleMouseButtonPress(event);
+            } break;
+            case SDL_MOUSEBUTTONUP: { // Mouse button release events
+                this->handleMouseButtonRelease(event);
+            } break;
+            case SDL_MOUSEMOTION: { // Mouse movement events
+                this->handleMouseMovement(event);
+            } break;
+            case SDL_MOUSEWHEEL: { // Mouse wheel scroll events
+                this->handleMouseWheelMotion(event);
+            } break;
             case SDL_QUIT: this->isRunning = false; break;
             default: break;
         }
