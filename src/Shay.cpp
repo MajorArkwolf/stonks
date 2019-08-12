@@ -2,11 +2,39 @@
 
 #include "Stonk/Stonk.hpp"
 
+GLfloat Shay::stepIncrement  = 0;
+GLfloat Shay::angleIncrement = 0;
+int Shay::frameCount         = 0;
+clock_t Shay::lastClock      = {};
+
+int Shay::width   = 0;
+int Shay::height  = 0;
+float Shay::ratio = 0;
+
+bool Shay::DisplayMap     = false;
+bool Shay::DisplayWelcome = true;
+bool Shay::DisplayExit    = true;
+bool Shay::lightsOn       = true;
+bool Shay::displayECL     = true;
+bool Shay::displayDebug   = true;
+int Shay::calcFPS         = 0;
+
+GLfloat Shay::step                = 0.0f;
+GLfloat Shay::step2               = 0.0f;
+GLfloat Shay::stepLength          = 0.0f;
+GLUquadricObj *Shay::glu_cylinder = nullptr;
+unsigned char *Shay::image        = nullptr;
+Camera Shay::cam                  = {};
+TexturedPolygons Shay::tp         = {};
+
 void Shay::myinit() {
     auto &stonk = Stonk::get();
-    auto widht  = 0;
+    auto width  = 0;
     auto height = 0;
     SDL_GetWindowSize(stonk.window.get(), &width, &height);
+    this->width  = width;
+    this->height = height;
+    this->ratio  = static_cast<float>(width) / static_cast<float>(height);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -916,11 +944,11 @@ void Shay::CreateTextures() {
     tp.CreateTexture(WINDOW_LIB_LONG, image, 256, 128);
 
     image = tp.LoadTexture("res/tex/map.raw", 256, 256);
-    tp.CreateTexture(217, image, 256, 256);
+    tp.CreateTexture(MAP, image, 256, 256);
     image = tp.LoadTexture("res/tex/welcome.raw", 512, 512);
-    tp.CreateTexture(218, image, 512, 512);
+    tp.CreateTexture(WELCOME, image, 512, 512);
     image = tp.LoadTexture("res/tex/thanks.raw", 512, 512);
-    tp.CreateTexture(219, image, 512, 512);
+    tp.CreateTexture(EXIT, image, 512, 512);
 
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
