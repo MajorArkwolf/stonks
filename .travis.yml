@@ -1,0 +1,21 @@
+os: linux
+dist: bionic
+language:
+  - cpp
+compiler:
+  - clang
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - clang-8
+      - ninja
+
+before_install:
+  - export CC=clang-8
+  - export CXX=clang++-8
+
+script:
+  - cmake . -B build -D CMAKE_BUILD_TYPE="Debug" -GNinja
+  - cmake --build .
