@@ -1,4 +1,4 @@
-Copyright (c) 2019 Sandro Stikić <sandro@stikic.me>, Peter Crabbe, Kiera Gibson, Louis Waring
+Copyright © 2019 [Sandro Stikić](mailto:sandro@stikic.me), Peter Crabbe, Kiera Gibson, Louis Waring
 
 Permission to use, copy, modify, and/or distribute this software for
 any purpose with or without fee is hereby granted, provided that the

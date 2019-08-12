@@ -20,16 +20,18 @@ endif()
 # Define executable source files.
 add_executable(${PROJECT_NAME}
     src/Main.cpp
-    src/AABBList.cpp
-    src/PlainNode.cpp
-    src/CameraMap.cpp
-    src/AABB.cpp
-    src/AABBNode.cpp
-    src/PlainLinkedList.cpp
-    src/Camera.cpp
-    src/Collision.cpp
-    src/TexturedPolygons.cpp
-    src/Shay.cpp
+
+    src/Shay/AABBList.cpp
+    src/Shay/PlainNode.cpp
+    src/Shay/CameraMap.cpp
+    src/Shay/AABB.cpp
+    src/Shay/AABBNode.cpp
+    src/Shay/PlainLinkedList.cpp
+    src/Shay/Camera.cpp
+    src/Shay/Collision.cpp
+    src/Shay/TexturedPolygons.cpp
+    src/Shay/Shay.cpp
+
     src/Stonk/Collision.cpp
     src/Stonk/Physics.cpp
     src/Stonk/Stonk.cpp

@@ -1,44 +1,12 @@
-#include <math.h>
-#include <string>
-#include <time.h>
+#include <cstddef>
 
-//#include <windows.h> // only used if mouse is required (not portable)
+#include "Shay/Shay.hpp"
 #include "Stonk/Stonk.hpp"
-#include "Shay.hpp"
 
-//--------------------------------------------------------------------------------------
-
-// USE THESE STTEINGS TO CHANGE SPEED (on different spec computers)
-// Set speed (steps)
-static GLfloat movementSpeed = 10.0f;
-static GLfloat rotationSpeed = 0.005f;
-
-//Eww Shay
-Shay shay;
-
-//--------------------------------------------------------------------------------------
-//  Main function
-//--------------------------------------------------------------------------------------
 int main(int argc, char **argv) {
     Stonk::run();
 
-    return (0);
-}
-
-//--------------------------------------------------------------------------------------
-//  Initialize Settings
-//--------------------------------------------------------------------------------------
-void myinit() {
-    auto &stonk = Stonk::get();
-
-	shay.myinit();
-}
-
-//--------------------------------------------------------------------------------------
-//  Main Display Function
-//--------------------------------------------------------------------------------------
-void Display() {
-    shay.Display();
+    return EXIT_SUCCESS;
 }
 
 void drawAxis() {
@@ -63,4 +31,3 @@ void drawAxis() {
     glVertex3f(100000, 0, 0);
     glEnd();
 }
-

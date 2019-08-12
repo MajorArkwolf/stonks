@@ -16,7 +16,7 @@
 #include <cmath>
 #include <iostream>
 
-#include "OpenGl.hpp"
+#include "Stonk/OpenGl.hpp"
 
 class PlainNode {
 

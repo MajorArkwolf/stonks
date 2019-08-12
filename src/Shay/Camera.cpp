@@ -10,7 +10,7 @@
 
 #include <math.h>
 
-#include "OpenGl.hpp"
+#include "Stonk/OpenGl.hpp"
 #include "Math.hpp"
 
 //--------------------------------------------------------------------------------------

@@ -32,9 +32,9 @@ void Shay::myinit() {
     auto width  = 0;
     auto height = 0;
     SDL_GetWindowSize(stonk.window.get(), &width, &height);
-    this->width  = width;
-    this->height = height;
-    this->ratio  = static_cast<float>(width) / static_cast<float>(height);
+    Shay::width  = width;
+    Shay::height = height;
+    Shay::ratio  = static_cast<float>(width) / static_cast<float>(height);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();

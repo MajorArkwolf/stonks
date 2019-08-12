@@ -16,7 +16,7 @@
 #include <cmath>
 #include <vector>
 
-#include "OpenGl.hpp"
+#include "Stonk/OpenGl.hpp"
 
 class AABB {
   private:

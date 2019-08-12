@@ -16,7 +16,7 @@
 #    include <vector>
 
 #    include "AABBNode.h"
-#    include "OpenGl.hpp"
+#    include "Stonk/OpenGl.hpp"
 
 class AABBList {
   public:

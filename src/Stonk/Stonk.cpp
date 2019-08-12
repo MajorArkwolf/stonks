@@ -5,12 +5,10 @@
 #include <stdexcept>
 #include <string>
 
-#include "OpenGl.hpp"
+#include "Shay/Shay.hpp"
 #include "Stonk/Camera.hpp"
 #include "Stonk/Collision.hpp"
-
-// TODO: REMOVE
-#include "Main.hpp"
+#include "Stonk/OpenGl.hpp"
 
 using std::runtime_error;
 using std::string;
@@ -19,7 +17,7 @@ auto Stonk::run() -> void {
     auto &stonk = Stonk::get();
 
     // Setup Shay's world.
-    myinit();
+    Shay::myinit();
 
     auto t  = 0.0;
     auto dt = 0.01;
@@ -238,6 +236,6 @@ auto Stonk::update(State &state, double dt) -> void {
 }
 
 auto Stonk::render(const State &state) const -> void {
-    Display();
+    Shay::Display();
     SDL_GL_SwapWindow(this->window.get());
 }

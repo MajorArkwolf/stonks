@@ -8,7 +8,7 @@
 #ifndef CAMERA_MAP_H
 #    define CAMERA_MAP_H
 
-#    include "OpenGl.hpp"
+#    include "Stonk/OpenGl.hpp"
 
 //--------------------------------------------------------------------------------------
 
