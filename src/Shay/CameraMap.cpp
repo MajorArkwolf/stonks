@@ -1,13 +1,8 @@
-//  cameraMap.cpp
-//
-//  Implementation file for CameraMap Class
-//  Defines all the methods declared, but not defined, in cameraMap.h
-//
-//  Shay Leary, April 2005
-//--------------------------------------------------------------------------------------
-
 #include "CameraMap.h"
-#include "OpenGl.hpp"
+
+#include "Stonk/OpenGl.hpp"
+
+using Shay::CameraMap;
 
 //--------------------------------------------------------------------------------------
 //  Display a map with a cursor on it, which moves with the camera

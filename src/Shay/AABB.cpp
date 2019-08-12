@@ -1,12 +1,6 @@
-//  AABB.cpp
-//
-//  Implementation file for AABB Class
-//  Defines all the methods declared, but not defined, in AABB.h
-//
-//  Shay Leary, March 2005
-//--------------------------------------------------------------------------------------
-
 #include "AABB.h"
+
+using Shay::AABB;
 
 void AABB::SetNoBoundingBoxes(size_t size) {
     m_BBox.clear();
@@ -31,7 +25,6 @@ void AABB::SetMaxZ(size_t index, GLfloat tempZ) {
 void AABB::SetMinZ(size_t index, GLfloat tempZ) {
     m_BBox[index].min.z = tempZ;
 }
-
 
 GLfloat AABB::GetMaxX(size_t index) {
     return m_BBox[index].max.x;

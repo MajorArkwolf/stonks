@@ -1,25 +1,26 @@
-#include "Stonk/Stonk.hpp"
+#include "Stonk/Engine.hpp"
 
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <stdexcept>
 #include <string>
 
-#include "OpenGl.hpp"
+#include "Shay/Shay.hpp"
 #include "Stonk/Camera.hpp"
 #include "Stonk/Collision.hpp"
+#include "Stonk/OpenGl.hpp"
 
-// TODO: REMOVE
-#include "Main.hpp"
-
+using Shay::ShaysWorld;
 using std::runtime_error;
 using std::string;
+using Stonk::Engine;
+using Stonk::State;
 
-auto Stonk::run() -> void {
-    auto &stonk = Stonk::get();
+auto Engine::run() -> void {
+    auto &engine = Engine::get();
 
     // Setup Shay's world.
-    myinit();
+    ShaysWorld::Init();
 
     auto t  = 0.0;
     auto dt = 0.01;
@@ -30,7 +31,7 @@ auto Stonk::run() -> void {
     auto previousState = State{};
     auto currentState  = State{};
 
-    while (stonk.getIsRunning()) {
+    while (engine.getIsRunning()) {
         auto newTime   = static_cast<double>(SDL_GetPerformanceFrequency());
         auto frameTime = newTime - currentTime;
 
@@ -41,11 +42,11 @@ auto Stonk::run() -> void {
         currentTime = newTime;
         accumulator += frameTime;
 
-        stonk.processInput();
+        engine.processInput();
 
         while (accumulator >= dt) {
             previousState = currentState;
-            stonk.update(currentState, dt);
+            engine.update(currentState, dt);
             t += dt;
             accumulator -= dt;
         }
@@ -55,11 +56,11 @@ auto Stonk::run() -> void {
         auto interpolatedState =
             currentState * alpha + previousState * (1.0 - alpha);
 
-        stonk.render(interpolatedState);
+        engine.render(interpolatedState);
     }
 }
 
-Stonk::Stonk() {
+Engine::Engine() {
     // Start SDL.
     auto status = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 
@@ -81,18 +82,18 @@ Stonk::Stonk() {
 
     // Create window.
     this->window =
-        Stonk::Window{SDL_CreateWindow("Shay's World", SDL_WINDOWPOS_CENTERED,
-                                       SDL_WINDOWPOS_CENTERED, 1280, 720,
-                                       SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN),
-                      &SDL_DestroyWindow};
+        Engine::Window{SDL_CreateWindow("Shay's World", SDL_WINDOWPOS_CENTERED,
+                                        SDL_WINDOWPOS_CENTERED, 1280, 720,
+                                        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN),
+                       &SDL_DestroyWindow};
 
     if (this->window.get() == nullptr) {
         throw runtime_error{string{"Unable to create window: "} + SDL_GetError()};
     }
 
     // Create OpenGL context.
-    this->context = Stonk::Context{SDL_GL_CreateContext(this->window.get()),
-                                   &SDL_GL_DeleteContext};
+    this->context = Engine::Context{SDL_GL_CreateContext(this->window.get()),
+                                    &SDL_GL_DeleteContext};
 
     if (this->context.get() == nullptr) {
         throw runtime_error{string{"Unable to create OpenGL context: "} +
@@ -100,27 +101,28 @@ Stonk::Stonk() {
     }
 }
 
-Stonk::~Stonk() {
+Engine::~Engine() {
     SDL_Quit();
 }
 
-auto Stonk::get() -> Stonk & {
-    static auto instance = Stonk{};
+auto Engine::get() -> Engine & {
+    static auto instance = Engine{};
 
     return instance;
 }
 
-auto Stonk::getIsRunning() const -> bool {
+auto Engine::getIsRunning() const -> bool {
     return this->isRunning;
 }
 
-auto Stonk::handleKeyPress(SDL_Event &event) -> void {
+auto Engine::handleKeyPress(SDL_Event &event) -> void {
     switch (event.key.keysym.scancode) { // Use SDL Scancodes that correspond to keyboard keys
         case SDL_SCANCODE_ESCAPE: {
             this->isRunning = false;
         } break;
         case SDL_SCANCODE_SPACE: {
-            // DisplayWelcome = (DisplayWelcome == 1) ? 0 : 1; // Ternary operator toggle for welcome screen
+            // DisplayWelcome = (DisplayWelcome == 1) ? 0 : 1; // Ternary
+            // operator toggle for welcome screen
         } break;
         case SDL_SCANCODE_W: {
 
@@ -137,7 +139,7 @@ auto Stonk::handleKeyPress(SDL_Event &event) -> void {
     }
 }
 
-auto Stonk::handleKeyRelease(SDL_Event &event) -> void {
+auto Engine::handleKeyRelease(SDL_Event &event) -> void {
     switch (event.key.keysym.scancode) { // Use SDL Scancodes that correspond to keyboard keys
         case SDL_SCANCODE_W: {
 
@@ -154,16 +156,17 @@ auto Stonk::handleKeyRelease(SDL_Event &event) -> void {
     }
 }
 
-auto Stonk::handleMouseMovement(SDL_Event &event) -> void {
+auto Engine::handleMouseMovement(SDL_Event &event) -> void {
     int mouseXPos     = event.motion.x;
     int mouseYPos     = event.motion.y;
     int relativeXMove = event.motion.xrel;
     int relativeYMove = event.motion.yrel;
 }
 
-auto Stonk::handleMouseButtonPress(SDL_Event &event) -> void {
+auto Engine::handleMouseButtonPress(SDL_Event &event) -> void {
     int numClicks =
-        event.button.clicks; // Number of clicks received as event   e.g. 1 = single click, 2 = double click
+        event.button.clicks; // Number of clicks received as event   e.g. 1 =
+                             // single click, 2 = double click
     int releaseXPos = event.button.x; // X-position of mouse when pressed
     int releaseYPos = event.button.y; // Y-position of mouse when pressed
 
@@ -180,9 +183,10 @@ auto Stonk::handleMouseButtonPress(SDL_Event &event) -> void {
     }
 }
 
-auto Stonk::handleMouseButtonRelease(SDL_Event &event) -> void {
+auto Engine::handleMouseButtonRelease(SDL_Event &event) -> void {
     int numClicks =
-        event.button.clicks; // Number of clicks received as event   e.g. 1 = single click, 2 = double click
+        event.button.clicks; // Number of clicks received as event   e.g. 1 =
+                             // single click, 2 = double click
     int releaseXPos = event.button.x; // X-position of mouse when pressed
     int releaseYPos = event.button.y; // Y-position of mouse when pressed
 
@@ -199,12 +203,12 @@ auto Stonk::handleMouseButtonRelease(SDL_Event &event) -> void {
     }
 }
 
-auto Stonk::handleMouseWheelMotion(SDL_Event &event) -> void {
+auto Engine::handleMouseWheelMotion(SDL_Event &event) -> void {
     int amountScrolledX = event.wheel.x; // Amount scrolled left or right
     int amountScrolledY = event.wheel.y; // Amount scrolled up or down
 }
 
-auto Stonk::processInput() -> void {
+auto Engine::processInput() -> void {
     auto event = SDL_Event{};
 
     while (SDL_PollEvent(&event)) {
@@ -233,11 +237,11 @@ auto Stonk::processInput() -> void {
     }
 }
 
-auto Stonk::update(State &state, double dt) -> void {
+auto Engine::update(State &state, double dt) -> void {
     this->physics.update(state, dt);
 }
 
-auto Stonk::render(const State &state) const -> void {
-    Display();
+auto Engine::render(const State &state) const -> void {
+    ShaysWorld::Display();
     SDL_GL_SwapWindow(this->window.get());
 }

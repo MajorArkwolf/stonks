@@ -1,15 +1,8 @@
-//  PlainNode.cpp
-//
-//  Implementation file for PlainNode Class
-//  Defines all the methods declared, but not defined, in PlainNode.h
-//
-//  Shay Leary, April 2005
-//	Updated by Peter Crabbe, 04/08/2019
-//--------------------------------------------------------------------------------------
-
 #include "PlainNode.h"
 
-//Function depreciated, to be deleted when safe too.
+using Shay::PlainNode;
+
+// Function depreciated, to be deleted when safe too.
 void PlainNode::Clear() {}
 
 void PlainNode::SetData(const int tempType, const GLfloat tempXs,

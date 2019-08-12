@@ -1,13 +1,6 @@
-//  AABBNode.cpp
-//
-//  Implementation file for AABBNode Class
-//  Defines all the methods declared, but not defined, in AABBNode.h
-//
-//  Shay Leary, March 2005
-//	Fixed by Peter Crabbe, 04/08/2019
-//--------------------------------------------------------------------------------------
-
 #include "AABBNode.h"
+
+using Shay::AABBNode;
 
 void AABBNode::SetData(const GLfloat maxX, const GLfloat minX, const GLfloat maxY,
                        const GLfloat minY, const GLfloat maxZ, const GLfloat minZ) {

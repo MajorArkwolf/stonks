@@ -1,17 +1,13 @@
-//  camera.cpp
-//
-//  Implementation file for Camera Class
-//  Defines all the methods declared, but not defined, in camera.h
-//
-//  Shay Leary, March 2005
-//--------------------------------------------------------------------------------------
-
 #include "Camera.h"
 
-#include <math.h>
+#include <cmath>
 
-#include "OpenGl.hpp"
-#include "Math.hpp"
+#include "Stonk/OpenGl.hpp"
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/ext/scalar_constants.hpp>
+
+using Shay::Camera;
 
 //--------------------------------------------------------------------------------------
 // Set initial values
@@ -299,8 +295,8 @@ void Camera::RotateLR() {
     m_rotateAngleLR += m_deltaAngleLR;
     m_lookX  = sin(m_rotateAngleLR);
     m_lookZ  = -cos(m_rotateAngleLR);
-    m_lookXX = sin(m_rotateAngleLR + PI_F / 2.0f);
-    m_lookZZ = -cos(m_rotateAngleLR + PI_F / 2.0f);
+    m_lookXX = sin(m_rotateAngleLR + glm::pi<float>() / 2.0f);
+    m_lookZZ = -cos(m_rotateAngleLR + glm::pi<float>() / 2.0f);
     callGLLookAt();
 }
 
@@ -325,11 +321,11 @@ void Camera::Position(GLfloat const &tempX, GLfloat const &tempY,
     m_z = tempZ;
 
     // rotate to correct angle
-    m_rotateAngleLR = tempAngle * (PI_F / 180.0f);
+    m_rotateAngleLR = tempAngle * (glm::pi<float>() / 180.0f);
     m_lookX         = sin(m_rotateAngleLR);
     m_lookZ         = -cos(m_rotateAngleLR);
-    m_lookXX        = sin(m_rotateAngleLR + PI_F / 2.0f);
-    m_lookZZ        = -cos(m_rotateAngleLR + PI_F / 2.0f);
+    m_lookXX        = sin(m_rotateAngleLR + glm::pi<float>() / 2.0f);
+    m_lookZZ        = -cos(m_rotateAngleLR + glm::pi<float>() / 2.0f);
     m_rotateAngleUD = 0.0;
     m_deltaAngleUD  = 0.0;
 

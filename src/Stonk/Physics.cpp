@@ -2,7 +2,10 @@
 
 #include <glm/gtx/scalar_multiplication.hpp>
 
-#include "Stonk/Stonk.hpp"
+#include "Stonk/Engine.hpp"
+
+using Stonk::Physics;
+using Stonk::State;
 
 auto Physics::update(State &state, double dt) -> void {
     for (auto i : state.entities) {

@@ -2,7 +2,9 @@
 
 #include "Stonk/Entity.hpp"
 
-/**
- * @brief Stonk player subsystem.
- */
-class Player {};
+namespace Stonk {
+    /**
+     * @brief Stonk player subsystem.
+     */
+    class Player {};
+};

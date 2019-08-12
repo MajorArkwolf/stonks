@@ -5,19 +5,21 @@
 
 #include "Stonk/Entity.hpp"
 
-/**
- * @brief Stores the game physics state.
- */
-struct State {
-    using Entities = std::vector<Entity>;
+namespace Stonk {
+    /**
+     * @brief Stores the game physics state.
+     */
+    struct State {
+        using Entities = std::vector<Entity>;
 
-    Entities entities = Entities{};
+        Entities entities = Entities{};
+    };
+
+    class Physics {
+      public:
+        auto update(State &state, double dt) -> void;
+    };
 };
 
-auto operator*(const State &rhs, double scalar) -> State;
-auto operator+(const State &lhs, const State &rhs) -> State;
-
-class Physics {
-  public:
-    auto update(State &state, double dt) -> void;
-};
+auto operator*(const Stonk::State &rhs, double scalar) -> Stonk::State;
+auto operator+(const Stonk::State &lhs, const Stonk::State &rhs) -> Stonk::State;

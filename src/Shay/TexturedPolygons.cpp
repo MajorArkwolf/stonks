@@ -1,14 +1,8 @@
-//  texturedPolygons.cpp
-//
-//  Implementation file for TexturedPolygons Class
-//  Defines all the methods declared, but not defined, in texturedPolygons.h
-//
-//  Shay Leary, March 2005
-//--------------------------------------------------------------------------------------
-
 #include "TexturedPolygons.h"
 
 #include <iostream>
+
+using Shay::TexturedPolygons;
 
 //--------------------------------------------------------------------------------------
 //  Declares datatype to store a raw image file and calls method to load image

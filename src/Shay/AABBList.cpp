@@ -1,12 +1,6 @@
-//  AABBList.cpp
-//
-//  Implementation file for AABBList Class
-//  Defines all the methods declared, but not defined, in AABBList.h
-//
-//  Peter Crabbe, Augest 2019
-//--------------------------------------------------------------------------------------
-
 #include "AABBList.h"
+
+using Shay::AABBList;
 
 bool AABBList::AddToStart(GLfloat maxX, GLfloat minX, GLfloat maxY,
                           GLfloat minY, GLfloat maxZ, GLfloat minZ) {

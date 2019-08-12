@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OpenGl.hpp"
+#include "Stonk/OpenGl.hpp"
 
 // initializes setting
 void myinit();
