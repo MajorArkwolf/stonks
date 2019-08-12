@@ -1,12 +1,6 @@
-//  collision.cpp
-//
-//  Implementation file for Collsion Class
-//  Defines all the methods declared, but not defined, in collsion.h
-//
-//  Shay Leary, March 2005
-//--------------------------------------------------------------------------------------
-
 #include "Collision.h"
+
+using Shay::Collision;
 
 //--------------------------------------------------------------------------------------
 //  Creates a linked list for each quadrant and then copies the bounding box data from

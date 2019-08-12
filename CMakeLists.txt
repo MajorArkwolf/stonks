@@ -21,6 +21,11 @@ endif()
 add_executable(${PROJECT_NAME}
     src/Main.cpp
 
+    src/Stonk/Engine.cpp
+    src/Stonk/Collision.cpp
+    src/Stonk/Physics.cpp
+    src/Stonk/Viewport.cpp
+
     src/Shay/AABBList.cpp
     src/Shay/PlainNode.cpp
     src/Shay/CameraMap.cpp
@@ -31,11 +36,6 @@ add_executable(${PROJECT_NAME}
     src/Shay/Collision.cpp
     src/Shay/TexturedPolygons.cpp
     src/Shay/Shay.cpp
-
-    src/Stonk/Collision.cpp
-    src/Stonk/Physics.cpp
-    src/Stonk/Stonk.cpp
-    src/Stonk/Viewport.cpp
 )
 
 # Set C++ standard.

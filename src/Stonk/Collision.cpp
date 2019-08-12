@@ -1,4 +1,6 @@
-#include "Collision.hpp"
+#include "Stonk/Collision.hpp"
+
+using Stonk::BoundingBox;
 
 auto BoundingBox::isColliding(const BoundingBox &lhs, const BoundingBox &rhs)
     -> bool {

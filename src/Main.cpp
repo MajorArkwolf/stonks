@@ -1,10 +1,10 @@
 #include <cstddef>
 
 #include "Shay/Shay.hpp"
-#include "Stonk/Stonk.hpp"
+#include "Stonk/Engine.hpp"
 
 int main(int argc, char **argv) {
-    Stonk::run();
+    Stonk::Engine::run();
 
     return EXIT_SUCCESS;
 }

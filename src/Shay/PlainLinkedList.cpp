@@ -1,13 +1,6 @@
-//  PlainLinkedList.cpp
-//
-//  Implementation file for PlainLinkedList Class
-//  Defines all the methods declared, but not defined, in PlainLinkedList.h
-//
-//  Shay Leary, April 2005
-//  Modified by Peter Crabbe, 04/08/2019
-//--------------------------------------------------------------------------------------
-
 #include "PlainLinkedList.h"
+
+using Shay::PlainLinkedList;
 
 void PlainLinkedList::Clear() {}
 
@@ -80,8 +73,7 @@ void PlainLinkedList::SetData(const int &ptrCount, const int tempType,
                               const GLfloat tempZs, const GLfloat tempZe) {
     PlainNode temp{};
 
-    temp.SetData(tempType, tempXs, tempXe, tempYs, tempYe, tempZs,
-                            tempZe);
+    temp.SetData(tempType, tempXs, tempXe, tempYs, tempYe, tempZs, tempZe);
     nodes[ptrCount] = temp;
 }
 
