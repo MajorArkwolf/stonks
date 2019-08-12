@@ -1,4 +1,5 @@
-Copyright © 2019 [Sandro Stikić](mailto:sandro@stikic.me), Peter Crabbe, Kiera Gibson, Louis Waring
+Copyright © 2019 [Sandro Stikić][sandro], [Peter Crabbe][peter],
+[Kiera Gibson][kiera], [Louis Waring][louis]
 
 Permission to use, copy, modify, and/or distribute this software for
 any purpose with or without fee is hereby granted, provided that the
@@ -13,3 +14,8 @@ damages or any damages whatsoever resulting from loss of use, data or
 profits, whether in an action of contract, negligence or other
 tortious action, arising out of or in connection with the use or
 performance of this software.**
+
+[sandro]: mailto:sandro@stikic.me
+[peter]: mailto:majorarwkolf@gmail.com
+[kiera]: mailto:kreiiiya@gmail.com
+[louis]: mailto:louis.j.waring@gmail.com
