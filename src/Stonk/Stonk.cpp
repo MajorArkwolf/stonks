@@ -15,24 +15,11 @@
 using std::runtime_error;
 using std::string;
 
-auto shayHack() -> void {
-    auto width  = 800;
-    auto height = 500;
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glViewport(0, 0, width, height);
-    gluPerspective(60, static_cast<double>(width) / static_cast<double>(height),
-                   1, 250000);
-    glMatrixMode(GL_MODELVIEW);
-}
-
 auto Stonk::run() -> void {
     auto &stonk = Stonk::get();
 
     // Setup Shay's world.
     myinit();
-    shayHack();
 
     auto t  = 0.0;
     auto dt = 0.01;
@@ -89,12 +76,13 @@ Stonk::Stonk() {
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
     // Enable Vsync.
-    // SDL_GL_SetSwapInterval(1);
+    constexpr auto ENABLE_VSYNC = 1;
+    SDL_GL_SetSwapInterval(ENABLE_VSYNC);
 
     // Create window.
     this->window =
         Stonk::Window{SDL_CreateWindow("Shay's World", SDL_WINDOWPOS_CENTERED,
-                                       SDL_WINDOWPOS_CENTERED, 800, 500,
+                                       SDL_WINDOWPOS_CENTERED, 1280, 720,
                                        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN),
                       &SDL_DestroyWindow};
 
@@ -125,6 +113,7 @@ auto Stonk::get() -> Stonk & {
 auto Stonk::getIsRunning() const -> bool {
     return this->isRunning;
 }
+
 auto Stonk::handleKeyPress(SDL_Event &event) -> void {
     switch (event.key.keysym.scancode) { // Use SDL Scancodes that correspond to keyboard keys
         case SDL_SCANCODE_ESCAPE: {
@@ -171,6 +160,7 @@ auto Stonk::handleMouseMovement(SDL_Event &event) -> void {
     int relativeXMove = event.motion.xrel;
     int relativeYMove = event.motion.yrel;
 }
+
 auto Stonk::handleMouseButtonPress(SDL_Event &event) -> void {
     int numClicks =
         event.button.clicks; // Number of clicks received as event   e.g. 1 = single click, 2 = double click
@@ -189,6 +179,7 @@ auto Stonk::handleMouseButtonPress(SDL_Event &event) -> void {
         } break;
     }
 }
+
 auto Stonk::handleMouseButtonRelease(SDL_Event &event) -> void {
     int numClicks =
         event.button.clicks; // Number of clicks received as event   e.g. 1 = single click, 2 = double click
@@ -207,6 +198,7 @@ auto Stonk::handleMouseButtonRelease(SDL_Event &event) -> void {
         } break;
     }
 }
+
 auto Stonk::handleMouseWheelMotion(SDL_Event &event) -> void {
     int amountScrolledX = event.wheel.x; // Amount scrolled left or right
     int amountScrolledY = event.wheel.y; // Amount scrolled up or down

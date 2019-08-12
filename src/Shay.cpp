@@ -1,6 +1,20 @@
 #include "Shay.hpp"
 
+#include "Stonk/Stonk.hpp"
+
 void Shay::myinit() {
+    auto &stonk = Stonk::get();
+    auto widht  = 0;
+    auto height = 0;
+    SDL_GetWindowSize(stonk.window.get(), &width, &height);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glViewport(0, 0, width, height);
+    gluPerspective(60, static_cast<double>(width) / static_cast<double>(height),
+                   1, 250000);
+    glMatrixMode(GL_MODELVIEW);
+
     // set background (sky colour)
     glClearColor(97.0f / 255.0f, 140.0f / 255.0f, 185.0f / 255.0f, 1.0f);
 
@@ -3137,7 +3151,7 @@ void Shay::DrawRoof() {
 //  Creates Angled Roof Beams
 // --------------------------------------------------------------------------------------
 void Shay::DrawAngledRoofBeam(GLuint listNo, GLfloat x, GLfloat y, GLfloat z,
-                        GLfloat beamSize) {
+                              GLfloat beamSize) {
     glNewList(listNo, GL_COMPILE);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 0.0f);
@@ -3165,7 +3179,7 @@ void Shay::DrawAngledRoofBeam(GLuint listNo, GLfloat x, GLfloat y, GLfloat z,
 }
 
 void Shay::DrawAngledRoofBeam2(GLuint listNo, GLfloat x, GLfloat y, GLfloat z,
-                         GLfloat beamSize) {
+                               GLfloat beamSize) {
     glNewList(listNo, GL_COMPILE);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 0.0f);
