@@ -14,6 +14,7 @@ using Shay::ShaysWorld;
 using std::runtime_error;
 using std::string;
 using Stonk::Engine;
+using Stonk::State;
 
 auto Engine::run() -> void {
     auto &engine = Engine::get();
