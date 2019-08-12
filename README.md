@@ -43,28 +43,30 @@ git checkout add-stonk-engine && git submodule update --init
 * Windows:
     * Open Visual Studio as Administrator (required to make symbolic links)
     * In Visual Studio, select Open → CMake, select `CMakeLists.txt`
-    * Select Build
+    * From the "Select Startup Item" menu, select `shays-world.exe`
 
 ## Contributing
-* Ensure your editor uses Unix line endings and leaves an empty new line at
-    the end of a file
-    * Use [this plugin](https://marketplace.visualstudio.com/items?itemName=JakubBielawa.LineEndingsUnifier)
-      for Visual Studio
-        * Set `Add newlines on the last line` to `true`
-        * Set `Default line ending` to `Linux`
-        * Set `Save files after unifying` to `true`
-* Use clang-format to style your source code
-    * Install a clang-format extension to your editor of choice
-        * [vim](https://github.com/rhysd/vim-clang-format)
-        * [Atom](https://atom.io/packages/clang-format)
-        * [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=xaver.clang-format)
-    * Make sure to configure the extension to automatically apply formatting on
-        save
+* Ensure your editor uses Unix line endings
+    * Use the [Line Endings Unifier][leu-dl]
+      plugin for Visual Studio
+    * Here's the [suggested configuration][leu-config]
+* Use **clang-format** to format your source code to the project standard
+    * Install a clang-format extension to your text editor:
+        * [vim][clang-format-vim]
+        * [Atom][clang-format-atom]
+        * [Visual Studio][clang-format-vs]
+        * [Visual Studio Code][clang-format-vsc]
 
 ## License
-This project is licensed under the ISC license. Please see the `LICENSE.md` file
+This project is licensed under the ISC license. Please see the [`LICENSE.md`](LICENSE.md) file
 for details.
 
+[clang-format-vim]: https://github.com/rhysd/vim-clang-format
+[clang-format-atom]: https://atom.io/packages/clang-format
+[clang-format-vsc]: https://marketplace.visualstudio.com/items?itemName=xaver.clang-format
+[clang-format-vs]: https://marketplace.visualstudio.com/items?itemName=mynkow.FormatdocumentonSave
+[leu-config]: https://i.imgur.com/ZONPHau.png
+[leu-dl]: https://marketplace.visualstudio.com/items?itemName=JakubBielawa.LineEndingsUnifier
 [VS2019-dl]: https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&rel=16
 [vcpkg-dl]: https://github.com/microsoft/vcpkg
 [brew-dl]: https://brew.sh
