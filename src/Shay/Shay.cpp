@@ -15,7 +15,7 @@ double ShaysWorld::ratio = 0;
 
 bool ShaysWorld::DisplayMap     = false;
 bool ShaysWorld::DisplayWelcome = true;
-bool ShaysWorld::DisplayExit    = true;
+bool ShaysWorld::DisplayExit    = false;
 bool ShaysWorld::lightsOn       = true;
 bool ShaysWorld::displayECL     = true;
 bool ShaysWorld::displayDebug   = true;
