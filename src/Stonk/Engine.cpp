@@ -89,12 +89,15 @@ Engine::Engine() {
     constexpr auto ENABLE_VSYNC = 1;
     SDL_GL_SetSwapInterval(ENABLE_VSYNC);
 
+    // Get display size.
+    auto display = SDL_DisplayMode{};
+    SDL_GetCurrentDisplayMode(0, &display);
+
     // Create window.
-    this->window =
-        Engine::Window{SDL_CreateWindow("Shay's World", SDL_WINDOWPOS_CENTERED,
-                                        SDL_WINDOWPOS_CENTERED, 1280, 720,
-                                        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN),
-                       &SDL_DestroyWindow};
+    this->window = Engine::Window{
+        SDL_CreateWindow("Shay's World", 0, 0, display.w, display.h,
+                         SDL_WINDOW_BORDERLESS | SDL_WINDOW_OPENGL),
+        &SDL_DestroyWindow};
 
     if (this->window.get() == nullptr) {
         throw runtime_error{string{"Unable to create window: "} + SDL_GetError()};
