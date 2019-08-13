@@ -29,6 +29,10 @@ unsigned char *ShaysWorld::image        = nullptr;
 Camera ShaysWorld::cam                  = {};
 TexturedPolygons ShaysWorld::tp         = {};
 
+auto ShaysWorld::getCamPtr() -> Camera*{
+    return &cam;
+}
+
 void ShaysWorld::Init() {
     auto &engine = Stonk::Engine::get();
     SDL_GetWindowSize(engine.window.get(), &width, &height);

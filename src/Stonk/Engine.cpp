@@ -125,16 +125,16 @@ auto Engine::handleKeyPress(SDL_Event &event) -> void {
             // Toggle for welcome screen
         } break;
         case SDL_SCANCODE_W: {
-
+            ShaysWorld::getCamPtr()->DirectionFB(1);
         } break;
         case SDL_SCANCODE_A: {
-
+            ShaysWorld::getCamPtr()->DirectionLR(-1);
         } break;
         case SDL_SCANCODE_S: {
-
+            ShaysWorld::getCamPtr()->DirectionFB(-1);
         } break;
         case SDL_SCANCODE_D: {
-
+            ShaysWorld::getCamPtr()->DirectionLR(1);
         } break;
     }
 }
@@ -142,16 +142,16 @@ auto Engine::handleKeyPress(SDL_Event &event) -> void {
 auto Engine::handleKeyRelease(SDL_Event &event) -> void {
     switch (event.key.keysym.scancode) { // Use SDL Scancodes that correspond to keyboard keys
         case SDL_SCANCODE_W: {
-
+            ShaysWorld::getCamPtr()->DirectionFB(0);
         } break;
         case SDL_SCANCODE_A: {
-
+            ShaysWorld::getCamPtr()->DirectionLR(0);
         } break;
         case SDL_SCANCODE_S: {
-
+            ShaysWorld::getCamPtr()->DirectionFB(0);
         } break;
         case SDL_SCANCODE_D: {
-
+            ShaysWorld::getCamPtr()->DirectionLR(0);
         } break;
     }
 }
