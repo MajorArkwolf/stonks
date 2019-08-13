@@ -5,6 +5,9 @@ cmake_minimum_required(VERSION 3.12)
 set(PROJECT_NAME shays-world)
 project(${PROJECT_NAME} LANGUAGES CXX)
 
+# If enabled, the post build symlink won't occur.
+option(DisablePostBuild "DisablePostBuild" OFF)
+
 # Disable in-source builds.
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 set(CMAKE_DISABLE_SOURCE_CHANGES ON)
@@ -47,11 +50,11 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 
 # Set clang compile flags.
 target_compile_options(${PROJECT_NAME} PUBLIC
-    $<$<CXX_COMPILER_ID:Clang>:-Weverything -Wno-c++98-compat
-    -Wno-c++98-compat-pedantic -Wno-padded -Wno-deprecated-declarations
-    -fcolor-diagnostics>)
+    $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:
+    -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded
+    -Wno-deprecated-declarations -fcolor-diagnostics>)
 # Set gcc compile flags.
-target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:Gnu>:-Wall
+target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:GNU>:-Wall
     -Wextra -Wpedantic -fdiagnostics-color=always>)
 # Set MSVC compile flags.
 target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/W4>)
@@ -78,7 +81,8 @@ target_link_libraries(${PROJECT_NAME} PUBLIC OpenGL::GL OpenGL::GLU
     SDL2::SDL2 SDL2::Image SDL2::TTF SDL2::Mixer glm)
 
 # Symlink the resources to the binary location.
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E create_symlink
-                       ${CMAKE_SOURCE_DIR}/res
-                       $<TARGET_FILE_DIR:${PROJECT_NAME}>/res)
+if (NOT DisablePostBuild)
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E create_symlink
+        ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${PROJECT_NAME}>/res)
+endif()

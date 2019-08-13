@@ -24,16 +24,11 @@ namespace Shay {
          * @brief Default constructor, not required
          */
         AABBList() = default;
-        /**
-         * @brief Default destructor, not required
-         */
-        ~AABBList() = default;
 
-        /// Deleting the Copy constructor for safety reasons.
-        AABBList(const AABBList &ll) = delete;
-
-        /// Deleting the Copy assignment for safety reasons.
-        AABBList &operator=(const AABBList &ll) = delete;
+        AABBList(AABBList &&)      = default;
+        AABBList(const AABBList &) = default;
+        AABBList &operator=(AABBList &&) = default;
+        AABBList &operator=(const AABBList &) = default;
 
         /**
          * @brief  Attempts to add to the vector, then will push into the last spot
