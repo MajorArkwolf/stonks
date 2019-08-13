@@ -1,21 +1,28 @@
-os: linux
-dist: bionic
-language:
-  - cpp
-compiler:
-  - clang
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - clang-8
-      - ninja
+language: cpp
 
-before_install:
-  - export CC=clang-8
-  - export CXX=clang++-8
+matrix:
+  include:
+  - os: linux
+    dist: bionic
+    compiler:
+      - gcc
+      - clang
+    addons:
+      apt:
+        packages:
+          - g++-8
+          - clang-7
+          - ninja-build
+          - libsdl2-dev
+          - libsdl2-*-dev
+          - libglm-dev
+
+before_script:
+  - cmake --version
+  - ${CXX} --version
 
 script:
-  - cmake . -B build -D CMAKE_BUILD_TYPE="Debug" -GNinja
+  - mkdir build
+  - cd build
+  - cmake -GNinja ..
   - cmake --build .

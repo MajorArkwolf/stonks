@@ -1,11 +1,9 @@
 #include "Camera.h"
 
 #include <cmath>
+#include <glm/gtc/constants.hpp>
 
 #include "Stonk/OpenGl.hpp"
-
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/ext/scalar_constants.hpp>
 
 using Shay::Camera;
 

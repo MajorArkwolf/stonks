@@ -121,7 +121,7 @@ auto Engine::handleKeyPress(SDL_Event &event) -> void {
             this->isRunning = false;
         } break;
         case SDL_SCANCODE_SPACE: {
-            ShaysWorld::DisplayWelcome = (ShaysWorld::DisplayWelcome == 1) ? 0 : 1; 
+            ShaysWorld::DisplayWelcome = (ShaysWorld::DisplayWelcome == 1) ? 0 : 1;
             // Toggle for welcome screen
         } break;
         case SDL_SCANCODE_W: {

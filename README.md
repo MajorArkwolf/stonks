@@ -38,7 +38,7 @@ git checkout add-stonk-engine && git submodule update --init
 ### Building
 * Unix:
     ```
-    cd ICT290 && cmake -B build . && cd build && cmake --build
+    cd ICT290 && cmake -B build . && cmake --build
     ```
 * Windows:
     * Open Visual Studio as Administrator (required to make symbolic links)

@@ -1,7 +1,6 @@
 #pragma once
 
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/ext/scalar_constants.hpp>
+#include <glm/gtc/constants.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
