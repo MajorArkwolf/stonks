@@ -79,7 +79,11 @@ Engine::Engine() {
     SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+#ifdef __APPLE__
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 32);
+#else
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+#endif
 
     // Enable Vsync.
     constexpr auto ENABLE_VSYNC = 1;
