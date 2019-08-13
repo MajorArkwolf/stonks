@@ -1,13 +1,9 @@
 language: cpp
 sudo: required
 
-env:
-  global:
-    - WEBHOOK_URL=https://discordapp.com/api/webhooks/610788294980272128/L-IF9J4mLKRn0_mhYvrLmOzee_HZmSkjVIkn7fJzZzJjT6iEOHrOaWosZTy3-DrRawe6
-
 matrix:
   include:
-  - name: "Ubuntu: gcc-8"
+  - name: "Linux: GCC 8"
     os: linux
     dist: bionic
     compiler:
@@ -23,7 +19,7 @@ matrix:
     env:
       - CC=gcc-8 CXX=g++-8
 
-  - name: "Ubuntu: clang-8"
+  - name: "Linux: Clang 8"
     os: linux
     dist: bionic
     compiler:
@@ -41,17 +37,16 @@ matrix:
     env:
       - CC=clang-8 CXX=clang++-8
 
-  - name: "macOS: Xcode11"
+  - name: "macOS: Xcode 11"
     os: osx
     osx_image: xcode11
 
-  - name: "Windows 10"
+  - name: "Windows: Visual Studio 2017"
     os: windows
     env:
     - VCPKG_ROOT=/c/vcpkg
     - VCPKG_DEFAULT_TRIPLET=x64-windows
     - VCPKG_PACKAGES="sdl2 sdl2-image sdl2-ttf sdl2-mixer glm"
-    - VCPKG_CACHE_ZIP_URL=https://github.com/kevinlul/ygopen-vcpkg-cache/raw/master/installed-gui.zip
     - MSBUILD_PATH="/c/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
 
 before_script: ./.travis/install-dependencies.sh
