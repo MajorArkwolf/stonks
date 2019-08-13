@@ -16,6 +16,11 @@
   <a href="#license">License</a>
 </p>
 
+<p align="center">
+  <a href="https://travis-ci.com/opeik/ICT290"> <img src="https://travis-ci.com/opeik/ICT290.svg?token=2cgrDpWeJERSzmm7HcTg&branch=master"
+    alt="build-badge"> </a>
+</p>
+
 ## Building
 ### Tools
 * macOS: [brew][brew-dl]
