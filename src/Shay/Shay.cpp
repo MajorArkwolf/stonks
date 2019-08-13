@@ -29,7 +29,7 @@ unsigned char *ShaysWorld::image        = nullptr;
 Camera ShaysWorld::cam                  = {};
 TexturedPolygons ShaysWorld::tp         = {};
 
-auto ShaysWorld::getCamPtr() -> Camera*{
+auto ShaysWorld::getCamPtr() -> Camera * {
     return &cam;
 }
 
@@ -41,7 +41,7 @@ void ShaysWorld::Init() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glViewport(0, 0, width, height);
-    gluPerspective(60, ShaysWorld::ratio, 1, 250000);
+    gluPerspective(60, ShaysWorld::ratio, 1, 50000);
     glMatrixMode(GL_MODELVIEW);
 
     // set background (sky colour)
