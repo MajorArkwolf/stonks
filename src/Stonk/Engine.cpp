@@ -148,6 +148,18 @@ auto Engine::handleKeyPress(SDL_Event &event) -> void {
         case SDL_SCANCODE_D: {
             ShaysWorld::getCamPtr()->DirectionLR(1);
         } break;
+        case SDL_SCANCODE_RIGHT: {
+            ShaysWorld::getCamPtr()->DirectionRotateLR(1);
+        }break;
+        case SDL_SCANCODE_LEFT: {
+            ShaysWorld::getCamPtr()->DirectionRotateLR(-1);
+        } break;
+        case SDL_SCANCODE_UP: {
+            ShaysWorld::getCamPtr()->DirectionLookUD(1);
+        } break;
+        case SDL_SCANCODE_DOWN: {
+            ShaysWorld::getCamPtr()->DirectionLookUD(-1);
+        } break;
     }
 }
 
@@ -164,6 +176,18 @@ auto Engine::handleKeyRelease(SDL_Event &event) -> void {
         } break;
         case SDL_SCANCODE_D: {
             ShaysWorld::getCamPtr()->DirectionLR(0);
+        } break;
+        case SDL_SCANCODE_RIGHT: {
+            ShaysWorld::getCamPtr()->DirectionRotateLR(0);
+        } break;
+        case SDL_SCANCODE_LEFT: {
+            ShaysWorld::getCamPtr()->DirectionRotateLR(0);
+        } break;
+        case SDL_SCANCODE_UP: {
+            ShaysWorld::getCamPtr()->DirectionLookUD(0);
+        } break;
+        case SDL_SCANCODE_DOWN: {
+            ShaysWorld::getCamPtr()->DirectionLookUD(0);
         } break;
     }
 }
