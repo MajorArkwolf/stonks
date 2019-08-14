@@ -85,10 +85,6 @@ Engine::Engine() {
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 #endif
 
-    // Enable Vsync.
-    constexpr auto ENABLE_VSYNC = 1;
-    SDL_GL_SetSwapInterval(ENABLE_VSYNC);
-
     // Get display size.
     auto display = SDL_DisplayMode{};
     SDL_GetCurrentDisplayMode(0, &display);
@@ -111,6 +107,10 @@ Engine::Engine() {
         throw runtime_error{string{"Unable to create OpenGL context: "} +
                             SDL_GetError()};
     }
+
+    // Enable Vsync.
+    constexpr auto ENABLE_VSYNC = 1;
+    SDL_GL_SetSwapInterval(ENABLE_VSYNC);
 }
 
 Engine::~Engine() {
