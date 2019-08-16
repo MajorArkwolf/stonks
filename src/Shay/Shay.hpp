@@ -328,6 +328,6 @@ namespace Shay {
         static void CreateBoundingBoxes();
         static void CreatePlains();
         static void DeleteImageFromMemory(unsigned char *tempImage);
-        static Camera * getCamPtr();
+        static Camera *getCamPtr();
     };
 };
