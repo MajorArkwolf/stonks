@@ -231,11 +231,11 @@ void ShaysWorld::CreatePostBoundingBoxes() {
     // Continuing on from 16 from CreateBoundingBoxes
     for (int j = 0; j < 2; j++) {
         for (int i = 0; i < 17; i++) {   // 17: left post count
-            
+            //Currently not correct. More research is to be done on the correct pillar constants.
             cam.SetAABBMaxX(aabbIndex, pillarXOffset + 128.0f);
             cam.SetAABBMinX(aabbIndex, pillarXOffset + 0.0f);
-            cam.SetAABBMaxZ(aabbIndex, pillarZOffset + step);
-            cam.SetAABBMinZ(aabbIndex, pillarZOffset + step + 128.0f);
+            cam.SetAABBMaxZ(aabbIndex, pillarZOffset + step + 128.0f);
+            cam.SetAABBMinZ(aabbIndex, pillarZOffset + step);
             aabbIndex++;
             // Draws front and back of post
             // glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAIN_POST));
