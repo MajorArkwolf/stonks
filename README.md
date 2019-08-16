@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <img src="https://i.imgur.com/r9L3Px0.png" alt="stonks" width="200"></a>
+  <img src="https://i.imgur.com/ITT5hwp.png" alt="stonks" width="200"></a>
   <br>
     Stonks
   <br>
@@ -36,14 +36,13 @@
 ### Cloning
 ```
 git clone --recurse-submodules https://github.com/opeik/ICT290.git
-# For the add-stonk-engine branch
-git checkout add-stonk-engine && git submodule update --init
+git checkout develop && git submodule update --init
 ```
 
 ### Building
 * Unix:
     ```
-    cd ICT290 && cmake -B build . && cmake --build
+    cmake -S . -B build && cmake --build build && ./build/shays-world
     ```
 * Windows:
     * Open Visual Studio as Administrator (required to make symbolic links)
