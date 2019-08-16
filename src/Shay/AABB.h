@@ -93,12 +93,6 @@ namespace Shay {
         void SetMinZ(size_t index, GLfloat tempZ);
 
         /**
-         * @brief Setter for Min Z variable.
-         * @param size returns the size of the vector.
-         */
-        void SetNoBoundingBoxes(size_t size);
-
-        /**
          * @brief Getter for Max X variable.
          * @param index Access to element in vector.
          * @return MaxX GLfloat used for collision.

@@ -2,27 +2,40 @@
 
 using Shay::AABB;
 
-void AABB::SetNoBoundingBoxes(size_t size) {
-    m_BBox.clear();
-    m_BBox.resize(size);
-}
-
 void AABB::SetMaxX(size_t index, GLfloat tempX) {
+    if (index >= m_BBox.size()) {
+        m_BBox.push_back({});
+    }
     m_BBox[index].max.x = tempX;
 }
 void AABB::SetMinX(size_t index, GLfloat tempX) {
+    if (index >= m_BBox.size()) {
+        m_BBox.push_back({});
+    }
     m_BBox[index].min.x = tempX;
 }
 void AABB::SetMaxY(size_t index, GLfloat tempY) {
+    if (index >= m_BBox.size()) {
+        m_BBox.push_back({});
+    }
     m_BBox[index].max.y = tempY;
 }
 void AABB::SetMinY(size_t index, GLfloat tempY) {
+    if (index >= m_BBox.size()) {
+        m_BBox.push_back({});
+    }
     m_BBox[index].min.y = tempY;
 }
 void AABB::SetMaxZ(size_t index, GLfloat tempZ) {
+    if (index >= m_BBox.size()) {
+        m_BBox.push_back({});
+    }
     m_BBox[index].max.z = tempZ;
 }
 void AABB::SetMinZ(size_t index, GLfloat tempZ) {
+    if (index >= m_BBox.size()) {
+        m_BBox.push_back({});
+    }
     m_BBox[index].min.z = tempZ;
 }
 
