@@ -224,14 +224,18 @@ void ShaysWorld::CreatePostBoundingBoxes() {
     step       = 0.0f;
     stepLength = 0.0f;
     step2      = 0.0f;
-    int aabbIndex = 17; // Continuing on from 16 from CreateBoundingBoxes
+    int aabbIndex = 17; 
+    constexpr auto pillarXOffset = 31740.0f;
+    constexpr auto pillarYOffset = 9995.0f;
+    constexpr auto pillarZOffset = 10105.0f;
+    // Continuing on from 16 from CreateBoundingBoxes
     for (int j = 0; j < 2; j++) {
         for (int i = 0; i < 17; i++) {   // 17: left post count
             
-            cam.SetAABBMaxX(aabbIndex, 31548.0);
-            cam.SetAABBMinX(aabbIndex, 31444.0);
-            cam.SetAABBMaxZ(aabbIndex, 10395.0);
-            cam.SetAABBMinZ(aabbIndex, 4590.0);
+            cam.SetAABBMaxX(aabbIndex, pillarXOffset + 128.0f);
+            cam.SetAABBMinX(aabbIndex, pillarXOffset + 0.0f);
+            cam.SetAABBMaxZ(aabbIndex, pillarZOffset + step);
+            cam.SetAABBMinZ(aabbIndex, pillarZOffset + step + 128.0f);
             aabbIndex++;
             // Draws front and back of post
             // glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAIN_POST));
@@ -277,7 +281,6 @@ void ShaysWorld::CreatePostBoundingBoxes() {
         }
         stepLength -= 27192.0f; // Move to draw right posts
         step2 -= 32810.0f;  // Move right posts to 
-        glPopMatrix();
     }
 
     // library front
