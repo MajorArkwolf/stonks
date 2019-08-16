@@ -222,110 +222,103 @@ void ShaysWorld::CreateBoundingBoxes() {
 }
 
 void ShaysWorld::CreatePostBoundingBoxes() {
-    // Copy of 'DisplayMainPosts' should help understand posts
-
-
-// void ShaysWorld::DrawMainPosts() {
-//     tp.CreateDisplayList(XY, 18, 128.0f, 256.0f, 31740.0f, 9995.0f, 10105.0f,
-//                          1.0f, 4.48f);
-//     tp.CreateDisplayList(YZ, 19, 256.0f, 128.0f, 31740.0f, 9995.0f, 10105.0f,
-//                          4.48f, 1.0f);
-//     tp.CreateDisplayList(XY, 51, 128.0f, 256.0f, 31740.0f, 9555.0f, 8100.0f, 1.0f,
-//                          6.2f); // 1st by steps
-//     tp.CreateDisplayList(YZ, 52, 256.0f, 128.0f, 31740.0f, 9555.0f, 8100.0f, 6.2f,
-//                          1.0f); // 1st by steps
-// }
-
     step       = 0.0f;
     stepLength = 0.0f;
     step2      = 0.0f;
     int aabbIndex = 17; // Continuing on from 16 from CreateBoundingBoxes
     for (int j = 0; j < 2; j++) {
-        glPushMatrix();
-        glTranslatef(stepLength, 0.0f, step2);
-        for (int i = 0; i < 17; i++) {
-            glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAIN_POST));
-            glPushMatrix();
-            glTranslatef(0.0f, 0.0f, step);
-            glCallList(18);
-            glPopMatrix();
-            glPushMatrix();
-            glTranslatef(0.0f, 0.0f, step + 128.0f);
-            glCallList(18);
-            glPopMatrix();
+        for (int i = 0; i < 17; i++) {   // 17: left post count
+            
+            cam.SetAABBMaxX(aabbIndex, 31548.0);
+            cam.SetAABBMinX(aabbIndex, 31444.0);
+            cam.SetAABBMaxZ(aabbIndex, 10395.0);
+            cam.SetAABBMinZ(aabbIndex, 4590.0);
+            aabbIndex++;
+            // Draws front and back of post
+            // glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAIN_POST));
+            // glPushMatrix();
+            // glTranslatef(0.0f, 0.0f, step);
+            // glCallList(18);
+            // glPopMatrix();
+            // glPushMatrix();
+            // glTranslatef(0.0f, 0.0f, step + 128.0f);
+            // glCallList(18);
+            // glPopMatrix();
             if ((i == 7) && (j == 0)) // between chanc and phys sci
             {
-                glPushMatrix();
-                glTranslatef(4008.0f, 0.0f, step);
-                glCallList(18);
-                glPopMatrix();
-                glPushMatrix();
-                glTranslatef(4008.0f, 0.0f, step + 128.0f);
-                glCallList(18);
-                glPopMatrix();
+                // SOMETHING is different for between chanc and phys sci post
+                // glPushMatrix();
+                // glTranslatef(4008.0f, 0.0f, step);
+                // glCallList(18);
+                // glPopMatrix();
+                // glPushMatrix();
+                // glTranslatef(4008.0f, 0.0f, step + 128.0f);
+                // glCallList(18);
+                // glPopMatrix();
             }
-
-            glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAIN_POST_2));
-            glPushMatrix();
-            glTranslatef(0.0f, 0.0f, step);
-            glCallList(19);
-            glPopMatrix();
-            glPushMatrix();
-            glTranslatef(128.0f, 0.0f, step);
-            glCallList(19);
-            glPopMatrix();
+            // Draws L-R side of post
+            // glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAIN_POST_2));
+            // glPushMatrix();
+            // glTranslatef(0.0f, 0.0f, step);
+            // glCallList(19);
+            // glPopMatrix();
+            // glPushMatrix();
+            // glTranslatef(128.0f, 0.0f, step);
+            // glCallList(19);
+            // glPopMatrix();
             if ((i == 7) && (j == 0)) // between chanc and phys sci
             {
-                glPushMatrix();
-                glTranslatef(4008.0f, 0.0f, step);
-                glCallList(19);
-                glPopMatrix();
+                // SOMETHING is different for between chanc and phys sci post
+                // glPushMatrix();
+                // glTranslatef(4008.0f, 0.0f, step);
+                // glCallList(19);
+                // glPopMatrix();
             }
             step += 1930.0f;
         }
-        stepLength -= 27192.0f;
-        step2 -= 32810.0f;
+        stepLength -= 27192.0f; // Move to draw right posts
+        step2 -= 32810.0f;  // Move right posts to 
         glPopMatrix();
     }
 
     // library front
     step = -1940.0f;
     for (int i = 0; i < 13; i++) {
-        glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAIN_POST));
-        glPushMatrix();
-        glTranslatef(step, 0.0f, 30880.0f);
-        glCallList(18);
-        glPopMatrix();
-        glPushMatrix();
-        glTranslatef(step, 0.0f, 31008.0f);
-        glCallList(18);
-        glPopMatrix();
+        // glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAIN_POST));
+        // glPushMatrix();
+        // glTranslatef(step, 0.0f, 30880.0f);
+        // glCallList(18);
+        // glPopMatrix();
+        // glPushMatrix();
+        // glTranslatef(step, 0.0f, 31008.0f);
+        // glCallList(18);
+        // glPopMatrix();
 
-        glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAIN_POST_2));
-        glPushMatrix();
-        glTranslatef(step, 0.0f, 30880.0f);
-        glCallList(19);
-        glPopMatrix();
-        glPushMatrix();
-        glTranslatef(step + 128.0f, 0.0f, 30880.0f);
-        glCallList(19);
-        glPopMatrix();
+        // glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAIN_POST_2));
+        // glPushMatrix();
+        // glTranslatef(step, 0.0f, 30880.0f);
+        // glCallList(19);
+        // glPopMatrix();
+        // glPushMatrix();
+        // glTranslatef(step + 128.0f, 0.0f, 30880.0f);
+        // glCallList(19);
+        // glPopMatrix();
         step -= 1940.0f;
     }
 
     // first on chanc steps
-    glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAIN_POST));
-    glCallList(51);
-    glPushMatrix();
-    glTranslatef(0.0f, 0.0f, 128.0f);
-    glCallList(51);
-    glPopMatrix();
-    glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAIN_POST_2));
-    glCallList(52);
-    glPushMatrix();
-    glTranslatef(128.0f, 0.0f, 0.0f);
-    glCallList(52);
-    glPopMatrix();
+    // glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAIN_POST));
+    // glCallList(51);
+    // glPushMatrix();
+    // glTranslatef(0.0f, 0.0f, 128.0f);
+    // glCallList(51);
+    // glPopMatrix();
+    // glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAIN_POST_2));
+    // glCallList(52);
+    // glPushMatrix();
+    // glTranslatef(128.0f, 0.0f, 0.0f);
+    // glCallList(52);
+    // glPopMatrix();
 }
 //--------------------------------------------------------------------------------------
 // Set up co-ordinates of different plains
