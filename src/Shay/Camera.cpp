@@ -17,36 +17,10 @@ using glm::vec3;
 using Shay::Camera;
 constexpr auto PI = glm::pi<float>();
 
-//--------------------------------------------------------------------------------------
-// Set initial values
-//--------------------------------------------------------------------------------------
-Camera::Camera() {
-    m_rotateSpeed = 0.0f;
-    m_moveSpeed   = 0.0f;
-
-    ResetXYZ();
-
-    m_deltaMoveFB = 0.0f;
-    m_deltaMoveLR = 0.0f;
-    m_deltaMoveUD = 0.0f;
-
-    m_rotateAngleLR = 0.0f;
-    m_rotateAngleUD = 0.0f;
-    m_deltaAngleLR  = 0.0f;
-    m_deltaAngleUD  = 0.0f;
-
-    m_CollisionDetectionOn = true;
-}
-
-//--------------------------------------------------------------------------------------
-// Reset camera values
-//--------------------------------------------------------------------------------------
-void Camera::ResetXYZ() {}
-
-//----------------------------------------------------------------------------------------
-//  Places camera at the correct level on the current plain
-//----------------------------------------------------------------------------------------
-void Camera::SetPlains(int moveX, int moveZ) {
+/**
+ * @brief Adjust the Y axis of the camera correctly for the plane it is current on.
+ */
+void Camera::AdjustForPlane() {
     // store number of plains (stops from looping through linked list each time)
     if (m_No_Plains == 0)
         m_No_Plains = m_Plain.GetListSize();
@@ -66,51 +40,39 @@ void Camera::SetPlains(int moveX, int moveZ) {
             }
             // if plain slopes in z direction
             if (m_Plain.GetType(i) == 2) {
-                // if plain slopes up or down
-                if (lastPosition.z > position.z) {
-                    m_incrementZ = ((position.y - m_Plain.GetYstart(i)) /
-                                    (position.z - m_Plain.GetZstart(i)));
+                auto height = std::abs(m_Plain.GetYstart(i) - m_Plain.GetYend(i));
+                auto length = std::abs(m_Plain.GetZstart(i) - m_Plain.GetZend(i));
+                auto ratio =
+                    std::abs(this->position.z - m_Plain.GetZend(i)) / length;
+
+                if (m_Plain.GetYstart(i) > m_Plain.GetYend(i)) {
+                    position.y = m_Plain.GetYend(i) + (ratio * height);
                 } else {
-                    m_incrementZ = ((m_Plain.GetYend(i) - position.y) /
-                                    (m_Plain.GetZend(i) - position.z));
+                    position.y = m_Plain.GetYend(i) - (ratio * height);
                 }
-                position.y += (m_incrementZ * moveZ);
             }
             // if plain slopes in x direction
             if (m_Plain.GetType(i) == 1) {
-                // if plain slopes up or down
-                if (lastPosition.x > position.x) {
-                    m_incrementX = ((position.y - m_Plain.GetYstart(i)) /
-                                    (position.x - m_Plain.GetXstart(i)));
-                } else {
-                    m_incrementX = ((m_Plain.GetYend(i) - position.y) /
-                                    (m_Plain.GetXend(i) - position.x));
-                }
+                auto height = std::abs(m_Plain.GetYstart(i) - m_Plain.GetYend(i));
+                auto length = std::abs(m_Plain.GetXstart(i) - m_Plain.GetXend(i));
+                auto ratio =
+                    std::abs(this->position.x - m_Plain.GetXend(i)) / length;
 
-                position.y += (m_incrementX * moveX);
+                if (m_Plain.GetYstart(i) > m_Plain.GetYend(i)) {
+                    position.y = m_Plain.GetYend(i) + (ratio * height);
+                } else {
+                    position.y = m_Plain.GetYend(i) - (ratio * height);
+                }
             }
         }
     }
 }
 
-void Camera::Position(GLfloat const &tempX, GLfloat const &tempY,
-                      GLfloat const &tempZ, GLfloat const &tempAngle) {
-    ResetXYZ();
-
-    position.x = tempX;
-    position.y = tempY;
-    position.z = tempZ;
-
-    // rotate to correct angle
-    m_rotateAngleLR = tempAngle * (PI / 180.0f);
-    m_lookX         = sin(m_rotateAngleLR);
-    m_lookZ         = -cos(m_rotateAngleLR);
-    m_lookXX        = sin(m_rotateAngleLR + PI / 2.0f);
-    m_lookZZ        = -cos(m_rotateAngleLR + PI / 2.0f);
-    m_rotateAngleUD = 0.0;
-    m_deltaAngleUD  = 0.0;
-}
-
+/**
+ * @brief Updates the camera look point.
+ *
+ * @param dt The elapsed delta time since last frame.
+ */
 void Camera::UpdateLook(double dt) {
     // The vertical look limit, to prevent looking completely up or down.
     constexpr auto VERTICAL_LIMIT = (PI / 2.0f) - 0.03f;
@@ -146,6 +108,11 @@ void Camera::UpdateLook(double dt) {
     this->look += this->position;
 }
 
+/**
+ * @brief Updates the camera position.
+ *
+ * @param dt The elapsed delta time since last frame.
+ */
 void Camera::UpdatePosition(double dt) {
     auto *keys = SDL_GetKeyboardState(nullptr);
 
@@ -182,10 +149,14 @@ void Camera::UpdatePosition(double dt) {
     this->look += this->position;
 }
 
+/**
+ * @brief Updates the camera.
+ *
+ * @param dt The elapsed delta time since last frame.
+ */
 void Camera::Update(double dt) {
     this->UpdatePosition(dt);
-    SetPlains(static_cast<int>(MOVEMENT_SPEED * static_cast<float>(dt)),
-              static_cast<int>(MOVEMENT_SPEED * static_cast<float>(dt)));
+    this->AdjustForPlane();
     this->UpdateLook(dt);
 
     glLoadIdentity();

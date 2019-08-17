@@ -1,10 +1,11 @@
 #include "Stonk/Engine.hpp"
 
-#include <SDL2/SDL.h>
 #include <iomanip>
 #include <iostream>
 #include <stdexcept>
 #include <string>
+
+#include <SDL2/SDL.h>
 
 #include "Shay/Shay.hpp"
 #include "Stonk/Camera.hpp"
@@ -111,22 +112,20 @@ auto Engine::getIsRunning() const -> bool {
 }
 
 auto Engine::handleKeyPress(SDL_Event &event) -> void {
-    switch (event.key.keysym.scancode) { // Use SDL Scancodes that correspond to keyboard keys
+    switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_ESCAPE: {
             this->isRunning = false;
         } break;
         case SDL_SCANCODE_SPACE: {
-            ShaysWorld::DisplayWelcome = (ShaysWorld::DisplayWelcome == 1) ? 0 : 1;
             // Toggle for welcome screen
+            ShaysWorld::DisplayWelcome = (ShaysWorld::DisplayWelcome) ? false : true;
         } break;
+        default: break;
     }
 }
 
 auto Engine::handleKeyRelease(SDL_Event &event) -> void {
-    switch (event.key.keysym.scancode) { // Use SDL Scancodes that correspond to keyboard keys
-        case SDL_MOUSEMOTION: {
-
-        } break;
+    switch (event.key.keysym.scancode) {
         default: break;
     }
 }
@@ -144,15 +143,10 @@ auto Engine::handleMouseButtonPress(SDL_Event &event) -> void {
     int releaseYPos = event.button.y; // Y-position of mouse when pressed
 
     switch (event.button.button) {
-        case SDL_BUTTON_LEFT: { // Left mouse button
-
-        } break;
-        case SDL_BUTTON_RIGHT: { // Right mouse button
-
-        } break;
-        case SDL_BUTTON_MIDDLE: { // Middle mouse button
-
-        } break;
+        case SDL_BUTTON_LEFT: break;
+        case SDL_BUTTON_RIGHT: break;
+        case SDL_BUTTON_MIDDLE: break;
+        default: break;
     }
 }
 
@@ -164,15 +158,10 @@ auto Engine::handleMouseButtonRelease(SDL_Event &event) -> void {
     int releaseYPos = event.button.y; // Y-position of mouse when pressed
 
     switch (event.button.button) {
-        case SDL_BUTTON_LEFT: { // Left mouse button
-
-        } break;
-        case SDL_BUTTON_RIGHT: { // Right mouse button
-
-        } break;
-        case SDL_BUTTON_MIDDLE: { // Middle mouse button
-
-        } break;
+        case SDL_BUTTON_LEFT: break;
+        case SDL_BUTTON_RIGHT: break;
+        case SDL_BUTTON_MIDDLE: break;
+        default: break;
     }
 }
 

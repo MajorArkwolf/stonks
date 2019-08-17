@@ -56,12 +56,8 @@ void ShaysWorld::Init() {
 
     // set the world co-ordinates (used to set quadrants for bounding boxes)
     cam.SetWorldCoordinates(36000.0, 43200.0);
-    // turn collision detection on
-    cam.SetCollisionDetectionOn(true);
     // set number of bounding boxes required
     cam.SetNoBoundingBoxes(19);
-    // set starting position of user
-    cam.Position(32720.0, 9536.0, 4800.0, 180.0);
 
     CreatePlains();
 

@@ -23,7 +23,7 @@ namespace Shay {
         static constexpr GLfloat MOVEMENT_SPEED = 2000.0f;
         static constexpr GLfloat LOOK_SPEED     = 0.005f;
 
-        Camera();
+        Camera() = default;
 
         //----------------------------------------------------------------------------------
 
@@ -59,11 +59,6 @@ namespace Shay {
             m_moveSpeed = tempSpeed;
         }
 
-        // COLLSION DETECTION FUNCTIONS
-        // set collision detection (TRUE = on)
-        void SetCollisionDetectionOn(const bool &tempCol) {
-            m_CollisionDetectionOn = tempCol;
-        }
         // set number of bounding boxes
         void SetNoBoundingBoxes(const int &tempSize) {
             m_colDetect.SetNoBoundingBoxes(tempSize);
@@ -86,13 +81,13 @@ namespace Shay {
         //  Get Methods
         //----------------------------------------------------------------------------------
         GLfloat GetLR() {
-            return m_x;
+            return this->position.x;
         }
         GLfloat GetUD() {
-            return m_y;
+            return this->position.y;
         }
         GLfloat GetFB() {
-            return m_z;
+            return this->position.z;
         }
         GLfloat GetAABBMaxX(const int &tempIndex) {
             return m_colDetect.GetAABBMaxX(tempIndex);
@@ -112,10 +107,6 @@ namespace Shay {
         GLfloat GetAABBMinZ(const int &tempIndex) {
             return m_colDetect.GetAABBMinZ(tempIndex);
         }
-
-        // position the camera
-        void Position(GLfloat const &tempX, GLfloat const &tempY,
-                      GLfloat const &tempZ, GLfloat const &tempAngle);
 
         void Update(double dt);
 
@@ -167,13 +158,7 @@ namespace Shay {
         void UpdateLook(double dt);
         void MoveIfOk(glm::vec3 newPos);
 
-        // overloaded function for setting plain
-        void SetPlains(int moveX, int moveZ);
-
-        // resets camera
-        void ResetXYZ();
-
-        bool m_CollisionDetectionOn = true;
+        void AdjustForPlane();
 
         // objects
         Collision m_colDetect{};
