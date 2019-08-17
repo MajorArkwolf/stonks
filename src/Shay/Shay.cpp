@@ -213,18 +213,19 @@ void ShaysWorld::CreateBoundingBoxes() {
 }
 
 void ShaysWorld::CreatePostBoundingBoxes() {
+    // This code is based on DisplayMainPosts.
     step       = 0.0f;
     stepLength = 0.0f;
     step2      = 0.0f;
+    // Continuing on from 16 from CreateBoundingBoxes
     int aabbIndex = 17; 
-
+    
     // The calllist to draw pillars draws them offset from the origin
     // instead of just drawing them at origin and then translating (Why, shay.)
     constexpr float pillarXOffset = 31740.0f;
     constexpr float pillarYOffset = 9995.0f;
     constexpr float pillarZOffset = 10105.0f;
     constexpr float pillarSize = 128.0f;
-    // Continuing on from 16 from CreateBoundingBoxes
     for (int j = 0; j < 2; j++) {
         for (int i = 0; i < 17; i++) {   // 17: left post count
             float pillarZPos = pillarZOffset + step + step2;
