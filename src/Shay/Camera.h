@@ -59,11 +59,6 @@ namespace Shay {
             m_moveSpeed = tempSpeed;
         }
 
-        // set number of bounding boxes
-        void SetNoBoundingBoxes(const int &tempSize) {
-            m_colDetect.SetNoBoundingBoxes(tempSize);
-        }
-      
         // set the co-ordinates of the world
         void SetWorldCoordinates(const GLfloat &tempX, const GLfloat &tempZ);
         // creates a linked list for each quadrant of the world and places the
