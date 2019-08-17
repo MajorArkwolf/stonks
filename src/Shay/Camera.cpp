@@ -1,7 +1,9 @@
 #include "Camera.h"
 
-#include <SDL2/SDL.h>
+#include <algorithm>
 #include <cmath>
+
+#include <SDL2/SDL.h>
 #include <glm/gtc/constants.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>

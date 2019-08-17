@@ -1,8 +1,9 @@
 #pragma once
 
+#include <memory>
+
 #include <SDL2/SDL.h>
 #include <glm/vec3.hpp>
-#include <memory>
 
 #include "Stonk/Camera.hpp"
 #include "Stonk/Collision.hpp"

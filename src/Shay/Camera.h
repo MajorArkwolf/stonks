@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+
 #include <glm/gtc/constants.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
@@ -18,8 +20,8 @@
 namespace Shay {
     class Camera {
       public:
-        static constexpr GLfloat MOVEMENT_SPEED = 1500.0f;
-        static constexpr GLfloat LOOK_SPEED     = 0.003f;
+        static constexpr GLfloat MOVEMENT_SPEED = 2000.0f;
+        static constexpr GLfloat LOOK_SPEED     = 0.005f;
 
         Camera();
 
