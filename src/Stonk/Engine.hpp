@@ -1,8 +1,9 @@
 #pragma once
 
+#include <memory>
+
 #include <SDL2/SDL.h>
 #include <glm/vec3.hpp>
-#include <memory>
 
 #include "Stonk/Camera.hpp"
 #include "Stonk/Collision.hpp"
@@ -19,6 +20,9 @@ namespace Stonk {
       public:
         using Window  = std::shared_ptr<SDL_Window>;
         using Context = std::shared_ptr<void>;
+
+        /* Mouse movement. */
+        glm::vec2 mouse = {};
 
         /* SDL handles. */
         Window window   = nullptr;

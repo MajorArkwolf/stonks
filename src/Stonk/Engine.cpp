@@ -1,9 +1,11 @@
 #include "Stonk/Engine.hpp"
 
-#include <SDL2/SDL.h>
+#include <iomanip>
 #include <iostream>
 #include <stdexcept>
 #include <string>
+
+#include <SDL2/SDL.h>
 
 #include "Shay/Shay.hpp"
 #include "Stonk/Camera.hpp"
@@ -19,44 +21,22 @@ using Stonk::State;
 auto Engine::run() -> void {
     auto &engine = Engine::get();
 
-    // Setup Shay's world.
+    // Setup Shay's World.
     ShaysWorld::Init();
 
-    auto t  = 0.0;
-    auto dt = 0.01;
-
-    auto currentTime = static_cast<double>(SDL_GetPerformanceFrequency());
-    auto accumulator = 0.0;
-
-    auto previousState = State{};
-    auto currentState  = State{};
+    auto time      = static_cast<double>(SDL_GetPerformanceCounter());
+    auto oldTime   = 0.0;
+    auto deltaTime = 0.0;
 
     while (engine.getIsRunning()) {
-        auto newTime   = static_cast<double>(SDL_GetPerformanceFrequency());
-        auto frameTime = newTime - currentTime;
-
-        if (frameTime > 0.25) {
-            frameTime = 0.25;
-        }
-
-        currentTime = newTime;
-        accumulator += frameTime;
+        oldTime = time;
+        time    = static_cast<double>(SDL_GetPerformanceCounter());
+        deltaTime =
+            (time - oldTime) / static_cast<double>(SDL_GetPerformanceFrequency());
 
         engine.processInput();
-
-        while (accumulator >= dt) {
-            previousState = currentState;
-            engine.update(currentState, dt);
-            t += dt;
-            accumulator -= dt;
-        }
-
-        const auto alpha = accumulator / dt;
-
-        auto interpolatedState =
-            currentState * alpha + previousState * (1.0 - alpha);
-
-        engine.render(interpolatedState);
+        ShaysWorld::Update(deltaTime);
+        ShaysWorld::Display();
     }
 }
 
@@ -75,17 +55,25 @@ Engine::Engine() {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
     SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+#ifdef __APPLE__
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 32);
+#else
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+#endif
 
-    // Enable Vsync.
-    constexpr auto ENABLE_VSYNC = 1;
-    SDL_GL_SetSwapInterval(ENABLE_VSYNC);
+    // Get display size.
+    auto display = SDL_DisplayMode{};
+    SDL_GetCurrentDisplayMode(0, &display);
 
     // Create window.
-    this->window =
-        Engine::Window{SDL_CreateWindow("Shay's World", SDL_WINDOWPOS_CENTERED,
-                                        SDL_WINDOWPOS_CENTERED, 1280, 720,
-                                        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN),
-                       &SDL_DestroyWindow};
+    this->window = Engine::Window{
+        SDL_CreateWindow("Shay's World", 0, 0, display.w, display.h,
+                         SDL_WINDOW_BORDERLESS | SDL_WINDOW_OPENGL),
+        &SDL_DestroyWindow};
 
     if (this->window.get() == nullptr) {
         throw runtime_error{string{"Unable to create window: "} + SDL_GetError()};
@@ -99,6 +87,14 @@ Engine::Engine() {
         throw runtime_error{string{"Unable to create OpenGL context: "} +
                             SDL_GetError()};
     }
+
+    // Enable Vsync.
+    constexpr auto ENABLE_VSYNC = 1;
+    SDL_GL_SetSwapInterval(ENABLE_VSYNC);
+
+    // Capture the mouse.
+    SDL_CaptureMouse(SDL_TRUE);
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
 Engine::~Engine() {
@@ -116,51 +112,27 @@ auto Engine::getIsRunning() const -> bool {
 }
 
 auto Engine::handleKeyPress(SDL_Event &event) -> void {
-    switch (event.key.keysym.scancode) { // Use SDL Scancodes that correspond to keyboard keys
+    switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_ESCAPE: {
             this->isRunning = false;
         } break;
         case SDL_SCANCODE_SPACE: {
-            ShaysWorld::DisplayWelcome = (ShaysWorld::DisplayWelcome == 1) ? 0 : 1;
             // Toggle for welcome screen
+            ShaysWorld::DisplayWelcome = (ShaysWorld::DisplayWelcome) ? false : true;
         } break;
-        case SDL_SCANCODE_W: {
-
-        } break;
-        case SDL_SCANCODE_A: {
-
-        } break;
-        case SDL_SCANCODE_S: {
-
-        } break;
-        case SDL_SCANCODE_D: {
-
-        } break;
+        default: break;
     }
 }
 
 auto Engine::handleKeyRelease(SDL_Event &event) -> void {
-    switch (event.key.keysym.scancode) { // Use SDL Scancodes that correspond to keyboard keys
-        case SDL_SCANCODE_W: {
-
-        } break;
-        case SDL_SCANCODE_A: {
-
-        } break;
-        case SDL_SCANCODE_S: {
-
-        } break;
-        case SDL_SCANCODE_D: {
-
-        } break;
+    switch (event.key.keysym.scancode) {
+        default: break;
     }
 }
 
 auto Engine::handleMouseMovement(SDL_Event &event) -> void {
-    int mouseXPos     = event.motion.x;
-    int mouseYPos     = event.motion.y;
-    int relativeXMove = event.motion.xrel;
-    int relativeYMove = event.motion.yrel;
+    this->mouse.x = event.motion.xrel;
+    this->mouse.y = event.motion.yrel;
 }
 
 auto Engine::handleMouseButtonPress(SDL_Event &event) -> void {
@@ -171,15 +143,10 @@ auto Engine::handleMouseButtonPress(SDL_Event &event) -> void {
     int releaseYPos = event.button.y; // Y-position of mouse when pressed
 
     switch (event.button.button) {
-        case SDL_BUTTON_LEFT: { // Left mouse button
-
-        } break;
-        case SDL_BUTTON_RIGHT: { // Right mouse button
-
-        } break;
-        case SDL_BUTTON_MIDDLE: { // Middle mouse button
-
-        } break;
+        case SDL_BUTTON_LEFT: break;
+        case SDL_BUTTON_RIGHT: break;
+        case SDL_BUTTON_MIDDLE: break;
+        default: break;
     }
 }
 
@@ -191,15 +158,10 @@ auto Engine::handleMouseButtonRelease(SDL_Event &event) -> void {
     int releaseYPos = event.button.y; // Y-position of mouse when pressed
 
     switch (event.button.button) {
-        case SDL_BUTTON_LEFT: { // Left mouse button
-
-        } break;
-        case SDL_BUTTON_RIGHT: { // Right mouse button
-
-        } break;
-        case SDL_BUTTON_MIDDLE: { // Middle mouse button
-
-        } break;
+        case SDL_BUTTON_LEFT: break;
+        case SDL_BUTTON_RIGHT: break;
+        case SDL_BUTTON_MIDDLE: break;
+        default: break;
     }
 }
 
@@ -209,7 +171,8 @@ auto Engine::handleMouseWheelMotion(SDL_Event &event) -> void {
 }
 
 auto Engine::processInput() -> void {
-    auto event = SDL_Event{};
+    auto event        = SDL_Event{};
+    auto handledMouse = false;
 
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -227,6 +190,7 @@ auto Engine::processInput() -> void {
             } break;
             case SDL_MOUSEMOTION: { // Mouse movement events
                 this->handleMouseMovement(event);
+                handledMouse = true;
             } break;
             case SDL_MOUSEWHEEL: { // Mouse wheel scroll events
                 this->handleMouseWheelMotion(event);
@@ -235,13 +199,14 @@ auto Engine::processInput() -> void {
             default: break;
         }
     }
+
+    if (!handledMouse) {
+        this->mouse = {0.0f, 0.0f};
+    }
 }
 
 auto Engine::update(State &state, double dt) -> void {
     this->physics.update(state, dt);
 }
 
-auto Engine::render(const State &state) const -> void {
-    ShaysWorld::Display();
-    SDL_GL_SwapWindow(this->window.get());
-}
+auto Engine::render(const State &state) const -> void {}
