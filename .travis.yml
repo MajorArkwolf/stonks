@@ -1,0 +1,54 @@
+language: cpp
+sudo: required
+
+matrix:
+  include:
+  - name: "Linux: GCC 8"
+    os: linux
+    dist: bionic
+    compiler:
+      - gcc
+    addons:
+      apt:
+        packages:
+          - g++-8
+          - libsdl2-dev
+          - libsdl2-*-dev
+          - libglm-dev
+          - libgl1-mesa-dev
+    env:
+      - CC=gcc-8 CXX=g++-8
+
+  - name: "Linux: Clang 8"
+    os: linux
+    dist: bionic
+    compiler:
+      - clang
+    addons:
+      apt:
+        packages:
+          - clang-8
+          - libc++-dev
+          - libc++abi-dev
+          - libsdl2-dev
+          - libsdl2-*-dev
+          - libglm-dev
+          - libgl1-mesa-dev
+    env:
+      - CC=clang-8 CXX=clang++-8
+
+  - name: "macOS: Xcode 11"
+    os: osx
+    osx_image: xcode11
+
+  - name: "Windows: Visual Studio 2017"
+    os: windows
+    env:
+    - VCPKG_ROOT=/c/vcpkg
+    - VCPKG_DEFAULT_TRIPLET=x64-windows
+    - VCPKG_PACKAGES="sdl2 sdl2-image sdl2-ttf sdl2-mixer glm"
+    - MSBUILD_PATH="/c/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
+
+before_script: ./.travis/install-dependencies.sh
+script: ./.travis/build.sh
+after_failure: ./.travis/failure.sh

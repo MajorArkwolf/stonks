@@ -1,100 +1,88 @@
 # Set cmake minimum version.
 cmake_minimum_required(VERSION 3.12)
 
+# Set the project details.
+set(PROJECT_NAME shays-world)
+project(${PROJECT_NAME} LANGUAGES CXX)
+
+# If enabled, the post build symlink won't occur.
+option(DisablePostBuild "DisablePostBuild" OFF)
+
 # Disable in-source builds.
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 set(CMAKE_DISABLE_SOURCE_CHANGES ON)
 
-# Detect Linux.
-if(UNIX AND NOT APPLE)
-    set(LINUX TRUE)
-endif()
+# Set the cmake module paths.
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/sdl2)
 
-# Set build type to Debug by default.
+# Set build type to debug by default.
 if(NOT CMAKE_BUILD_TYPE)
-    message(STATUS "Build type not set, defaulting to 'Debug'")
     set(CMAKE_BUILD_TYPE Debug)
-else()
-    message(STATUS "Build type: '${CMAKE_BUILD_TYPE}'")
 endif()
-
-# Define project.
-project(shays-world LANGUAGES CXX)
 
 # Define executable source files.
-add_executable(shays-world
+add_executable(${PROJECT_NAME}
     src/Main.cpp
-    src/AABBList.cpp
-    src/PlainNode.cpp
-    src/CameraMap.cpp
-    src/AABB.cpp
-    src/AABBNode.cpp
-    src/PlainLinkedList.cpp
-    src/Camera.cpp
-    src/Collision.cpp
-    src/TexturedPolygons.cpp
-    src/Workaround.cpp
+
+    src/Stonk/Engine.cpp
+    src/Stonk/Collision.cpp
+    src/Stonk/Physics.cpp
+    src/Stonk/Viewport.cpp
+
+    src/Shay/AABBList.cpp
+    src/Shay/PlainNode.cpp
+    src/Shay/CameraMap.cpp
+    src/Shay/AABB.cpp
+    src/Shay/AABBNode.cpp
+    src/Shay/PlainLinkedList.cpp
+    src/Shay/Camera.cpp
+    src/Shay/Collision.cpp
+    src/Shay/TexturedPolygons.cpp
+    src/Shay/Shay.cpp
 )
 
 # Set C++ standard.
-set_target_properties(shays-world PROPERTIES
+set_target_properties(${PROJECT_NAME} PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
 
-# Set compiler and linker flags.
-target_compile_options(shays-world PUBLIC
-    $<$<CXX_COMPILER_ID:Clang>:-Weverything -Wno-c++98-compat
-    -Wno-c++98-compat-pedantic -Wno-padded -Wno-deprecated-declarations
-    -fcolor-diagnostics>)
-target_compile_options(shays-world PUBLIC
-    $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
-target_link_libraries(shays-world PUBLIC
-    $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
-
-# GCC
-target_compile_options(shays-world PUBLIC $<$<CXX_COMPILER_ID:Gnu>:-Wall
+# Set clang compile flags.
+target_compile_options(${PROJECT_NAME} PUBLIC
+    $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:
+    -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded
+    -Wno-deprecated-declarations -fcolor-diagnostics>)
+# Set gcc compile flags.
+target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:GNU>:-Wall
     -Wextra -Wpedantic -fdiagnostics-color=always>)
+# Set MSVC compile flags.
+target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/W4>)
 
-# MSVC
-target_compile_options(shays-world PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/W4>)
+# Enable clang's address and memory sanitizers.
+target_compile_options(${PROJECT_NAME} PUBLIC
+    $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
+target_link_libraries(${PROJECT_NAME} PUBLIC
+    $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
 
-# Include header files.
-target_include_directories(shays-world PRIVATE src)
-
-# Find, include, and link against dependencies.
+# Find dependencies.
 find_package(OpenGL REQUIRED COMPONENTS OpenGL)
-find_package(GLUT REQUIRED)
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+find_package(SDL2_ttf REQUIRED)
+find_package(SDL2_mixer REQUIRED)
 find_package(glm REQUIRED)
 
-# Hack to fix Linux Glu library paths.
-if (LINUX)
-    target_link_libraries(shays-world PRIVATE ${OPENGL_glu_LIBRARY})
+# Include project header files.
+target_include_directories(${PROJECT_NAME} PRIVATE src)
+
+# Include and link against dependencies.
+target_link_libraries(${PROJECT_NAME} PUBLIC OpenGL::GL OpenGL::GLU
+    SDL2::SDL2 SDL2::Image SDL2::TTF SDL2::Mixer glm)
+
+# Symlink the resources to the binary location.
+if (NOT DisablePostBuild)
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E create_symlink
+        ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${PROJECT_NAME}>/res)
 endif()
-
-# Hack to fix macOS GLUT framework paths.
-if (APPLE)
-    find_library(APP_SERVICES ApplicationServices)
-
-    set_target_properties(GLUT::GLUT PROPERTIES
-        IMPORTED_LOCATION "/System/Library/Frameworks/GLUT.framework/GLUT")
-    set_target_properties(GLUT::Cocoa PROPERTIES
-        IMPORTED_LOCATION "/System/Library/Frameworks/Cocoa.framework/Cocoa")
-
-    target_link_libraries(shays-world PRIVATE ${APP_SERVICES})
-endif()
-
-# Set dependencies.
-add_dependencies(shays-world OpenGL::GL GLUT::GLUT)
-# Set includes.
-target_include_directories(shays-world PRIVATE ${OPENGL_INCLUDE_DIRS}
-    ${GLUT_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS})
-# Set link libraries.
-target_link_libraries(shays-world PRIVATE OpenGL::GL GLUT::GLUT)
-
-# Copy the resources to the binary location.
-add_custom_command(TARGET shays-world POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy_directory
-                       ${CMAKE_SOURCE_DIR}/res
-                       $<TARGET_FILE_DIR:shays-world>/res)
