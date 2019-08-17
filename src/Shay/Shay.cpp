@@ -225,73 +225,62 @@ void ShaysWorld::CreatePostBoundingBoxes() {
     stepLength = 0.0f;
     step2      = 0.0f;
     int aabbIndex = 17; 
-    constexpr auto pillarXOffset = 31740.0f;
-    constexpr auto pillarYOffset = 9995.0f;
-    constexpr auto pillarZOffset = 10105.0f;
+
+    // The calllist to draw pillars draws them offset from the origin
+    // instead of just drawing them at origin and then translating (Why, shay.)
+    constexpr float pillarXOffset = 31740.0f;
+    constexpr float pillarYOffset = 9995.0f;
+    constexpr float pillarZOffset = 10105.0f;
+    constexpr float pillarSize = 128.0f;
     // Continuing on from 16 from CreateBoundingBoxes
     for (int j = 0; j < 2; j++) {
         for (int i = 0; i < 17; i++) {   // 17: left post count
-            cam.SetAABBMaxX(aabbIndex, pillarXOffset + 128.0f);
-            cam.SetAABBMinX(aabbIndex, pillarXOffset + 0.0f);
-            cam.SetAABBMaxZ(aabbIndex, pillarZOffset + step + 128.0f);
-            cam.SetAABBMinZ(aabbIndex, pillarZOffset + step);
+            float pillarZPos = pillarZOffset + step + step2;
+            float pillarXPos = pillarXOffset + stepLength;
+            cam.SetAABBMaxX(aabbIndex, pillarXPos + pillarSize);
+            cam.SetAABBMinX(aabbIndex, pillarXPos);
+            cam.SetAABBMaxZ(aabbIndex, pillarZPos + pillarSize);
+            cam.SetAABBMinZ(aabbIndex, pillarZPos);
             aabbIndex++;
             if ((i == 7) && (j == 0)) // between chanc and phys sci
             {
-                // SOMETHING is different for between chanc and phys sci post
-                // glPushMatrix();
-                // glTranslatef(4008.0f, 0.0f, step);
-                // glCallList(18);
-                // glPopMatrix();
-                // glPushMatrix();
-                // glTranslatef(4008.0f, 0.0f, step + 128.0f);
-                // glCallList(18);
-                // glPopMatrix();
+                //left pillar near bike racks between the two buildings
+                constexpr float betweenPillarOffset = 4008.0f;
+                cam.SetAABBMaxX(aabbIndex, pillarXPos + pillarSize + betweenPillarOffset);
+                cam.SetAABBMinX(aabbIndex, pillarXPos + betweenPillarOffset);
+                cam.SetAABBMaxZ(aabbIndex, pillarZPos + pillarSize);
+                cam.SetAABBMinZ(aabbIndex, pillarZPos);
+                aabbIndex++;
             }
             step += 1930.0f;
         }
         stepLength -= 27192.0f; // Move to draw right posts
-        step2 -= 32810.0f;  // Move right posts to 
+        step2 -= 32810.0f;  // Move right posts to start
     }
 
-    // library front
+    // library front pillars
     step = -1940.0f;
+    // library pillar Z offset
+    constexpr float libPillarZ = 30880.0f;
     for (int i = 0; i < 13; i++) {
-        // glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAIN_POST));
-        // glPushMatrix();
-        // glTranslatef(step, 0.0f, 30880.0f);
-        // glCallList(18);
-        // glPopMatrix();
-        // glPushMatrix();
-        // glTranslatef(step, 0.0f, 31008.0f);
-        // glCallList(18);
-        // glPopMatrix();
-
-        // glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAIN_POST_2));
-        // glPushMatrix();
-        // glTranslatef(step, 0.0f, 30880.0f);
-        // glCallList(19);
-        // glPopMatrix();
-        // glPushMatrix();
-        // glTranslatef(step + 128.0f, 0.0f, 30880.0f);
-        // glCallList(19);
-        // glPopMatrix();
+        float pillarZPos = pillarZOffset + libPillarZ;
+        float pillarXPos = pillarXOffset + step;
+        cam.SetAABBMaxX(aabbIndex, pillarXPos + pillarSize);
+        cam.SetAABBMinX(aabbIndex, pillarXPos);
+        cam.SetAABBMaxZ(aabbIndex, pillarZPos + pillarSize);
+        cam.SetAABBMinZ(aabbIndex, pillarZPos);
+        aabbIndex++;
         step -= 1940.0f;
     }
-
-    // first on chanc steps
-    // glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAIN_POST));
-    // glCallList(51);
-    // glPushMatrix();
-    // glTranslatef(0.0f, 0.0f, 128.0f);
-    // glCallList(51);
-    // glPopMatrix();
-    // glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAIN_POST_2));
-    // glCallList(52);
-    // glPushMatrix();
-    // glTranslatef(128.0f, 0.0f, 0.0f);
-    // glCallList(52);
-    // glPopMatrix();
+    //For some reason, the chancellery pillar's "model" is offset
+    //differently than the other pillars.
+    constexpr float chancelleryPillarZOffset = 8100.0f;
+    //First pillar (taller pillar at chancellery, by spawn)
+    cam.SetAABBMaxX(aabbIndex, pillarXOffset + 128.f);
+    cam.SetAABBMinX(aabbIndex, pillarXOffset);
+    cam.SetAABBMaxZ(aabbIndex, chancelleryPillarZOffset + 128.0f);
+    cam.SetAABBMinZ(aabbIndex, chancelleryPillarZOffset);
+    aabbIndex++;
 }
 //--------------------------------------------------------------------------------------
 // Set up co-ordinates of different plains
