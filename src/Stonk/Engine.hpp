@@ -20,6 +20,9 @@ namespace Stonk {
         using Window  = std::shared_ptr<SDL_Window>;
         using Context = std::shared_ptr<void>;
 
+        /* Mouse movement. */
+        glm::vec2 mouse = {};
+
         /* SDL handles. */
         Window window   = nullptr;
         Context context = nullptr;

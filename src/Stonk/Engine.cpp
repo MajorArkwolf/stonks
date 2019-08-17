@@ -1,6 +1,7 @@
 #include "Stonk/Engine.hpp"
 
 #include <SDL2/SDL.h>
+#include <iomanip>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -19,44 +20,22 @@ using Stonk::State;
 auto Engine::run() -> void {
     auto &engine = Engine::get();
 
-    // Setup Shay's world.
+    // Setup Shay's World.
     ShaysWorld::Init();
 
-    auto t  = 0.0;
-    auto dt = 0.01;
-
-    auto currentTime = static_cast<double>(SDL_GetPerformanceFrequency());
-    auto accumulator = 0.0;
-
-    auto previousState = State{};
-    auto currentState  = State{};
+    auto time      = static_cast<double>(SDL_GetPerformanceCounter());
+    auto oldTime   = 0.0;
+    auto deltaTime = 0.0;
 
     while (engine.getIsRunning()) {
-        auto newTime   = static_cast<double>(SDL_GetPerformanceFrequency());
-        auto frameTime = newTime - currentTime;
-
-        if (frameTime > 0.25) {
-            frameTime = 0.25;
-        }
-
-        currentTime = newTime;
-        accumulator += frameTime;
+        oldTime = time;
+        time    = static_cast<double>(SDL_GetPerformanceCounter());
+        deltaTime =
+            (time - oldTime) / static_cast<double>(SDL_GetPerformanceFrequency());
 
         engine.processInput();
-
-        while (accumulator >= dt) {
-            previousState = currentState;
-            engine.update(currentState, dt);
-            t += dt;
-            accumulator -= dt;
-        }
-
-        const auto alpha = accumulator / dt;
-
-        auto interpolatedState =
-            currentState * alpha + previousState * (1.0 - alpha);
-
-        engine.render(interpolatedState);
+        ShaysWorld::Update(deltaTime);
+        ShaysWorld::Display();
     }
 }
 
@@ -111,6 +90,10 @@ Engine::Engine() {
     // Enable Vsync.
     constexpr auto ENABLE_VSYNC = 1;
     SDL_GL_SetSwapInterval(ENABLE_VSYNC);
+
+    // Capture the mouse.
+    SDL_CaptureMouse(SDL_TRUE);
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
 Engine::~Engine() {
@@ -136,67 +119,21 @@ auto Engine::handleKeyPress(SDL_Event &event) -> void {
             ShaysWorld::DisplayWelcome = (ShaysWorld::DisplayWelcome == 1) ? 0 : 1;
             // Toggle for welcome screen
         } break;
-        case SDL_SCANCODE_W: {
-            ShaysWorld::getCamPtr()->DirectionFB(1);
-        } break;
-        case SDL_SCANCODE_A: {
-            ShaysWorld::getCamPtr()->DirectionLR(-1);
-        } break;
-        case SDL_SCANCODE_S: {
-            ShaysWorld::getCamPtr()->DirectionFB(-1);
-        } break;
-        case SDL_SCANCODE_D: {
-            ShaysWorld::getCamPtr()->DirectionLR(1);
-        } break;
-        case SDL_SCANCODE_RIGHT: {
-            ShaysWorld::getCamPtr()->DirectionRotateLR(1);
-        }break;
-        case SDL_SCANCODE_LEFT: {
-            ShaysWorld::getCamPtr()->DirectionRotateLR(-1);
-        } break;
-        case SDL_SCANCODE_UP: {
-            ShaysWorld::getCamPtr()->DirectionLookUD(1);
-        } break;
-        case SDL_SCANCODE_DOWN: {
-            ShaysWorld::getCamPtr()->DirectionLookUD(-1);
-        } break;
     }
 }
 
 auto Engine::handleKeyRelease(SDL_Event &event) -> void {
     switch (event.key.keysym.scancode) { // Use SDL Scancodes that correspond to keyboard keys
-        case SDL_SCANCODE_W: {
-            ShaysWorld::getCamPtr()->DirectionFB(0);
+        case SDL_MOUSEMOTION: {
+
         } break;
-        case SDL_SCANCODE_A: {
-            ShaysWorld::getCamPtr()->DirectionLR(0);
-        } break;
-        case SDL_SCANCODE_S: {
-            ShaysWorld::getCamPtr()->DirectionFB(0);
-        } break;
-        case SDL_SCANCODE_D: {
-            ShaysWorld::getCamPtr()->DirectionLR(0);
-        } break;
-        case SDL_SCANCODE_RIGHT: {
-            ShaysWorld::getCamPtr()->DirectionRotateLR(0);
-        } break;
-        case SDL_SCANCODE_LEFT: {
-            ShaysWorld::getCamPtr()->DirectionRotateLR(0);
-        } break;
-        case SDL_SCANCODE_UP: {
-            ShaysWorld::getCamPtr()->DirectionLookUD(0);
-        } break;
-        case SDL_SCANCODE_DOWN: {
-            ShaysWorld::getCamPtr()->DirectionLookUD(0);
-        } break;
+        default: break;
     }
 }
 
 auto Engine::handleMouseMovement(SDL_Event &event) -> void {
-    int mouseXPos     = event.motion.x;
-    int mouseYPos     = event.motion.y;
-    int relativeXMove = event.motion.xrel;
-    int relativeYMove = event.motion.yrel;
+    this->mouse.x = event.motion.xrel;
+    this->mouse.y = event.motion.yrel;
 }
 
 auto Engine::handleMouseButtonPress(SDL_Event &event) -> void {
@@ -245,7 +182,8 @@ auto Engine::handleMouseWheelMotion(SDL_Event &event) -> void {
 }
 
 auto Engine::processInput() -> void {
-    auto event = SDL_Event{};
+    auto event        = SDL_Event{};
+    auto handledMouse = false;
 
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -263,6 +201,7 @@ auto Engine::processInput() -> void {
             } break;
             case SDL_MOUSEMOTION: { // Mouse movement events
                 this->handleMouseMovement(event);
+                handledMouse = true;
             } break;
             case SDL_MOUSEWHEEL: { // Mouse wheel scroll events
                 this->handleMouseWheelMotion(event);
@@ -271,13 +210,14 @@ auto Engine::processInput() -> void {
             default: break;
         }
     }
+
+    if (!handledMouse) {
+        this->mouse = {0.0f, 0.0f};
+    }
 }
 
 auto Engine::update(State &state, double dt) -> void {
     this->physics.update(state, dt);
 }
 
-auto Engine::render(const State &state) const -> void {
-    ShaysWorld::Display();
-    SDL_GL_SwapWindow(this->window.get());
-}
+auto Engine::render(const State &state) const -> void {}

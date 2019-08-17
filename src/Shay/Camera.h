@@ -1,5 +1,9 @@
 #pragma once
 
+#include <glm/gtc/constants.hpp>
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+
 #include "CameraMap.h"
 #include "Collision.h"
 #include "PlainLinkedList.h"
@@ -14,6 +18,9 @@
 namespace Shay {
     class Camera {
       public:
+        static constexpr GLfloat MOVEMENT_SPEED = 1500.0f;
+        static constexpr GLfloat LOOK_SPEED     = 0.003f;
+
         Camera();
 
         //----------------------------------------------------------------------------------
@@ -45,6 +52,7 @@ namespace Shay {
         void SetRotateSpeed(const GLfloat &tempSpeed) {
             m_rotateSpeed = tempSpeed;
         }
+
         void SetMoveSpeed(const GLfloat &tempSpeed) {
             m_moveSpeed = tempSpeed;
         }
@@ -107,15 +115,7 @@ namespace Shay {
         void Position(GLfloat const &tempX, GLfloat const &tempY,
                       GLfloat const &tempZ, GLfloat const &tempAngle);
 
-        // check whether ok to move
-        void CheckCamera();
-
-        // Used to pass direction to move or rotate  (i.e. 1, -1 or 0)
-        void DirectionFB(GLfloat tempMove);
-        void DirectionLR(GLfloat tempMove);
-        void DirectionUD(GLfloat tempMove);
-        void DirectionRotateLR(GLfloat tempMove);
-        void DirectionLookUD(GLfloat tempMove);
+        void Update(double dt);
 
         // display map
         void DisplayMap(const int &screenWidth, const int &screenHeight,
@@ -142,6 +142,13 @@ namespace Shay {
         GLfloat m_deltaAngleUD  = 0.0;
 
         // movement variables
+        glm::vec3 position     = {32720.0f, 9536.0f, 4800.0f};
+        glm::vec3 lastPosition = position;
+        glm::vec3 look         = {};
+        glm::vec3 tilt         = {0.0f, 1.0f, 0.0f};
+        glm::vec2 angles       = {glm::pi<float>() * 2, 0.0f};
+        glm::vec2 mouse        = {};
+
         GLfloat m_x = 0.0, m_y = 0.0, m_z = 0.0, m_zLast = 0.0, m_xLast = 0.0;
         GLfloat m_lookX = 0.0, m_lookY = 0.0, m_lookZ = 0.0;
         GLfloat m_lookXX = 0.0, m_lookYY = 0.0, m_lookZZ = 0.0;
@@ -154,27 +161,15 @@ namespace Shay {
         GLfloat m_rotateSpeed = 0.0;
         GLfloat m_moveSpeed   = 0.0;
 
-        // is it ok to move
-        bool MoveFBOK();
-        bool MoveLROK();
-        bool MoveUDOK();
-        bool RotateLROK();
-        bool LookUDOK();
-
-        // move around the world
-        void MoveFB();
-        void MoveLR();
-        void MoveUD();
-        void RotateLR();
-        void LookUD();
+        void UpdatePosition(double dt);
+        void UpdateLook(double dt);
+        void MoveIfOk(glm::vec3 newPos);
 
         // overloaded function for setting plain
-        void SetPlains(const int &moveX, const int &moveZ);
+        void SetPlains(int moveX, int moveZ);
 
         // resets camera
         void ResetXYZ();
-        // display new view
-        void callGLLookAt();
 
         bool m_CollisionDetectionOn = true;
 

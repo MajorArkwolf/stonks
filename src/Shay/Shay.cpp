@@ -79,40 +79,37 @@ void ShaysWorld::Init() {
 //  Main Display Function
 //--------------------------------------------------------------------------------------
 void ShaysWorld::Display() {
-    // check for movement
-    cam.CheckCamera();
+    auto &stonk = Stonk::Engine::get();
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // DISPLAY TEXTURES
-    // enable texture mapping
     glEnable(GL_TEXTURE_2D);
     glPushMatrix();
-    // displays the welcome screen
-    if (DisplayWelcome)
+
+    if (DisplayWelcome) {
         cam.DisplayWelcomeScreen(width, height, 1, tp.GetTexture(WELCOME));
-    // displays the exit screen
-    if (DisplayExit)
+    } else if (DisplayExit) {
         cam.DisplayWelcomeScreen(width, height, 0, tp.GetTexture(EXIT));
-    // displays the map
-    if (DisplayMap)
+    }
+
+    if (DisplayMap) {
         cam.DisplayMap(width, height, tp.GetTexture(MAP));
-    // display no exit sign (position check should really be in an object, but
-    // didn't have time)
+    }
+
     if (((cam.GetLR() > 35500.0f) && (cam.GetFB() < 25344.0f)) ||
         ((cam.GetLR() > 34100.0f) && (cam.GetFB() > 41127.0f))) {
         cam.DisplayNoExit(width, height, tp.GetTexture(NO_EXIT));
     }
-    // set the movement and rotation speed according to frame count
-    IncrementFrameCount();
-    cam.SetMoveSpeed(stepIncrement);
-    cam.SetRotateSpeed(angleIncrement);
-    // display images
+
     DrawBackdrop();
     glPopMatrix();
     glDisable(GL_TEXTURE_2D);
-    // clear buffers
-    // glutSwapBuffers();
+
+    SDL_GL_SwapWindow(stonk.window.get());
+}
+
+void ShaysWorld::Update(double dt) {
+    cam.Update(dt);
 }
 
 void ShaysWorld::CreateBoundingBoxes() {
