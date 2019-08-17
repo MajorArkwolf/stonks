@@ -208,8 +208,73 @@ void ShaysWorld::CreateBoundingBoxes() {
     cam.SetAABBMinX(16, 31444.0);
     cam.SetAABBMaxZ(16, 10395.0);
     cam.SetAABBMinZ(16, 4590.0);
+
+    CreatePostBoundingBoxes();
 }
 
+void ShaysWorld::CreatePostBoundingBoxes() {
+    // This code is based on DisplayMainPosts.
+    step       = 0.0f;
+    stepLength = 0.0f;
+    step2      = 0.0f;
+    // Continuing on from 16 from CreateBoundingBoxes
+    int aabbIndex = 17; 
+    
+    // The calllist to draw pillars draws them offset from the origin
+    // instead of just drawing them at origin and then translating (Why, shay.)
+    constexpr float pillarXOffset = 31740.0f;
+    constexpr float pillarYOffset = 9995.0f;
+    constexpr float pillarZOffset = 10105.0f;
+    constexpr float pillarSize = 128.0f;
+    for (int j = 0; j < 2; j++) {
+        for (int i = 0; i < 17; i++) {   // 17: left post count
+            float pillarZPos = pillarZOffset + step + step2;
+            float pillarXPos = pillarXOffset + stepLength;
+            cam.SetAABBMaxX(aabbIndex, pillarXPos + pillarSize);
+            cam.SetAABBMinX(aabbIndex, pillarXPos);
+            cam.SetAABBMaxZ(aabbIndex, pillarZPos + pillarSize);
+            cam.SetAABBMinZ(aabbIndex, pillarZPos);
+            aabbIndex++;
+            if ((i == 7) && (j == 0)) // between chanc and phys sci
+            {
+                //left pillar near bike racks between the two buildings
+                constexpr float betweenPillarOffset = 4008.0f;
+                cam.SetAABBMaxX(aabbIndex, pillarXPos + pillarSize + betweenPillarOffset);
+                cam.SetAABBMinX(aabbIndex, pillarXPos + betweenPillarOffset);
+                cam.SetAABBMaxZ(aabbIndex, pillarZPos + pillarSize);
+                cam.SetAABBMinZ(aabbIndex, pillarZPos);
+                aabbIndex++;
+            }
+            step += 1930.0f;
+        }
+        stepLength -= 27192.0f; // Move to draw right posts
+        step2 -= 32810.0f;  // Move right posts to start
+    }
+
+    // library front pillars
+    step = -1940.0f;
+    // library pillar Z offset
+    constexpr float libPillarZ = 30880.0f;
+    for (int i = 0; i < 13; i++) {
+        float pillarZPos = pillarZOffset + libPillarZ;
+        float pillarXPos = pillarXOffset + step;
+        cam.SetAABBMaxX(aabbIndex, pillarXPos + pillarSize);
+        cam.SetAABBMinX(aabbIndex, pillarXPos);
+        cam.SetAABBMaxZ(aabbIndex, pillarZPos + pillarSize);
+        cam.SetAABBMinZ(aabbIndex, pillarZPos);
+        aabbIndex++;
+        step -= 1940.0f;
+    }
+    //For some reason, the chancellery pillar's "model" is offset
+    //differently than the other pillars.
+    constexpr float chancelleryPillarZOffset = 8100.0f;
+    //First pillar (taller pillar at chancellery, by spawn)
+    cam.SetAABBMaxX(aabbIndex, pillarXOffset + 128.f);
+    cam.SetAABBMinX(aabbIndex, pillarXOffset);
+    cam.SetAABBMaxZ(aabbIndex, chancelleryPillarZOffset + 128.0f);
+    cam.SetAABBMinZ(aabbIndex, chancelleryPillarZOffset);
+    aabbIndex++;
+}
 //--------------------------------------------------------------------------------------
 // Set up co-ordinates of different plains
 //--------------------------------------------------------------------------------------

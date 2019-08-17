@@ -324,6 +324,10 @@ namespace Shay {
         static void IncrementFrameCount();
         static void CreateTextures();
         static void CreateBoundingBoxes();
+        /**
+         * @brief Create collisions for the pillars
+         */
+        static void CreatePostBoundingBoxes();
         static void CreatePlains();
         static void DeleteImageFromMemory(unsigned char *tempImage);
         static Camera *getCamPtr();
