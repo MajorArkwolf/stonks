@@ -241,9 +241,6 @@ namespace Shay {
 
     class ShaysWorld {
       public:
-        static constexpr GLfloat movementSpeed = 10.0f;
-        static constexpr GLfloat rotationSpeed = 0.005f;
-
         static GLfloat stepIncrement;
         static GLfloat angleIncrement;
         static int frameCount;
@@ -271,6 +268,7 @@ namespace Shay {
 
         static void Init();
         static void Display();
+        static void Update(double dt);
         static void DrawBackdrop();
         static void DisplayAboveWindowBlock();
         static void DisplayBench();
@@ -332,6 +330,6 @@ namespace Shay {
         static void CreatePostBoundingBoxes();
         static void CreatePlains();
         static void DeleteImageFromMemory(unsigned char *tempImage);
-        static Camera * getCamPtr();
+        static Camera *getCamPtr();
     };
 };

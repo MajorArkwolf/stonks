@@ -1,362 +1,180 @@
 #include "Camera.h"
 
+#include <algorithm>
 #include <cmath>
-#include <glm/gtc/constants.hpp>
 
+#include <SDL2/SDL.h>
+#include <glm/gtc/constants.hpp>
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+
+#include "Shay/Shay.hpp"
+#include "Stonk/Engine.hpp"
 #include "Stonk/OpenGl.hpp"
 
+using glm::vec2;
+using glm::vec3;
 using Shay::Camera;
+constexpr auto PI = glm::pi<float>();
 
-//--------------------------------------------------------------------------------------
-// Set initial values
-//--------------------------------------------------------------------------------------
-Camera::Camera() {
-    m_rotateSpeed = 0.0f;
-    m_moveSpeed   = 0.0f;
-
-    ResetXYZ();
-
-    m_deltaMoveFB = 0.0f;
-    m_deltaMoveLR = 0.0f;
-    m_deltaMoveUD = 0.0f;
-
-    m_rotateAngleLR = 0.0f;
-    m_rotateAngleUD = 0.0f;
-    m_deltaAngleLR  = 0.0f;
-    m_deltaAngleUD  = 0.0f;
-
-    m_CollisionDetectionOn = true;
-}
-
-//--------------------------------------------------------------------------------------
-// Reset camera values
-//--------------------------------------------------------------------------------------
-void Camera::ResetXYZ() {
-    m_x = 0.0f;
-    m_y = 1.75f;
-    m_z = 0.0f;
-
-    m_lookX = 0.0f;
-    m_lookY = 0.0f;
-    m_lookZ = -1.0f;
-
-    m_lookXX = 1.0f;
-    m_lookYY = 1.0f;
-    m_lookZZ = 0.0f;
-}
-
-//--------------------------------------------------------------------------------------
-//  Determine direction
-//--------------------------------------------------------------------------------------
-void Camera::DirectionFB(GLfloat tempMove) {
-    m_deltaMoveFB = tempMove;
-}
-//--------------------------------------------------------------------------------------
-void Camera::DirectionLR(GLfloat tempMove) {
-    m_deltaMoveLR = tempMove;
-}
-//--------------------------------------------------------------------------------------
-// Not used but allows up and don movement
-void Camera::DirectionUD(GLfloat tempMove) {
-    m_deltaMoveUD = tempMove;
-}
-
-//--------------------------------------------------------------------------------------
-void Camera::DirectionRotateLR(GLfloat tempMove) {
-    m_deltaAngleLR = tempMove * m_rotateSpeed;
-}
-
-//--------------------------------------------------------------------------------------
-void Camera::DirectionLookUD(GLfloat tempMove) {
-    m_deltaAngleUD = tempMove * m_rotateSpeed;
-}
-
-//--------------------------------------------------------------------------------------
-// Is ok to move camera backwards and forwards
-//--------------------------------------------------------------------------------------
-bool Camera::MoveFBOK() {
-    bool tempReturn;
-    if (m_deltaMoveFB < 0 || m_deltaMoveFB > 0) {
-        tempReturn = true;
-    } else {
-        tempReturn = false;
-    }
-    return tempReturn;
-}
-
-//--------------------------------------------------------------------------------------
-// Is ok to move camera sideways
-//--------------------------------------------------------------------------------------
-bool Camera::MoveLROK() {
-    bool tempReturn;
-    if (m_deltaMoveLR < 0 || m_deltaMoveLR > 0) {
-        tempReturn = true;
-    } else {
-        tempReturn = false;
-    }
-    return tempReturn;
-}
-
-//--------------------------------------------------------------------------------------
-// Is ok to move camera up and down (not used)
-//--------------------------------------------------------------------------------------
-bool Camera::MoveUDOK() {
-    bool tempReturn;
-    if (m_deltaMoveUD < 0 || m_deltaMoveUD > 0) {
-        tempReturn = true;
-    } else {
-        tempReturn = false;
-    }
-    return tempReturn;
-}
-
-//--------------------------------------------------------------------------------------
-// Is ok to rotate sideways
-//--------------------------------------------------------------------------------------
-bool Camera::RotateLROK() {
-    bool tempReturn = false;
-
-    if (m_rotateSpeed != 0.0f) {
-        if ((m_deltaAngleLR / m_rotateSpeed) < 0 ||
-            (m_deltaAngleLR / m_rotateSpeed) > 0) {
-            tempReturn = true;
-        } else {
-            tempReturn = false;
-        }
-    }
-
-    return tempReturn;
-}
-
-//--------------------------------------------------------------------------------------
-// Is ok to rotate up and down
-//--------------------------------------------------------------------------------------
-bool Camera::LookUDOK() {
-    bool tempReturn = false;
-
-    if (m_rotateSpeed != 0.0f) {
-        if ((m_deltaAngleUD / m_rotateSpeed) < 0 ||
-            (m_deltaAngleUD / m_rotateSpeed) > 0) {
-            tempReturn = true;
-        } else {
-            tempReturn = false;
-        }
-    }
-
-    return tempReturn;
-}
-
-//--------------------------------------------------------------------------------------
-// Move camera backwards and forwards
-//--------------------------------------------------------------------------------------
-void Camera::MoveFB() {
-    // record previous co-ordinates
-    m_xLast = m_x;
-    m_zLast = m_z;
-
-    // set movement step
-    GLfloat moveZ = (m_deltaMoveFB * (m_lookZ)*m_moveSpeed);
-    GLfloat moveX = (m_deltaMoveFB * (m_lookX)*m_moveSpeed);
-
-    if (m_CollisionDetectionOn) {
-        GLfloat startX = m_x + moveX * 5.0f;
-        GLfloat startZ = m_z + moveZ * 5.0f;
-
-        // check if collsion
-        if (!(m_colDetect.Collide(startX + m_lookX, m_y + m_lookY,
-                                  startZ + m_lookZ))) {
-            // increment position
-            m_x += moveX;
-            m_z += moveZ;
-            // check plain
-            SetPlains(static_cast<int>(moveX), static_cast<int>(moveZ));
-            // redisplay
-            callGLLookAt();
-        }
-    } else {
-        // increment position
-        m_x += moveX;
-        m_z += moveZ;
-        // check plain
-        SetPlains(static_cast<int>(moveX), static_cast<int>(moveZ));
-        // redisplay
-        callGLLookAt();
-    }
-}
-
-//--------------------------------------------------------------------------------------
-// Move camera left and right (sideways)
-//--------------------------------------------------------------------------------------
-void Camera::MoveLR() {
-    // record previous co-ordinates
-    m_zLast = m_z;
-    m_xLast = m_x;
-
-    // set movement step
-    GLfloat moveZ = (m_deltaMoveLR * (m_lookZZ)*m_moveSpeed);
-    GLfloat moveX = (m_deltaMoveLR * (m_lookXX)*m_moveSpeed);
-
-    if (m_CollisionDetectionOn) {
-        GLfloat startX = m_x + moveX * 1.0f;
-        GLfloat startZ = m_z + moveZ * m_moveSpeed * 1.0f;
-
-        // check if collsion
-        if (!(m_colDetect.Collide(startX + m_lookXX, m_y + m_lookYY,
-                                  startZ + m_lookZZ))) {
-            // increment position
-            m_x += moveX;
-            m_z += moveZ;
-            // check plain
-            SetPlains(static_cast<int>(moveX), static_cast<int>(moveZ));
-            // redisplay
-            callGLLookAt();
-        }
-    } else {
-        // increment position
-        m_x += moveX;
-        m_z += moveZ;
-        SetPlains(static_cast<int>(moveX), static_cast<int>(moveZ));
-        // redisplay
-        callGLLookAt();
-    }
-}
-
-//----------------------------------------------------------------------------------------
-//  Places camera at the correct level on the current plain
-//----------------------------------------------------------------------------------------
-void Camera::SetPlains(const int &moveX, const int &moveZ) {
+/**
+ * @brief Adjust the Y axis of the camera correctly for the plane it is current on.
+ */
+void Camera::AdjustForPlane() {
     // store number of plains (stops from looping through linked list each time)
     if (m_No_Plains == 0)
         m_No_Plains = m_Plain.GetListSize();
 
     for (int i = 0; i < m_No_Plains; i++) {
         // if camera is positioned on a plain
-        if ((m_z <= m_Plain.GetZend(i)) && (m_z >= m_Plain.GetZstart(i)) &&
-            (m_x <= m_Plain.GetXend(i)) && (m_x >= m_Plain.GetXstart(i))) {
+        if ((position.z <= m_Plain.GetZend(i)) &&
+            (position.z >= m_Plain.GetZstart(i)) &&
+            (position.x <= m_Plain.GetXend(i)) &&
+            (position.x >= m_Plain.GetXstart(i))) {
             // if flat plain
             if (m_Plain.GetType(i) == 0) {
-                m_y = m_Plain.GetYstart(i);
+                position.y = m_Plain.GetYstart(i);
 
                 m_plainNo     = i;
                 m_plainHeight = m_Plain.GetYstart(i);
             }
             // if plain slopes in z direction
             if (m_Plain.GetType(i) == 2) {
-                // if plain slopes up or down
-                if (m_zLast > m_z) {
-                    m_incrementZ = ((m_y - m_Plain.GetYstart(i)) /
-                                    (m_z - m_Plain.GetZstart(i)));
+                auto height = std::abs(m_Plain.GetYstart(i) - m_Plain.GetYend(i));
+                auto length = std::abs(m_Plain.GetZstart(i) - m_Plain.GetZend(i));
+                auto ratio =
+                    std::abs(this->position.z - m_Plain.GetZend(i)) / length;
+
+                if (m_Plain.GetYstart(i) > m_Plain.GetYend(i)) {
+                    position.y = m_Plain.GetYend(i) + (ratio * height);
                 } else {
-                    m_incrementZ =
-                        ((m_Plain.GetYend(i) - m_y) / (m_Plain.GetZend(i) - m_z));
+                    position.y = m_Plain.GetYend(i) - (ratio * height);
                 }
-                m_y += (m_incrementZ * moveZ);
             }
             // if plain slopes in x direction
             if (m_Plain.GetType(i) == 1) {
-                // if plain slopes up or down
-                if (m_xLast > m_x) {
-                    m_incrementX = ((m_y - m_Plain.GetYstart(i)) /
-                                    (m_x - m_Plain.GetXstart(i)));
+                auto height = std::abs(m_Plain.GetYstart(i) - m_Plain.GetYend(i));
+                auto length = std::abs(m_Plain.GetXstart(i) - m_Plain.GetXend(i));
+                auto ratio =
+                    std::abs(this->position.x - m_Plain.GetXend(i)) / length;
+
+                if (m_Plain.GetYstart(i) > m_Plain.GetYend(i)) {
+                    position.y = m_Plain.GetYend(i) + (ratio * height);
                 } else {
-                    m_incrementX =
-                        ((m_Plain.GetYend(i) - m_y) / (m_Plain.GetXend(i) - m_x));
+                    position.y = m_Plain.GetYend(i) - (ratio * height);
                 }
-                m_y += (m_incrementX * moveX);
             }
         }
     }
 }
 
-//----------------------------------------------------------------------------------------
-// Moves camera up and down (NOT USED)
-//----------------------------------------------------------------------------------------
-void Camera::MoveUD() {
-    if (m_CollisionDetectionOn) {
-        GLfloat startY = m_y + m_deltaMoveUD * (m_lookYY)*m_moveSpeed * 5.0f;
+/**
+ * @brief Updates the camera look point.
+ *
+ * @param dt The elapsed delta time since last frame.
+ */
+void Camera::UpdateLook(double dt) {
+    // The vertical look limit, to prevent looking completely up or down.
+    constexpr auto VERTICAL_LIMIT = (PI / 2.0f) - 0.03f;
 
-        if (!(m_colDetect.Collide(m_x + m_lookXX, startY + m_lookYY,
-                                  m_z + m_lookZZ))) {
-            m_y += m_deltaMoveUD * (m_lookYY)*m_moveSpeed;
-            callGLLookAt();
-        }
-    } else {
-        m_y += m_deltaMoveUD * (m_lookYY)*m_moveSpeed;
-        callGLLookAt();
+    auto &engine = Stonk::Engine::get();
+
+    this->mouse = engine.mouse;
+
+    this->angles.x += -this->mouse.x * LOOK_SPEED;
+    this->angles.y += -this->mouse.y * LOOK_SPEED;
+
+    // Wrap the view angles on the x axis.
+    if (this->angles.x < -PI) {
+        this->angles.x += PI * 2.0f;
+    } else if (this->angles.x > PI) {
+        this->angles.x -= PI * 2.0f;
     }
+
+    // Wrap the view angles on the y axis.
+    if (this->angles.y < -PI / 2.0f) {
+        this->angles.y = -PI / 2.0f;
+    } else if (this->angles.y > PI / 2.0f) {
+        this->angles.y = PI / 2.0f;
+    }
+
+    // Prevent the y angles from exceeding the vertical limit.
+    this->angles.y = std::clamp(this->angles.y, -VERTICAL_LIMIT, VERTICAL_LIMIT);
+
+    // Calculate the new look position from the view angles.
+    this->look.x = std::sin(this->angles.x) * std::cos(this->angles.y);
+    this->look.y = std::sin(this->angles.y);
+    this->look.z = std::cos(this->angles.x) * std::cos(this->angles.y);
+    this->look += this->position;
 }
 
-//----------------------------------------------------------------------------------------
-// Rotates camera left and right
-//----------------------------------------------------------------------------------------
-void Camera::RotateLR() {
-    m_rotateAngleLR += m_deltaAngleLR;
-    m_lookX  = sin(m_rotateAngleLR);
-    m_lookZ  = -cos(m_rotateAngleLR);
-    m_lookXX = sin(m_rotateAngleLR + glm::pi<float>() / 2.0f);
-    m_lookZZ = -cos(m_rotateAngleLR + glm::pi<float>() / 2.0f);
-    callGLLookAt();
+/**
+ * @brief Updates the camera position.
+ *
+ * @param dt The elapsed delta time since last frame.
+ */
+void Camera::UpdatePosition(double dt) {
+    auto *keys = SDL_GetKeyboardState(nullptr);
+
+    this->lastPosition = position;
+
+    auto fdt = static_cast<float>(dt);
+    auto forwardDir =
+        vec3{std::sin(this->angles.x), 0.0, std::cos(this->angles.x)};
+    auto rightDir = vec3{-forwardDir.z, 0.0, forwardDir.x};
+
+    if (keys[SDL_SCANCODE_W]) {
+        auto newPos = this->position + (forwardDir * MOVEMENT_SPEED * fdt);
+        MoveIfOk(newPos);
+    }
+
+    if (keys[SDL_SCANCODE_A]) {
+        auto newPos = this->position - (rightDir * MOVEMENT_SPEED * fdt);
+        MoveIfOk(newPos);
+    }
+
+    if (keys[SDL_SCANCODE_S]) {
+        auto newPos = this->position - (forwardDir * MOVEMENT_SPEED * fdt);
+        MoveIfOk(newPos);
+    }
+
+    if (keys[SDL_SCANCODE_D]) {
+        auto newPos = this->position + (rightDir * MOVEMENT_SPEED * fdt);
+        MoveIfOk(newPos);
+    }
+
+    this->look.x = std::sin(this->angles.x) * std::cos(this->angles.y);
+    this->look.y = std::sin(this->angles.y);
+    this->look.z = std::cos(this->angles.x) * std::cos(this->angles.y);
+    this->look += this->position;
 }
 
-//----------------------------------------------------------------------------------------
-//  Rotates camera up and down
-//----------------------------------------------------------------------------------------
-void Camera::LookUD() {
-    m_rotateAngleUD += m_deltaAngleUD;
-    m_lookY = sin(m_rotateAngleUD);
-    callGLLookAt();
-}
+/**
+ * @brief Updates the camera.
+ *
+ * @param dt The elapsed delta time since last frame.
+ */
+void Camera::Update(double dt) {
+    this->UpdatePosition(dt);
+    this->AdjustForPlane();
+    this->UpdateLook(dt);
 
-//----------------------------------------------------------------------------------------
-// Positions camera at co-ordinates of parameters
-//----------------------------------------------------------------------------------------
-void Camera::Position(GLfloat const &tempX, GLfloat const &tempY,
-                      GLfloat const &tempZ, GLfloat const &tempAngle) {
-    ResetXYZ();
-
-    m_x = tempX;
-    m_y = tempY;
-    m_z = tempZ;
-
-    // rotate to correct angle
-    m_rotateAngleLR = tempAngle * (glm::pi<float>() / 180.0f);
-    m_lookX         = sin(m_rotateAngleLR);
-    m_lookZ         = -cos(m_rotateAngleLR);
-    m_lookXX        = sin(m_rotateAngleLR + glm::pi<float>() / 2.0f);
-    m_lookZZ        = -cos(m_rotateAngleLR + glm::pi<float>() / 2.0f);
-    m_rotateAngleUD = 0.0;
-    m_deltaAngleUD  = 0.0;
-
-    // redislay
-    callGLLookAt();
-}
-
-//----------------------------------------------------------------------------------------
-// Check ok to move
-//----------------------------------------------------------------------------------------
-void Camera::CheckCamera() {
-    if (MoveFBOK())
-        MoveFB();
-    if (MoveLROK())
-        MoveLR();
-    if (MoveUDOK())
-        MoveUD();
-    if (RotateLROK())
-        RotateLR();
-    if (LookUDOK())
-        LookUD();
-}
-
-//----------------------------------------------------------------------------------------
-//  Redisplay new camera view
-//----------------------------------------------------------------------------------------
-void Camera::callGLLookAt() {
     glLoadIdentity();
-    gluLookAt(static_cast<double>(m_x), static_cast<double>(m_y),
-              static_cast<double>(m_z), static_cast<double>(m_x + m_lookX),
-              static_cast<double>(m_y + m_lookY),
-              static_cast<double>(m_z + m_lookZ), static_cast<double>(0.0f),
-              static_cast<double>(1.0f), static_cast<double>(0.0f));
+    gluLookAt(static_cast<double>(this->position.x), //
+              static_cast<double>(this->position.y), //
+              static_cast<double>(this->position.z), //
+              static_cast<double>(this->look.x),     //
+              static_cast<double>(this->look.y),     //
+              static_cast<double>(this->look.z),     //
+              static_cast<double>(this->tilt.x),     //
+              static_cast<double>(this->tilt.y),     //
+              static_cast<double>(this->tilt.z));    //
+}
+
+void Camera::MoveIfOk(glm::vec3 newPos) {
+    if (!(m_colDetect.Collide(newPos.x, newPos.y, newPos.z))) {
+        this->position = newPos;
+    }
 }
 
 //--------------------------------------------------------------------------------------
@@ -401,50 +219,3 @@ void Camera::SetPlains(const int tempType, const GLfloat tempXs,
                        const GLfloat tempZe) {
     m_Plain.AddToStart(tempType, tempXs, tempXe, tempYs, tempYe, tempZs, tempZe);
 }
-
-//--------------------------------------------------------------------------------------
-// THE BELOW FUNCTIONS ARE NOT IMPLEMENTED
-// Originally created to climb stairs
-// The Plain object is used instead
-//----------------------------------------------------------------------------------------
-void Camera::CheckSteps() {
-
-    // ClimbSteps(10000.0, 9430.0, 48.0, 142.0, 4);
-    // ClimbSteps(8920.0, 8210.0, 48.0, 142.0, 5);
-    // ClimbSteps(7698.0, 6988.0, 48.0, 142.0, 5);
-    // ClimbSteps(6476.0, 5766.0, 48.0, 142.0, 5);
-}
-
-//----------------------------------------------------------------------------------------
-
-void Camera::ClimbSteps(GLfloat stepStart, GLfloat stepFinish,
-                        GLfloat stepHeight, GLfloat stepWidth, int noSteps) {
-    GLfloat tempUpSteps;
-    if ((m_z < stepStart) && (m_z > stepFinish)) {
-        bool stepped = false;
-        if (m_z > m_zLast) {
-            m_direction = 1.0;
-            tempUpSteps = stepWidth;
-        } else {
-            m_direction = -1.0;
-            tempUpSteps = 0.0;
-        }
-
-        for (int i = 0; i < noSteps + 1; i++) {
-            if ((m_z < (stepStart - (i * stepWidth) + stepWidth / 2) - tempUpSteps) &&
-                (m_z > (stepStart - (i * stepWidth) - stepWidth / 2) - tempUpSteps)) {
-                if (stepped == false) {
-                    m_z = stepStart - (stepWidth * i) +
-                          (m_direction * stepWidth) - tempUpSteps;
-                    m_y += stepHeight * m_direction;
-
-                    stepped = true;
-                    DirectionFB(0);
-                    DirectionLR(0);
-                }
-            }
-        }
-    }
-}
-//----------------------------------------------------------------------------------------
-
