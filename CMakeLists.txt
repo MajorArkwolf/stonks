@@ -48,18 +48,23 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     CXX_EXTENSIONS OFF
 )
 
-# Set clang compile flags.
+# Remove the default warning level from MSVC.
+if (MSVC)
+    string(REGEX REPLACE "/W[0-4]" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+endif()
+
+# Set Clang compile flags.
 target_compile_options(${PROJECT_NAME} PUBLIC
     $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:
     -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded
     -Wno-deprecated-declarations -fcolor-diagnostics>)
-# Set gcc compile flags.
+# Set GCC compile flags.
 target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:GNU>:-Wall
     -Wextra -Wpedantic -fdiagnostics-color=always>)
 # Set MSVC compile flags.
 target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/W4>)
 
-# Enable clang's address and memory sanitizers.
+# Enable Clang's address and memory sanitizers.
 target_compile_options(${PROJECT_NAME} PUBLIC
     $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
 target_link_libraries(${PROJECT_NAME} PUBLIC
