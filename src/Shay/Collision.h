@@ -40,11 +40,6 @@ namespace Shay {
             m_worldSizeZ = tempZ;
         }
 
-        // set number of bounding boxes
-        void SetNoBoundingBoxes(const int &tempSize) {
-            m_AABB.SetNoBoundingBoxes(tempSize);
-        }
-
         //----------------------------------------------------------------------------------
         //  Returns Methods
         //----------------------------------------------------------------------------------

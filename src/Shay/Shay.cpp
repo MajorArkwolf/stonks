@@ -56,12 +56,6 @@ void ShaysWorld::Init() {
 
     // set the world co-ordinates (used to set quadrants for bounding boxes)
     cam.SetWorldCoordinates(36000.0, 43200.0);
-    // turn collision detection on
-    cam.SetCollisionDetectionOn(true);
-    // set number of bounding boxes required
-    cam.SetNoBoundingBoxes(19);
-    // set starting position of user
-    cam.Position(32720.0, 9536.0, 4800.0, 180.0);
 
     CreatePlains();
 
@@ -79,40 +73,37 @@ void ShaysWorld::Init() {
 //  Main Display Function
 //--------------------------------------------------------------------------------------
 void ShaysWorld::Display() {
-    // check for movement
-    cam.CheckCamera();
+    auto &stonk = Stonk::Engine::get();
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // DISPLAY TEXTURES
-    // enable texture mapping
     glEnable(GL_TEXTURE_2D);
     glPushMatrix();
-    // displays the welcome screen
-    if (DisplayWelcome)
+
+    if (DisplayWelcome) {
         cam.DisplayWelcomeScreen(width, height, 1, tp.GetTexture(WELCOME));
-    // displays the exit screen
-    if (DisplayExit)
+    } else if (DisplayExit) {
         cam.DisplayWelcomeScreen(width, height, 0, tp.GetTexture(EXIT));
-    // displays the map
-    if (DisplayMap)
+    }
+
+    if (DisplayMap) {
         cam.DisplayMap(width, height, tp.GetTexture(MAP));
-    // display no exit sign (position check should really be in an object, but
-    // didn't have time)
+    }
+
     if (((cam.GetLR() > 35500.0f) && (cam.GetFB() < 25344.0f)) ||
         ((cam.GetLR() > 34100.0f) && (cam.GetFB() > 41127.0f))) {
         cam.DisplayNoExit(width, height, tp.GetTexture(NO_EXIT));
     }
-    // set the movement and rotation speed according to frame count
-    IncrementFrameCount();
-    cam.SetMoveSpeed(stepIncrement);
-    cam.SetRotateSpeed(angleIncrement);
-    // display images
+
     DrawBackdrop();
     glPopMatrix();
     glDisable(GL_TEXTURE_2D);
-    // clear buffers
-    // glutSwapBuffers();
+
+    SDL_GL_SwapWindow(stonk.window.get());
+}
+
+void ShaysWorld::Update(double dt) {
+    cam.Update(dt);
 }
 
 void ShaysWorld::CreateBoundingBoxes() {
@@ -217,8 +208,73 @@ void ShaysWorld::CreateBoundingBoxes() {
     cam.SetAABBMinX(16, 31444.0);
     cam.SetAABBMaxZ(16, 10395.0);
     cam.SetAABBMinZ(16, 4590.0);
+
+    CreatePostBoundingBoxes();
 }
 
+void ShaysWorld::CreatePostBoundingBoxes() {
+    // This code is based on DisplayMainPosts.
+    step       = 0.0f;
+    stepLength = 0.0f;
+    step2      = 0.0f;
+    // Continuing on from 16 from CreateBoundingBoxes
+    int aabbIndex = 17; 
+    
+    // The calllist to draw pillars draws them offset from the origin
+    // instead of just drawing them at origin and then translating (Why, shay.)
+    constexpr float pillarXOffset = 31740.0f;
+    constexpr float pillarYOffset = 9995.0f;
+    constexpr float pillarZOffset = 10105.0f;
+    constexpr float pillarSize = 128.0f;
+    for (int j = 0; j < 2; j++) {
+        for (int i = 0; i < 17; i++) {   // 17: left post count
+            float pillarZPos = pillarZOffset + step + step2;
+            float pillarXPos = pillarXOffset + stepLength;
+            cam.SetAABBMaxX(aabbIndex, pillarXPos + pillarSize);
+            cam.SetAABBMinX(aabbIndex, pillarXPos);
+            cam.SetAABBMaxZ(aabbIndex, pillarZPos + pillarSize);
+            cam.SetAABBMinZ(aabbIndex, pillarZPos);
+            aabbIndex++;
+            if ((i == 7) && (j == 0)) // between chanc and phys sci
+            {
+                //left pillar near bike racks between the two buildings
+                constexpr float betweenPillarOffset = 4008.0f;
+                cam.SetAABBMaxX(aabbIndex, pillarXPos + pillarSize + betweenPillarOffset);
+                cam.SetAABBMinX(aabbIndex, pillarXPos + betweenPillarOffset);
+                cam.SetAABBMaxZ(aabbIndex, pillarZPos + pillarSize);
+                cam.SetAABBMinZ(aabbIndex, pillarZPos);
+                aabbIndex++;
+            }
+            step += 1930.0f;
+        }
+        stepLength -= 27192.0f; // Move to draw right posts
+        step2 -= 32810.0f;  // Move right posts to start
+    }
+
+    // library front pillars
+    step = -1940.0f;
+    // library pillar Z offset
+    constexpr float libPillarZ = 30880.0f;
+    for (int i = 0; i < 13; i++) {
+        float pillarZPos = pillarZOffset + libPillarZ;
+        float pillarXPos = pillarXOffset + step;
+        cam.SetAABBMaxX(aabbIndex, pillarXPos + pillarSize);
+        cam.SetAABBMinX(aabbIndex, pillarXPos);
+        cam.SetAABBMaxZ(aabbIndex, pillarZPos + pillarSize);
+        cam.SetAABBMinZ(aabbIndex, pillarZPos);
+        aabbIndex++;
+        step -= 1940.0f;
+    }
+    //For some reason, the chancellery pillar's "model" is offset
+    //differently than the other pillars.
+    constexpr float chancelleryPillarZOffset = 8100.0f;
+    //First pillar (taller pillar at chancellery, by spawn)
+    cam.SetAABBMaxX(aabbIndex, pillarXOffset + 128.f);
+    cam.SetAABBMinX(aabbIndex, pillarXOffset);
+    cam.SetAABBMaxZ(aabbIndex, chancelleryPillarZOffset + 128.0f);
+    cam.SetAABBMinZ(aabbIndex, chancelleryPillarZOffset);
+    aabbIndex++;
+}
 //--------------------------------------------------------------------------------------
 // Set up co-ordinates of different plains
 //--------------------------------------------------------------------------------------

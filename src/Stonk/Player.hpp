@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Stonk/Entity.hpp"
 #include "Stonk/Camera.hpp"
+#include "Stonk/Entity.hpp"
 
 namespace Stonk {
     /**
@@ -10,7 +10,7 @@ namespace Stonk {
     class Player {
         Camera camera;
         auto moveUpDown() -> void;
-        //auto jump() -> void;
+        // auto jump() -> void;
         auto moveLeftRight() -> void;
         auto moveForwardBack() -> void;
         auto setPosition() -> void;
