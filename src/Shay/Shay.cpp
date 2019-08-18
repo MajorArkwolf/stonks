@@ -218,16 +218,16 @@ void ShaysWorld::CreatePostBoundingBoxes() {
     stepLength = 0.0f;
     step2      = 0.0f;
     // Continuing on from 16 from CreateBoundingBoxes
-    int aabbIndex = 17; 
-    
+    int aabbIndex = 17;
+
     // The calllist to draw pillars draws them offset from the origin
     // instead of just drawing them at origin and then translating (Why, shay.)
     constexpr float pillarXOffset = 31740.0f;
     constexpr float pillarYOffset = 9995.0f;
     constexpr float pillarZOffset = 10105.0f;
-    constexpr float pillarSize = 128.0f;
+    constexpr float pillarSize    = 128.0f;
     for (int j = 0; j < 2; j++) {
-        for (int i = 0; i < 17; i++) {   // 17: left post count
+        for (int i = 0; i < 17; i++) { // 17: left post count
             float pillarZPos = pillarZOffset + step + step2;
             float pillarXPos = pillarXOffset + stepLength;
             cam.SetAABBMaxX(aabbIndex, pillarXPos + pillarSize);
@@ -237,9 +237,10 @@ void ShaysWorld::CreatePostBoundingBoxes() {
             aabbIndex++;
             if ((i == 7) && (j == 0)) // between chanc and phys sci
             {
-                //left pillar near bike racks between the two buildings
+                // left pillar near bike racks between the two buildings
                 constexpr float betweenPillarOffset = 4008.0f;
-                cam.SetAABBMaxX(aabbIndex, pillarXPos + pillarSize + betweenPillarOffset);
+                cam.SetAABBMaxX(aabbIndex,
+                                pillarXPos + pillarSize + betweenPillarOffset);
                 cam.SetAABBMinX(aabbIndex, pillarXPos + betweenPillarOffset);
                 cam.SetAABBMaxZ(aabbIndex, pillarZPos + pillarSize);
                 cam.SetAABBMinZ(aabbIndex, pillarZPos);
@@ -248,7 +249,7 @@ void ShaysWorld::CreatePostBoundingBoxes() {
             step += 1930.0f;
         }
         stepLength -= 27192.0f; // Move to draw right posts
-        step2 -= 32810.0f;  // Move right posts to start
+        step2 -= 32810.0f;      // Move right posts to start
     }
 
     // library front pillars
@@ -265,10 +266,10 @@ void ShaysWorld::CreatePostBoundingBoxes() {
         aabbIndex++;
         step -= 1940.0f;
     }
-    //For some reason, the chancellery pillar's "model" is offset
-    //differently than the other pillars.
+    // For some reason, the chancellery pillar's "model" is offset
+    // differently than the other pillars.
     constexpr float chancelleryPillarZOffset = 8100.0f;
-    //First pillar (taller pillar at chancellery, by spawn)
+    // First pillar (taller pillar at chancellery, by spawn)
     cam.SetAABBMaxX(aabbIndex, pillarXOffset + 128.f);
     cam.SetAABBMinX(aabbIndex, pillarXOffset);
     cam.SetAABBMaxZ(aabbIndex, chancelleryPillarZOffset + 128.0f);
@@ -2201,7 +2202,7 @@ void ShaysWorld::DisplayPavement() {
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(PAVEMENT));
     glCallList(78);
-    //glCallList(79);
+    // glCallList(79);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(PAVEMENT_16));
     glCallList(80);
@@ -4434,7 +4435,7 @@ void ShaysWorld::DrawLargerTextures() {
 void ShaysWorld::DisplayGrass() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(GRASS));
     glPushMatrix();
-    glTranslatef(0,0,2880);
+    glTranslatef(0, 0, 2880);
     glCallList(79);
     glPopMatrix();
     glCallList(111);
@@ -4456,7 +4457,7 @@ void ShaysWorld::DrawGrass() {
     float lowerPlaneExtendMult = 10;
     // Lower flat plane
     tp.CreateDisplayList(XZ, 79, 64.0f, 64.0f, 4848.0f, 9086.0f, 3408.0f,
-                         417.5f, -45.0f*lowerPlaneExtendMult); // 45.0f
+                         417.5f, -45.0f * lowerPlaneExtendMult); // 45.0f
     // Higher flat plane
     tp.CreateDisplayList(XZ, 111, 64.0f, 64.0f, 4848.0f, 10000.0f, 10000.0f,
                          417.5f, 481.5f);
