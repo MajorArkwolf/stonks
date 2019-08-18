@@ -218,16 +218,16 @@ void ShaysWorld::CreatePostBoundingBoxes() {
     stepLength = 0.0f;
     step2      = 0.0f;
     // Continuing on from 16 from CreateBoundingBoxes
-    int aabbIndex = 17; 
-    
+    int aabbIndex = 17;
+
     // The calllist to draw pillars draws them offset from the origin
     // instead of just drawing them at origin and then translating (Why, shay.)
     constexpr float pillarXOffset = 31740.0f;
     constexpr float pillarYOffset = 9995.0f;
     constexpr float pillarZOffset = 10105.0f;
-    constexpr float pillarSize = 128.0f;
+    constexpr float pillarSize    = 128.0f;
     for (int j = 0; j < 2; j++) {
-        for (int i = 0; i < 17; i++) {   // 17: left post count
+        for (int i = 0; i < 17; i++) { // 17: left post count
             float pillarZPos = pillarZOffset + step + step2;
             float pillarXPos = pillarXOffset + stepLength;
             cam.SetAABBMaxX(aabbIndex, pillarXPos + pillarSize);
@@ -237,9 +237,10 @@ void ShaysWorld::CreatePostBoundingBoxes() {
             aabbIndex++;
             if ((i == 7) && (j == 0)) // between chanc and phys sci
             {
-                //left pillar near bike racks between the two buildings
+                // left pillar near bike racks between the two buildings
                 constexpr float betweenPillarOffset = 4008.0f;
-                cam.SetAABBMaxX(aabbIndex, pillarXPos + pillarSize + betweenPillarOffset);
+                cam.SetAABBMaxX(aabbIndex,
+                                pillarXPos + pillarSize + betweenPillarOffset);
                 cam.SetAABBMinX(aabbIndex, pillarXPos + betweenPillarOffset);
                 cam.SetAABBMaxZ(aabbIndex, pillarZPos + pillarSize);
                 cam.SetAABBMinZ(aabbIndex, pillarZPos);
@@ -248,7 +249,7 @@ void ShaysWorld::CreatePostBoundingBoxes() {
             step += 1930.0f;
         }
         stepLength -= 27192.0f; // Move to draw right posts
-        step2 -= 32810.0f;  // Move right posts to start
+        step2 -= 32810.0f;      // Move right posts to start
     }
 
     // library front pillars
@@ -265,10 +266,10 @@ void ShaysWorld::CreatePostBoundingBoxes() {
         aabbIndex++;
         step -= 1940.0f;
     }
-    //For some reason, the chancellery pillar's "model" is offset
-    //differently than the other pillars.
+    // For some reason, the chancellery pillar's "model" is offset
+    // differently than the other pillars.
     constexpr float chancelleryPillarZOffset = 8100.0f;
-    //First pillar (taller pillar at chancellery, by spawn)
+    // First pillar (taller pillar at chancellery, by spawn)
     cam.SetAABBMaxX(aabbIndex, pillarXOffset + 128.f);
     cam.SetAABBMinX(aabbIndex, pillarXOffset);
     cam.SetAABBMaxZ(aabbIndex, chancelleryPillarZOffset + 128.0f);
@@ -2781,8 +2782,10 @@ void ShaysWorld::DrawBricks() {
 void ShaysWorld::DisplayRoof() {
     // main roof planks
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ROOF_PLANKS));
-    for (GLuint i = 250; i < 253; i++)
+    for (GLuint i = 250; i < 253; i++) {
         glCallList(i);
+    }
+    glCallList(6000);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ROOF_BEAM_1));
     // corner beams
@@ -2801,6 +2804,19 @@ void ShaysWorld::DisplayRoof() {
     glCallList(253);
     glPopMatrix();
     glCallList(254);
+
+    step = -1689.0f;
+    for (GLuint i = 0; i < 85; i++) {
+        glPushMatrix();
+        glTranslatef(0.0f, 0.0f, step);
+        glCallList(6001);
+        glPopMatrix();
+        step += 386.0f;
+    }
+    glPushMatrix();
+    glTranslatef(0.0f, 0.0f, -2005.0f);
+    glCallList(6001);
+    glPopMatrix();
 
     step = 214.0f;
     for (GLuint i = 0; i < 8; i++) {
@@ -2878,6 +2894,29 @@ void ShaysWorld::DisplayRoof() {
     glPushMatrix();
     glTranslatef(0.0f, 0.0f, -1973.0f);
     glCallList(255);
+    glPopMatrix();
+
+    // HUB PLANKS
+    step = -1689.0f;
+    for (GLuint i = 0; i < 85; i++) {
+        glPushMatrix();
+        glTranslatef(0.0f, 0.0f, step);
+        glCallList(6002);
+        glPopMatrix();
+        glPushMatrix();
+        glTranslatef(0.0f, 0.0f, step + 32.0f);
+        glCallList(6002);
+        glPopMatrix();
+        step += 386.0f;
+    }
+
+    glPushMatrix();
+    glTranslatef(0.0f, 0.0f, -2005.0f);
+    glCallList(6002);
+    glPopMatrix();
+    glPushMatrix();
+    glTranslatef(0.0f, 0.0f, -1973.0f);
+    glCallList(6002);
     glPopMatrix();
 
     step = 214.0f;
@@ -3032,7 +3071,7 @@ void ShaysWorld::DrawRoof() {
     glVertex3f(2608.0f, 12140.72f, 43095.2f);
     glEnd();
     glEndList();
-    // Chanc Side Planks
+    // Chanc Side Planks // roof planks
     glNewList(250, GL_COMPILE);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 0.0f);
@@ -3069,6 +3108,45 @@ void ShaysWorld::DrawRoof() {
     glVertex3f(33848.0f, 12012.72f + 82.0f, 10105.0f);
     glTexCoord2f(16.48f, 0.0f);
     glVertex3f(33848.0f, 12012.72f, 10105.0f);
+    glEnd();
+    glEndList();
+    // StudentHub Side Planks
+    glNewList(6000, GL_COMPILE);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(2568.0f, 12094.72f, 8100.0f);
+    glTexCoord2f(0.0f, 257.9f);
+    glVertex3f(2568.0f, 12094.72f, 8100.0f + (128.0f * 273.4f));
+    glTexCoord2f(16.48f, 273.4f);
+    glVertex3f(4548.0f, 11366.0f, 8100.0f + (128.0f * 257.9f));
+    glTexCoord2f(16.48f, 0.0f);
+    glVertex3f(4548.0f, 11366.0f, 8100.0f);
+    glEnd();
+    glEndList();
+    // Hub Side Beams Bottom
+    glNewList(6001, GL_COMPILE);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(31868.0f - 29300, 12012.72f, 10105.0f);
+    glTexCoord2f(0.0, 1.0);
+    glVertex3f(31868.0f - 29300, 12012.72f, 10137.0f);
+    glTexCoord2f(16.48f, 1.0f);
+    glVertex3f(33848.0f - 29300, 11284.0f, 10137.0f);
+    glTexCoord2f(16.48f, 0.0f);
+    glVertex3f(33848.0f - 29300, 11284.0f, 10105.0f);
+    glEnd();
+    glEndList();
+    // Hub Side Beams Side
+    glNewList(6002, GL_COMPILE);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(31868.0f - 29300, 12012.72f, 10105.0f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(31868.0f - 29300, 12012.72f + 82.0f, 10105.0f);
+    glTexCoord2f(16.48f, 1.0f);
+    glVertex3f(33848.0f - 29300, 11284.0f + 82.0f, 10105.0f);
+    glTexCoord2f(16.48f, 0.0f);
+    glVertex3f(33848.0f - 29300, 11284.0f, 10105.0f);
     glEnd();
     glEndList();
     // Chanc Side Planks (between chanc and phys sci)
