@@ -5,8 +5,8 @@ cmake_minimum_required(VERSION 3.12)
 set(PROJECT_NAME shays-world)
 project(${PROJECT_NAME} LANGUAGES CXX)
 
-# If enabled, the post build symlink won't occur.
-option(DisablePostBuild "DisablePostBuild" OFF)
+# If enabled, the post build symlink will copy instead.
+option(CopyResources "CopyResources" OFF)
 
 # Disable in-source builds.
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
@@ -86,8 +86,21 @@ target_link_libraries(${PROJECT_NAME} PUBLIC OpenGL::GL OpenGL::GLU
     SDL2::SDL2 SDL2::Image SDL2::TTF SDL2::Mixer glm)
 
 # Symlink the resources to the binary location.
-if (NOT DisablePostBuild)
+if (NOT CopyResources)
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E create_symlink
         ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${PROJECT_NAME}>/res)
+else()
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${PROJECT_NAME}>/res)
 endif()
+
+# Copy libraries to the binary location.
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    $<TARGET_FILE:SDL2::Core>
+    $<TARGET_FILE:SDL2::Image>
+    $<TARGET_FILE:SDL2::TTF>
+    $<TARGET_FILE:SDL2::Mixer>
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>)
