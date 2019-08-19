@@ -2849,7 +2849,7 @@ void ShaysWorld::DisplayRoof() {
         glCallList(i);
 
     glPushMatrix();
-    glTranslatef(-31300, 0, 0);
+    glTranslatef(-31300, 5, 0);
     for (GLuint i = 6003; i < 6008; i++) {
         glCallList(i);
     }
@@ -2946,7 +2946,7 @@ void ShaysWorld::DisplayRoof() {
     }
     // Angled beams side *KIERA*
     glPushMatrix();
-    glTranslatef(-31300, 0, 0);
+    glTranslatef(-31290, 0, 0);
     for (GLuint i = 6008; i < 6013; i++) {
         glCallList(i);
         glPushMatrix();
@@ -2958,7 +2958,7 @@ void ShaysWorld::DisplayRoof() {
 
     glPushMatrix();
     glTranslatef(-29100, 0, 0);
-    for (GLuint i = 6017; i < 6022; i++) {
+    for (GLuint i = 6017; i < 6023; i++) {
         glCallList(i);
         glPushMatrix();
         glTranslatef(32.0f, 0.0f, 0.0f);
@@ -2966,6 +2966,7 @@ void ShaysWorld::DisplayRoof() {
         glPopMatrix();
     }
     glPopMatrix();
+	// Angled beams side end
 
     step = -1689.0f;
     for (GLuint i = 0; i < 85; i++) {
