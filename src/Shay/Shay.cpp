@@ -1306,6 +1306,10 @@ void ShaysWorld::DisplayAboveWindowBlock() {
     glTranslatef(-2068.0f, 310.0f, -17244.0f);
     glCallList(49);
     glPopMatrix();
+    glPushMatrix(); // Student Hub pillar cap *KIERA*
+    glTranslatef(-29258.0f, 310.0f, -17244.0f);
+    glCallList(49);
+    glPopMatrix();
     glCallList(425);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ABOVE_WINDOW_BLOCK_XY_3));
@@ -1524,8 +1528,6 @@ void ShaysWorld::DrawAboveWindowBlock() {
     // ABOVE_WINDOW_EDGE_3B
     tp.CreateDisplayList(XY, 49, 128.0f, 256.0f, 33808.0f, 10832.0f, 25344.0f, 1.0f,
                          0.75f); // 3 bricks high
-    tp.CreateDisplayList(XY, 1002, 128.0f, 256.0f, 6618.0f, 10832.0f, 25344.0f, 1.0f,
-                         0.75f); // support beam end
 
     // ABOVE_WINDOW_BLOCK_XY_3
     tp.CreateDisplayList(XY, 50, 256.0f, 256.0f, 33888.0f, 10832.0f, 26752.0f,
