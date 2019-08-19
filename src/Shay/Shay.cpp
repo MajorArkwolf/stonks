@@ -1333,10 +1333,12 @@ void ShaysWorld::DisplayAboveWindowBlock() {
     glCallList(231);
     glCallList(43);
     glCallList(45);
-    glCallList(53); // aboves posts
+    glCallList(53);   // aboves posts
+    glCallList(1000); // support beam, student hub
     glPushMatrix();
     glTranslatef(128.0f, 0.0f, 0.0f);
     glCallList(53);
+    glCallList(1000); // support beam, student hub.
     glPopMatrix();
     glCallList(68);
     glCallList(71); // above post between chanc and phys sci
@@ -1359,6 +1361,10 @@ void ShaysWorld::DisplayAboveWindowBlock() {
     glPopMatrix();
     glPushMatrix();
     glTranslatef(-2068.0f, 310.0f, -17244.0f);
+    glCallList(49);
+    glPopMatrix();
+    glPushMatrix(); // Student Hub pillar cap *KIERA*
+    glTranslatef(-29258.0f, 310.0f, -17244.0f);
     glCallList(49);
     glPopMatrix();
     glCallList(425);
@@ -1391,6 +1397,7 @@ void ShaysWorld::DisplayAboveWindowBlock() {
     glCallList(54);
     glCallList(67);
     glCallList(72);
+    glCallList(1001);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(BELOW_ROOF_FILL));
     glCallList(39);
@@ -1513,9 +1520,9 @@ void ShaysWorld::DrawAboveWindowBlock() {
                          6.125f); // phys sci above under 2nd door
 
     tp.CreateDisplayList(YZ, 53, 256.0f, 256.0f, 31740.0f, 11142.0f, 8100.0f, 0.75f,
-                         128.955f); // above posts chanc and canteen sides
+                         128.955f); // above posts chanc and canteen sides *PETER*
     tp.CreateDisplayList(XZ, 54, 128.0f, 256.0f, 31740.0f, 11142.0f, 8100.0f, 1.0f,
-                         128.955f); // above under main posts
+                         128.955f); // above under main posts *PETER*
     tp.CreateDisplayList(XZ, 67, 128.0f, 256.0f, 35920.0f, 10832.0f, 41127.0f, 1.0f,
                          7.6f); // above under steps at end of phys sci
     tp.CreateDisplayList(YZ, 68, 256.0f, 256.0f, 35920.0f, 10832.0f, 41127.0f, 0.75f,
@@ -1529,6 +1536,12 @@ void ShaysWorld::DrawAboveWindowBlock() {
                          12.69f); // above post between chanc and phys sci
     tp.CreateDisplayList(XZ, 72, 128.0f, 256.0f, 35748.0f, 11142.0f, 22096.0f, 1.0f,
                          12.69f); // above under post between chanc and phys sci
+
+    /* Added by Peter to Display the support beam on student hub*/
+    tp.CreateDisplayList(YZ, 1000, 256.0f, 256.0f, 4550.0f, 11142.0f, 8100.0f, 0.75f,
+                         128.955f); // above posts chanc and canteen sides *PETER*
+    tp.CreateDisplayList(XZ, 1001, 128.0f, 256.0f, 4550.0f, 11142.0f, 8100.0f, 1.0f,
+                         128.955f); // above under main posts *PETER*
 
     glNewList(232, GL_COMPILE);
     glBegin(GL_QUADS);
