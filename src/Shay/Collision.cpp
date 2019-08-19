@@ -20,12 +20,13 @@ void Collision::CreateLinkedList()
     m_listSize[3] = 0;
 
     for (int count = 0; count < tempNoBoxes; count++) {
-        GLfloat maxX = GetAABBMaxX(count);
-        GLfloat minX = GetAABBMinX(count);
-        GLfloat maxY = GetAABBMaxY(count);
-        GLfloat minY = GetAABBMinY(count);
-        GLfloat maxZ = GetAABBMaxZ(count);
-        GLfloat minZ = GetAABBMinZ(count);
+        this->m_AABB.SetAABBIndex(count);
+        GLfloat maxX = GetAABBMaxX();
+        GLfloat minX = GetAABBMinX();
+        GLfloat maxY = GetAABBMaxY();
+        GLfloat minY = GetAABBMinY();
+        GLfloat maxZ = GetAABBMaxZ();
+        GLfloat minZ = GetAABBMinZ();
         // 1st quadrant
         if (((minX <= m_worldSizeX / 2.0f) || (maxX <= m_worldSizeX / 2.0f)) &&
             ((minZ <= m_worldSizeZ / 2.0f) || (maxZ <= m_worldSizeZ / 2.0f))) {
@@ -110,3 +111,7 @@ bool Collision::CheckCollision(int index, GLfloat endX, GLfloat endY, GLfloat en
     return CollisionFound;
 }
 //--------------------------------------------------------------------------------------
+
+auto Collision::FinishAABB() -> void {
+    m_AABB.FinishAABB();
+}

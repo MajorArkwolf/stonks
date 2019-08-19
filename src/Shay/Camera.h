@@ -31,23 +31,23 @@ namespace Shay {
         //  Set Methods
         //----------------------------------------------------------------------------------
         // sets initial value for bounding boxes (in the array AABB)
-        void SetAABBMaxX(const int &tempIndex, const GLfloat &tempX) {
-            m_colDetect.SetAABBMaxX(tempIndex, tempX);
+        void SetAABBMaxX(const GLfloat &tempX) {
+            m_colDetect.SetAABBMaxX(tempX);
         }
-        void SetAABBMinX(const int &tempIndex, const GLfloat &tempX) {
-            m_colDetect.SetAABBMinX(tempIndex, tempX);
+        void SetAABBMinX(const GLfloat &tempX) {
+            m_colDetect.SetAABBMinX(tempX);
         }
-        void SetAABBMaxY(const int &tempIndex, const GLfloat &tempY) {
-            m_colDetect.SetAABBMaxY(tempIndex, tempY);
+        void SetAABBMaxY(const GLfloat &tempY) {
+            m_colDetect.SetAABBMaxY(tempY);
         }
-        void SetAABBMinY(const int &tempIndex, const GLfloat &tempY) {
-            m_colDetect.SetAABBMinY(tempIndex, tempY);
+        void SetAABBMinY(const GLfloat &tempY) {
+            m_colDetect.SetAABBMinY(tempY);
         }
-        void SetAABBMaxZ(const int &tempIndex, const GLfloat &tempZ) {
-            m_colDetect.SetAABBMaxZ(tempIndex, tempZ);
+        void SetAABBMaxZ(const GLfloat &tempZ) {
+            m_colDetect.SetAABBMaxZ(tempZ);
         }
-        void SetAABBMinZ(const int &tempIndex, const GLfloat &tempZ) {
-            m_colDetect.SetAABBMinZ(tempIndex, tempZ);
+        void SetAABBMinZ(const GLfloat &tempZ) {
+            m_colDetect.SetAABBMinZ(tempZ);
         }
 
         // set step and rotation size
@@ -85,24 +85,28 @@ namespace Shay {
         GLfloat GetFB() {
             return this->position.z;
         }
-        GLfloat GetAABBMaxX(const int &tempIndex) {
-            return m_colDetect.GetAABBMaxX(tempIndex);
+        GLfloat GetAABBMaxX() {
+            return m_colDetect.GetAABBMaxX();
         }
-        GLfloat GetAABBMinX(const int &tempIndex) {
-            return m_colDetect.GetAABBMinX(tempIndex);
+        GLfloat GetAABBMinX() {
+            return m_colDetect.GetAABBMinX();
         }
-        GLfloat GetAABBMaxY(const int &tempIndex) {
-            return m_colDetect.GetAABBMaxY(tempIndex);
+        GLfloat GetAABBMaxY() {
+            return m_colDetect.GetAABBMaxY();
         }
-        GLfloat GetAABBMinY(const int &tempIndex) {
-            return m_colDetect.GetAABBMinY(tempIndex);
+        GLfloat GetAABBMinY() {
+            return m_colDetect.GetAABBMinY();
         }
-        GLfloat GetAABBMaxZ(const int &tempIndex) {
-            return m_colDetect.GetAABBMaxZ(tempIndex);
+        GLfloat GetAABBMaxZ() {
+            return m_colDetect.GetAABBMaxZ();
         }
-        GLfloat GetAABBMinZ(const int &tempIndex) {
-            return m_colDetect.GetAABBMinZ(tempIndex);
+        GLfloat GetAABBMinZ() {
+            return m_colDetect.GetAABBMinZ();
         }
+        /**
+         * @brief Finish the currently edited AABB
+         */
+        auto FinishAABB() -> void;
 
         void Update(double dt);
 

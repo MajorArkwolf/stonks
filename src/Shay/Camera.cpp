@@ -219,3 +219,7 @@ void Camera::SetPlains(const int tempType, const GLfloat tempXs,
                        const GLfloat tempZe) {
     m_Plain.AddToStart(tempType, tempXs, tempXe, tempYs, tempYe, tempZs, tempZe);
 }
+
+auto Camera::FinishAABB() -> void {
+    m_colDetect.FinishAABB();
+}
