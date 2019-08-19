@@ -56,7 +56,12 @@ deploy:
   provider: releases
   name: ${TRAVIS_TAG}
   api_key: ${GITHUB_TOKEN}
-  file: "build/${TRAVIS_TAG}-${TRAVIS_OS_NAME}.tar.gz"
+  file:
+  - if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+      "build/${TRAVIS_TAG}-${TRAVIS_OS_NAME}.dmg";
+    else
+      "build/${TRAVIS_TAG}-${TRAVIS_OS_NAME}.tar.gz";
+    fi
   skip_cleanup: true
   on:
     tags: true
