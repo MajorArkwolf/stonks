@@ -33,7 +33,12 @@ BreakBeforeTernaryOperators: true
 AlignOperands: true
 AllowShortCaseLabelsOnASingleLine: true
 IncludeCategories:
-  - Regex:           '^<.*\>'
+# Standard library headers
+  - Regex:           '^<[^\/]*$'
     Priority:        1
-  - Regex:           '.*'
+# Other headers
+  - Regex:           '^<.*'
     Priority:        2
+# Project headers
+  - Regex:           '.*'
+    Priority:        3
