@@ -3033,7 +3033,11 @@ void ShaysWorld::DisplayRoof() {
     for (GLuint i = 170; i < 175; i++) {
         glCallList(i);
     }
-
+	// student hub spacers *Kiera*
+    glPushMatrix();
+    glTranslatef(-27300,0,0);
+    glCallList(99);
+    glPopMatrix();
     // Top of Roof
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ROOF_TOP));
     for (GLuint i = 214; i < 216; i++) {
@@ -3127,13 +3131,13 @@ void ShaysWorld::DrawRoof() {
     glNewList(6000, GL_COMPILE);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 0.0f);
-    glVertex3f(2568.0f, 12094.72f, 8100.0f);
+    glVertex3f(2588.0f, 12094.72f, 8100.0f);
     glTexCoord2f(0.0f, 257.9f);
-    glVertex3f(2568.0f, 12094.72f, 8100.0f + (128.0f * 273.4f));
+    glVertex3f(2588.0f, 12094.72f, 8100.0f + (128.0f * 273.4f));
     glTexCoord2f(16.48f, 273.4f);
-    glVertex3f(4548.0f, 11366.0f, 8100.0f + (128.0f * 257.9f));
+    glVertex3f(4568.0f, 11366.0f, 8100.0f + (128.0f * 257.9f));
     glTexCoord2f(16.48f, 0.0f);
-    glVertex3f(4548.0f, 11366.0f, 8100.0f);
+    glVertex3f(4568.0f, 11366.0f, 8100.0f);
     glEnd();
     glEndList();
     // Hub Side Beams Bottom
