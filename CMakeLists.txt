@@ -44,13 +44,6 @@ set (SOURCES
     src/Shay/Shay.cpp
 )
 
-# Set the icon path.
-if (APPLE)
-    set(ICON_PATH ${CMAKE_SOURCE_DIR}/cmake/macOS/stonk.icns)
-    set_source_files_properties(${ICON_PATH} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
-    list(APPEND SOURCES ${ICON_PATH})
-endif()
-
 # Define the executable.
 add_executable(${PROJECT_NAME} ${SOURCES})
 
@@ -110,61 +103,13 @@ else()
 endif()
 
 # Define install.
-if (NOT APPLE)
-    install(TARGETS ${PROJECT_NAME} DESTINATION ${PROJECT_NAME})
+install(TARGETS ${PROJECT_NAME} DESTINATION ${PROJECT_NAME})
+install(FILES "${CMAKE_SOURCE_DIR}/LICENSE.md" DESTINATION ${PROJECT_NAME})
+install(FILES "${CMAKE_SOURCE_DIR}/README.md" DESTINATION ${PROJECT_NAME})
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/res" DESTINATION ${PROJECT_NAME})
 
-    install(FILES "${CMAKE_SOURCE_DIR}/LICENSE.md" DESTINATION ${PROJECT_NAME})
-    install(FILES "${CMAKE_SOURCE_DIR}/README.md" DESTINATION ${PROJECT_NAME})
-    install(DIRECTORY "${CMAKE_SOURCE_DIR}/res" DESTINATION ${PROJECT_NAME})
-
-    set(CPACK_GENERATOR "TGZ")
-else()
-    # Include the Info.plist.
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        MACOSX_BUNDLE TRUE
-        MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/cmake/macOS/Info.plist)
-
-    install(TARGETS ${PROJECT_NAME}
-        BUNDLE DESTINATION . COMPONENT Runtime
-        RUNTIME DESTINATION bin COMPONENT Runtime)
-
-    install(FILES "${CMAKE_SOURCE_DIR}/LICENSE.md" DESTINATION .)
-    install(FILES "${CMAKE_SOURCE_DIR}/README.md" DESTINATION .)
-
-    # Define the app.
-    set(APPS "\${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.app")
-    set(DIRS ${CMAKE_BINARY_DIR})
-    install(CODE "include(BundleUtilities)
-        fixup_bundle(\"${APPS}\" \"\" \"${DIRS}\")")
-    set(CPACK_GENERATOR "DragNDrop")
-endif()
-
-# Copy libraries to the binary directory.
-if(NOT APPLE)
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    $<TARGET_FILE:SDL2::Core>
-    $<TARGET_FILE:SDL2::Image>
-    $<TARGET_FILE:SDL2::TTF>
-    $<TARGET_FILE:SDL2::Mixer>
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>)
-else()
-    # The above code doesn't resolve symlinks for whatever reason.
-    get_filename_component(SDL2_CORE_PATH ${SDL2_LIBRARIES} REALPATH)
-    get_filename_component(SDL2_IMAGE_PATH ${SDL2_IMAGE_LIBRARIES} REALPATH)
-    get_filename_component(SDL2_TTF_PATH ${SDL2_TTF_LIBRARIES} REALPATH)
-    get_filename_component(SDL2_MIXER_PATH ${SDL2_MIXER_LIBRARIES} REALPATH)
-
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${SDL2_CORE_PATH}
-        ${SDL2_IMAGE_PATH}
-        ${SDL2_TTF_PATH}
-        ${SDL2_MIXER_PATH}
-        $<TARGET_FILE_DIR:${PROJECT_NAME}>)
-endif()
-
-# Cpack settings.
+# Define cpack settings.
+set(CPACK_GENERATOR "TGZ")
 set(CPACK_PACKAGE_VENDOR "Stonk")
 set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
@@ -173,6 +118,7 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.md")
 set(CPACK_RESOURCE_FILE_README "${CMAKE_SOURCE_DIR}/README.md")
 set(CPACK_SOURCE_IGNORE_FILES .DS_Store)
 
+# Set the appropriate file name.
 if (APPLE)
     set(CPACK_PACKAGE_FILE_NAME "$ENV{TRAVIS_TAG}-osx")
 elseif (UNIX)
