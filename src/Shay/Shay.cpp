@@ -1392,6 +1392,8 @@ void ShaysWorld::DisplayAboveWindowBlock() {
     glCallList(208);
     glCallList(233);
     glCallList(234);
+    glCallList(6024);
+    glCallList(6025);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ABOVE_UNDER_POSTS));
     glCallList(54);
@@ -1407,6 +1409,7 @@ void ShaysWorld::DisplayAboveWindowBlock() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ABOVE_UNDER_POSTS_2));
     glCallList(69);
     glCallList(232);
+    glCallList(6023);
 
     // -------------------------------- Above Library
     // ------------------------------------
@@ -1578,7 +1581,47 @@ void ShaysWorld::DrawAboveWindowBlock() {
     glTexCoord2f(10.54f, 0.75f);
     glVertex3f(33848.0f + 45.0f, 11920.0f + 192.0f, 43095.2f - 45.0f);
     glTexCoord2f(0.0f, 0.75f);
-    glVertex3f(31768.0f + 45, 11162.0f + 192.0f, 41011.2f - 45.0f);
+    glVertex3f(31768.0f + 45.0f, 11162.0f + 192.0f, 41011.2f - 45.0f);
+    glEnd();
+    glEndList();
+
+    // Hub / Library Join support *KIERA*
+    glNewList(6023, GL_COMPILE);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(33848.0f - 45.0f - 29200.0f, 11162.0f, 41011.2f - 45.0f);
+    glTexCoord2f(10.54f, 0.0f);
+    glVertex3f(31768.0f - 45.0f - 29200.0f, 11920.0f, 43095.2f - 45.0f);
+    glTexCoord2f(10.54f, 1.0f);
+    glVertex3f(31768.0f + 45.0f - 29200.0f, 11920.0f, 43095.2f + 45.0f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(33848.0f + 45.0f - 29200.0f, 11162.0f, 41011.2f + 45.0f);
+    glEnd();
+    glEndList();
+
+    glNewList(6024, GL_COMPILE);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(33848.0f + 45.0f - 29200.0f, 11162.0f, 41011.2f + 45.0f);
+    glTexCoord2f(10.54f, 0.0f);
+    glVertex3f(31768.0f + 45.0f - 29200.0f, 11920.0f, 43095.2f + 45.0f);
+    glTexCoord2f(10.54f, 0.75f);
+    glVertex3f(31768.0f + 45.0f - 29200.0f, 11920.0f + 192.0f, 43095.2f + 45.0f);
+    glTexCoord2f(0.0f, 0.75f);
+    glVertex3f(33848.0f + 45.0f - 29200.0f, 11162.0f + 192.0f, 41011.20f + 45.0f);
+    glEnd();
+    glEndList();
+
+    glNewList(6025, GL_COMPILE);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(33848.0f - 45.0f - 29200.0f, 11162.0f, 41011.2f - 45.0f);
+    glTexCoord2f(10.54f, 0.0f);
+    glVertex3f(31768.0f - 45 - 29200.0f, 11920.0f, 43095.2f - 45.0f);
+    glTexCoord2f(10.54f, 0.75f);
+    glVertex3f(31768.0f - 45 - 29200.0f, 11920.0f + 192.0f, 43095.2f - 45.0f);
+    glTexCoord2f(0.0f, 0.75f);
+    glVertex3f(33848.0f - 45.0f - 29200.0f, 11162.0f + 192.0f, 41011.2f - 45.0f);
     glEnd();
     glEndList();
 
@@ -2804,6 +2847,21 @@ void ShaysWorld::DisplayRoof() {
     // corner beams
     for (GLuint i = 1; i < 6; i++)
         glCallList(i);
+
+    glPushMatrix();
+    glTranslatef(-31300, 0, 0);
+    for (GLuint i = 6003; i < 6008; i++) {
+        glCallList(i);
+    }
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-29100, 0, 0);
+    for (GLuint i = 6013; i < 6018; i++) {
+        glCallList(i);
+    }
+    glPopMatrix();
+
     step = -1689.0f;
     for (GLuint i = 0; i < 85; i++) {
         glPushMatrix();
@@ -2886,6 +2944,28 @@ void ShaysWorld::DisplayRoof() {
         glCallList(i);
         glPopMatrix();
     }
+    // Angled beams side *KIERA*
+    glPushMatrix();
+    glTranslatef(-31300, 0, 0);
+    for (GLuint i = 6008; i < 6013; i++) {
+        glCallList(i);
+        glPushMatrix();
+        glTranslatef(0.0f, 0.0f, 32.0f);
+        glCallList(i);
+        glPopMatrix();
+    }
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-29100, 0, 0);
+    for (GLuint i = 6017; i < 6022; i++) {
+        glCallList(i);
+        glPushMatrix();
+        glTranslatef(32.0f, 0.0f, 0.0f);
+        glCallList(i);
+        glPopMatrix();
+    }
+    glPopMatrix();
 
     step = -1689.0f;
     for (GLuint i = 0; i < 85; i++) {
@@ -3033,9 +3113,9 @@ void ShaysWorld::DisplayRoof() {
     for (GLuint i = 170; i < 175; i++) {
         glCallList(i);
     }
-	// student hub spacers *Kiera*
+    // student hub spacers *Kiera*
     glPushMatrix();
-    glTranslatef(-27300,0,0);
+    glTranslatef(-27300, 0, 0);
     glCallList(99);
     glPopMatrix();
     // Top of Roof
@@ -3325,6 +3405,27 @@ void ShaysWorld::DrawRoof() {
                         8.78f);
     DrawAngledRoofBeam2(173, 33138.0f, 11998.0f - 246.22f, 43056.0f - 669.0f, 5.57f);
     DrawAngledRoofBeam2(174, 33524.0f, 11998.0f - 104.16f, 43056.0f - 283.0f, 2.36f);
+
+    // HUB roof join slants
+    DrawAngledRoofBeam(6003, 33848.0f + 1867.0f, 12012.72f - 687.13f, 41226.0,
+                       15.21f);
+    DrawAngledRoofBeam(6004, 33848.0f + 1481.0f, 12012.72f - 545.07f, 41612.0,
+                       12.0f);
+    DrawAngledRoofBeam(6005, 33848.0f + 1095.0f, 12012.72f - 403.01f, 41998.0,
+                       8.78f);
+    DrawAngledRoofBeam(6006, 33848.0f + 709.0f, 12012.72f - 260.94f, 42384.0, 5.57f);
+    DrawAngledRoofBeam(6007, 33848.0f + 323.0f, 12012.72f - 118.88f, 42770.0, 2.36f);
+    // Library Hub join slants
+    DrawAngledRoofBeam2(6013, 33524.0f, 11998.0f - 672.41f, 43056.0f - 1827.0f,
+                        2.36f);
+    DrawAngledRoofBeam2(6014, 33138.0f, 11998.0f - 530.35f, 43056.0f - 1441.0f,
+                        5.57f);
+    DrawAngledRoofBeam2(6015, 32752.0f, 11998.0f - 388.28f, 43056.0f - 1055.0f,
+                        8.78f);
+    DrawAngledRoofBeam2(6016, 32366.0f, 11998.0f - 246.22f, 43056.0f - 669.0f,
+                        12.0f);
+    DrawAngledRoofBeam2(6017, 31980.0f, 11998.0f - 104.16f, 43056.0f - 283.0f,
+                        15.21f);
 }
 
 // --------------------------------------------------------------------------------------
