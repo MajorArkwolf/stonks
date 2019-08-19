@@ -52,7 +52,6 @@ matrix:
 before_script: ./.travis/install-dependencies.sh
 script: ./.travis/build.sh
 after_failure: ./.travis/failure.sh
-before_deploy: ./.travis/before-deploy.sh
 deploy:
   provider: releases
   name: ${TRAVIS_TAG}

@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.12)
 
 # Set the project details.
 set(PROJECT_NAME shays-world)
+set(PROJECT_VERSION_MAJOR 0)
+set(PROJECT_VERSION_MINOR 1)
+set(PROJECT_VERSION_PATCH 0)
 project(${PROJECT_NAME} LANGUAGES CXX)
 
 # If enabled, the post build symlink will copy instead.
@@ -20,8 +23,8 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-# Define executable source files.
-add_executable(${PROJECT_NAME}
+# Define source files.
+set (SOURCES
     src/Main.cpp
 
     src/Stonk/Engine.cpp
@@ -40,6 +43,16 @@ add_executable(${PROJECT_NAME}
     src/Shay/TexturedPolygons.cpp
     src/Shay/Shay.cpp
 )
+
+# Set the icon path.
+if (APPLE)
+    set(ICON_PATH ${CMAKE_SOURCE_DIR}/cmake/macOS/stonk.icns)
+    set_source_files_properties(${ICON_PATH} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+    list(APPEND SOURCES ${ICON_PATH})
+endif()
+
+# Define the executable.
+add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Set C++ standard.
 set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -96,7 +109,38 @@ else()
         ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${PROJECT_NAME}>/res)
 endif()
 
-# Copy libraries to the binary location.
+# Define install.
+if (NOT APPLE)
+    install(TARGETS ${PROJECT_NAME} DESTINATION ${PROJECT_NAME})
+
+    install(FILES "${CMAKE_SOURCE_DIR}/LICENSE.md" DESTINATION ${PROJECT_NAME})
+    install(FILES "${CMAKE_SOURCE_DIR}/README.md" DESTINATION ${PROJECT_NAME})
+    install(DIRECTORY "${CMAKE_SOURCE_DIR}/res" DESTINATION ${PROJECT_NAME})
+
+    set(CPACK_GENERATOR "TGZ")
+else()
+    # Include the Info.plist.
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE TRUE
+        MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/cmake/macOS/Info.plist)
+
+    install(TARGETS ${PROJECT_NAME}
+        BUNDLE DESTINATION . COMPONENT Runtime
+        RUNTIME DESTINATION bin COMPONENT Runtime)
+
+    install(FILES "${CMAKE_SOURCE_DIR}/LICENSE.md" DESTINATION .)
+    install(FILES "${CMAKE_SOURCE_DIR}/README.md" DESTINATION .)
+
+    # Define the app.
+    set(APPS "\${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.app")
+    set(DIRS ${CMAKE_BINARY_DIR})
+    install(CODE "include(BundleUtilities)
+        fixup_bundle(\"${APPS}\" \"\" \"${DIRS}\")")
+    set(CPACK_GENERATOR "DragNDrop")
+endif()
+
+# Copy libraries to the binary directory.
+if(NOT APPLE)
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
     $<TARGET_FILE:SDL2::Core>
@@ -104,3 +148,37 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     $<TARGET_FILE:SDL2::TTF>
     $<TARGET_FILE:SDL2::Mixer>
     $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+else()
+    # The above code doesn't resolve symlinks for whatever reason.
+    get_filename_component(SDL2_CORE_PATH ${SDL2_LIBRARIES} REALPATH)
+    get_filename_component(SDL2_IMAGE_PATH ${SDL2_IMAGE_LIBRARIES} REALPATH)
+    get_filename_component(SDL2_TTF_PATH ${SDL2_TTF_LIBRARIES} REALPATH)
+    get_filename_component(SDL2_MIXER_PATH ${SDL2_MIXER_LIBRARIES} REALPATH)
+
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${SDL2_CORE_PATH}
+        ${SDL2_IMAGE_PATH}
+        ${SDL2_TTF_PATH}
+        ${SDL2_MIXER_PATH}
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+endif()
+
+# Cpack settings.
+set(CPACK_PACKAGE_VENDOR "Stonk")
+set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.md")
+set(CPACK_RESOURCE_FILE_README "${CMAKE_SOURCE_DIR}/README.md")
+set(CPACK_SOURCE_IGNORE_FILES .DS_Store)
+
+if (APPLE)
+    set(CPACK_PACKAGE_FILE_NAME "$ENV{TRAVIS_TAG}-osx")
+elseif (UNIX)
+    set(CPACK_PACKAGE_FILE_NAME "$ENV{TRAVIS_TAG}-linux")
+elseif (WIN32)
+    set(CPACK_PACKAGE_FILE_NAME "$ENV{TRAVIS_TAG}-windows")
+endif()
+
+include(CPack)
