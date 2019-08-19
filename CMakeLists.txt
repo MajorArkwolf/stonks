@@ -20,8 +20,8 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-# Define executable source files.
-add_executable(${PROJECT_NAME}
+# Define source files.
+set (SOURCES
     src/Main.cpp
 
     src/Stonk/Engine.cpp
@@ -40,6 +40,9 @@ add_executable(${PROJECT_NAME}
     src/Shay/TexturedPolygons.cpp
     src/Shay/Shay.cpp
 )
+
+# Define the executable.
+add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Set C++ standard.
 set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -95,12 +98,3 @@ else()
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${PROJECT_NAME}>/res)
 endif()
-
-# Copy libraries to the binary location.
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    $<TARGET_FILE:SDL2::Core>
-    $<TARGET_FILE:SDL2::Image>
-    $<TARGET_FILE:SDL2::TTF>
-    $<TARGET_FILE:SDL2::Mixer>
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>)
