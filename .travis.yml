@@ -52,11 +52,3 @@ matrix:
 before_script: ./.travis/install-dependencies.sh
 script: ./.travis/build.sh
 after_failure: ./.travis/failure.sh
-deploy:
-  provider: releases
-  name: ${TRAVIS_TAG}
-  api_key: ${GITHUB_TOKEN}
-  file: "build/${TRAVIS_TAG}-${TRAVIS_OS_NAME}.tar.gz"
-  skip_cleanup: true
-  on:
-    tags: true

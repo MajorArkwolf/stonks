@@ -3,9 +3,6 @@ cmake_minimum_required(VERSION 3.12)
 
 # Set the project details.
 set(PROJECT_NAME shays-world)
-set(PROJECT_VERSION_MAJOR 0)
-set(PROJECT_VERSION_MINOR 1)
-set(PROJECT_VERSION_PATCH 0)
 project(${PROJECT_NAME} LANGUAGES CXX)
 
 # If enabled, the post build symlink will copy instead.
@@ -101,30 +98,3 @@ else()
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${PROJECT_NAME}>/res)
 endif()
-
-# Define install.
-install(TARGETS ${PROJECT_NAME} DESTINATION ${PROJECT_NAME})
-install(FILES "${CMAKE_SOURCE_DIR}/LICENSE.md" DESTINATION ${PROJECT_NAME})
-install(FILES "${CMAKE_SOURCE_DIR}/README.md" DESTINATION ${PROJECT_NAME})
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/res" DESTINATION ${PROJECT_NAME})
-
-# Define cpack settings.
-set(CPACK_GENERATOR "TGZ")
-set(CPACK_PACKAGE_VENDOR "Stonk")
-set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
-set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
-set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.md")
-set(CPACK_RESOURCE_FILE_README "${CMAKE_SOURCE_DIR}/README.md")
-set(CPACK_SOURCE_IGNORE_FILES .DS_Store)
-
-# Set the appropriate file name.
-if (APPLE)
-    set(CPACK_PACKAGE_FILE_NAME "$ENV{TRAVIS_TAG}-osx")
-elseif (UNIX)
-    set(CPACK_PACKAGE_FILE_NAME "$ENV{TRAVIS_TAG}-linux")
-elseif (WIN32)
-    set(CPACK_PACKAGE_FILE_NAME "$ENV{TRAVIS_TAG}-windows")
-endif()
-
-include(CPack)
