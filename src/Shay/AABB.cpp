@@ -2,60 +2,65 @@
 
 using Shay::AABB;
 
-void AABB::SetMaxX(size_t index, GLfloat tempX) {
-    if (index >= m_BBox.size()) {
+void AABB::SetMaxX(GLfloat tempX) {
+    if (this->currentAABB >= m_BBox.size()) {
         m_BBox.push_back({});
     }
-    m_BBox[index].max.x = tempX;
+    m_BBox[this->currentAABB].max.x = tempX;
 }
-void AABB::SetMinX(size_t index, GLfloat tempX) {
-    if (index >= m_BBox.size()) {
+void AABB::SetMinX(GLfloat tempX) {
+    if (this->currentAABB >= m_BBox.size()) {
         m_BBox.push_back({});
     }
-    m_BBox[index].min.x = tempX;
+    m_BBox[this->currentAABB].min.x = tempX;
 }
-void AABB::SetMaxY(size_t index, GLfloat tempY) {
-    if (index >= m_BBox.size()) {
+void AABB::SetMaxY(GLfloat tempY) {
+    if (this->currentAABB >= m_BBox.size()) {
         m_BBox.push_back({});
     }
-    m_BBox[index].max.y = tempY;
+    m_BBox[this->currentAABB].max.y = tempY;
 }
-void AABB::SetMinY(size_t index, GLfloat tempY) {
-    if (index >= m_BBox.size()) {
+void AABB::SetMinY(GLfloat tempY) {
+    if (this->currentAABB >= m_BBox.size()) {
         m_BBox.push_back({});
     }
-    m_BBox[index].min.y = tempY;
+    m_BBox[this->currentAABB].min.y = tempY;
 }
-void AABB::SetMaxZ(size_t index, GLfloat tempZ) {
-    if (index >= m_BBox.size()) {
+void AABB::SetMaxZ(GLfloat tempZ) {
+    if (this->currentAABB >= m_BBox.size()) {
         m_BBox.push_back({});
     }
-    m_BBox[index].max.z = tempZ;
+    m_BBox[this->currentAABB].max.z = tempZ;
 }
-void AABB::SetMinZ(size_t index, GLfloat tempZ) {
-    if (index >= m_BBox.size()) {
+void AABB::SetMinZ(GLfloat tempZ) {
+    if (this->currentAABB >= m_BBox.size()) {
         m_BBox.push_back({});
     }
-    m_BBox[index].min.z = tempZ;
+    m_BBox[this->currentAABB].min.z = tempZ;
 }
-
-GLfloat AABB::GetMaxX(size_t index) {
-    return m_BBox[index].max.x;
+auto AABB::SetAABBIndex(size_t index) -> void  {
+    this->currentAABB = index;
 }
-GLfloat AABB::GetMinX(size_t index) {
-    return m_BBox[index].min.x;
+auto AABB::FinishAABB() -> void {
+    this->currentAABB++;
 }
-GLfloat AABB::GetMaxY(size_t index) {
-    return m_BBox[index].max.y;
+GLfloat AABB::GetMaxX() {
+    return m_BBox[this->currentAABB].max.x;
 }
-GLfloat AABB::GetMinY(size_t index) {
-    return m_BBox[index].min.y;
+GLfloat AABB::GetMinX() {
+    return m_BBox[this->currentAABB].min.x;
 }
-GLfloat AABB::GetMaxZ(size_t index) {
-    return m_BBox[index].max.z;
+GLfloat AABB::GetMaxY() {
+    return m_BBox[this->currentAABB].max.y;
 }
-GLfloat AABB::GetMinZ(size_t index) {
-    return m_BBox[index].min.z;
+GLfloat AABB::GetMinY() {
+    return m_BBox[this->currentAABB].min.y;
+}
+GLfloat AABB::GetMaxZ() {
+    return m_BBox[this->currentAABB].max.z;
+}
+GLfloat AABB::GetMinZ() {
+    return m_BBox[this->currentAABB].min.z;
 }
 size_t AABB::GetNoBoundingBoxes() {
     return m_BBox.size();

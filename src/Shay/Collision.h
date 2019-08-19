@@ -13,23 +13,23 @@ namespace Shay {
         //----------------------------------------------------------------------------------
         // sets initial co-ordinates of bounding boxes (these set the co-ords is AABB, the array,
         // the values for the list are copied from the array using CreateLinkedList).
-        void SetAABBMaxX(const int &tempIndex, const float &tempX) {
-            m_AABB.SetMaxX(tempIndex, tempX);
+        void SetAABBMaxX(const float &tempX) {
+            m_AABB.SetMaxX(tempX);
         }
-        void SetAABBMinX(const int &tempIndex, const float &tempX) {
-            m_AABB.SetMinX(tempIndex, tempX);
+        void SetAABBMinX(const float &tempX) {
+            m_AABB.SetMinX(tempX);
         }
-        void SetAABBMaxY(const int &tempIndex, const float &tempY) {
-            m_AABB.SetMaxY(tempIndex, tempY);
+        void SetAABBMaxY(const float &tempY) {
+            m_AABB.SetMaxY(tempY);
         }
-        void SetAABBMinY(const int &tempIndex, const float &tempY) {
-            m_AABB.SetMinY(tempIndex, tempY);
+        void SetAABBMinY(const float &tempY) {
+            m_AABB.SetMinY(tempY);
         }
-        void SetAABBMaxZ(const int &tempIndex, const float &tempZ) {
-            m_AABB.SetMaxZ(tempIndex, tempZ);
+        void SetAABBMaxZ(const float &tempZ) {
+            m_AABB.SetMaxZ(tempZ);
         }
-        void SetAABBMinZ(const int &tempIndex, const float &tempZ) {
-            m_AABB.SetMinZ(tempIndex, tempZ);
+        void SetAABBMinZ(const float &tempZ) {
+            m_AABB.SetMinZ(tempZ);
         }
 
         // sets the actual world co-ordinates
@@ -44,23 +44,23 @@ namespace Shay {
         //  Returns Methods
         //----------------------------------------------------------------------------------
         // returns co-ordinates of bounding boxes
-        float GetAABBMaxX(const int &tempIndex) {
-            return m_AABB.GetMaxX(tempIndex);
+        float GetAABBMaxX() {
+            return m_AABB.GetMaxX();
         }
-        float GetAABBMinX(const int &tempIndex) {
-            return m_AABB.GetMinX(tempIndex);
+        float GetAABBMinX() {
+            return m_AABB.GetMinX();
         }
-        float GetAABBMaxY(const int &tempIndex) {
-            return m_AABB.GetMaxY(tempIndex);
+        float GetAABBMaxY() {
+            return m_AABB.GetMaxY();
         }
-        float GetAABBMinY(const int &tempIndex) {
-            return m_AABB.GetMinY(tempIndex);
+        float GetAABBMinY() {
+            return m_AABB.GetMinY();
         }
-        float GetAABBMaxZ(const int &tempIndex) {
-            return m_AABB.GetMaxZ(tempIndex);
+        float GetAABBMaxZ() {
+            return m_AABB.GetMaxZ();
         }
-        float GetAABBMinZ(const int &tempIndex) {
-            return m_AABB.GetMinZ(tempIndex);
+        float GetAABBMinZ() {
+            return m_AABB.GetMinZ();
         }
 
         // returns number of bounding boxes
@@ -74,6 +74,8 @@ namespace Shay {
         // reads the BB info from AABB (dynamic array) and creates a Linked List
         // containing BB data
         void CreateLinkedList();
+
+        auto FinishAABB() -> void;
 
       private:
         // initially stores BB info in AABB (dynamic array) before copying to Linked List

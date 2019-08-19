@@ -1,8 +1,12 @@
 #include "TexturedPolygons.h"
 
 #include <iostream>
+#include <string>
+
+#include <SDL2/SDL.h>
 
 using Shay::TexturedPolygons;
+using std::string;
 
 //--------------------------------------------------------------------------------------
 //  Declares datatype to store a raw image file and calls method to load image
@@ -12,7 +16,10 @@ GLubyte *TexturedPolygons::LoadTexture(const char *filename, size_t imgWidth,
                                        size_t imgHeight) {
     //
     unsigned char *image = NULL;
-    image                = LoadRawImageFile(filename, imgWidth, imgHeight);
+    auto path            = string{SDL_GetBasePath()};
+    path += filename;
+
+    image = LoadRawImageFile(path.c_str(), imgWidth, imgHeight);
     // inform user if file loaded
     std::cout << "Loading image file " << filename << "...\n";
     return image;
