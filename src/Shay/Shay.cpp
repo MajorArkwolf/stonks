@@ -2230,7 +2230,7 @@ void ShaysWorld::DisplayPavement() {
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(PAVEMENT));
     glCallList(78);
-    glCallList(79);
+    // glCallList(79);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(PAVEMENT_16));
     glCallList(80);
@@ -4462,12 +4462,16 @@ void ShaysWorld::DrawLargerTextures() {
 
 void ShaysWorld::DisplayGrass() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(GRASS));
+    glPushMatrix();
+    glTranslatef(0, 0, 2880);
     glCallList(79);
+    glPopMatrix();
     glCallList(111);
     glCallList(460);
     glCallList(477);
-    for (GLuint i = 461; i < 477; i++)
+    for (GLuint i = 461; i < 477; i++) {
         glCallList(i);
+    }
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(GRASS_2));
     glCallList(198);
@@ -4478,12 +4482,15 @@ void ShaysWorld::DisplayGrass() {
 }
 
 void ShaysWorld::DrawGrass() {
+    float lowerPlaneExtendMult = 10;
+    // Lower flat plane
     tp.CreateDisplayList(XZ, 79, 64.0f, 64.0f, 4848.0f, 9086.0f, 3408.0f,
-                         417.5f, 45.0f);
+                         417.5f, -45.0f * lowerPlaneExtendMult); // 45.0f
+    // Higher flat plane
     tp.CreateDisplayList(XZ, 111, 64.0f, 64.0f, 4848.0f, 10000.0f, 10000.0f,
                          417.5f, 481.5f);
 
-    // Slope ate the entrance
+    // Slope at the entrance
     tp.CreateAngledPolygon(198, 64.0f, 64.0f, 4848.0f, 31568.0f, 31568.0f,
                            4848.0f, 9086.0f, 9086.0f, 10000.0f, 10000.0f,
                            6200.0f, 6200.0f, 10000.0f, 10000.0f, 1, 1);
@@ -4902,11 +4909,11 @@ void ShaysWorld::CreateTextureList() {
     DrawLibraryPosts();     // 57-63, 442-447
     DrawMainPosts();        // 18-19, 51-52
     DrawPavement();         // 28, 73-94, 240-249, 428, 436
-    DrawBricks(); // 101-110, 112-169, 180-197, 200-201, 390-399, 430-434
-    DrawRoof();   // 1-10, 97-100, 170-179, 202-205, 214-222, 250-257, 296-299,
-                  // 426-427
-    DrawEntranceSteps();  // 258-295, 206-207
-    DrawExtras();         // 300-349, 388, 395, 419-421, 429, 435
+    DrawBricks();        // 101-110, 112-169, 180-197, 200-201, 390-399, 430-434
+    DrawRoof();          // 1-10, 97-100, 170-179, 202-205, 214-222, 250-257,
+                         // 296-299, 426-427
+    DrawEntranceSteps(); // 258-295, 206-207
+    DrawExtras();        // 300-349, 388, 395, 419-421, 429, 435
     DrawLargerTextures(); // 350-375, 379-387, 389, 414-418, 422-423, 450-453
     DrawLights();         // 376-378
     DrawBench();          // 400-413
