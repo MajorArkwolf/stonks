@@ -8,12 +8,6 @@
 namespace Shay {
     enum ShayAxis : GLuint { XY = 0, XZ, YZ, YZ_FLIP, XY_FLIP };
 
-    enum ShayPlain : GLuint {
-        FLAT_PLAIN = 0,
-        XY_PLAIN,
-        ZY_PLAIN,
-    };
-
     enum ShayTexture : GLuint {
         GRASS = 0,
         GRASS_2,

@@ -1,13 +1,18 @@
 #include "PlainLinkedList.h"
 
+#include <cstddef>
+
+#include "PlainNode.h"
+
 using Shay::PlainLinkedList;
+using Shay::PlainNode;
 
-void PlainLinkedList::Clear() {}
+using Slope = PlainNode::Slope;
+using std::size_t;
 
-bool PlainLinkedList::AddToStart(const int tempType, const GLfloat tempXs,
-                                 const GLfloat tempXe, const GLfloat tempYs,
-                                 const GLfloat tempYe, const GLfloat tempZs,
-                                 const GLfloat tempZe) {
+bool PlainLinkedList::AddToStart(Slope tempType, GLfloat tempXs, GLfloat tempXe,
+                                 GLfloat tempYs, GLfloat tempYe, GLfloat tempZs,
+                                 GLfloat tempZe) {
     PlainNode newNode{};
 
     // add the value to the node
@@ -18,65 +23,43 @@ bool PlainLinkedList::AddToStart(const int tempType, const GLfloat tempXs,
     return true;
 }
 
-GLfloat PlainLinkedList::GetType(int ptrCount) {
-    if (ptrCount <= nodes.size())
-        return nodes[ptrCount].GetType();
-    else
-        return 0;
+Slope PlainLinkedList::GetType(size_t ptrCount) {
+    return nodes[ptrCount].GetType();
 }
 
-GLfloat PlainLinkedList::GetXstart(int ptrCount) {
-    if (ptrCount <= nodes.size())
-        return nodes[ptrCount].GetXstart();
-    else
-        return 0;
+GLfloat PlainLinkedList::GetXstart(size_t ptrCount) {
+    return nodes[ptrCount].GetXstart();
 }
 
-GLfloat PlainLinkedList::GetXend(int ptrCount) {
-    if (ptrCount <= nodes.size())
-        return nodes[ptrCount].GetXend();
-    else
-        return 0;
+GLfloat PlainLinkedList::GetXend(size_t ptrCount) {
+    return nodes[ptrCount].GetXend();
 }
 
-GLfloat PlainLinkedList::GetYstart(int ptrCount) {
-    if (ptrCount <= nodes.size())
-        return nodes[ptrCount].GetYstart();
-    else
-        return 0;
+GLfloat PlainLinkedList::GetYstart(size_t ptrCount) {
+    return nodes[ptrCount].GetYstart();
 }
 
-GLfloat PlainLinkedList::GetYend(int ptrCount) {
-    if (ptrCount <= nodes.size())
-        return nodes[ptrCount].GetYend();
-    else
-        return 0;
+GLfloat PlainLinkedList::GetYend(size_t ptrCount) {
+    return nodes[ptrCount].GetYend();
 }
 
-GLfloat PlainLinkedList::GetZstart(int ptrCount) {
-    if (ptrCount <= nodes.size())
-        return nodes[ptrCount].GetZstart();
-    else
-        return 0;
+GLfloat PlainLinkedList::GetZstart(size_t ptrCount) {
+    return nodes[ptrCount].GetZstart();
 }
 
-GLfloat PlainLinkedList::GetZend(int ptrCount) {
-    if (ptrCount <= nodes.size())
-        return nodes[ptrCount].GetZend();
-    else
-        return 0;
+GLfloat PlainLinkedList::GetZend(size_t ptrCount) {
+    return nodes[ptrCount].GetZend();
 }
 
-void PlainLinkedList::SetData(const int &ptrCount, const int tempType,
-                              const GLfloat tempXs, const GLfloat tempXe,
-                              const GLfloat tempYs, const GLfloat tempYe,
-                              const GLfloat tempZs, const GLfloat tempZe) {
+void PlainLinkedList::SetData(size_t ptrCount, Slope tempType, GLfloat tempXs,
+                              GLfloat tempXe, GLfloat tempYs, GLfloat tempYe,
+                              GLfloat tempZs, GLfloat tempZe) {
     PlainNode temp{};
 
     temp.SetData(tempType, tempXs, tempXe, tempYs, tempYe, tempZs, tempZe);
     nodes[ptrCount] = temp;
 }
 
-int PlainLinkedList::GetListSize() {
-    return int(nodes.size());
+size_t PlainLinkedList::GetListSize() {
+    return nodes.size();
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <algorithm>
+#include <cstddef>
 
 #include <glm/gtc/constants.hpp>
 #include <glm/vec2.hpp>
@@ -9,6 +9,7 @@
 #include "CameraMap.h"
 #include "Collision.h"
 #include "PlainLinkedList.h"
+#include "PlainNode.h"
 
 //  camera.h
 //  Header file for the camera class
@@ -31,36 +32,36 @@ namespace Shay {
         //  Set Methods
         //----------------------------------------------------------------------------------
         // sets initial value for bounding boxes (in the array AABB)
-        void SetAABBMaxX(const GLfloat &tempX) {
+        void SetAABBMaxX(GLfloat tempX) {
             m_colDetect.SetAABBMaxX(tempX);
         }
-        void SetAABBMinX(const GLfloat &tempX) {
+        void SetAABBMinX(GLfloat tempX) {
             m_colDetect.SetAABBMinX(tempX);
         }
-        void SetAABBMaxY(const GLfloat &tempY) {
+        void SetAABBMaxY(GLfloat tempY) {
             m_colDetect.SetAABBMaxY(tempY);
         }
-        void SetAABBMinY(const GLfloat &tempY) {
+        void SetAABBMinY(GLfloat tempY) {
             m_colDetect.SetAABBMinY(tempY);
         }
-        void SetAABBMaxZ(const GLfloat &tempZ) {
+        void SetAABBMaxZ(GLfloat tempZ) {
             m_colDetect.SetAABBMaxZ(tempZ);
         }
-        void SetAABBMinZ(const GLfloat &tempZ) {
+        void SetAABBMinZ(GLfloat tempZ) {
             m_colDetect.SetAABBMinZ(tempZ);
         }
 
         // set step and rotation size
-        void SetRotateSpeed(const GLfloat &tempSpeed) {
+        void SetRotateSpeed(GLfloat tempSpeed) {
             m_rotateSpeed = tempSpeed;
         }
 
-        void SetMoveSpeed(const GLfloat &tempSpeed) {
+        void SetMoveSpeed(GLfloat tempSpeed) {
             m_moveSpeed = tempSpeed;
         }
 
         // set the co-ordinates of the world
-        void SetWorldCoordinates(const GLfloat &tempX, const GLfloat &tempZ);
+        void SetWorldCoordinates(GLfloat tempX, GLfloat tempZ);
         // creates a linked list for each quadrant of the world and places the
         // bounding box data in each.  Then clears and deletes AABB array.
         void InitiateBoundingBoxes() {
@@ -68,10 +69,9 @@ namespace Shay {
         }
 
         // sets the co-ordinate of each plain
-        void SetPlains(const int tempType, const GLfloat tempXs,
-                       const GLfloat tempXe, const GLfloat tempYs,
-                       const GLfloat tempYe, const GLfloat tempZs,
-                       const GLfloat tempZe);
+        void SetPlains(PlainNode::Slope tempType, GLfloat tempXs,
+                       GLfloat tempXe, GLfloat tempYs, GLfloat tempYe,
+                       GLfloat tempZs, GLfloat tempZe);
 
         //----------------------------------------------------------------------------------
         //  Get Methods
@@ -103,30 +103,22 @@ namespace Shay {
         GLfloat GetAABBMinZ() {
             return m_colDetect.GetAABBMinZ();
         }
-        /**
-         * @brief Finish the currently edited AABB
-         */
         auto FinishAABB() -> void;
 
         void Update(double dt);
 
-        // display map
-        void DisplayMap(const int &screenWidth, const int &screenHeight,
-                        const GLuint &tempImage);
-        // display welcome screen
-        void DisplayWelcomeScreen(const int &screenWidth, const int &screenHeight,
-                                  const int &tempExit, const GLuint &tempImage);
-        // display no exit
-        void DisplayNoExit(const int &screenWidth, const int &screenHeight,
-                           const GLuint &tempImage);
+        void DisplayMap(int screenWidth, int screenHeight, GLuint tempImage);
+        void DisplayWelcomeScreen(int screenWidth, int screenHeight,
+                                  int tempExit, GLuint tempImage);
+        void DisplayNoExit(int screenWidth, int screenHeight, GLuint tempImage);
 
       private:
         // steep incline increments
-        GLfloat m_incrementX  = 0.0;
-        GLfloat m_incrementZ  = 0.0;
-        int m_No_Plains       = 0;
-        int m_plainNo         = 0;
-        GLfloat m_plainHeight = 0.0;
+        GLfloat m_incrementX    = 0.0;
+        GLfloat m_incrementZ    = 0.0;
+        std::size_t m_No_Plains = 0;
+        std::size_t m_plainNo   = 0;
+        GLfloat m_plainHeight   = 0.0;
 
         // rotation variables
         GLfloat m_rotateAngleLR = 0.0;

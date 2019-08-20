@@ -17,7 +17,7 @@ namespace Stonk {
 
     class Physics {
       public:
-        auto update(State &state, float dt) -> void;
+        auto update(State &state, double dt) -> void;
     };
 };
 

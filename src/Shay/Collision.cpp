@@ -1,6 +1,9 @@
 #include "Collision.h"
 
+#include <cstddef>
+
 using Shay::Collision;
+using std::size_t;
 
 //--------------------------------------------------------------------------------------
 //  Creates a linked list for each quadrant and then copies the bounding box data from
@@ -12,14 +15,14 @@ using Shay::Collision;
 void Collision::CreateLinkedList()
 
 {
-    int tempNoBoxes = GetNoBoundingBoxes();
+    size_t tempNoBoxes = GetNoBoundingBoxes();
     // initilize list size for each quadrant
     m_listSize[0] = 0;
     m_listSize[1] = 0;
     m_listSize[2] = 0;
     m_listSize[3] = 0;
 
-    for (int count = 0; count < tempNoBoxes; count++) {
+    for (size_t count = 0; count < tempNoBoxes; count++) {
         this->m_AABB.SetAABBIndex(count);
         GLfloat maxX = GetAABBMaxX();
         GLfloat minX = GetAABBMinX();
@@ -98,9 +101,10 @@ bool Collision::Collide(GLfloat endX, GLfloat endY, GLfloat endZ) {
 //--------------------------------------------------------------------------------------
 // Called from above function to check if collsion occurred.
 //--------------------------------------------------------------------------------------
-bool Collision::CheckCollision(int index, GLfloat endX, GLfloat endY, GLfloat endZ) {
+bool Collision::CheckCollision(size_t index, GLfloat endX,
+                               [[maybe_unused]] GLfloat endY, GLfloat endZ) {
     bool CollisionFound = false;
-    for (int count = 0; count < m_listSize[index]; count++) {
+    for (size_t count = 0; count < m_listSize[index]; count++) {
         if (((endX < m_list[index].GetMaxX(count)) &&
              (endX > m_list[index].GetMinX(count))) &&
             ((endZ < m_list[index].GetMaxZ(count)) &&
@@ -110,8 +114,56 @@ bool Collision::CheckCollision(int index, GLfloat endX, GLfloat endY, GLfloat en
     }
     return CollisionFound;
 }
-//--------------------------------------------------------------------------------------
 
-auto Collision::FinishAABB() -> void {
+auto Collision::Collision::FinishAABB() -> void {
     m_AABB.FinishAABB();
+}
+
+void Collision::SetAABBMaxX(float tempX) {
+    m_AABB.SetMaxX(tempX);
+}
+void Collision::SetAABBMinX(float tempX) {
+    m_AABB.SetMinX(tempX);
+}
+void Collision::SetAABBMaxY(float tempY) {
+    m_AABB.SetMaxY(tempY);
+}
+void Collision::SetAABBMinY(float tempY) {
+    m_AABB.SetMinY(tempY);
+}
+void Collision::SetAABBMaxZ(float tempZ) {
+    m_AABB.SetMaxZ(tempZ);
+}
+void Collision::SetAABBMinZ(float tempZ) {
+    m_AABB.SetMinZ(tempZ);
+}
+
+void Collision::SetWorldX(float tempX) {
+    m_worldSizeX = tempX;
+}
+void Collision::SetWorldZ(float tempZ) {
+    m_worldSizeZ = tempZ;
+}
+
+float Collision::GetAABBMaxX() {
+    return m_AABB.GetMaxX();
+}
+float Collision::GetAABBMinX() {
+    return m_AABB.GetMinX();
+}
+float Collision::GetAABBMaxY() {
+    return m_AABB.GetMaxY();
+}
+float Collision::GetAABBMinY() {
+    return m_AABB.GetMinY();
+}
+float Collision::GetAABBMaxZ() {
+    return m_AABB.GetMaxZ();
+}
+float Collision::GetAABBMinZ() {
+    return m_AABB.GetMinZ();
+}
+
+size_t Collision::GetNoBoundingBoxes() {
+    return m_AABB.GetNoBoundingBoxes();
 }

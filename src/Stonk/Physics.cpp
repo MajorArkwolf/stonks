@@ -5,10 +5,12 @@
 using Stonk::Physics;
 using Stonk::State;
 
-auto Physics::update(State &state, float dt) -> void {
+auto Physics::update(State &state, double dt) -> void {
+    auto fdt = static_cast<float>(dt);
+
     for (auto i : state.entities) {
-        i.velocity += i.acceleration * dt;
-        i.position += i.velocity * dt;
+        i.velocity += i.acceleration * fdt;
+        i.position += i.velocity * fdt;
     }
 }
 

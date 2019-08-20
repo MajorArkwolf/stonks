@@ -136,11 +136,11 @@ auto Engine::handleMouseMovement(SDL_Event &event) -> void {
 }
 
 auto Engine::handleMouseButtonPress(SDL_Event &event) -> void {
-    int numClicks =
-        event.button.clicks; // Number of clicks received as event   e.g. 1 =
-                             // single click, 2 = double click
-    int releaseXPos = event.button.x; // X-position of mouse when pressed
-    int releaseYPos = event.button.y; // Y-position of mouse when pressed
+    // int numClicks =
+    //     event.button.clicks; // Number of clicks received as event   e.g. 1 =
+    //                          // single click, 2 = double click
+    // int releaseXPos = event.button.x; // X-position of mouse when pressed
+    // int releaseYPos = event.button.y; // Y-position of mouse when pressed
 
     switch (event.button.button) {
         case SDL_BUTTON_LEFT: break;
@@ -151,11 +151,11 @@ auto Engine::handleMouseButtonPress(SDL_Event &event) -> void {
 }
 
 auto Engine::handleMouseButtonRelease(SDL_Event &event) -> void {
-    int numClicks =
-        event.button.clicks; // Number of clicks received as event   e.g. 1 =
-                             // single click, 2 = double click
-    int releaseXPos = event.button.x; // X-position of mouse when pressed
-    int releaseYPos = event.button.y; // Y-position of mouse when pressed
+    // int numClicks =
+    //     event.button.clicks; // Number of clicks received as event   e.g. 1 =
+    //                          // single click, 2 = double click
+    // int releaseXPos = event.button.x; // X-position of mouse when pressed
+    // int releaseYPos = event.button.y; // Y-position of mouse when pressed
 
     switch (event.button.button) {
         case SDL_BUTTON_LEFT: break;
@@ -165,9 +165,9 @@ auto Engine::handleMouseButtonRelease(SDL_Event &event) -> void {
     }
 }
 
-auto Engine::handleMouseWheelMotion(SDL_Event &event) -> void {
-    int amountScrolledX = event.wheel.x; // Amount scrolled left or right
-    int amountScrolledY = event.wheel.y; // Amount scrolled up or down
+auto Engine::handleMouseWheelMotion([[maybe_unused]] SDL_Event &event) -> void {
+    // int amountScrolledX = event.wheel.x; // Amount scrolled left or right
+    // int amountScrolledY = event.wheel.y; // Amount scrolled up or down
 }
 
 auto Engine::processInput() -> void {
@@ -205,8 +205,8 @@ auto Engine::processInput() -> void {
     }
 }
 
-auto Engine::update(State &state, double dt) -> void {
-    this->physics.update(state, dt);
+auto Engine::update(State &newState, double dt) -> void {
+    this->physics.update(newState, dt);
 }
 
-auto Engine::render(const State &state) const -> void {}
+auto Engine::render([[maybe_unused]] const State &newState) const -> void {}
