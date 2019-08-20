@@ -8,9 +8,8 @@ using Shay::CameraMap;
 //  Display a map with a cursor on it, which moves with the camera
 //--------------------------------------------------------------------------------------
 
-void CameraMap::DisplayMap(const int &screenWidth, const int &screenHeight,
-                           const GLfloat &xPos, const GLfloat &zPos,
-                           const GLuint &tempImage) {
+void CameraMap::DisplayMap(int screenWidth, int screenHeight, GLfloat xPos,
+                           GLfloat zPos, GLuint tempImage) {
     GLfloat tempX = xPos / 163.0f - 2096.0f / 163.0f;
     GLfloat tempZ = zPos / 164.0f - 4688.0f / 164.0f;
     glPushMatrix();
@@ -22,7 +21,7 @@ void CameraMap::DisplayMap(const int &screenWidth, const int &screenHeight,
 
     // mover the origin from the bottom left corner
     // to the upper left corner
-    glTranslatef(0, -screenHeight, 0);
+    glTranslatef(0, static_cast<GLfloat>(-screenHeight), 0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -49,9 +48,8 @@ void CameraMap::DisplayMap(const int &screenWidth, const int &screenHeight,
 //--------------------------------------------------------------------------------------
 //  Displays a welcome or exit screen
 //--------------------------------------------------------------------------------------
-void CameraMap::DisplayWelcomeScreen(const int &screenWidth,
-                                     const int &screenHeight, const int &tempExit,
-                                     const GLuint &tempImage) {
+void CameraMap::DisplayWelcomeScreen(int screenWidth, int screenHeight,
+                                     int tempExit, GLuint tempImage) {
     glPushMatrix();
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
@@ -78,8 +76,7 @@ void CameraMap::DisplayWelcomeScreen(const int &screenWidth,
     glPopMatrix();
 }
 
-void CameraMap::DisplayNoExit(const int &screenWidth, const int &screenHeight,
-                              const GLuint &tempImage) {
+void CameraMap::DisplayNoExit(int screenWidth, int screenHeight, GLuint tempImage) {
     glPushMatrix();
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();

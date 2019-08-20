@@ -326,6 +326,6 @@ namespace Shay {
         void CreatePostBoundingBoxes();
         void CreatePlains();
         void DeleteImageFromMemory(unsigned char *tempImage);
-        Camera *getCamPtr();
+        auto getCamPtr() -> Shay::Camera *;
     };
 };

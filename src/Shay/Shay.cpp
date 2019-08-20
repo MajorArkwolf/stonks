@@ -3,6 +3,7 @@
 #include "Shay/PlainNode.h"
 #include "Stonk/Engine.hpp"
 
+using Shay::Camera;
 using Shay::ShayAxis;
 using Shay::ShaysWorld;
 using Shay::ShayTexture;

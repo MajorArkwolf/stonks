@@ -124,15 +124,11 @@ auto Engine::handleKeyPress(SDL_Event &event) -> void {
     }
 }
 
-auto Engine::handleKeyRelease(SDL_Event &event) -> void {
-    switch (event.key.keysym.scancode) {
-        default: break;
-    }
-}
+auto Engine::handleKeyRelease([[maybe_unused]] SDL_Event &event) -> void {}
 
 auto Engine::handleMouseMovement(SDL_Event &event) -> void {
-    this->mouse.x = event.motion.xrel;
-    this->mouse.y = event.motion.yrel;
+    this->mouse.x = static_cast<float>(event.motion.xrel);
+    this->mouse.y = static_cast<float>(event.motion.yrel);
 }
 
 auto Engine::handleMouseButtonPress(SDL_Event &event) -> void {
