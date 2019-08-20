@@ -3,33 +3,20 @@
 #include "Shay/PlainNode.h"
 #include "Stonk/Engine.hpp"
 
-using namespace Shay;
+using Shay::ShayAxis;
+using Shay::ShaysWorld;
+using Shay::ShayTexture;
 using Slope = Shay::PlainNode::Slope;
 
-GLfloat ShaysWorld::stepIncrement  = 0;
-GLfloat ShaysWorld::angleIncrement = 0;
-int ShaysWorld::frameCount         = 0;
-clock_t ShaysWorld::lastClock      = {};
+ShaysWorld::ShaysWorld() {
+    this->Init();
+}
 
-int ShaysWorld::width    = 0;
-int ShaysWorld::height   = 0;
-double ShaysWorld::ratio = 0;
+auto ShaysWorld::get() -> ShaysWorld & {
+    static auto instance = ShaysWorld{};
 
-bool ShaysWorld::DisplayMap     = false;
-bool ShaysWorld::DisplayWelcome = true;
-bool ShaysWorld::DisplayExit    = false;
-bool ShaysWorld::lightsOn       = true;
-bool ShaysWorld::displayECL     = true;
-bool ShaysWorld::displayDebug   = true;
-int ShaysWorld::calcFPS         = 0;
-
-GLfloat ShaysWorld::step                = 0.0f;
-GLfloat ShaysWorld::step2               = 0.0f;
-GLfloat ShaysWorld::stepLength          = 0.0f;
-GLUquadricObj *ShaysWorld::glu_cylinder = nullptr;
-unsigned char *ShaysWorld::image        = nullptr;
-Camera ShaysWorld::cam                  = {};
-TexturedPolygons ShaysWorld::tp         = {};
+    return instance;
+}
 
 auto ShaysWorld::getCamPtr() -> Camera * {
     return &cam;

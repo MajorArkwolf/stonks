@@ -19,10 +19,8 @@ using Stonk::Engine;
 using Stonk::State;
 
 auto Engine::run() -> void {
-    auto &engine = Engine::get();
-
-    // Setup Shay's World.
-    ShaysWorld::Init();
+    auto &engine     = Engine::get();
+    auto &shaysWorld = ShaysWorld::get();
 
     auto time      = static_cast<double>(SDL_GetPerformanceCounter());
     auto oldTime   = 0.0;
@@ -35,8 +33,8 @@ auto Engine::run() -> void {
             (time - oldTime) / static_cast<double>(SDL_GetPerformanceFrequency());
 
         engine.processInput();
-        ShaysWorld::Update(deltaTime);
-        ShaysWorld::Display();
+        shaysWorld.Update(deltaTime);
+        shaysWorld.Display();
     }
 }
 
@@ -112,13 +110,15 @@ auto Engine::getIsRunning() const -> bool {
 }
 
 auto Engine::handleKeyPress(SDL_Event &event) -> void {
+    auto &shaysWorld = ShaysWorld::get();
+
     switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_ESCAPE: {
             this->isRunning = false;
         } break;
         case SDL_SCANCODE_SPACE: {
             // Toggle for welcome screen
-            ShaysWorld::DisplayWelcome = (ShaysWorld::DisplayWelcome) ? false : true;
+            shaysWorld.DisplayWelcome = (shaysWorld.DisplayWelcome) ? false : true;
         } break;
         default: break;
     }
