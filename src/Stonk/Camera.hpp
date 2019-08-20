@@ -14,4 +14,4 @@ namespace Stonk {
         glm::vec3 tilt     = {0.0, 1.0, 0.0};
         glm::vec2 angles   = {glm::pi<double>(), 0};
     };
-};
+}

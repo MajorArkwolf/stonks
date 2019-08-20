@@ -15,4 +15,4 @@ namespace Stonk {
         auto moveForwardBack() -> void;
         auto setPosition() -> void;
     };
-};
+}

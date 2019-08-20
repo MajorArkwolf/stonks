@@ -21,4 +21,4 @@ namespace Shay {
         CameraMap(const CameraMap &cam) = delete;
         CameraMap &operator=(const CameraMap &cam) = delete;
     };
-};
+}

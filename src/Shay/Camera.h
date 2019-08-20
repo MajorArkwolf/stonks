@@ -167,4 +167,4 @@ namespace Shay {
         Camera(const Camera &cam) = delete;
         Camera &operator=(const Camera &cam) = delete;
     };
-};
+}

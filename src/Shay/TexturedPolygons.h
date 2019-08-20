@@ -55,4 +55,4 @@ namespace Shay {
         void CreateTextureScale(GLfloat xzImage1, GLfloat xzImage2, GLfloat xzImage3,
                                 GLfloat xzImage4, GLfloat imageSize);
     };
-};
+}

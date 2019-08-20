@@ -47,4 +47,4 @@ namespace Shay {
         size_t GetNoBoundingBoxes();
         auto FinishAABB() -> void;
     };
-};
+}

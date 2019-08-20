@@ -8,4 +8,4 @@ namespace Stonk {
         double near   = 0.1;
         double far    = 1000.0;
     };
-};
+}

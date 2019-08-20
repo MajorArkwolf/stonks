@@ -328,4 +328,4 @@ namespace Shay {
         void DeleteImageFromMemory(unsigned char *tempImage);
         auto getCamPtr() -> Shay::Camera *;
     };
-};
+}

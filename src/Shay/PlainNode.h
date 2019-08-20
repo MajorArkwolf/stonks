@@ -91,4 +91,4 @@ namespace Shay {
         GLfloat m_yPlainStart = 0, m_yPlainEnd = 0;
         GLfloat m_zPlainStart = 0, m_zPlainEnd = 0;
     };
-};
+}

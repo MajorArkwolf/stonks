@@ -63,4 +63,4 @@ namespace Stonk {
         auto update(State &newState, double dt) -> void;
         auto render(const State &newState) const -> void;
     };
-};
+}

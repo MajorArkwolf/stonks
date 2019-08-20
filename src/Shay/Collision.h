@@ -43,4 +43,4 @@ namespace Shay {
         bool CheckCollision(std::size_t index, GLfloat endX, GLfloat endY,
                             GLfloat endZ);
     };
-};
+}

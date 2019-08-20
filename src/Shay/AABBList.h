@@ -42,4 +42,4 @@ namespace Shay {
         void Delete();
         void Clear();
     };
-};
+}

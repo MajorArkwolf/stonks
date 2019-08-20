@@ -30,4 +30,4 @@ namespace Shay {
       private:
         std::vector<PlainNode> nodes{};
     };
-};
+}

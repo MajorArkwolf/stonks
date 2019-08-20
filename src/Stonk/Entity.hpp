@@ -14,4 +14,4 @@ namespace Stonk {
         glm::vec3 rotation     = {};
         double scale           = {};
     };
-};
+}
