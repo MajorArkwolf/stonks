@@ -68,11 +68,13 @@ target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:GNU>:
     -Wall -Wextra -Wpedantic -fdiagnostics-color=always>)
 # Set MSVC compile flags.
 target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/W4>)
+target_link_options(${PROJECT_NAME} BEFORE PUBLIC 
+    $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:MSVC>>:/NODEFAULTLIB:msvcrt.lib>)
 
 # Enable Clang's address and memory sanitizers.
 target_compile_options(${PROJECT_NAME} PUBLIC
     $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
-target_link_libraries(${PROJECT_NAME} PUBLIC
+target_link_options(${PROJECT_NAME} PUBLIC
     $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
 
 # Find dependencies.
@@ -90,7 +92,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE src)
 target_link_libraries(${PROJECT_NAME} PUBLIC OpenGL::GL OpenGL::GLU
     SDL2::SDL2 SDL2::Image SDL2::TTF SDL2::Mixer glm)
 
-# Symlink the resources to the binary location.
+# Symlink or copy the resources to the binary location.
 if (NOT CopyResources)
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E create_symlink
