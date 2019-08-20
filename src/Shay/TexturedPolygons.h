@@ -52,7 +52,8 @@ namespace Shay {
                                    GLfloat yTimes, GLfloat zTimes, bool flip);
 
         // called from	CreateAngledPolygon determine how images are displayed
-        void CreateTextureScale(GLfloat xzImage1, GLfloat xzImage2, GLfloat xzImage3,
-                                GLfloat xzImage4, GLfloat imageSize);
+        void CreateTextureScale(GLfloat &xzImage1, GLfloat &xzImage2,
+                                GLfloat &xzImage3, GLfloat &xzImage4,
+                                GLfloat imageSize);
     };
 }

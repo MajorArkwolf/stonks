@@ -321,8 +321,8 @@ void TexturedPolygons::CreateAngledPolygon(GLuint listNo, GLfloat imageWidth,
 //  Called from	CreateAngledPolygon determine how images are displayed
 //--------------------------------------------------------------------------------------
 
-void TexturedPolygons::CreateTextureScale(GLfloat xzImage1, GLfloat xzImage2,
-                                          GLfloat xzImage3, GLfloat xzImage4,
+void TexturedPolygons::CreateTextureScale(GLfloat &xzImage1, GLfloat &xzImage2,
+                                          GLfloat &xzImage3, GLfloat &xzImage4,
                                           GLfloat imageSize) {
     xzImage2 = ((xzImage2 - xzImage1) / imageSize);
     xzImage3 = ((xzImage3 - xzImage1) / imageSize);
