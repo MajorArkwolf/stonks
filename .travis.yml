@@ -10,14 +10,9 @@ matrix:
       - clang
     addons:
       apt:
-        packages:
-          - clang-8
-          - libc++-dev
-          - libc++abi-dev
-          - libsdl2-dev
-          - libsdl2-*-dev
-          - libglm-dev
-          - libgl1-mesa-dev
+        packages: [cmake, clang-8, libc++-dev, libc++abi-dev, libsdl2-dev,
+                   libsdl2-image-dev, libsdl2-ttf-dev, libsdl2-mixer-dev,
+                   libglm-dev, libgl1-mesa-dev]
     env:
       - CC=clang-8 CXX=clang++-8
 
@@ -28,12 +23,8 @@ matrix:
       - gcc
     addons:
       apt:
-        packages:
-          - g++-8
-          - libsdl2-dev
-          - libsdl2-*-dev
-          - libglm-dev
-          - libgl1-mesa-dev
+        packages: [cmake, g++-8, libsdl2-dev, libsdl2-*-dev, libglm-dev,
+                   libgl1-mesa-dev]
     env:
       - CC=gcc-8 CXX=g++-8
 
