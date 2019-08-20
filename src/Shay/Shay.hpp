@@ -256,7 +256,6 @@ namespace Shay {
         GLfloat step2               = 0.0f;
         GLfloat stepLength          = 0.0f;
         GLUquadricObj *glu_cylinder = nullptr;
-        unsigned char *image        = nullptr;
 
         Camera cam          = {};
         TexturedPolygons tp = {};

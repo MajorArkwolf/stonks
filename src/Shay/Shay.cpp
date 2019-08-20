@@ -8,22 +8,9 @@ using Shay::ShayAxis;
 using Shay::ShaysWorld;
 using Shay::ShayTexture;
 using Slope = Shay::PlainNode::Slope;
+using Image = Shay::TexturedPolygons::Image;
 
 ShaysWorld::ShaysWorld() {
-    this->Init();
-}
-
-auto ShaysWorld::get() -> ShaysWorld & {
-    static auto instance = ShaysWorld{};
-
-    return instance;
-}
-
-auto ShaysWorld::getCamPtr() -> Camera * {
-    return &cam;
-}
-
-void ShaysWorld::Init() {
     auto &engine = Stonk::Engine::get();
     SDL_GetWindowSize(engine.window.get(), &width, &height);
     ShaysWorld::ratio = static_cast<double>(width) / static_cast<double>(height);
@@ -57,6 +44,16 @@ void ShaysWorld::Init() {
     // load texture images and create display lists
     CreateTextureList();
     CreateTextures();
+}
+
+auto ShaysWorld::get() -> ShaysWorld & {
+    static auto instance = ShaysWorld{};
+
+    return instance;
+}
+
+auto ShaysWorld::getCamPtr() -> Camera * {
+    return &cam;
 }
 
 //--------------------------------------------------------------------------------------
@@ -331,13 +328,6 @@ void ShaysWorld::CreatePlains() {
 }
 
 //--------------------------------------------------------------------------------------
-//  Delete raw image and clear memory
-//--------------------------------------------------------------------------------------
-void ShaysWorld::DeleteImageFromMemory(unsigned char *tempImage) {
-    delete tempImage;
-}
-
-//--------------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------------
 // Load and Create Textures
@@ -348,6 +338,8 @@ void ShaysWorld::CreateTextures() {
 
     // set texture count
     tp.SetTextureCount(250);
+
+    auto image = Image{};
 
     // load and create textures
     image = tp.LoadTexture("res/tex/abovechanctext.raw", 128, 1024);

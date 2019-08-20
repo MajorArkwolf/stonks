@@ -1,46 +1,38 @@
 #include "TexturedPolygons.h"
 
+#include <fstream>
 #include <iostream>
+#include <stdexcept>
 #include <string>
 
 #include <SDL2/SDL.h>
 
 using Shay::TexturedPolygons;
-using std::string;
 
-TexturedPolygons::~TexturedPolygons() {
-    Clear();
-}
+using std::ifstream;
+using std::runtime_error;
+using std::string;
+using Image = TexturedPolygons::Image;
 
 GLuint TexturedPolygons::GetTexture(GLuint tempIndex) {
     return m_texture[tempIndex];
 }
 
-GLubyte *TexturedPolygons::LoadTexture(const char *filename, size_t imgWidth,
-                                       size_t imgHeight) {
-    unsigned char *image = nullptr;
-    auto path            = string{SDL_GetBasePath()} + filename;
+Image TexturedPolygons::LoadTexture(const string &filename, size_t width,
+                                    size_t height) {
+    auto path       = string{SDL_GetBasePath()} + filename;
+    auto file       = ifstream{filename, std::ios::in | std::ios::binary};
+    auto image      = Image{};
+    const auto size = width * height * CHANNELS;
 
-    image = LoadRawImageFile(path.c_str(), imgWidth, imgHeight);
-    std::cout << "Loading image file " << filename << "...\n";
-    return image;
-}
-
-GLubyte *TexturedPolygons::LoadRawImageFile(const char *filename, size_t width,
-                                            size_t height) {
-    FILE *file;
-    unsigned char *image;
-    // create memory space w x h x 3 (3 stores RGB values)
-    image = static_cast<unsigned char *>(
-        malloc(sizeof(unsigned char) * width * height * 3));
-    file = fopen(filename, "rb");
-    // exit program if image not found and inform user
-    if (file == nullptr) {
-        std::cout << "ERROR loading image file: " << filename << "...\n";
-        exit(0);
+    if (!file) {
+        throw runtime_error{string{"Error loading image file: "} + filename};
     }
-    fread(image, static_cast<size_t>(width * height * 3), 1, file);
-    fclose(file);
+
+    image.resize(size);
+    file.read(reinterpret_cast<char *>(image.data()),
+              static_cast<std::streamsize>(size));
+
     return image;
 }
 
@@ -49,30 +41,23 @@ GLubyte *TexturedPolygons::LoadRawImageFile(const char *filename, size_t width,
 //--------------------------------------------------------------------------------------
 
 void TexturedPolygons::SetTextureCount(GLuint textureNo) {
-    m_texture = new GLuint[textureNo];
+    m_texture.resize(textureNo);
+
     glGenTextures(static_cast<GLsizei>(textureNo), &m_texture[0]);
-}
-
-//--------------------------------------------------------------------------------------
-//  Clears memory used to store textures when program terminates (very important)
-//--------------------------------------------------------------------------------------
-
-void TexturedPolygons::Clear() {
-    delete m_texture;
 }
 
 //--------------------------------------------------------------------------------------
 //  Creates texture and set required values for texture mapping
 //--------------------------------------------------------------------------------------
 
-void TexturedPolygons::CreateTexture(GLuint textureNo, unsigned char *image,
+void TexturedPolygons::CreateTexture(GLuint textureNo, const Image &image,
                                      size_t imgWidth, size_t imgHeight) {
     glBindTexture(GL_TEXTURE_2D, m_texture[textureNo]);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
     gluBuild2DMipmaps(GL_TEXTURE_2D, 3, static_cast<GLsizei>(imgWidth),
                       static_cast<GLsizei>(imgHeight), GL_RGB, GL_UNSIGNED_BYTE,
-                      image);
+                      image.data());
 }
 
 //--------------------------------------------------------------------------------------

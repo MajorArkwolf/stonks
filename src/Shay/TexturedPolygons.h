@@ -2,23 +2,28 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
+#include <vector>
 
 #include "Stonk/OpenGl.hpp"
 
 namespace Shay {
     class TexturedPolygons {
       public:
+        static constexpr auto CHANNELS = 3;
+
+        using Image = std::vector<unsigned char>;
+
         TexturedPolygons() = default;
-        ~TexturedPolygons();
+
         TexturedPolygons(const TexturedPolygons &) = delete;
         TexturedPolygons &operator=(const TexturedPolygons &) = delete;
 
         GLuint GetTexture(GLuint tempIndex);
-        GLubyte *LoadTexture(const char *filename, size_t imgWidth,
-                             size_t imgHeight);
+        Image LoadTexture(const std::string &filename, size_t width, size_t height);
 
         void SetTextureCount(GLuint textureNo);
-        void CreateTexture(GLuint textureNo, unsigned char *image,
+        void CreateTexture(GLuint textureNo, const Image &image,
                            size_t imgWidth, size_t imgHeight);
         void CreateDisplayList(int XYZ, GLuint listNo, GLfloat xImgSize,
                                GLfloat zImgSize, GLfloat xStart, GLfloat yStart,
@@ -37,10 +42,8 @@ namespace Shay {
                                  int smallestZ);
 
       private:
-        GLuint *m_texture{};
+        std::vector<GLuint> m_texture = {};
 
-        GLubyte *LoadRawImageFile(const char *filename, size_t width, size_t height);
-        void Clear();
         void CreateXtoZTextureList(GLfloat xImgSize, GLfloat zImgSize,
                                    GLfloat xStart, GLfloat yStart, GLfloat zStart,
                                    GLfloat xTimes, GLfloat zTimes);
