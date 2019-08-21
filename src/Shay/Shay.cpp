@@ -5180,17 +5180,18 @@ void ShaysWorld::DrawTavStepBricks() {
                          2.90625f, 6.0f);
     tp.CreateDisplayList(YZ, 1490, 32.0f, 128.0f, xCord, 9722.0f, 7916.0f,
                          1.0f, 3.0f);
-
+	///This is part of the bugged area
     tp.CreateDisplayList(YZ, 1481, 128.0f, 128.0f, xCord, 9158.0f, 6830.0f,
-                         2.375f, 6.0f);
+                         2.375f, 10.0f);
+	///Bricks for the wall above.
     tp.CreateDisplayList(YZ, 1491, 32.0f, 128.0f, xCord, 9462.0f, 6830.0f,
                          1.0f, 2.99f);
-
+	///Far bottom wall
     tp.CreateDisplayList(YZ, 1482, 128.0f, 128.0f, xCord, 8966.0f, 4590.0f,
-                         2.0f, 15.0f);
+                         2.0f, 30.0f);
     tp.CreateDisplayList(YZ, 1492, 32.0f, 128.0f, xCord, 9222.0f, 4590.0f,
                          1.0f, 12.0f);
-
+	///Angled section near bottom
     tp.CreateAngledPolygon(1483, 128.0f, 128.0f, xCord, xCord, xCord, xCord,
                            9094.0f, 9094.0f, 9462.0f, 9094.0f,
                            5742.0f, 6830.0f, 6830.0f, 5742.0f, 5, 1);
