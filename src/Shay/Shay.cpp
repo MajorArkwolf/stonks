@@ -2963,7 +2963,7 @@ void ShaysWorld::DisplayRoof() {
         glPopMatrix();
     }
     glPopMatrix();
-	// Angled beams side end
+    // Angled beams side end
 
     step = -1689.0f;
     for (GLuint i = 0; i < 85; i++) {
@@ -3116,7 +3116,20 @@ void ShaysWorld::DisplayRoof() {
     glTranslatef(-27300, 0, 0);
     glCallList(99);
     glPopMatrix();
-    // Top of Roof
+
+    glPushMatrix();
+    glTranslatef(-29250, 720, 0);
+    glCallList(99);
+    glTranslatef(0, 0, 1800);
+    glCallList(99);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-2000, 0, 0);
+    glCallList(202);
+    glPopMatrix(); 
+
+	// Top of Roof
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ROOF_TOP));
     for (GLuint i = 214; i < 216; i++) {
         glCallList(i);
