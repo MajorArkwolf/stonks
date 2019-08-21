@@ -60,7 +60,7 @@ namespace Stonk {
         auto handleKeyRelease(SDL_Event &event) -> void;
         auto getIsRunning() const -> bool;
         auto processInput() -> void;
-        auto update(State &state, double dt) -> void;
-        auto render(const State &state) const -> void;
+        auto update(State &newState, double dt) -> void;
+        auto render(const State &newState) const -> void;
     };
-};
+}

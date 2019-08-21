@@ -5,10 +5,9 @@ using Shay::PlainNode;
 // Function depreciated, to be deleted when safe too.
 void PlainNode::Clear() {}
 
-void PlainNode::SetData(const int tempType, const GLfloat tempXs,
-                        const GLfloat tempXe, const GLfloat tempYs,
-                        const GLfloat tempYe, const GLfloat tempZs,
-                        const GLfloat tempZe) {
+void PlainNode::SetData(Slope tempType, GLfloat tempXs, GLfloat tempXe,
+                        GLfloat tempYs, GLfloat tempYe, GLfloat tempZs,
+                        GLfloat tempZe) {
     m_type        = tempType;
     m_xPlainStart = tempXs;
     m_xPlainEnd   = tempXe;
@@ -18,7 +17,7 @@ void PlainNode::SetData(const int tempType, const GLfloat tempXs,
     m_zPlainEnd   = tempZe;
 }
 
-GLfloat PlainNode::GetType() {
+PlainNode::Slope PlainNode::GetType() {
     return m_type;
 }
 GLfloat PlainNode::GetXstart() {

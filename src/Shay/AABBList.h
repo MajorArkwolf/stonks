@@ -2,16 +2,12 @@
 
 /**
  * @class AABBList
- * @brief  AABB collision list array
+ * @brief AABB collision list array
  *
  * Updated Shay's Linklist format to a vector improving access speeds.
- *
- * @author Peter Crabbe
- * @version 02
- * @date 04/08/2019
- *
  */
 
+#include <cstddef>
 #include <vector>
 
 #include "AABBNode.h"
@@ -20,9 +16,6 @@
 namespace Shay {
     class AABBList {
       public:
-        /**
-         * @brief Default constructor, not required
-         */
         AABBList() = default;
 
         AABBList(AABBList &&)      = default;
@@ -30,72 +23,23 @@ namespace Shay {
         AABBList &operator=(AABBList &&) = default;
         AABBList &operator=(const AABBList &) = default;
 
-        /**
-         * @brief  Attempts to add to the vector, then will push into the last spot
-         */
         bool AddToStart(GLfloat maxX, GLfloat minX, GLfloat maxY, GLfloat minY,
                         GLfloat maxZ, GLfloat minZ);
 
-        /**
-         * @brief  Sets the data at the given point in the array.
-         */
-        void SetData(const int &ptrCount, const GLfloat maxX,
-                     const GLfloat minX, const GLfloat maxY, const GLfloat minY,
-                     const GLfloat maxZ, const GLfloat minZ);
+        void SetData(GLfloat maxX, GLfloat minX, GLfloat maxY, GLfloat minY,
+                     GLfloat maxZ, GLfloat minZ);
 
-        /**
-         * @brief Gets the max X value at the given point in the array
-         */
-        GLfloat GetMaxX(int ptrCount);
-
-        /**
-         * @brief Gets the max X value at the given point in the array
-         */
-        GLfloat GetMinX(int ptrCount);
-
-        /**
-         * @brief Gets the max X value at the given point in the array
-         */
-        GLfloat GetMaxY(int ptrCount);
-
-        /**
-         * @brief Gets the max X value at the given point in the array
-         */
-        GLfloat GetMinY(int ptrCount);
-
-        /**
-         * @brief Gets the max X value at the given point in the array
-         */
-        GLfloat GetMaxZ(int ptrCount);
-
-        /**
-         * @brief Gets the max X value at the given point in the array
-         */
-        GLfloat GetMinZ(int ptrCount);
-
-        /**
-         * @brief Returns the size of the vector as an int.
-         */
-        int GetListSize();
-
-        //--------------------------------------------------------------------------------------
+        GLfloat GetMaxX(std::size_t ptrCount);
+        GLfloat GetMinX(std::size_t ptrCount);
+        GLfloat GetMaxY(std::size_t ptrCount);
+        GLfloat GetMinY(std::size_t ptrCount);
+        GLfloat GetMaxZ(std::size_t ptrCount);
+        GLfloat GetMinZ(std::size_t ptrCount);
+        std::size_t GetListSize();
 
       private:
-        /// Vector storing the nodes.
         std::vector<AABBNode> nodes{};
-
-        /**
-         * @brief Depreciated Function, to be removed.
-         */
-        void Delete() {
-            nodes.clear();
-        }
-
-        /**
-         * @brief Depreciated Function, to be removed.
-         */
-        void Clear() {
-            nodes.clear();
-        }
+        void Delete();
+        void Clear();
     };
-};
+}

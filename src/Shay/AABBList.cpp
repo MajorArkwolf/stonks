@@ -1,6 +1,9 @@
 #include "AABBList.h"
 
+#include <cstddef>
+
 using Shay::AABBList;
+using std::size_t;
 
 bool AABBList::AddToStart(GLfloat maxX, GLfloat minX, GLfloat maxY,
                           GLfloat minY, GLfloat maxZ, GLfloat minZ) {
@@ -15,57 +18,64 @@ bool AABBList::AddToStart(GLfloat maxX, GLfloat minX, GLfloat maxY,
     return true;
 }
 
-GLfloat AABBList::GetMaxX(int ptrCount) {
+GLfloat AABBList::GetMaxX(size_t ptrCount) {
     if (ptrCount <= nodes.size())
         return nodes[ptrCount].GetMaxX();
     else
         return 0;
 }
 
-GLfloat AABBList::GetMinX(int ptrCount) {
+GLfloat AABBList::GetMinX(size_t ptrCount) {
     if (ptrCount <= nodes.size())
         return nodes[ptrCount].GetMinX();
     else
         return 0;
 }
 
-GLfloat AABBList::GetMaxY(int ptrCount) {
+GLfloat AABBList::GetMaxY(size_t ptrCount) {
     if (ptrCount <= nodes.size())
         return nodes[ptrCount].GetMaxY();
     else
         return 0;
 }
 
-GLfloat AABBList::GetMinY(int ptrCount) {
+GLfloat AABBList::GetMinY(size_t ptrCount) {
     if (ptrCount <= nodes.size())
         return nodes[ptrCount].GetMinY();
     else
         return 0;
 }
 
-GLfloat AABBList::GetMaxZ(int ptrCount) {
+GLfloat AABBList::GetMaxZ(size_t ptrCount) {
     if (ptrCount <= nodes.size())
         return nodes[ptrCount].GetMaxZ();
     else
         return 0;
 }
 
-GLfloat AABBList::GetMinZ(int ptrCount) {
+GLfloat AABBList::GetMinZ(size_t ptrCount) {
     if (ptrCount <= nodes.size())
         return nodes[ptrCount].GetMinZ();
     else
         return 0;
 }
 
-void AABBList::SetData(const int &ptrCount, const GLfloat maxX,
-                       const GLfloat minX, const GLfloat maxY, const GLfloat minY,
-                       const GLfloat maxZ, const GLfloat minZ) {
+void AABBList::SetData(GLfloat maxX, GLfloat minX, GLfloat maxY, GLfloat minY,
+                       GLfloat maxZ, GLfloat minZ) {
     AABBNode temp{};
     temp.SetData(maxX, minX, maxY, minY, maxZ, minZ);
     nodes.push_back(temp);
 }
 
-int AABBList::GetListSize() {
-    int size = int(nodes.size());
+size_t AABBList::GetListSize() {
+    size_t size = size_t(nodes.size());
     return size;
+}
+
+void AABBList::Delete() {
+    nodes.clear();
+}
+
+void AABBList::Clear() {
+    nodes.clear();
 }

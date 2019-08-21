@@ -19,4 +19,4 @@ namespace Stonk {
      * @ Stonk collision subsystem.
      */
     // struct Collision {};
-};
+}

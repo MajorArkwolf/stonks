@@ -1,39 +1,16 @@
 #include "Shay.hpp"
 
+#include "Shay/PlainNode.h"
 #include "Stonk/Engine.hpp"
 
-using namespace Shay;
+using Shay::Camera;
+using Shay::ShayAxis;
+using Shay::ShaysWorld;
+using Shay::ShayTexture;
+using Slope = Shay::PlainNode::Slope;
+using Image = Shay::TexturedPolygons::Image;
 
-GLfloat ShaysWorld::stepIncrement  = 0;
-GLfloat ShaysWorld::angleIncrement = 0;
-int ShaysWorld::frameCount         = 0;
-clock_t ShaysWorld::lastClock      = {};
-
-int ShaysWorld::width    = 0;
-int ShaysWorld::height   = 0;
-double ShaysWorld::ratio = 0;
-
-bool ShaysWorld::DisplayMap     = false;
-bool ShaysWorld::DisplayWelcome = true;
-bool ShaysWorld::DisplayExit    = false;
-bool ShaysWorld::lightsOn       = true;
-bool ShaysWorld::displayECL     = true;
-bool ShaysWorld::displayDebug   = true;
-int ShaysWorld::calcFPS         = 0;
-
-GLfloat ShaysWorld::step                = 0.0f;
-GLfloat ShaysWorld::step2               = 0.0f;
-GLfloat ShaysWorld::stepLength          = 0.0f;
-GLUquadricObj *ShaysWorld::glu_cylinder = nullptr;
-unsigned char *ShaysWorld::image        = nullptr;
-Camera ShaysWorld::cam                  = {};
-TexturedPolygons ShaysWorld::tp         = {};
-
-auto ShaysWorld::getCamPtr() -> Camera * {
-    return &cam;
-}
-
-void ShaysWorld::Init() {
+ShaysWorld::ShaysWorld() {
     auto &engine = Stonk::Engine::get();
     SDL_GetWindowSize(engine.window.get(), &width, &height);
     ShaysWorld::ratio = static_cast<double>(width) / static_cast<double>(height);
@@ -67,6 +44,16 @@ void ShaysWorld::Init() {
     // load texture images and create display lists
     CreateTextureList();
     CreateTextures();
+}
+
+auto ShaysWorld::get() -> ShaysWorld & {
+    static auto instance = ShaysWorld{};
+
+    return instance;
+}
+
+auto ShaysWorld::getCamPtr() -> Camera * {
+    return &cam;
 }
 
 //--------------------------------------------------------------------------------------
@@ -234,12 +221,11 @@ void ShaysWorld::CreatePostBoundingBoxes() {
     step       = 0.0f;
     stepLength = 0.0f;
     step2      = 0.0f;
-    
-    
+
     // The calllist to draw pillars draws them offset from the origin
     // instead of just drawing them at origin and then translating (Why, shay.)
     constexpr float pillarXOffset = 31740.0f;
-    constexpr float pillarYOffset = 9995.0f;
+    // constexpr float pillarYOffset = 9995.0f;
     constexpr float pillarZOffset = 10105.0f;
     constexpr float pillarSize    = 128.0f;
     for (int j = 0; j < 2; j++) {
@@ -284,7 +270,7 @@ void ShaysWorld::CreatePostBoundingBoxes() {
     // For some reason, the chancellery pillar's "model" is offset
     // differently than the other pillars.
     constexpr float chancelleryPillarZOffset = 8100.0f;
-    //First pillar (taller pillar at chancellery, by spawn)
+    // First pillar (taller pillar at chancellery, by spawn)
     cam.SetAABBMaxX(pillarXOffset + 128.f);
     cam.SetAABBMinX(pillarXOffset);
     cam.SetAABBMaxZ(chancelleryPillarZOffset + 128.0f);
@@ -296,37 +282,38 @@ void ShaysWorld::CreatePostBoundingBoxes() {
 //--------------------------------------------------------------------------------------
 void ShaysWorld::CreatePlains() {
     // grass slope
-    cam.SetPlains(ZY_PLAIN, 4848.0, 31568.0, 9536.0, 10450.0, 6200.0, 10000.0);
+    cam.SetPlains(Slope::ZY, 4848.0, 31568.0, 9536.0, 10450.0, 6200.0, 10000.0);
 
     // flat land (pavement and grass)
-    cam.SetPlains(FLAT_PLAIN, 0.0, 36000.0, 10450.0, 10450.0, 10000.0, 17000.0);
-    cam.SetPlains(FLAT_PLAIN, 0.0, 6500.0, 10450.0, 10450.0, 17000.0, 40000.0);
-    cam.SetPlains(FLAT_PLAIN, 27000.0, 36000.0, 10450.0, 10450.0, 17000.0, 40000.0);
-    cam.SetPlains(FLAT_PLAIN, 0.0, 36000.0, 10450.0, 10450.0, 40000.0, 50000.0);
+    cam.SetPlains(Slope::FLAT, 0.0, 36000.0, 10450.0, 10450.0, 10000.0, 17000.0);
+    cam.SetPlains(Slope::FLAT, 0.0, 6500.0, 10450.0, 10450.0, 17000.0, 40000.0);
+    cam.SetPlains(Slope::FLAT, 27000.0, 36000.0, 10450.0, 10450.0, 17000.0, 40000.0);
+    cam.SetPlains(Slope::FLAT, 0.0, 36000.0, 10450.0, 10450.0, 40000.0, 50000.0);
 
     // top of lower hill
-    cam.SetPlains(FLAT_PLAIN, 9000.0, 22000.0, 10650.0, 10650.0, 19000.0, 23000.0);
-    cam.SetPlains(FLAT_PLAIN, 9000.0, 10000.0, 10650.0, 10650.0, 28000.0, 33000.0);
-    cam.SetPlains(FLAT_PLAIN, 9000.0, 22000.0, 10650.0, 10650.0, 36000.0, 37000.0);
+    cam.SetPlains(Slope::FLAT, 9000.0, 22000.0, 10650.0, 10650.0, 19000.0, 23000.0);
+    cam.SetPlains(Slope::FLAT, 9000.0, 10000.0, 10650.0, 10650.0, 28000.0, 33000.0);
+    cam.SetPlains(Slope::FLAT, 9000.0, 22000.0, 10650.0, 10650.0, 36000.0, 37000.0);
     // sides of lower hill
-    cam.SetPlains(ZY_PLAIN, 6500.0, 27000.0, 10450.0, 10650.0, 17000.0, 19000.0);
-    cam.SetPlains(ZY_PLAIN, 6500.0, 27000.0, 10650.0, 10450.0, 37000.0, 40000.0);
-    cam.SetPlains(XY_PLAIN, 6500.0, 9000.0, 10450.0, 10650.0, 17000.0, 40000.0);
-    cam.SetPlains(XY_PLAIN, 22000.0, 27000.0, 10650.0, 10450.0, 17000.0, 40000.0);
+    cam.SetPlains(Slope::ZY, 6500.0, 27000.0, 10450.0, 10650.0, 17000.0, 19000.0);
+    cam.SetPlains(Slope::ZY, 6500.0, 27000.0, 10650.0, 10450.0, 37000.0, 40000.0);
+    cam.SetPlains(Slope::XY, 6500.0, 9000.0, 10450.0, 10650.0, 17000.0, 40000.0);
+    cam.SetPlains(Slope::XY, 22000.0, 27000.0, 10650.0, 10450.0, 17000.0, 40000.0);
 
     // top of higher hill
-    cam.SetPlains(FLAT_PLAIN, 14000.0, 18000.0, 10875.0, 108075.0, 28000.0, 33000.0);
+    cam.SetPlains(Slope::FLAT, 14000.0, 18000.0, 10875.0, 108075.0, 28000.0,
+                  33000.0);
     // sides of higher hill
-    cam.SetPlains(ZY_PLAIN, 10000.0, 22000.0, 10650.0, 10875.0, 23000.0, 28000.0);
-    cam.SetPlains(ZY_PLAIN, 10000.0, 22000.0, 10875.0, 10650.0, 33000.0, 36000.0);
-    cam.SetPlains(XY_PLAIN, 10000.0, 14000.0, 10650.0, 10875.0, 23000.0, 36000.0);
-    cam.SetPlains(XY_PLAIN, 18000.0, 22000.0, 10875.0, 10650.0, 23000.0, 36000.0);
+    cam.SetPlains(Slope::ZY, 10000.0, 22000.0, 10650.0, 10875.0, 23000.0, 28000.0);
+    cam.SetPlains(Slope::ZY, 10000.0, 22000.0, 10875.0, 10650.0, 33000.0, 36000.0);
+    cam.SetPlains(Slope::XY, 10000.0, 14000.0, 10650.0, 10875.0, 23000.0, 36000.0);
+    cam.SetPlains(Slope::XY, 18000.0, 22000.0, 10875.0, 10650.0, 23000.0, 36000.0);
 
     // entance steps
     step       = 10450.0f;
     stepLength = 9808.0f;
     for (int i = 0; i < 18; i++) {
-        cam.SetPlains(FLAT_PLAIN, 31582.0, 33835, step, step, stepLength,
+        cam.SetPlains(Slope::FLAT, 31582.0, 33835, step, step, stepLength,
                       stepLength + 42.0f);
         step -= 48.0f;
         stepLength -= 142.0f;
@@ -337,14 +324,7 @@ void ShaysWorld::CreatePlains() {
     }
 
     // temp plain to take down to ECL1
-    cam.SetPlains(ZY_PLAIN, 3200.0, 4800.0, 10450.0, 9370.0, 53400.0, 57900.0);
-}
-
-//--------------------------------------------------------------------------------------
-//  Delete raw image and clear memory
-//--------------------------------------------------------------------------------------
-void ShaysWorld::DeleteImageFromMemory(unsigned char *tempImage) {
-    delete tempImage;
+    cam.SetPlains(Slope::ZY, 3200.0, 4800.0, 10450.0, 9370.0, 53400.0, 57900.0);
 }
 
 //--------------------------------------------------------------------------------------
@@ -358,6 +338,8 @@ void ShaysWorld::CreateTextures() {
 
     // set texture count
     tp.SetTextureCount(250);
+
+    auto image = Image{};
 
     // load and create textures
     image = tp.LoadTexture("res/tex/abovechanctext.raw", 128, 1024);

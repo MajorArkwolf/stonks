@@ -81,4 +81,4 @@ namespace Shay {
         /// stores above info
         BoundingBox m_BBox{};
     };
-};
+}

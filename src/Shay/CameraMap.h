@@ -9,20 +9,16 @@ namespace Shay {
         ~CameraMap() {}
 
         // display the map
-        void DisplayMap(const int &screenWidth, const int &screenHeight,
-                        const GLfloat &xPos, const GLfloat &zPos,
-                        const GLuint &tempImage);
+        void DisplayMap(int screenWidth, int screenHeight, GLfloat xPos,
+                        GLfloat zPos, GLuint tempImage);
 
         // display the welcome screen
-        void DisplayWelcomeScreen(const int &screenWidth, const int &screenHeight,
-                                  const int &tempExit, const GLuint &tempImage);
+        void DisplayWelcomeScreen(int screenWidth, int screenHeight,
+                                  int tempExit, GLuint tempImage);
 
-        void DisplayNoExit(const int &screenWidth, const int &screenHeight,
-                           const GLuint &tempImage);
+        void DisplayNoExit(int screenWidth, int screenHeight, GLuint tempImage);
 
-      private:
-        // Privatised copy constructor and assignment operator
         CameraMap(const CameraMap &cam) = delete;
         CameraMap &operator=(const CameraMap &cam) = delete;
     };
-};
+}

@@ -19,10 +19,8 @@ using Stonk::Engine;
 using Stonk::State;
 
 auto Engine::run() -> void {
-    auto &engine = Engine::get();
-
-    // Setup Shay's World.
-    ShaysWorld::Init();
+    auto &engine     = Engine::get();
+    auto &shaysWorld = ShaysWorld::get();
 
     auto time      = static_cast<double>(SDL_GetPerformanceCounter());
     auto oldTime   = 0.0;
@@ -35,8 +33,8 @@ auto Engine::run() -> void {
             (time - oldTime) / static_cast<double>(SDL_GetPerformanceFrequency());
 
         engine.processInput();
-        ShaysWorld::Update(deltaTime);
-        ShaysWorld::Display();
+        shaysWorld.Update(deltaTime);
+        shaysWorld.Display();
     }
 }
 
@@ -112,35 +110,33 @@ auto Engine::getIsRunning() const -> bool {
 }
 
 auto Engine::handleKeyPress(SDL_Event &event) -> void {
+    auto &shaysWorld = ShaysWorld::get();
+
     switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_ESCAPE: {
             this->isRunning = false;
         } break;
         case SDL_SCANCODE_SPACE: {
             // Toggle for welcome screen
-            ShaysWorld::DisplayWelcome = (ShaysWorld::DisplayWelcome) ? false : true;
+            shaysWorld.DisplayWelcome = (shaysWorld.DisplayWelcome) ? false : true;
         } break;
         default: break;
     }
 }
 
-auto Engine::handleKeyRelease(SDL_Event &event) -> void {
-    switch (event.key.keysym.scancode) {
-        default: break;
-    }
-}
+auto Engine::handleKeyRelease([[maybe_unused]] SDL_Event &event) -> void {}
 
 auto Engine::handleMouseMovement(SDL_Event &event) -> void {
-    this->mouse.x = event.motion.xrel;
-    this->mouse.y = event.motion.yrel;
+    this->mouse.x = static_cast<float>(event.motion.xrel);
+    this->mouse.y = static_cast<float>(event.motion.yrel);
 }
 
 auto Engine::handleMouseButtonPress(SDL_Event &event) -> void {
-    int numClicks =
-        event.button.clicks; // Number of clicks received as event   e.g. 1 =
-                             // single click, 2 = double click
-    int releaseXPos = event.button.x; // X-position of mouse when pressed
-    int releaseYPos = event.button.y; // Y-position of mouse when pressed
+    // int numClicks =
+    //     event.button.clicks; // Number of clicks received as event   e.g. 1 =
+    //                          // single click, 2 = double click
+    // int releaseXPos = event.button.x; // X-position of mouse when pressed
+    // int releaseYPos = event.button.y; // Y-position of mouse when pressed
 
     switch (event.button.button) {
         case SDL_BUTTON_LEFT: break;
@@ -151,11 +147,11 @@ auto Engine::handleMouseButtonPress(SDL_Event &event) -> void {
 }
 
 auto Engine::handleMouseButtonRelease(SDL_Event &event) -> void {
-    int numClicks =
-        event.button.clicks; // Number of clicks received as event   e.g. 1 =
-                             // single click, 2 = double click
-    int releaseXPos = event.button.x; // X-position of mouse when pressed
-    int releaseYPos = event.button.y; // Y-position of mouse when pressed
+    // int numClicks =
+    //     event.button.clicks; // Number of clicks received as event   e.g. 1 =
+    //                          // single click, 2 = double click
+    // int releaseXPos = event.button.x; // X-position of mouse when pressed
+    // int releaseYPos = event.button.y; // Y-position of mouse when pressed
 
     switch (event.button.button) {
         case SDL_BUTTON_LEFT: break;
@@ -165,9 +161,9 @@ auto Engine::handleMouseButtonRelease(SDL_Event &event) -> void {
     }
 }
 
-auto Engine::handleMouseWheelMotion(SDL_Event &event) -> void {
-    int amountScrolledX = event.wheel.x; // Amount scrolled left or right
-    int amountScrolledY = event.wheel.y; // Amount scrolled up or down
+auto Engine::handleMouseWheelMotion([[maybe_unused]] SDL_Event &event) -> void {
+    // int amountScrolledX = event.wheel.x; // Amount scrolled left or right
+    // int amountScrolledY = event.wheel.y; // Amount scrolled up or down
 }
 
 auto Engine::processInput() -> void {
@@ -205,8 +201,8 @@ auto Engine::processInput() -> void {
     }
 }
 
-auto Engine::update(State &state, double dt) -> void {
-    this->physics.update(state, dt);
+auto Engine::update(State &newState, double dt) -> void {
+    this->physics.update(newState, dt);
 }
 
-auto Engine::render(const State &state) const -> void {}
+auto Engine::render([[maybe_unused]] const State &newState) const -> void {}
