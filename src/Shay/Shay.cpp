@@ -2852,13 +2852,6 @@ void ShaysWorld::DisplayRoof() {
     }
     glPopMatrix();
 
-    glPushMatrix();
-    glTranslatef(-29100, 0, 0);
-    for (GLuint i = 6013; i < 6018; i++) {
-        glCallList(i);
-    }
-    glPopMatrix();
-
     step = -1689.0f;
     for (GLuint i = 0; i < 85; i++) {
         glPushMatrix();
@@ -2948,17 +2941,6 @@ void ShaysWorld::DisplayRoof() {
         glCallList(i);
         glPushMatrix();
         glTranslatef(0.0f, 0.0f, 32.0f);
-        glCallList(i);
-        glPopMatrix();
-    }
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(-29100, 0, 0);
-    for (GLuint i = 6017; i < 6023; i++) {
-        glCallList(i);
-        glPushMatrix();
-        glTranslatef(32.0f, 0.0f, 0.0f);
         glCallList(i);
         glPopMatrix();
     }
@@ -3082,6 +3064,17 @@ void ShaysWorld::DisplayRoof() {
         glCallList(i + 5);
         glPopMatrix();
     }
+
+    glPushMatrix();
+    glTranslatef(-29100, 0, 0);
+    for (GLuint i = 6018; i < 6023; i++) {
+        glCallList(i);
+        glPushMatrix();
+        glTranslatef(32.0f, 0.0f, 0.0f);
+        glCallList(i);
+        glPopMatrix();
+    }
+    glPopMatrix();
     glCallList(426);
     glCallList(427);
     glPushMatrix();
@@ -3111,6 +3104,13 @@ void ShaysWorld::DisplayRoof() {
     for (GLuint i = 170; i < 175; i++) {
         glCallList(i);
     }
+
+    glPushMatrix();
+    glTranslatef(-29100, 0, 0);
+    for (GLuint i = 6013; i < 6018; i++) {
+        glCallList(i);
+    }
+    glPopMatrix();
     // student hub spacers *Kiera*
     glPushMatrix();
     glTranslatef(-27300.0f, 0.0f, 0.0f);
@@ -3428,15 +3428,15 @@ void ShaysWorld::DrawRoof() {
     DrawAngledRoofBeam(6007, 33848.0f + 323.0f, 12012.72f - 118.88f, 42770.0, 2.36f);
     // Library Hub join slants
     DrawAngledRoofBeam2(6013, 33524.0f, 11998.0f - 672.41f, 43056.0f - 1827.0f,
-                        2.36f);
+                        15.21f);
     DrawAngledRoofBeam2(6014, 33138.0f, 11998.0f - 530.35f, 43056.0f - 1441.0f,
-                        5.57f);
+                        12.0f);
     DrawAngledRoofBeam2(6015, 32752.0f, 11998.0f - 388.28f, 43056.0f - 1055.0f,
                         8.78f);
     DrawAngledRoofBeam2(6016, 32366.0f, 11998.0f - 246.22f, 43056.0f - 669.0f,
-                        12.0f);
+                        5.57f);
     DrawAngledRoofBeam2(6017, 31980.0f, 11998.0f - 104.16f, 43056.0f - 283.0f,
-                        15.21f);
+                        2.36f);
 }
 
 // --------------------------------------------------------------------------------------
