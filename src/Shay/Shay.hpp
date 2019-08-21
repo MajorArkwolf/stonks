@@ -275,6 +275,7 @@ namespace Shay {
         void DisplayDoorPaving();
         void DisplayDoorPosts();
         void DisplayEntranceSteps();
+        void DisplayTavSteps();
         void DisplayExtras();
         void DisplayGrass();
         void DisplayLargerTextures();
@@ -304,6 +305,7 @@ namespace Shay {
         void DrawExtras();
         void DrawRoof();
         void DrawEntranceSteps();
+        void DrawTavSteps();
         void DrawLargerTextures();
         void DrawLights();
         void DrawBench();

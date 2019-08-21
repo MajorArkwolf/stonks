@@ -1021,6 +1021,7 @@ void ShaysWorld::DrawBackdrop() {
     DisplayDoorPaving();
     DisplayDoorPosts();
     DisplayEntranceSteps();
+    DisplayTavSteps();
     DisplayExtras();
     DisplayGrass();
     DisplayLargerTextures();
@@ -2259,6 +2260,10 @@ void ShaysWorld::DisplayPavement() {
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(PAVEMENT_16));
     glCallList(80);
+    glPushMatrix();
+    glTranslatef(-28960.0f, 0.0f, 0.0f);
+    glCallList(80);
+    glPopMatrix();
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(PAVEMENT_CORNER_1));
     glCallList(93);
@@ -3559,6 +3564,34 @@ void ShaysWorld::DrawEntranceSteps() {
                          1.0f, 0.942f);
     tp.CreateDisplayList(XZ, 207, 256.0f, 1024.0f, 34352.0f, 10000.0f, 41127.0f,
                          0.609f, 0.942f);
+}
+
+//--------------------------------------------------------------------------------------
+// Display Tavern Steps
+//--------------------------------------------------------------------------------------
+void ShaysWorld::DisplayTavSteps() {
+    glBindTexture(GL_TEXTURE_2D, tp.GetTexture(STEP_PAVING_1));
+    for (GLuint i = 1258; i < 1274; i++)
+        glCallList(i);
+
+    glBindTexture(GL_TEXTURE_2D, tp.GetTexture(STEP_EDGE));
+    for (GLuint i = 1274; i < 1290; i++)
+        glCallList(i);
+}
+
+void ShaysWorld::DrawTavSteps() {
+    step       = 10000.0f;
+    stepLength = 9808.0f;
+    for (GLuint i = 1258; i < 1274; i++) {
+        tp.CreateDisplayList(XZ, i, 1024.0f, 512.0f, 2600.0f, step, stepLength,
+                             2.2f, 0.277f);
+        tp.CreateDisplayList(XY, i + 16, 64.0f, 64.0f, 2600.0f, step - 64.0f,
+                             stepLength, 35.0f, 1.0f);
+        step -= 48.0f;
+        stepLength -= 142.0f;
+    }
+    step       = 9808.0f;
+    stepLength = 8882.0f;
 }
 
 //--------------------------------------------------------------------------------------
@@ -5078,7 +5111,8 @@ void ShaysWorld::CreateTextureList() {
     DrawRoof();          // 1-10, 97-100, 170-179, 202-205, 214-222, 250-257,
                          // 296-299, 426-427
     DrawEntranceSteps(); // 258-295, 206-207
-    DrawExtras();        // 300-349, 388, 395, 419-421, 429, 435
+    DrawTavSteps();      // 1258-1295 1206-1207
+	DrawExtras();        // 300-349, 388, 395, 419-421, 429, 435
     DrawLargerTextures(); // 350-375, 379-387, 389, 414-418, 422-423, 450-453
     DrawLights();         // 376-378
     DrawBench();          // 400-413
