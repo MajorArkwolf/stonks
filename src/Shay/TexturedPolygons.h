@@ -1,9 +1,12 @@
 #pragma once
 
+#include <memory>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
 #include <vector>
+
+#include <SDL2/SDL.h>
 
 #include "Stonk/OpenGl.hpp"
 
@@ -12,7 +15,7 @@ namespace Shay {
       public:
         static constexpr auto CHANNELS = 3;
 
-        using Image = std::vector<unsigned char>;
+        using Image = std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)>;
 
         TexturedPolygons() = default;
 
@@ -20,11 +23,10 @@ namespace Shay {
         TexturedPolygons &operator=(const TexturedPolygons &) = delete;
 
         GLuint GetTexture(GLuint tempIndex);
-        Image LoadTexture(const std::string &filename, size_t width, size_t height);
+        Image LoadTexture(const std::string &filename);
 
         void SetTextureCount(GLuint textureNo);
-        void CreateTexture(GLuint textureNo, const Image &image,
-                           size_t imgWidth, size_t imgHeight);
+        void CreateTexture(GLuint textureNo, const Image &image);
         void CreateDisplayList(int XYZ, GLuint listNo, GLfloat xImgSize,
                                GLfloat zImgSize, GLfloat xStart, GLfloat yStart,
                                GLfloat zStart, GLfloat xTimes, GLfloat zTimes);
