@@ -5164,6 +5164,7 @@ void ShaysWorld::DisplayTavStepBricks() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_STEPS_EDGE_2));
     glCallList(1507);
 }
+
 void ShaysWorld::DrawTavStepBricks() {
     float xCord = 4880.0f;
     tp.CreateDisplayList(YZ, 1478, 128.0f, 128.0f, xCord, 9914.0f, 9872.0f,
