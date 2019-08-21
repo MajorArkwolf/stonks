@@ -287,6 +287,7 @@ namespace Shay {
         void DisplayRedPosts();
         void DisplayRoof();
         void DisplayStepBricks();
+        void DisplayTavStepBricks();
         void DisplayLights();
         void DisplayECL();
         void CreateTextureList();
@@ -315,6 +316,7 @@ namespace Shay {
         void DrawAngledRoofBeam2(GLuint listNo, GLfloat x, GLfloat y, GLfloat z,
                                  GLfloat beamSize);
         void DrawStepBricks();
+        void DrawTavStepBricks();
         void DrawMapExit();
         void DrawECL();
         void BindBridgeWall(GLint LR);

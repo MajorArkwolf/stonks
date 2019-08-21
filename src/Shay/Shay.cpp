@@ -1033,6 +1033,7 @@ void ShaysWorld::DrawBackdrop() {
     DisplayRedPosts();
     DisplayRoof();
     DisplayStepBricks();
+    DisplayTavStepBricks();
     if (lightsOn)
         DisplayLights();
 }
@@ -5078,6 +5079,166 @@ void ShaysWorld::DrawStepBricks() {
                          1.0f, 3.4376f);
 }
 
+// --------------------------------------------------------------------------------------
+// Display Wall by Tavern
+// --------------------------------------------------------------------------------------
+void ShaysWorld::DisplayTavStepBricks() {
+    step = 0.0f;
+
+    for (int j = 0; j < 2; j++) {
+        glPushMatrix();
+        glTranslatef(step, 0.0f, 0.0f);
+        glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_STEPS));
+        for (GLuint i = 1478; i < 1487; i++)
+            glCallList(i);
+
+        glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_STEPS_TOP));
+        for (GLuint i = 1488; i < 1493; i++)
+            glCallList(i);
+
+        glPushMatrix();
+        glTranslatef(31572.0f, 9222.0f, 6126.0f);
+        glRotatef(-18.69f, 1.0f, 0.0f, 0.0f);
+        glTranslatef(-31572.0f, -9222.0f, -6126.0f);
+        glCallList(1493);
+        glPopMatrix();
+
+        glPushMatrix();
+        glTranslatef(31572.0f, 9461.0f, 7213.0f);
+        glRotatef(-20.31f, 1.0f, 0.0f, 0.0f);
+        glTranslatef(-31572.0f, -9462.0f, -7213.0f);
+        glCallList(1494);
+        glPopMatrix();
+
+        glPushMatrix();
+        glTranslatef(31572.0f, 9722.0f, 8302.0f);
+        glRotatef(-17.35f, 1.0f, 0.0f, 0.0f);
+        glTranslatef(-31572.0f, -9722.0f, -8302.0f);
+        glCallList(1495);
+        glPopMatrix();
+
+        glPushMatrix();
+        glTranslatef(31572.0f, 9939.0f, 9332.4f);
+        glRotatef(-19.83f, 1.0f, 0.0f, 0.0f);
+        glTranslatef(-31572.0f, -9942.0f, -9332.4f);
+        glCallList(1496);
+        glPopMatrix();
+        glPopMatrix();
+        step += -64.0f;
+    }
+
+    glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_STEPS_COVER));
+    for (GLuint i = 1497; i < 1502; i++)
+        glCallList(i);
+    glPushMatrix();
+    glTranslatef(31572.0f, 9222.0f, 6126.0f);
+    glRotatef(-18.69f, 1.0f, 0.0f, 0.0f);
+    glTranslatef(-31572.0f, -9222.0f, -6126.0f);
+    glCallList(1502);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(31572.0f, 9462.0f, 7213.0f);
+    glRotatef(-20.21f, 1.0f, 0.0f, 0.0f);
+    glTranslatef(-31572.0f, -9462.0f, -7213.0f);
+    glCallList(1503);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(31572.0f, 9722.0f, 8302.0f);
+    glRotatef(-17.35f, 1.0f, 0.0f, 0.0f);
+    glTranslatef(-31572.0f, -9722.0f, -8302.0f);
+    glCallList(1504);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(31572.0f, 9939.0f, 9332.4f);
+    glRotatef(-19.83f, 1.0f, 0.0f, 0.0f);
+    glTranslatef(-31572.0f, -9942.0f, -9332.4f);
+    glCallList(1505);
+    glPopMatrix();
+
+    glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_STEPS_EDGE));
+    glCallList(1506);
+
+    glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_STEPS_EDGE_2));
+    glCallList(1507);
+}
+void ShaysWorld::DrawTavStepBricks() {
+    float xCord = 4840.0f;
+    tp.CreateDisplayList(YZ, 1478, 128.0f, 128.0f, xCord, 9914.0f, 9872.0f,
+                         1.7188f, 1.75f);
+    tp.CreateDisplayList(YZ, 1488, 32.0f, 128.0f, xCord, 10134.0f, 9868.0f,
+                         1.0f, 1.78f);
+
+    tp.CreateDisplayList(YZ, 1479, 128.0f, 128.0f, xCord, 9530.0f, 9006.0f,
+                         3.21875f, 6.0f);
+    tp.CreateDisplayList(YZ, 1489, 32.0f, 128.0f, xCord, 9942.0f, 9004.0f,
+                         1.0f, 2.55f);
+
+    tp.CreateDisplayList(YZ, 1480, 128.0f, 128.0f, xCord, 9350.0f, 7918.0f,
+                         2.90625f, 6.0f);
+    tp.CreateDisplayList(YZ, 1490, 32.0f, 128.0f, xCord, 9722.0f, 7916.0f,
+                         1.0f, 3.0f);
+
+    tp.CreateDisplayList(YZ, 1481, 128.0f, 128.0f, xCord, 9158.0f, 6830.0f,
+                         2.375f, 6.0f);
+    tp.CreateDisplayList(YZ, 1491, 32.0f, 128.0f, xCord, 9462.0f, 6830.0f,
+                         1.0f, 2.99f);
+
+    tp.CreateDisplayList(YZ, 1482, 128.0f, 128.0f, xCord, 8966.0f, 4590.0f,
+                         2.0f, 15.0f);
+    tp.CreateDisplayList(YZ, 1492, 32.0f, 128.0f, xCord, 9222.0f, 4590.0f,
+                         1.0f, 12.0f);
+
+    tp.CreateAngledPolygon(1483, 128.0f, 128.0f, xCord, xCord, xCord, xCord,
+                           9094.0f, 9094.0f, 9462.0f, 9094.0f,
+                           5742.0f, 6830.0f, 6830.0f, 5742.0f, 5, 1);
+    tp.CreateDisplayList(YZ, 1493, 32.0f, 128.0f, xCord, 9222.0f, 6126.0f,
+                         1.0f, 5.92f);
+
+    tp.CreateAngledPolygon(1484, 128.0f, 128.0f, xCord, xCord, xCord, xCord,
+                           9414.0f, 9414.0f, 9722.0f, 9414.0f,
+                           7086.0f, 7918.0f, 7918.0f, 7086.0f, 5, 1);
+    tp.CreateDisplayList(YZ, 1494, 32.0f, 128.0f, xCord, 9462.0f, 7213.0f,
+                         1.0f, 5.93f);
+
+    tp.CreateAngledPolygon(1485, 128.0f, 128.0f, xCord, xCord, xCord, xCord,
+                           9594.0f, 9594.0f, 9942.0f, 9722.0f,
+                           8302.0f, 9006.0f, 9006.0f, 8302.0f, 5, 1);
+    tp.CreateDisplayList(YZ, 1495, 32.0f, 128.0f, xCord, 9722.0f, 8302.0f,
+                         1.0f, 5.82f);
+
+    tp.CreateAngledPolygon(1486, 128.0f, 128.0f, xCord, xCord, xCord,
+                           xCord, 9914.0f, 9914.0f, 10134.0f, 9914.0f,
+                           9262.0f, 9872.0f, 9872.0f, 9262.0f, 5, 1);
+    tp.CreateDisplayList(YZ, 1496, 32.0f, 128.0f, xCord, 9942.0f, 9332.4f,
+                         1.0f, 4.545f);
+
+    tp.CreateDisplayList(XZ, 1497, 64.0f, 128.0f, xCord, 10166.0f, 9868.0f,
+                         1.0f, 1.78f);
+    tp.CreateDisplayList(XZ, 1498, 64.0f, 128.0f, xCord, 9974.0f, 9004.0f,
+                         1.0f, 2.55f);
+    tp.CreateDisplayList(XZ, 1499, 64.0f, 128.0f, xCord, 9754.0f, 7916.0f,
+                         1.0f, 3.0f);
+    tp.CreateDisplayList(XZ, 1500, 64.0f, 128.0f, xCord, 9494.0f, 6830.0f,
+                         1.0f, 2.99f);
+    tp.CreateDisplayList(XZ, 1501, 64.0f, 128.0f, xCord, 9254.0f, 4590.0f,
+                         1.0f, 12.0f);
+    tp.CreateDisplayList(XZ, 1502, 64.0f, 128.0f, xCord, 9254.0f, 6126.0f,
+                         1.0f, 5.92f);
+    tp.CreateDisplayList(XZ, 1503, 64.0f, 128.0f, xCord, 9494.0f, 7213.0f,
+                         1.0f, 5.95f);
+    tp.CreateDisplayList(XZ, 1504, 64.0f, 128.0f, xCord, 9754.0f, 8302.0f,
+                         1.0f, 5.82f);
+    tp.CreateDisplayList(XZ, 1505, 64.0f, 128.0f, xCord, 9974.0f, 9332.4f,
+                         1.0f, 4.545f);
+    tp.CreateDisplayList(XY, 1506, 64.0f, 32.0f, xCord, 10134.0f, 10095.84f,
+                         1.0f, 1.0f);
+    tp.CreateDisplayList(XY, 1507, 64.0f, 64.0f, xCord, 9914.0f, 10095.84f,
+                         1.0f, 3.4376f);
+}
+
 //--------------------------------------------------------------------------------------
 //  Map and Welcome screens
 //--------------------------------------------------------------------------------------
@@ -5117,7 +5278,8 @@ void ShaysWorld::CreateTextureList() {
     DrawLights();         // 376-378
     DrawBench();          // 400-413
     DrawStepBricks();     // 478-507
-    DrawCylinders();      // 437-441
+    DrawTavStepBricks();  // 1478-1507
+	DrawCylinders();      // 437-441
     DrawMapExit();        // 448-449, 454
                           // 455-459
 }
