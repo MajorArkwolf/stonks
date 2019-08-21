@@ -7,6 +7,7 @@ project(${PROJECT_NAME} LANGUAGES CXX)
 
 # If enabled, the post build symlink will copy instead.
 option(CopyResources "CopyResources" OFF)
+option(WarningsAsErrors "WarningsAsErrors" OFF)
 
 # Disable in-source builds.
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
@@ -69,16 +70,24 @@ target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:GNU>:
 # Set MSVC compile flags.
 target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/W4>)
 
-# Fix an MSVC linker warning.
-if (MSVC)
-    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/NODEFAULTLIB:msvcrt.lib")
-endif()
-
 # Enable Clang's address and memory sanitizers.
 target_compile_options(${PROJECT_NAME} PUBLIC
     $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
 target_link_libraries(${PROJECT_NAME} PUBLIC
     $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
+
+# Treat warnings as errors if enabled.
+if (WarningsAsErrors)
+    target_compile_options(${PROJECT_NAME} PUBLIC
+        $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
+            -Werror>)
+    target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/WX>)
+endif()
+
+# Fix an MSVC linker warning.
+if (MSVC)
+    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/NODEFAULTLIB:msvcrt.lib")
+endif()
 
 # Find dependencies.
 find_package(OpenGL REQUIRED COMPONENTS OpenGL)
