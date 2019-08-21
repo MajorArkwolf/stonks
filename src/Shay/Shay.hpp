@@ -275,6 +275,7 @@ namespace Shay {
         void DisplayDoorPaving();
         void DisplayDoorPosts();
         void DisplayEntranceSteps();
+        void DisplayTavSteps();
         void DisplayExtras();
         void DisplayGrass();
         void DisplayLargerTextures();
@@ -286,6 +287,7 @@ namespace Shay {
         void DisplayRedPosts();
         void DisplayRoof();
         void DisplayStepBricks();
+        void DisplayTavStepBricks();
         void DisplayLights();
         void DisplayECL();
         void CreateTextureList();
@@ -304,6 +306,7 @@ namespace Shay {
         void DrawExtras();
         void DrawRoof();
         void DrawEntranceSteps();
+        void DrawTavSteps();
         void DrawLargerTextures();
         void DrawLights();
         void DrawBench();
@@ -313,6 +316,7 @@ namespace Shay {
         void DrawAngledRoofBeam2(GLuint listNo, GLfloat x, GLfloat y, GLfloat z,
                                  GLfloat beamSize);
         void DrawStepBricks();
+        void DrawTavStepBricks();
         void DrawMapExit();
         void DrawECL();
         void BindBridgeWall(GLint LR);
