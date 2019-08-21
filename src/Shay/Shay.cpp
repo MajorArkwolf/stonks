@@ -5165,7 +5165,7 @@ void ShaysWorld::DisplayTavStepBricks() {
     glCallList(1507);
 }
 void ShaysWorld::DrawTavStepBricks() {
-    float xCord = 4840.0f;
+    float xCord = 4880.0f;
     tp.CreateDisplayList(YZ, 1478, 128.0f, 128.0f, xCord, 9914.0f, 9872.0f,
                          1.7188f, 1.75f);
     tp.CreateDisplayList(YZ, 1488, 32.0f, 128.0f, xCord, 10134.0f, 9868.0f,
@@ -5215,27 +5215,29 @@ void ShaysWorld::DrawTavStepBricks() {
     tp.CreateDisplayList(YZ, 1496, 32.0f, 128.0f, xCord, 9942.0f, 9332.4f,
                          1.0f, 4.545f);
 
-    tp.CreateDisplayList(XZ, 1497, 64.0f, 128.0f, xCord, 10166.0f, 9868.0f,
+	///Top of the bricks on the Tav wall steps
+    tp.CreateDisplayList(XZ, 1497, 64.0f, 128.0f, xCord - 64, 10166.0f, 9868.0f,
                          1.0f, 1.78f);
-    tp.CreateDisplayList(XZ, 1498, 64.0f, 128.0f, xCord, 9974.0f, 9004.0f,
+    tp.CreateDisplayList(XZ, 1498, 64.0f, 128.0f, xCord - 64, 9974.0f, 9004.0f,
                          1.0f, 2.55f);
-    tp.CreateDisplayList(XZ, 1499, 64.0f, 128.0f, xCord, 9754.0f, 7916.0f,
+    tp.CreateDisplayList(XZ, 1499, 64.0f, 128.0f, xCord - 64, 9754.0f, 7916.0f,
                          1.0f, 3.0f);
-    tp.CreateDisplayList(XZ, 1500, 64.0f, 128.0f, xCord, 9494.0f, 6830.0f,
+    tp.CreateDisplayList(XZ, 1500, 64.0f, 128.0f, xCord - 64, 9494.0f, 6830.0f,
                          1.0f, 2.99f);
-    tp.CreateDisplayList(XZ, 1501, 64.0f, 128.0f, xCord, 9254.0f, 4590.0f,
+    tp.CreateDisplayList(XZ, 1501, 64.0f, 128.0f, xCord - 64, 9254.0f, 4590.0f,
                          1.0f, 12.0f);
-    tp.CreateDisplayList(XZ, 1502, 64.0f, 128.0f, xCord, 9254.0f, 6126.0f,
+    tp.CreateDisplayList(XZ, 1502, 64.0f, 128.0f, xCord - 64, 9254.0f, 6126.0f,
                          1.0f, 5.92f);
-    tp.CreateDisplayList(XZ, 1503, 64.0f, 128.0f, xCord, 9494.0f, 7213.0f,
+    tp.CreateDisplayList(XZ, 1503, 64.0f, 128.0f, xCord - 64, 9494.0f, 7213.0f,
                          1.0f, 5.95f);
-    tp.CreateDisplayList(XZ, 1504, 64.0f, 128.0f, xCord, 9754.0f, 8302.0f,
+    tp.CreateDisplayList(XZ, 1504, 64.0f, 128.0f, xCord - 64, 9754.0f, 8302.0f,
                          1.0f, 5.82f);
-    tp.CreateDisplayList(XZ, 1505, 64.0f, 128.0f, xCord, 9974.0f, 9332.4f,
+    tp.CreateDisplayList(XZ, 1505, 64.0f, 128.0f, xCord - 64, 9974.0f, 9332.4f,
                          1.0f, 4.545f);
-    tp.CreateDisplayList(XY, 1506, 64.0f, 32.0f, xCord, 10134.0f, 10095.84f,
+    tp.CreateDisplayList(XY, 1506, 64.0f, 32.0f, xCord - 64, 10134.0f,
+                         10095.84f,
                          1.0f, 1.0f);
-    tp.CreateDisplayList(XY, 1507, 64.0f, 64.0f, xCord, 9914.0f, 10095.84f,
+    tp.CreateDisplayList(XY, 1507, 64.0f, 64.0f, xCord - 64, 9914.0f, 10095.84f,
                          1.0f, 3.4376f);
 }
 
