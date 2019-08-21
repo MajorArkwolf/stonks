@@ -1304,6 +1304,22 @@ void ShaysWorld::DisplayAboveWindowBlock() {
     glCallList(226);
     glPopMatrix();
 
+    // Display alcove roof
+    // 33808.0f, 10832.0f, 26624.0f (physSciTextPosition)
+    constexpr auto alcoveX = 33808.0f;
+    constexpr auto alcoveY = 10834.0f;
+    constexpr auto alcoveZ = 26624.0f;
+    constexpr auto secondAlcoveOffset = 9710.0f;
+    glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAIN_POST));
+    glPushMatrix();
+    glTranslatef(alcoveX, alcoveY, alcoveZ);
+    glCallList(9000);
+    glPopMatrix();
+    glPushMatrix();
+    glTranslatef(alcoveX, alcoveY, alcoveZ + secondAlcoveOffset);
+    glCallList(9000);
+    glPopMatrix();
+
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ABOVE_WINDOW_BLOCK_2));
     glCallList(44);
     glCallList(46);
@@ -3369,6 +3385,10 @@ void ShaysWorld::DrawRoof() {
     glVertex3f(4541.0f, 11997.0f, 43056.0f);
     glEnd();
     glEndList();
+
+    //physical science block alcove
+    tp.CreateDisplayList(XZ, 9000, 128.0f, 128.0f, 0.0f, 0.0f, 0.0f,
+                         10.0f, 16.0f);
 
     // spacer between phys sci
     tp.CreateDisplayList(YZ, 97, 32.0f, 128.0f, 33808.0f, 12048.0f, 25344.0f,
