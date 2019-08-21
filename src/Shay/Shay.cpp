@@ -3134,9 +3134,9 @@ void ShaysWorld::DrawRoof() {
     glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 0.0f);
     glVertex3f(31740.0f, 11364.0f, 8100.0f);
-    glTexCoord2f(0.0f, 257.9f);
+    glTexCoord2f(0.0f, 257.9f * 2.0f);
     glVertex3f(31740.0f, 11364.0f, 8100.0f + (128.0f * 257.9f));
-    glTexCoord2f(2.0f, 273.4f);
+    glTexCoord2f(2.0f, 273.4f * 2.0f);
     glVertex3f(33848.0f, 12140.72f, 8100.0f + (128.0f * 273.4f));
     glTexCoord2f(2.0f, 0.0f);
     glVertex3f(33848.0f, 12140.72f, 8100.0f);
@@ -3147,9 +3147,9 @@ void ShaysWorld::DrawRoof() {
     glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 0.0f);
     glVertex3f(2608.0f, 12140.72f, 8100.0f);
-    glTexCoord2f(0.0f, 273.4f);
+    glTexCoord2f(0.0f, 273.4f * 2.0f);
     glVertex3f(2608.0f, 12140.72f, 8100.0f + (128.0f * 273.4f));
-    glTexCoord2f(2.0f, 257.9f);
+    glTexCoord2f(2.0f, 257.9f * 2.0f);
     glVertex3f(4716.0f, 11364.0f, 8100.0f + (128.0f * 257.9f));
     glTexCoord2f(2.0f, 0.0f);
     glVertex3f(4716.0f, 11364.0f, 8100.0f);
