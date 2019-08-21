@@ -6,10 +6,12 @@
 #include <string>
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 using Shay::TexturedPolygons;
 
 using std::ifstream;
+using std::ofstream;
 using std::runtime_error;
 using std::string;
 using Image = TexturedPolygons::Image;
@@ -18,20 +20,13 @@ GLuint TexturedPolygons::GetTexture(GLuint tempIndex) {
     return m_texture[tempIndex];
 }
 
-Image TexturedPolygons::LoadTexture(const string &filename, size_t width,
-                                    size_t height) {
-    auto path       = string{SDL_GetBasePath()} + filename;
-    auto file       = ifstream{filename, std::ios::in | std::ios::binary};
-    auto image      = Image{};
-    const auto size = width * height * CHANNELS;
+Image TexturedPolygons::LoadTexture(const string &filename) {
+    auto path  = string{SDL_GetBasePath()} + "res/" + filename;
+    auto image = Image{IMG_Load(path.c_str()), &SDL_FreeSurface};
 
-    if (!file) {
-        throw runtime_error{string{"Error loading image file: "} + filename};
+    if (image == nullptr) {
+        throw runtime_error{string{"Unable to load texture: "} + path};
     }
-
-    image.resize(size);
-    file.read(reinterpret_cast<char *>(image.data()),
-              static_cast<std::streamsize>(size));
 
     return image;
 }
@@ -50,14 +45,12 @@ void TexturedPolygons::SetTextureCount(GLuint textureNo) {
 //  Creates texture and set required values for texture mapping
 //--------------------------------------------------------------------------------------
 
-void TexturedPolygons::CreateTexture(GLuint textureNo, const Image &image,
-                                     size_t imgWidth, size_t imgHeight) {
+void TexturedPolygons::CreateTexture(GLuint textureNo, const Image &image) {
     glBindTexture(GL_TEXTURE_2D, m_texture[textureNo]);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-    gluBuild2DMipmaps(GL_TEXTURE_2D, 3, static_cast<GLsizei>(imgWidth),
-                      static_cast<GLsizei>(imgHeight), GL_RGB, GL_UNSIGNED_BYTE,
-                      image.data());
+    gluBuild2DMipmaps(GL_TEXTURE_2D, 3, image->w, image->h, GL_BGR,
+                      GL_UNSIGNED_BYTE, image->pixels);
 }
 
 //--------------------------------------------------------------------------------------
