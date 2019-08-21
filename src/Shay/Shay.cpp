@@ -3113,23 +3113,23 @@ void ShaysWorld::DisplayRoof() {
     }
     // student hub spacers *Kiera*
     glPushMatrix();
-    glTranslatef(-27300, 0, 0);
+    glTranslatef(-27300.0f, 0.0f, 0.0f);
     glCallList(99);
     glPopMatrix();
 
     glPushMatrix();
-    glTranslatef(-29250, 720, 0);
+    glTranslatef(-29250.0f, 720.0f, 0.0f);
     glCallList(99);
-    glTranslatef(0, 0, 1800);
+    glTranslatef(0.0f, 0.0f, 1800.0f);
     glCallList(99);
     glPopMatrix();
 
     glPushMatrix();
-    glTranslatef(-2000, 0, 0);
+    glTranslatef(-2000.0f, 0.0f, 0.0f);
     glCallList(202);
-    glPopMatrix(); 
+    glPopMatrix();
 
-	// Top of Roof
+    // Top of Roof
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ROOF_TOP));
     for (GLuint i = 214; i < 216; i++) {
         glCallList(i);
