@@ -1,6 +1,9 @@
 language: cpp
 sudo: required
 
+git:
+  lfs_skip_smudge: true
+
 matrix:
   include:
   - name: "Linux: Clang 8"
