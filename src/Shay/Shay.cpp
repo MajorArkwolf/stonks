@@ -48,6 +48,34 @@ ShaysWorld::ShaysWorld() {
     CreateTextures();
 }
 
+auto ShaysWorld::handleKeyEvents(SDL_Event &event) -> void {
+    switch (event.type) {
+        case SDL_KEYDOWN: {
+            switch (event.key.keysym.scancode) {
+                case SDL_SCANCODE_SPACE: {
+                    this->DisplayWelcome = (this->DisplayWelcome) ? false : true;
+                } break;
+                case SDL_SCANCODE_M: {
+                    this->DisplayMap = (this->DisplayMap) ? false : true;
+                } break;
+                case SDL_SCANCODE_L: {
+                    this->lightsOn = (this->lightsOn) ? false : true;
+                } break;
+                case SDL_SCANCODE_LSHIFT: {
+                    getCamPtr()->MOVEMENT_SPEED = 10000.0f;
+                } break;
+            }
+        } break;
+        case SDL_KEYUP: {
+            switch (event.key.keysym.scancode) {
+                case SDL_SCANCODE_LSHIFT: {
+                    getCamPtr()->MOVEMENT_SPEED = 2000.0f;
+                } break;
+            }
+
+        } break;
+    }
+}
 auto ShaysWorld::get() -> ShaysWorld & {
     static auto instance = ShaysWorld{};
 

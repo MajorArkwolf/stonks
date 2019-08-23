@@ -21,10 +21,10 @@
 namespace Shay {
     class Camera {
       public:
-        static constexpr GLfloat MOVEMENT_SPEED = 2000.0f;
-        static constexpr GLfloat LOOK_SPEED     = 0.005f;
+        GLfloat MOVEMENT_SPEED;
+        static constexpr GLfloat LOOK_SPEED = 0.005f;
 
-        Camera() = default;
+        Camera();
 
         //----------------------------------------------------------------------------------
 

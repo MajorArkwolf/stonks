@@ -2,6 +2,8 @@
 
 #include <time.h>
 
+#include <SDL2/SDL.h>
+
 #include "Camera.h"
 #include "TexturedPolygons.h"
 
@@ -263,6 +265,7 @@ namespace Shay {
         ShaysWorld();
         static auto get() -> ShaysWorld &;
 
+		auto handleKeyEvents(SDL_Event &event) -> void;
         void Init();
         void Display();
         void Update(double dt);

@@ -11,6 +11,7 @@
 #include "Stonk/Player.hpp"
 
 namespace Stonk {
+    enum class GameState { SHAY, STONK, MENU };
     /**
      * @brief Stonk game engine.
      *
@@ -29,7 +30,8 @@ namespace Stonk {
         Context context = nullptr;
 
         /* Game state. */
-        State state = {};
+        State state            = {};
+        GameState currentState = GameState::SHAY;
 
         /* Subsystems. */
         // Camera camera       = {};

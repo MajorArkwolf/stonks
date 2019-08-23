@@ -111,20 +111,47 @@ auto Engine::getIsRunning() const -> bool {
 
 auto Engine::handleKeyPress(SDL_Event &event) -> void {
     auto &shaysWorld = ShaysWorld::get();
-
+    switch (currentState) {
+        case GameState::SHAY: {
+            shaysWorld.handleKeyEvents(event);
+        } break;
+        case GameState::STONK: {
+            // Send event to stonk input handler
+        } break;
+        case GameState::MENU: {
+            // Send event to menu handler
+        } break;
+        default: break;
+    }
     switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_ESCAPE: {
             this->isRunning = false;
-        } break;
-        case SDL_SCANCODE_SPACE: {
-            // Toggle for welcome screen
-            shaysWorld.DisplayWelcome = (shaysWorld.DisplayWelcome) ? false : true;
         } break;
         default: break;
     }
 }
 
-auto Engine::handleKeyRelease([[maybe_unused]] SDL_Event &event) -> void {}
+auto Engine::handleKeyRelease(SDL_Event &event) -> void {
+    auto &shaysWorld = ShaysWorld::get();
+    switch (currentState) {
+        case GameState::SHAY: {
+            shaysWorld.handleKeyEvents(event);
+        } break;
+        case GameState::STONK: {
+            // Send event to stonk input handler
+        } break;
+        case GameState::MENU: {
+            // Send event to menu handler
+        } break;
+        default: break;
+    }
+    switch (event.key.keysym.scancode) {
+        case SDL_SCANCODE_ESCAPE: {
+            this->isRunning = false;
+        } break;
+        default: break;
+    }
+}
 
 auto Engine::handleMouseMovement(SDL_Event &event) -> void {
     this->mouse.x = static_cast<float>(event.motion.xrel);
