@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  <a href="https://travis-ci.com/opeik/ICT290"> <img src="https://travis-ci.com/opeik/ICT290.svg?token=2cgrDpWeJERSzmm7HcTg&branch=develop"
+  <a href="https://travis-ci.com/opeik/ICT290"> <img src="https://travis-ci.com/opeik/Stonk.svg?token=2cgrDpWeJERSzmm7HcTg&branch=develop"
      alt="build-badge"> </a>
 </p>
 
