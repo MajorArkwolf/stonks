@@ -121,7 +121,6 @@ void Camera::UpdateLook([[maybe_unused]] double dt) {
  * @param dt The elapsed delta time since last frame.
  */
 void Camera::UpdatePosition(double dt) {
-    auto &shaysWorld = ShaysWorld::get();
     auto *keys       = SDL_GetKeyboardState(nullptr);
 
     this->lastPosition = position;
@@ -150,14 +149,6 @@ void Camera::UpdatePosition(double dt) {
         auto newPos = this->position + (rightDir * MOVEMENT_SPEED * fdt);
         MoveIfOk(newPos);
     }
-
-    //if (keys[SDL_SCANCODE_LSHIFT]) {
-    //    this->MOVEMENT_SPEED = 10000.0f;
-    //}
-
-    //if (!keys[SDL_SCANCODE_LSHIFT]) {
-    //    this->MOVEMENT_SPEED = 2000.0f;
-    //}
 
     this->look.x = std::sin(this->angles.x) * std::cos(this->angles.y);
     this->look.y = std::sin(this->angles.y);
