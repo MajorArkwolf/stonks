@@ -4,7 +4,7 @@ set -euxo pipefail
 
 if [[ "${TRAVIS_OS_NAME}" == "windows" ]]; then
     set +x
-    ./.travis/download-github-asset.sh opeik ICT290 vcpkg vcpkg.tar
+    ./.travis/download-github-asset.sh opeik Stonk vcpkg vcpkg.tar
     set -x
 
     mkdir -p "${VCPKG_ROOT}"
