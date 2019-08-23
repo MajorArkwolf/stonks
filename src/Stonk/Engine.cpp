@@ -121,7 +121,6 @@ auto Engine::handleKeyPress(SDL_Event &event) -> void {
         case GameState::MENU: {
             // Send event to menu handler
         } break;
-        default: break;
     }
     switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_ESCAPE: {
@@ -143,7 +142,6 @@ auto Engine::handleKeyRelease(SDL_Event &event) -> void {
         case GameState::MENU: {
             // Send event to menu handler
         } break;
-        default: break;
     }
     switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_ESCAPE: {
