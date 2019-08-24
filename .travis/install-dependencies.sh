@@ -15,5 +15,6 @@ fi
 
 if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
     brew install ${BREW_PACKAGES}
-    git lfs install
 fi
+
+git lfs install
