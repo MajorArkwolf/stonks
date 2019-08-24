@@ -112,13 +112,13 @@ auto Engine::getIsRunning() const -> bool {
 auto Engine::handleKeyPress(SDL_Event &event) -> void {
     auto &shaysWorld = ShaysWorld::get();
     switch (currentState) {
-        case GameState::SHAY: {
+        case GameMode::SHAY: {
             shaysWorld.handleKeyEvents(event);
         } break;
-        case GameState::STONK: {
+        case GameMode::STONK: {
             // Send event to stonk input handler
         } break;
-        case GameState::MENU: {
+        case GameMode::MENU: {
             // Send event to menu handler
         } break;
     }
@@ -133,13 +133,13 @@ auto Engine::handleKeyPress(SDL_Event &event) -> void {
 auto Engine::handleKeyRelease(SDL_Event &event) -> void {
     auto &shaysWorld = ShaysWorld::get();
     switch (currentState) {
-        case GameState::SHAY: {
+        case GameMode::SHAY: {
             shaysWorld.handleKeyEvents(event);
         } break;
-        case GameState::STONK: {
+        case GameMode::STONK: {
             // Send event to stonk input handler
         } break;
-        case GameState::MENU: {
+        case GameMode::MENU: {
             // Send event to menu handler
         } break;
     }

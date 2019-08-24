@@ -265,7 +265,7 @@ namespace Shay {
         ShaysWorld();
         static auto get() -> ShaysWorld &;
 
-		auto handleKeyEvents(SDL_Event &event) -> void;
+        auto handleKeyEvents(SDL_Event &event) -> void;
         void Init();
         void Display();
         void Update(double dt);
