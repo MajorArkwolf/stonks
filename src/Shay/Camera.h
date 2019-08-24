@@ -24,7 +24,9 @@ namespace Shay {
         GLfloat MOVEMENT_SPEED;
         static constexpr GLfloat LOOK_SPEED = 0.005f;
 
-        Camera();
+        Camera() {
+            MOVEMENT_SPEED = 2000.0f;
+        }
 
         //----------------------------------------------------------------------------------
 

@@ -24,9 +24,6 @@ using Slope = PlainNode::Slope;
 
 constexpr auto PI = glm::pi<float>();
 
-Camera::Camera() {
-    MOVEMENT_SPEED = 2000.0f;
-}
 /**
  * @brief Adjust the Y axis of the camera correctly for the plane it is current on.
  */
@@ -121,7 +118,7 @@ void Camera::UpdateLook([[maybe_unused]] double dt) {
  * @param dt The elapsed delta time since last frame.
  */
 void Camera::UpdatePosition(double dt) {
-    auto *keys       = SDL_GetKeyboardState(nullptr);
+    auto *keys = SDL_GetKeyboardState(nullptr);
 
     this->lastPosition = position;
 
