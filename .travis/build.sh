@@ -18,9 +18,9 @@ fi
 if [[ "${TRAVIS_OS_NAME}" == "windows" ]]; then
     mkdir -p build
     cd build
-	cmake ${build_args} \
-	    -D CMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" \
+    cmake ${build_args} -D CMAKE_GENERATOR_PLATFORM=x64 \
+        -D CMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" \
         -D VCPKG_TARGET_TRIPLET=x64-windows ..
-		   
-	cmake --build .
+
+    cmake --build .
 fi
