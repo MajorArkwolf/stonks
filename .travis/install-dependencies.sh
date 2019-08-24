@@ -11,7 +11,6 @@ if [[ "${TRAVIS_OS_NAME}" == "windows" ]]; then
     tar -xf vcpkg.tar -C "${VCPKG_ROOT}"
     cd "${VCPKG_ROOT}"
     ./vcpkg.exe integrate install
-    choco install ${CHOCOLATEY_PACKAGES}
 fi
 
 if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
