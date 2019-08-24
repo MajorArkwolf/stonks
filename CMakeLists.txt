@@ -7,6 +7,9 @@ project(${PROJECT_NAME} LANGUAGES CXX)
 
 # If enabled, the post build symlink will copy instead.
 option(CopyResources "CopyResources" OFF)
+# Disables any post build steps.
+option(DisablePostBuild "DisablePostBuild" OFF)
+# Treat warnings as errors.
 option(WarningsAsErrors "WarningsAsErrors" OFF)
 
 # Disable in-source builds.
@@ -105,12 +108,14 @@ target_link_libraries(${PROJECT_NAME} PUBLIC OpenGL::GL OpenGL::GLU
     SDL2::SDL2 SDL2::Image SDL2::TTF SDL2::Mixer glm)
 
 # Symlink or copy the resources to the binary location.
-if (NOT CopyResources)
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E create_symlink
-        ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${PROJECT_NAME}>/res)
-else()
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${PROJECT_NAME}>/res)
+if (NOT DisablePostBuild)
+    if (NOT CopyResources)
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E create_symlink
+            ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${PROJECT_NAME}>/res)
+    else()
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${PROJECT_NAME}>/res)
+    endif()
 endif()

@@ -2,7 +2,7 @@
 
 set -euxo pipefail
 
-build_args=' -D CMAKE_BUILD_TYPE="Debug" -D CopyResources:BOOL=ON '
+build_args=' -D CMAKE_BUILD_TYPE="Debug" -D DisablePostBuild:BOOL=ON '
 
 if [[ "${TRAVIS_EVENT_TYPE}" == "pull_request" ]]; then
     build_args+=' WarningsAsErrors:BOOL=ON '
