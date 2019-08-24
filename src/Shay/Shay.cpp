@@ -4961,10 +4961,8 @@ void ShaysWorld::DisplayCylinders() {
 void ShaysWorld::DrawCylinders() {
     // Drainpipe
     glNewList(437, GL_COMPILE);
-    glBegin(GL_QUADS);
     gluQuadricDrawStyle(glu_cylinder, GLU_FILL);
     gluCylinder(glu_cylinder, 10.0, 10.0, 2.0, 15, 15);
-    glEnd();
     glEndList();
 
     // Serving Counter
