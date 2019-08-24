@@ -1,16 +1,11 @@
 #!/usr/bin/env bash
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
-# Check dependencies.
 set -e
-type curl grep sed tr >&2
-xargs=$(which gxargs || which xargs)
 
 # Validate settings.
-[ -f ~/.secrets ] && source ~/.secrets
 [ "$GITHUB_TOKEN" ] || { echo "Error: Please define GITHUB_TOKEN variable." >&2; exit 1; }
 [ $# -ne 4 ] && { echo "Usage: $0 [owner] [repo] [tag] [name]"; exit 1; }
-[ "$TRACE" ] && set -x
 read owner repo tag name <<<$@
 
 # Define variables.
