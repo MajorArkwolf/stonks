@@ -48,6 +48,38 @@ ShaysWorld::ShaysWorld() {
     CreateTextures();
 }
 
+auto ShaysWorld::handleKeyEvents(SDL_Event &event) -> void {
+    switch (event.type) {
+        case SDL_KEYDOWN: {
+            switch (event.key.keysym.scancode) {
+                case SDL_SCANCODE_SPACE: {
+                    this->DisplayWelcome = (this->DisplayWelcome) ? false : true;
+                } break;
+                case SDL_SCANCODE_M: {
+                    this->DisplayMap = (this->DisplayMap) ? false : true;
+                } break;
+                case SDL_SCANCODE_L: {
+                    this->lightsOn = (this->lightsOn) ? false : true;
+                } break;
+                case SDL_SCANCODE_LSHIFT: {
+                    getCamPtr()->MOVEMENT_SPEED = 10000.0f;
+                } break;
+                default: break;
+            }
+        } break;
+        case SDL_KEYUP: {
+            switch (event.key.keysym.scancode) {
+                case SDL_SCANCODE_LSHIFT: {
+                    getCamPtr()->MOVEMENT_SPEED = 2000.0f;
+                } break;
+                default: break;
+            }
+
+        } break;
+        default: break;
+    }
+}
+
 auto ShaysWorld::get() -> ShaysWorld & {
     static auto instance = ShaysWorld{};
 
@@ -1306,9 +1338,9 @@ void ShaysWorld::DisplayAboveWindowBlock() {
 
     // Display alcove roof
     // 33808.0f, 10832.0f, 26624.0f (physSciTextPosition)
-    constexpr auto alcoveX = 33808.0f;
-    constexpr auto alcoveY = 10834.0f;
-    constexpr auto alcoveZ = 26624.0f;
+    constexpr auto alcoveX            = 33808.0f;
+    constexpr auto alcoveY            = 10834.0f;
+    constexpr auto alcoveZ            = 26624.0f;
     constexpr auto secondAlcoveOffset = 9710.0f;
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAIN_POST));
     glPushMatrix();
@@ -3400,9 +3432,8 @@ void ShaysWorld::DrawRoof() {
     glEnd();
     glEndList();
 
-    //physical science block alcove
-    tp.CreateDisplayList(XZ, 9000, 128.0f, 128.0f, 0.0f, 0.0f, 0.0f,
-                         10.0f, 16.0f);
+    // physical science block alcove
+    tp.CreateDisplayList(XZ, 9000, 128.0f, 128.0f, 0.0f, 0.0f, 0.0f, 10.0f, 16.0f);
 
     // spacer between phys sci
     tp.CreateDisplayList(YZ, 97, 32.0f, 128.0f, 33808.0f, 12048.0f, 25344.0f,
@@ -5210,50 +5241,50 @@ void ShaysWorld::DrawTavStepBricks() {
 
     tp.CreateDisplayList(YZ, 1479, 128.0f, 128.0f, xCord, 9530.0f, 9006.0f,
                          3.21875f, 6.0f);
-    tp.CreateDisplayList(YZ, 1489, 32.0f, 128.0f, xCord, 9942.0f, 9004.0f,
-                         1.0f, 2.55f);
+    tp.CreateDisplayList(YZ, 1489, 32.0f, 128.0f, xCord, 9942.0f, 9004.0f, 1.0f,
+                         2.55f);
 
     tp.CreateDisplayList(YZ, 1480, 128.0f, 128.0f, xCord, 9350.0f, 7918.0f,
                          2.90625f, 6.0f);
-    tp.CreateDisplayList(YZ, 1490, 32.0f, 128.0f, xCord, 9722.0f, 7916.0f,
-                         1.0f, 3.0f);
-	///This is part of the bugged area
+    tp.CreateDisplayList(YZ, 1490, 32.0f, 128.0f, xCord, 9722.0f, 7916.0f, 1.0f,
+                         3.0f);
+    /// This is part of the bugged area
     tp.CreateDisplayList(YZ, 1481, 128.0f, 128.0f, xCord, 9158.0f, 6830.0f,
                          2.375f, 10.0f);
-	///Bricks for the wall above.
-    tp.CreateDisplayList(YZ, 1491, 32.0f, 128.0f, xCord, 9462.0f, 6830.0f,
-                         1.0f, 2.99f);
-	///Far bottom wall
+    /// Bricks for the wall above.
+    tp.CreateDisplayList(YZ, 1491, 32.0f, 128.0f, xCord, 9462.0f, 6830.0f, 1.0f,
+                         2.99f);
+    /// Far bottom wall
     tp.CreateDisplayList(YZ, 1482, 128.0f, 128.0f, xCord, 8966.0f, 4590.0f,
                          2.0f, 30.0f);
-    tp.CreateDisplayList(YZ, 1492, 32.0f, 128.0f, xCord, 9222.0f, 4590.0f,
-                         1.0f, 12.0f);
-	///Angled section near bottom
+    tp.CreateDisplayList(YZ, 1492, 32.0f, 128.0f, xCord, 9222.0f, 4590.0f, 1.0f,
+                         12.0f);
+    /// Angled section near bottom
     tp.CreateAngledPolygon(1483, 128.0f, 128.0f, xCord, xCord, xCord, xCord,
-                           9094.0f, 9094.0f, 9462.0f, 9094.0f,
-                           5742.0f, 6830.0f, 6830.0f, 5742.0f, 5, 1);
-    tp.CreateDisplayList(YZ, 1493, 32.0f, 128.0f, xCord, 9222.0f, 6126.0f,
-                         1.0f, 5.92f);
+                           9094.0f, 9094.0f, 9462.0f, 9094.0f, 5742.0f, 6830.0f,
+                           6830.0f, 5742.0f, 5, 1);
+    tp.CreateDisplayList(YZ, 1493, 32.0f, 128.0f, xCord, 9222.0f, 6126.0f, 1.0f,
+                         5.92f);
 
     tp.CreateAngledPolygon(1484, 128.0f, 128.0f, xCord, xCord, xCord, xCord,
-                           9414.0f, 9414.0f, 9722.0f, 9414.0f,
-                           7086.0f, 7918.0f, 7918.0f, 7086.0f, 5, 1);
-    tp.CreateDisplayList(YZ, 1494, 32.0f, 128.0f, xCord, 9462.0f, 7213.0f,
-                         1.0f, 5.93f);
+                           9414.0f, 9414.0f, 9722.0f, 9414.0f, 7086.0f, 7918.0f,
+                           7918.0f, 7086.0f, 5, 1);
+    tp.CreateDisplayList(YZ, 1494, 32.0f, 128.0f, xCord, 9462.0f, 7213.0f, 1.0f,
+                         5.93f);
 
     tp.CreateAngledPolygon(1485, 128.0f, 128.0f, xCord, xCord, xCord, xCord,
-                           9594.0f, 9594.0f, 9942.0f, 9722.0f,
-                           8302.0f, 9006.0f, 9006.0f, 8302.0f, 5, 1);
-    tp.CreateDisplayList(YZ, 1495, 32.0f, 128.0f, xCord, 9722.0f, 8302.0f,
-                         1.0f, 5.82f);
+                           9594.0f, 9594.0f, 9942.0f, 9722.0f, 8302.0f, 9006.0f,
+                           9006.0f, 8302.0f, 5, 1);
+    tp.CreateDisplayList(YZ, 1495, 32.0f, 128.0f, xCord, 9722.0f, 8302.0f, 1.0f,
+                         5.82f);
 
-    tp.CreateAngledPolygon(1486, 128.0f, 128.0f, xCord, xCord, xCord,
-                           xCord, 9914.0f, 9914.0f, 10134.0f, 9914.0f,
-                           9262.0f, 9872.0f, 9872.0f, 9262.0f, 5, 1);
-    tp.CreateDisplayList(YZ, 1496, 32.0f, 128.0f, xCord, 9942.0f, 9332.4f,
-                         1.0f, 4.545f);
+    tp.CreateAngledPolygon(1486, 128.0f, 128.0f, xCord, xCord, xCord, xCord,
+                           9914.0f, 9914.0f, 10134.0f, 9914.0f, 9262.0f,
+                           9872.0f, 9872.0f, 9262.0f, 5, 1);
+    tp.CreateDisplayList(YZ, 1496, 32.0f, 128.0f, xCord, 9942.0f, 9332.4f, 1.0f,
+                         4.545f);
 
-	///Top of the bricks on the Tav wall steps
+    /// Top of the bricks on the Tav wall steps
     tp.CreateDisplayList(XZ, 1497, 64.0f, 128.0f, xCord - 64, 10166.0f, 9868.0f,
                          1.0f, 1.78f);
     tp.CreateDisplayList(XZ, 1498, 64.0f, 128.0f, xCord - 64, 9974.0f, 9004.0f,
@@ -5273,8 +5304,7 @@ void ShaysWorld::DrawTavStepBricks() {
     tp.CreateDisplayList(XZ, 1505, 64.0f, 128.0f, xCord - 64, 9974.0f, 9332.4f,
                          1.0f, 4.545f);
     tp.CreateDisplayList(XY, 1506, 64.0f, 32.0f, xCord - 64, 10134.0f,
-                         10095.84f,
-                         1.0f, 1.0f);
+                         10095.84f, 1.0f, 1.0f);
     tp.CreateDisplayList(XY, 1507, 64.0f, 64.0f, xCord - 64, 9914.0f, 10095.84f,
                          1.0f, 3.4376f);
 }
@@ -5313,13 +5343,13 @@ void ShaysWorld::CreateTextureList() {
                          // 296-299, 426-427
     DrawEntranceSteps(); // 258-295, 206-207
     DrawTavSteps();      // 1258-1295 1206-1207
-	DrawExtras();        // 300-349, 388, 395, 419-421, 429, 435
+    DrawExtras();        // 300-349, 388, 395, 419-421, 429, 435
     DrawLargerTextures(); // 350-375, 379-387, 389, 414-418, 422-423, 450-453
     DrawLights();         // 376-378
     DrawBench();          // 400-413
     DrawStepBricks();     // 478-507
     DrawTavStepBricks();  // 1478-1507
-	DrawCylinders();      // 437-441
+    DrawCylinders();      // 437-441
     DrawMapExit();        // 448-449, 454
                           // 455-459
 }
