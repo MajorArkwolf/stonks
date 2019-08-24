@@ -36,7 +36,7 @@ matrix:
     os: osx
     osx_image: xcode11
     env:
-      - BREW_PACKAGES="sdl2 sdl2_image sdl2_ttf sdl2_mixer glm"
+      - BREW_PACKAGES="sdl2 sdl2_image sdl2_ttf sdl2_mixer glm git-lfs"
 
   - name: "Windows: Visual Studio 2017"
     os: windows
