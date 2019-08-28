@@ -1,4 +1,4 @@
-#include "CameraMap.h"
+#include "CameraMap.hpp"
 
 #include "Stonk/OpenGl.hpp"
 

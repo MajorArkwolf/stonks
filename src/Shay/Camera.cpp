@@ -1,4 +1,4 @@
-#include "Camera.h"
+#include "Camera.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -9,7 +9,7 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
-#include "Shay/PlainNode.h"
+#include "Shay/PlainNode.hpp"
 #include "Shay/Shay.hpp"
 #include "Stonk/Engine.hpp"
 #include "Stonk/OpenGl.hpp"
@@ -110,6 +110,10 @@ void Camera::UpdateLook([[maybe_unused]] double dt) {
     this->look.y = std::sin(this->angles.y);
     this->look.z = std::cos(this->angles.x) * std::cos(this->angles.y);
     this->look += this->position;
+}
+
+auto Camera::getForwardDir() const -> vec3 {
+    return vec3{std::sin(this->angles.x), 0.0, std::cos(this->angles.x)};
 }
 
 /**

@@ -6,10 +6,10 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
-#include "CameraMap.h"
-#include "Collision.h"
-#include "PlainLinkedList.h"
-#include "PlainNode.h"
+#include "CameraMap.hpp"
+#include "Collision.hpp"
+#include "PlainLinkedList.hpp"
+#include "PlainNode.hpp"
 
 //  camera.h
 //  Header file for the camera class
@@ -76,6 +76,8 @@ namespace Shay {
         //----------------------------------------------------------------------------------
         //  Get Methods
         //----------------------------------------------------------------------------------
+        auto getForwardDir() const -> glm::vec3;
+
         GLfloat GetLR() {
             return this->position.x;
         }
@@ -112,8 +114,15 @@ namespace Shay {
                                   int tempExit, GLuint tempImage);
         void DisplayNoExit(int screenWidth, int screenHeight, GLuint tempImage);
 
-      private:
         // steep incline increments
+        glm::vec3 position     = {32720.0f, 9536.0f, 4800.0f};
+        glm::vec3 lastPosition = position;
+        glm::vec3 look         = {};
+        glm::vec3 tilt         = {0.0f, 1.0f, 0.0f};
+        glm::vec2 angles       = {glm::pi<float>() * 2, 0.0f};
+        glm::vec2 mouse        = {};
+
+      private:
         GLfloat m_incrementX    = 0.0;
         GLfloat m_incrementZ    = 0.0;
         std::size_t m_No_Plains = 0;
@@ -125,14 +134,6 @@ namespace Shay {
         GLfloat m_deltaAngleLR  = 0.0;
         GLfloat m_rotateAngleUD = 0.0;
         GLfloat m_deltaAngleUD  = 0.0;
-
-        // movement variables
-        glm::vec3 position     = {32720.0f, 9536.0f, 4800.0f};
-        glm::vec3 lastPosition = position;
-        glm::vec3 look         = {};
-        glm::vec3 tilt         = {0.0f, 1.0f, 0.0f};
-        glm::vec2 angles       = {glm::pi<float>() * 2, 0.0f};
-        glm::vec2 mouse        = {};
 
         GLfloat m_x = 0.0, m_y = 0.0, m_z = 0.0, m_zLast = 0.0, m_xLast = 0.0;
         GLfloat m_lookX = 0.0, m_lookY = 0.0, m_lookZ = 0.0;

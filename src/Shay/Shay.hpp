@@ -4,8 +4,8 @@
 
 #include <SDL2/SDL.h>
 
-#include "Camera.h"
-#include "TexturedPolygons.h"
+#include "Camera.hpp"
+#include "TexturedPolygons.hpp"
 
 namespace Shay {
     enum ShayAxis : GLuint { XY = 0, XZ, YZ, YZ_FLIP, XY_FLIP };
@@ -254,6 +254,8 @@ namespace Shay {
         bool displayDebug   = true;
         int calcFPS         = 0;
 
+        bool shouldDrawAxis = false;
+
         GLfloat step                = 0.0f;
         GLfloat step2               = 0.0f;
         GLfloat stepLength          = 0.0f;
@@ -266,6 +268,10 @@ namespace Shay {
         static auto get() -> ShaysWorld &;
 
         auto handleKeyEvents(SDL_Event &event) -> void;
+        auto DisplaySigns() -> void;
+        auto drawAxis(float x, float y, float z, float length) -> void;
+
+        void DisplayDebugMenu();
         void Init();
         void Display();
         void Update(double dt);

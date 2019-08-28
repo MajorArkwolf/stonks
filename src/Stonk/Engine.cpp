@@ -11,6 +11,9 @@
 #include "Stonk/Camera.hpp"
 #include "Stonk/Collision.hpp"
 #include "Stonk/OpenGl.hpp"
+#include "imgui.h"
+#include "imgui_impl_opengl2.h"
+#include "imgui_impl_sdl.h"
 
 using Shay::ShaysWorld;
 using std::runtime_error;
@@ -22,15 +25,24 @@ auto Engine::run() -> void {
     auto &engine     = Engine::get();
     auto &shaysWorld = ShaysWorld::get();
 
-    auto time      = static_cast<double>(SDL_GetPerformanceCounter());
+    auto frameCount    = 0l;
+    auto lastFpsUpdate = 0.0;
+
+    auto time      = engine.getTime();
     auto oldTime   = 0.0;
     auto deltaTime = 0.0;
 
     while (engine.getIsRunning()) {
-        oldTime = time;
-        time    = static_cast<double>(SDL_GetPerformanceCounter());
-        deltaTime =
-            (time - oldTime) / static_cast<double>(SDL_GetPerformanceFrequency());
+        ++frameCount;
+        oldTime   = time;
+        time      = engine.getTime();
+        deltaTime = time - oldTime;
+
+        if (time - lastFpsUpdate >= FPS_UPDATE_INTERVAL) {
+            engine.fps    = frameCount / (time - lastFpsUpdate);
+            lastFpsUpdate = time;
+            frameCount    = 0;
+        }
 
         engine.processInput();
         shaysWorld.Update(deltaTime);
@@ -53,6 +65,7 @@ Engine::Engine() {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
     SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
@@ -70,7 +83,8 @@ Engine::Engine() {
     // Create window.
     this->window = Engine::Window{
         SDL_CreateWindow("Shay's World", 0, 0, display.w, display.h,
-                         SDL_WINDOW_BORDERLESS | SDL_WINDOW_OPENGL),
+                         SDL_WINDOW_BORDERLESS | SDL_WINDOW_OPENGL |
+                             SDL_WINDOW_ALLOW_HIGHDPI),
         &SDL_DestroyWindow};
 
     if (this->window.get() == nullptr) {
@@ -86,16 +100,28 @@ Engine::Engine() {
                             SDL_GetError()};
     }
 
+    SDL_GL_MakeCurrent(this->window.get(), this->context.get());
+
     // Enable Vsync.
     constexpr auto ENABLE_VSYNC = 1;
     SDL_GL_SetSwapInterval(ENABLE_VSYNC);
 
     // Capture the mouse.
-    SDL_CaptureMouse(SDL_TRUE);
     SDL_SetRelativeMouseMode(SDL_TRUE);
+
+    // Setup ImGui.
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGui::StyleColorsDark();
+    ImGui_ImplSDL2_InitForOpenGL(this->window.get(), this->context.get());
+    ImGui_ImplOpenGL2_Init();
 }
 
 Engine::~Engine() {
+    ImGui_ImplOpenGL2_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
+
     SDL_Quit();
 }
 
@@ -111,7 +137,8 @@ auto Engine::getIsRunning() const -> bool {
 
 auto Engine::handleKeyPress(SDL_Event &event) -> void {
     auto &shaysWorld = ShaysWorld::get();
-    switch (currentState) {
+
+    switch (gameMode) {
         case GameMode::SHAY: {
             shaysWorld.handleKeyEvents(event);
         } break;
@@ -122,9 +149,13 @@ auto Engine::handleKeyPress(SDL_Event &event) -> void {
             // Send event to menu handler
         } break;
     }
+
     switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_ESCAPE: {
             this->isRunning = false;
+        } break;
+        case SDL_SCANCODE_P: {
+            this->showDebugMenu = !this->showDebugMenu;
         } break;
         default: break;
     }
@@ -132,7 +163,7 @@ auto Engine::handleKeyPress(SDL_Event &event) -> void {
 
 auto Engine::handleKeyRelease(SDL_Event &event) -> void {
     auto &shaysWorld = ShaysWorld::get();
-    switch (currentState) {
+    switch (gameMode) {
         case GameMode::SHAY: {
             shaysWorld.handleKeyEvents(event);
         } break;
@@ -196,27 +227,32 @@ auto Engine::processInput() -> void {
     auto handledMouse = false;
 
     while (SDL_PollEvent(&event)) {
+        ImGui_ImplSDL2_ProcessEvent(&event);
+        SDL_SetRelativeMouseMode(this->showDebugMenu ? SDL_FALSE : SDL_TRUE);
+
         switch (event.type) {
-            case SDL_KEYDOWN: { // Key press events
+            case SDL_KEYDOWN: {
                 this->handleKeyPress(event);
             } break;
-            case SDL_KEYUP: { // Key Release Events
+            case SDL_KEYUP: {
                 this->handleKeyRelease(event);
             } break;
-            case SDL_MOUSEBUTTONDOWN: { // Mouse button press events
+            case SDL_MOUSEBUTTONDOWN: {
                 this->handleMouseButtonPress(event);
             } break;
-            case SDL_MOUSEBUTTONUP: { // Mouse button release events
+            case SDL_MOUSEBUTTONUP: {
                 this->handleMouseButtonRelease(event);
             } break;
-            case SDL_MOUSEMOTION: { // Mouse movement events
+            case SDL_MOUSEMOTION: {
                 this->handleMouseMovement(event);
                 handledMouse = true;
             } break;
-            case SDL_MOUSEWHEEL: { // Mouse wheel scroll events
+            case SDL_MOUSEWHEEL: {
                 this->handleMouseWheelMotion(event);
             } break;
-            case SDL_QUIT: this->isRunning = false; break;
+            case SDL_QUIT: {
+                this->isRunning = false;
+            } break;
             default: break;
         }
     }
@@ -231,3 +267,8 @@ auto Engine::update(State &newState, double dt) -> void {
 }
 
 auto Engine::render([[maybe_unused]] const State &newState) const -> void {}
+
+auto Engine::getTime() const -> double {
+    return static_cast<double>(SDL_GetPerformanceCounter()) /
+           static_cast<double>(SDL_GetPerformanceFrequency());
+}

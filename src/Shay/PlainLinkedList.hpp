@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "PlainNode.h"
+#include "PlainNode.hpp"
 
 namespace Shay {
     class PlainLinkedList {
