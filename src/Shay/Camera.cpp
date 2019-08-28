@@ -112,6 +112,10 @@ void Camera::UpdateLook([[maybe_unused]] double dt) {
     this->look += this->position;
 }
 
+auto Camera::getForwardDir() const -> vec3 {
+    return vec3{std::sin(this->angles.x), 0.0, std::cos(this->angles.x)};
+}
+
 /**
  * @brief Updates the camera position.
  *

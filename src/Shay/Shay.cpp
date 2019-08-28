@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include <SDL2/SDL.h>
+#include <glm/vec3.hpp>
 
 #include "Shay/PlainNode.hpp"
 #include "Stonk/Engine.hpp"
@@ -10,6 +11,7 @@
 #include "imgui_impl_opengl2.h"
 #include "imgui_impl_sdl.h"
 
+using glm::vec3;
 using Shay::Camera;
 using Shay::ShayAxis;
 using Shay::ShaysWorld;
@@ -20,13 +22,13 @@ using Image = Shay::TexturedPolygons::Image;
 
 ShaysWorld::ShaysWorld() {
     auto &engine = Stonk::Engine::get();
-    SDL_GetWindowSize(engine.window.get(), &width, &height);
+    SDL_GL_GetDrawableSize(engine.window.get(), &width, &height);
     ShaysWorld::ratio = static_cast<double>(width) / static_cast<double>(height);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glViewport(0, 0, width, height);
-    gluPerspective(60, ShaysWorld::ratio, 0.1, 50000);
+    gluPerspective(60, ShaysWorld::ratio, 1, 50000);
     glMatrixMode(GL_MODELVIEW);
 
     // set background (sky colour)
@@ -74,8 +76,8 @@ void ShaysWorld::Display() {
     glDisable(GL_TEXTURE_2D);
 
     if (this->shouldDrawAxis) {
-        auto origin = this->cam.look;
-        drawAxis(origin.x, origin.y, origin.z, 0.25f);
+        auto origin = this->cam.look + (this->cam.getForwardDir() * 1.01f);
+        drawAxis(origin.x, origin.y, origin.z, 0.5f);
     }
 
     glPopMatrix();
@@ -103,7 +105,6 @@ void ShaysWorld::DisplayDebugMenu() {
                     static_cast<double>(look.y), static_cast<double>(look.z));
         ImGui::Text("Angles: %.2f, %.2f", static_cast<double>(angles.x),
                     static_cast<double>(angles.y));
-        ImGui::Separator();
         ImGui::Separator();
         ImGui::Checkbox("Draw axis", &this->shouldDrawAxis);
         ImGui::End();
@@ -141,7 +142,7 @@ void ShaysWorld::DisplaySigns() {
 auto ShaysWorld::drawAxis(float x, float y, float z, float length) -> void {
     glPushMatrix();
     glDepthMask(false);
-    glLineWidth(150.0);
+    glLineWidth(5.0);
 
     // Draw the x-axis.
     glColor3f(1.0f, 0.0f, 0.0f);
