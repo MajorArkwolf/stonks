@@ -1,4 +1,4 @@
-#include "Camera.h"
+#include "Camera.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -9,7 +9,7 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
-#include "Shay/PlainNode.h"
+#include "Shay/PlainNode.hpp"
 #include "Shay/Shay.hpp"
 #include "Stonk/Engine.hpp"
 #include "Stonk/OpenGl.hpp"

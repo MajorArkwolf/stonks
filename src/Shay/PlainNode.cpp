@@ -1,4 +1,4 @@
-#include "PlainNode.h"
+#include "PlainNode.hpp"
 
 using Shay::PlainNode;
 

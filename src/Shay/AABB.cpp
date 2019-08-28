@@ -1,4 +1,4 @@
-#include "AABB.h"
+#include "AABB.hpp"
 
 using Shay::AABB;
 
@@ -38,7 +38,7 @@ void AABB::SetMinZ(GLfloat tempZ) {
     }
     m_BBox[this->currentAABB].min.z = tempZ;
 }
-auto AABB::SetAABBIndex(size_t index) -> void  {
+auto AABB::SetAABBIndex(size_t index) -> void {
     this->currentAABB = index;
 }
 auto AABB::FinishAABB() -> void {

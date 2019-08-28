@@ -1,14 +1,20 @@
 #include "Shay.hpp"
 
+#include <sstream>
+
 #include <SDL2/SDL.h>
 
-#include "Shay/PlainNode.h"
+#include "Shay/PlainNode.hpp"
 #include "Stonk/Engine.hpp"
+#include "imgui.h"
+#include "imgui_impl_opengl2.h"
+#include "imgui_impl_sdl.h"
 
 using Shay::Camera;
 using Shay::ShayAxis;
 using Shay::ShaysWorld;
 using Shay::ShayTexture;
+using std::stringstream;
 using Slope = Shay::PlainNode::Slope;
 using Image = Shay::TexturedPolygons::Image;
 
@@ -20,7 +26,7 @@ ShaysWorld::ShaysWorld() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glViewport(0, 0, width, height);
-    gluPerspective(60, ShaysWorld::ratio, 1, 50000);
+    gluPerspective(60, ShaysWorld::ratio, 0.1, 50000);
     glMatrixMode(GL_MODELVIEW);
 
     // set background (sky colour)
@@ -46,6 +52,125 @@ ShaysWorld::ShaysWorld() {
     // load texture images and create display lists
     CreateTextureList();
     CreateTextures();
+}
+
+void ShaysWorld::Display() {
+    auto &stonk = Stonk::Engine::get();
+
+    ImGui_ImplOpenGL2_NewFrame();
+    ImGui_ImplSDL2_NewFrame(stonk.window.get());
+    ImGui::NewFrame();
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_DEPTH_TEST);
+    glPushMatrix();
+
+    DrawBackdrop();
+    DisplaySigns();
+
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_TEXTURE_2D);
+
+    if (this->shouldDrawAxis) {
+        auto origin = this->cam.look;
+        drawAxis(origin.x, origin.y, origin.z, 0.25f);
+    }
+
+    glPopMatrix();
+
+    DisplayDebugMenu();
+
+    ImGui::Render();
+    ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+    SDL_GL_SwapWindow(stonk.window.get());
+}
+
+void ShaysWorld::DisplayDebugMenu() {
+    auto &stonk = Stonk::Engine::get();
+    auto buffer = stringstream{};
+
+    if (stonk.showDebugMenu) {
+        auto &pos    = this->cam.position;
+        auto &look   = this->cam.look;
+        auto &angles = this->cam.angles;
+
+        ImGui::Begin("Debug Menu");
+        ImGui::Text("Camera: %.2f, %.2f, %.2f", static_cast<double>(pos.x),
+                    static_cast<double>(pos.y), static_cast<double>(pos.z));
+        ImGui::Text("Look: %.2f, %.2f, %.2f", static_cast<double>(look.x),
+                    static_cast<double>(look.y), static_cast<double>(look.z));
+        ImGui::Text("Angles: %.2f, %.2f", static_cast<double>(angles.x),
+                    static_cast<double>(angles.y));
+        ImGui::Separator();
+        ImGui::Separator();
+        ImGui::Checkbox("Draw axis", &this->shouldDrawAxis);
+        ImGui::End();
+
+        ImGui::Begin("FPS", nullptr,
+                     ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+        ImGui::SetNextWindowBgAlpha(0.35f);
+        ImGui::Text("%.1f", stonk.fps);
+
+        ImGui::End();
+    }
+}
+
+void ShaysWorld::Update(double dt) {
+    cam.Update(dt);
+}
+
+void ShaysWorld::DisplaySigns() {
+    if (DisplayWelcome) {
+        cam.DisplayWelcomeScreen(width, height, 1, tp.GetTexture(WELCOME));
+    } else if (DisplayExit) {
+        cam.DisplayWelcomeScreen(width, height, 0, tp.GetTexture(EXIT));
+    }
+
+    if (DisplayMap) {
+        cam.DisplayMap(width, height, tp.GetTexture(MAP));
+    }
+
+    if (((cam.GetLR() > 35500.0f) && (cam.GetFB() < 25344.0f)) ||
+        ((cam.GetLR() > 34100.0f) && (cam.GetFB() > 41127.0f))) {
+        cam.DisplayNoExit(width, height, tp.GetTexture(NO_EXIT));
+    }
+}
+
+auto ShaysWorld::drawAxis(float x, float y, float z, float length) -> void {
+    glPushMatrix();
+    glDepthMask(false);
+    glLineWidth(150.0);
+
+    // Draw the x-axis.
+    glColor3f(1.0f, 0.0f, 0.0f);
+
+    glBegin(GL_LINES);
+    glVertex3f(x, y, z);
+    glVertex3f(x + length, y, z);
+    glEnd();
+
+    // Draw the y-axis.
+    glColor3f(0.0f, 1.0f, 0.0f);
+
+    glBegin(GL_LINES);
+    glVertex3f(x, y, z);
+    glVertex3f(x, y + length, z);
+    glEnd();
+
+    // Draw the z-axis.
+    glColor3f(0.0f, 0.0f, 1.0f);
+
+    glBegin(GL_LINES);
+    glVertex3f(x, y, z);
+    glVertex3f(x, y, z + length);
+    glEnd();
+
+    glColor3f(1.0f, 1.0f, 1.0f);
+
+    glDepthMask(true);
+    glPopMatrix();
 }
 
 auto ShaysWorld::handleKeyEvents(SDL_Event &event) -> void {
@@ -88,43 +213,6 @@ auto ShaysWorld::get() -> ShaysWorld & {
 
 auto ShaysWorld::getCamPtr() -> Camera * {
     return &cam;
-}
-
-//--------------------------------------------------------------------------------------
-//  Main Display Function
-//--------------------------------------------------------------------------------------
-void ShaysWorld::Display() {
-    auto &stonk = Stonk::Engine::get();
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glEnable(GL_TEXTURE_2D);
-    glPushMatrix();
-
-    if (DisplayWelcome) {
-        cam.DisplayWelcomeScreen(width, height, 1, tp.GetTexture(WELCOME));
-    } else if (DisplayExit) {
-        cam.DisplayWelcomeScreen(width, height, 0, tp.GetTexture(EXIT));
-    }
-
-    if (DisplayMap) {
-        cam.DisplayMap(width, height, tp.GetTexture(MAP));
-    }
-
-    if (((cam.GetLR() > 35500.0f) && (cam.GetFB() < 25344.0f)) ||
-        ((cam.GetLR() > 34100.0f) && (cam.GetFB() > 41127.0f))) {
-        cam.DisplayNoExit(width, height, tp.GetTexture(NO_EXIT));
-    }
-
-    DrawBackdrop();
-    glPopMatrix();
-    glDisable(GL_TEXTURE_2D);
-
-    SDL_GL_SwapWindow(stonk.window.get());
-}
-
-void ShaysWorld::Update(double dt) {
-    cam.Update(dt);
 }
 
 void ShaysWorld::CreateBoundingBoxes() {
@@ -367,9 +455,6 @@ void ShaysWorld::CreatePlains() {
 // Load and Create Textures
 //--------------------------------------------------------------------------------------
 void ShaysWorld::CreateTextures() {
-    glEnable(GL_DEPTH_TEST);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
     // set texture count
     tp.SetTextureCount(250);
 
@@ -1038,9 +1123,6 @@ void ShaysWorld::CreateTextures() {
     tp.CreateTexture(WELCOME, image);
     image = tp.LoadTexture("tex/thanks.bmp");
     tp.CreateTexture(EXIT, image);
-
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 }
 
 //--------------------------------------------------------------------------------------

@@ -2,8 +2,8 @@
 
 #include <cstddef>
 
-#include "AABB.h"
-#include "AABBList.h"
+#include "AABB.hpp"
+#include "AABBList.hpp"
 
 namespace Shay {
     class Collision {
