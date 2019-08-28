@@ -1,5 +1,6 @@
 #include "Shay.hpp"
 
+#include <cmath>
 #include <sstream>
 
 #include <SDL2/SDL.h>
@@ -112,7 +113,7 @@ void ShaysWorld::DisplayDebugMenu() {
         ImGui::Begin("FPS", nullptr,
                      ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
         ImGui::SetNextWindowBgAlpha(0.35f);
-        ImGui::Text("%.1f", stonk.fps);
+        ImGui::Text("%.0f", std::ceil(stonk.fps));
 
         ImGui::End();
     }
