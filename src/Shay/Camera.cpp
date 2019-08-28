@@ -113,7 +113,8 @@ void Camera::UpdateLook([[maybe_unused]] double dt) {
 }
 
 auto Camera::getForwardDir() const -> vec3 {
-    return vec3{std::sin(this->angles.x), 0.0, std::cos(this->angles.x)};
+    return vec3{std::sin(this->angles.x), std::sin(this->angles.y),
+                std::cos(this->angles.x)};
 }
 
 /**
