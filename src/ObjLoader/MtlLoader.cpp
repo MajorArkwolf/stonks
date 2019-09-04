@@ -3,6 +3,8 @@
 #include <string>
 #include <sstream>
 
+#include <iostream>
+
 #include <stdexcept>
 
 using std::string;
@@ -11,47 +13,46 @@ auto MTL::Load(std::istream& is) -> std::map<std::string, Material> {
     string currentLine = "";
     string currentMaterial = "";
     std::map<std::string, Material> materials = {};
-    while (!std::getline(is, currentLine).eof()) {
-        auto ss = std::stringstream(currentLine);
+    while (!std::getline(is >> std::ws, currentLine).eof()) {
+        // std::cout << "MTL: " << currentLine << std::endl;
+        auto line = std::stringstream(currentLine);
         string command = "";
-        ss >> command;
+        line >> command;
         if (command[0] == '#') {
-            //comment
-            break;
+            //comment, do nothing
         } else if (command == "newmtl") {
-            ss >> currentMaterial;
-        } else if (command == "Ka") {
+            line >> currentMaterial;
+        } else if (command == "Ka") {   //ambient
             float R, G, B;
-            ss >> R, G, B;
+            line >> R >> G >> B;
             glm::vec3 Ka = {R, G, B};
-            materials[currentMaterial].SetAmbient(Ka);
-        } else if (command == "Kd") {
+            materials[currentMaterial].ambient = Ka;
+        } else if (command == "Kd") {   //diffuse
             float R, G, B;
-            ss >> R, G, B;
+            line >> R >> G >> B;
             glm::vec3 Kd = {R, G, B};
-            materials[currentMaterial].SetDiffuse(Kd);
-        } else if (command == "Ks") {
+            materials[currentMaterial].diffuse=Kd;
+        } else if (command == "Ks") {   //specular
             float R, G, B;
-            ss >> R, G, B;
+            line >> R >> G >> B;
             glm::vec3 Ks = {R, G, B};
-            materials[currentMaterial].SetSpecular(Ks);
-        }else if (command == "d") {   
-            //non-transparency, opposite of Tr
+            materials[currentMaterial].specular=Ks;
+        }else if (command == "d") {     //non-transparency, opposite of Tr
             float d;
-            ss >> d;
-            materials[currentMaterial].SetTransparency(1.0 - d);
-        } else if (command == "Tr") {
+            line >> d;
+            materials[currentMaterial].transparency=1.0 - d;
+        } else if (command == "Tr") {   //transparency
             float t;
-            ss >> t;
-            materials[currentMaterial].SetTransparency(t);
-        } else if (command == "Ns") {
+            line >> t;
+            materials[currentMaterial].transparency = t;
+        } else if (command == "Ns") {   //shininess
             float ns;
-            ss >> ns;
-            materials[currentMaterial].SetShininess(ns);
-        } else if (command == "illum") {
+            line >> ns;
+            materials[currentMaterial].shininess = ns;
+        } else if (command == "illum") {//illumination
             int mi;
-            ss >> mi;
-            materials[currentMaterial].SetIllumination(static_cast<Material::Illumination>(mi));
+            line >> mi;
+            materials[currentMaterial].illumination = static_cast<Material::Illumination>(mi);
         } else if (command == "map_Ka") {
             throw std::logic_error("not yet implemented. :(");
         }

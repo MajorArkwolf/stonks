@@ -1,26 +1,35 @@
-#include <vector>
+#pragma once
 
 #include <glm/vec3.hpp>
+#include <glm/vec2.hpp>
+#include <vector>
+
+#include "Material.hpp"
 
 /**
  * @brief Model file
  */
 struct Model {
-    Model();
+    struct Face {
+        std::vector<int> Vertices = {};
+        std::vector<int> VertTexts = {};
+    };
+
+    // Model();
     /**
      * @brief Vertices
      */
-    std::vector<glm::vec3> Vertices;
+    std::vector<glm::vec3> Vertices = {};
     /**
      * @brief Faces
      */
-    std::vector<glm::vec3> Faces;
+    std::vector<Face> Faces = {};
     /**
-     * @brief Normals
+     * @brief UVs for the model
      */
-    std::vector<glm::vec3> Normals;
+    std::vector<glm::vec2> UVs = {};
     /**
-     * @brief Texture verts
+     * @brief Materials used by the model
      */
-    std::vector<glm::vec2> TexVerts;
+    std::vector<Material> Materials = {};
 };
