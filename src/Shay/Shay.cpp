@@ -21,6 +21,20 @@ using std::stringstream;
 using Slope = Shay::PlainNode::Slope;
 using Image = Shay::TexturedPolygons::Image;
 
+///DEBUG: REMOVE BEFORE COMMITING
+
+#include "ObjLoader/ObjLoader.hpp"
+#include "ObjLoader/Model.hpp"
+#include <fstream>
+#include <glm/glm.hpp>
+#include <glm/vec3.hpp>
+#include <glm/vec2.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+Model testModel;
+
+///END DEBUG
+
 ShaysWorld::ShaysWorld() {
     auto &engine = Stonk::Engine::get();
     SDL_GL_GetDrawableSize(engine.window.get(), &width, &height);
@@ -46,6 +60,11 @@ ShaysWorld::ShaysWorld() {
     cam.SetWorldCoordinates(36000.0, 43200.0);
 
     CreatePlains();
+
+    ///DEBUG, REMOVE BEFORE COMMIT=================================================================
+    std::ifstream readInFile("/home/lily/Documents/ICT290/Stonk/build/Handgun_obj.obj");
+    testModel = OBJ::Load(readInFile);
+    ///DEBUG ==============================================================================
 
     // creates bounding boxes and places in array
     CreateBoundingBoxes();
@@ -82,6 +101,28 @@ void ShaysWorld::Display() {
     }
 
     glPopMatrix();
+
+
+    ///DEBUG, REMOVE BEFORE COMMIT====================================================
+    glPushMatrix();
+    glTranslatef(3793, 10000, 6664);
+    glScalef(1000,1000,1000);
+    for (auto& face : testModel.Faces) {
+        glBegin(GL_POLYGON);
+        glColor3fv(glm::value_ptr(testModel.Materials[face.Material].diffuse));
+        // glMaterialfv(GL_FRONT, GL_AMBIENT, glm::value_ptr(testModel.Materials[face.Material].ambient));
+        // glMaterialfv(GL_FRONT, GL_SPECULAR, glm::value_ptr(testModel.Materials[face.Material].specular));
+        // glMaterialfv(GL_FRONT, GL_DIFFUSE, glm::value_ptr(testModel.Materials[face.Material].diffuse));
+        // glMaterialf(GL_FRONT, GL_SHININESS, testModel.Materials[face.Material].shininess);
+        for (auto vertind : face.Vertices) {
+            auto & vert = testModel.Vertices[vertind];
+            glVertex3f(vert.x, vert.y, vert.z);
+        }
+        glEnd();
+    }
+    glColor3f(1,1,1);
+    glPopMatrix();
+    ///DEBUG=================================================================
 
     DisplayDebugMenu();
 

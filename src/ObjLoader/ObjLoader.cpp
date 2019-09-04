@@ -13,8 +13,11 @@ using std::string;
 auto OBJ::Load(std::istream& is) -> Model {
     string currentLine = "";
     string groupName = "";
+    string currentMaterial;
     Model m = {};
     std::map<string, Material> mats = {};
+    //Maps a material to an integer ID, for use in the model.
+    std::map<string, int> materialMapping = {};
     while (!std::getline(is >> std::ws, currentLine).eof()) {
         // std::cout << "OBJ: " << currentLine << std::endl;
         auto ss = std::stringstream(currentLine);
@@ -45,8 +48,9 @@ auto OBJ::Load(std::istream& is) -> Model {
             groupName = ""; //reset to blank group name
             ss >> groupName;
         } else if (command == "f") {// faces 
+            Model::Face f{};
+            f.Material = materialMapping[currentMaterial];
             while (!ss.eof()) {
-                Model::Face f{};
                 string faceVert = "";
                 ss >> faceVert;
                 std::stringstream faceVertRead(faceVert);
@@ -63,17 +67,24 @@ auto OBJ::Load(std::istream& is) -> Model {
                 f.Vertices.push_back(v - 1);
                 f.VertTexts.push_back(vt - 1);
                 // f.VertNorms.push_back(vn);
-                m.Faces.push_back(f);
             }
+            m.Faces.push_back(f);
         } else if (command == "mtllib") {
             string mtlName = "";
             ss >> mtlName;
             std::ifstream ifile(mtlName);
             mats = MTL::Load(ifile);    
         } else if (command == "usemtl") {
-            string materialName = "";
-            ss >> materialName;
-            
+            ss >> currentMaterial;
+            m.Materials.push_back(mats[currentMaterial]);
+            materialMapping.try_emplace(currentMaterial, m.Materials.size() - 1);
+        } else if (command == "o") {
+            //do nothing - o command does nothing
+            /* (From spec:)
+                Optional statement; it is not processed by any Wavefront programs.
+                It specifies a user-defined object name for the elements defined
+                after this statement.
+            */
         } else {
             std::cout << "Unrecognized OBJ command found: " << currentLine << std::endl;
         }

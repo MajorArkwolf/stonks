@@ -13,6 +13,7 @@ struct Model {
     struct Face {
         std::vector<int> Vertices = {};
         std::vector<int> VertTexts = {};
+        int Material;
     };
 
     // Model();
