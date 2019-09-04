@@ -1,4 +1,4 @@
-#include "TexturedPolygons.h"
+#include "TexturedPolygons.hpp"
 
 #include <fstream>
 #include <iostream>

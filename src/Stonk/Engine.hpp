@@ -22,6 +22,8 @@ namespace Stonk {
         using Window  = std::shared_ptr<SDL_Window>;
         using Context = std::shared_ptr<void>;
 
+        static constexpr auto FPS_UPDATE_INTERVAL = 0.5;
+
         /* Mouse movement. */
         glm::vec2 mouse = {};
 
@@ -30,16 +32,22 @@ namespace Stonk {
         Context context = nullptr;
 
         /* Game state. */
-        State state           = {};
-        GameMode currentState = GameMode::SHAY;
+        State state       = {};
+        GameMode gameMode = GameMode::SHAY;
 
         /* Subsystems. */
         // Camera camera       = {};
         // Collision collision = {};
         Physics physics = {};
 
+        double fps = 0.0;
+
+        bool showDebugMenu = false;
+
       private:
         bool isRunning = true;
+
+        auto getTime() const -> double;
 
         Engine();
 

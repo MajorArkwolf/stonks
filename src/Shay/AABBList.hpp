@@ -10,7 +10,7 @@
 #include <cstddef>
 #include <vector>
 
-#include "AABBNode.h"
+#include "AABBNode.hpp"
 #include "Stonk/OpenGl.hpp"
 
 namespace Shay {

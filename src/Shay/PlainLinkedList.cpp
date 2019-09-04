@@ -1,8 +1,8 @@
-#include "PlainLinkedList.h"
+#include "PlainLinkedList.hpp"
 
 #include <cstddef>
 
-#include "PlainNode.h"
+#include "PlainNode.hpp"
 
 using Shay::PlainLinkedList;
 using Shay::PlainNode;

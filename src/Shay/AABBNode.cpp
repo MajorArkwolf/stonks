@@ -1,4 +1,4 @@
-#include "AABBNode.h"
+#include "AABBNode.hpp"
 
 using Shay::AABBNode;
 

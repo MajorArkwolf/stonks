@@ -105,12 +105,15 @@ find_package(SDL2_ttf REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(glm REQUIRED)
 
+# Build ImGUI.
+add_subdirectory(lib/imgui)
+
 # Include project header files.
 target_include_directories(${PROJECT_NAME} PRIVATE src)
 
 # Include and link against dependencies.
 target_link_libraries(${PROJECT_NAME} PUBLIC OpenGL::GL OpenGL::GLU
-    SDL2::SDL2 SDL2::Image SDL2::TTF SDL2::Mixer glm)
+    SDL2::SDL2 SDL2::Image SDL2::TTF SDL2::Mixer glm ImGui)
 
 # Symlink or copy the resources to the binary location.
 if (NOT DisablePostBuild)
