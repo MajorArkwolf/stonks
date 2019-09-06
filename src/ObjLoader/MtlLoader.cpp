@@ -13,11 +13,12 @@ auto MTL::Load(std::istream& is) -> std::map<std::string, Material> {
     string currentLine = "";
     string currentMaterial = "";
     std::map<std::string, Material> materials = {};
-    while (!std::getline(is >> std::ws, currentLine).eof()) {
-        // std::cout << "MTL: " << currentLine << std::endl;
+    while (std::getline(is >> std::ws, currentLine)) {
+        
         auto line = std::stringstream(currentLine);
         string command = "";
         line >> command;
+
         if (command[0] == '#') {
             //comment, do nothing
         } else if (command == "newmtl") {
@@ -54,8 +55,11 @@ auto MTL::Load(std::istream& is) -> std::map<std::string, Material> {
             line >> mi;
             materials[currentMaterial].illumination = static_cast<Material::Illumination>(mi);
         } else if (command == "map_Ka") {
-            throw std::logic_error("not yet implemented. :(");
+            string filename = "";
+            line >> filename;
+            auto path  = string{} + "res/" + filename;
+            // TODO: Load image
         }
-    }  
+    }
     return materials;  
 }
