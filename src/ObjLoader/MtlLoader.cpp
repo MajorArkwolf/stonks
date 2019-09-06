@@ -21,40 +21,42 @@ auto MTL::Load(std::istream& is) -> std::map<std::string, Material> {
 
         if (command[0] == '#') {
             //comment, do nothing
-        } else if (command == "newmtl") {
+        } 
+        else if (command == "newmtl") {
             line >> currentMaterial;
-        } else if (command == "Ka") {   //ambient
-            float R, G, B;
-            line >> R >> G >> B;
-            glm::vec3 Ka = {R, G, B};
-            materials[currentMaterial].ambient = Ka;
-        } else if (command == "Kd") {   //diffuse
-            float R, G, B;
-            line >> R >> G >> B;
-            glm::vec3 Kd = {R, G, B};
+        } 
+        else if (command == "Ka") {   //ambient
+            glm::vec3 Ka = {0, 0, 0};
+            line >> Ka.r, Ka.g, Ka.b;
+            materials[currentMaterial].ambient=Ka;
+        } 
+        else if (command == "Kd") {   //diffuse
+            glm::vec3 Kd = {0, 0, 0};
+            line >> Kd.r, Kd.g, Kd.b;
             materials[currentMaterial].diffuse=Kd;
-        } else if (command == "Ks") {   //specular
-            float R, G, B;
-            line >> R >> G >> B;
-            glm::vec3 Ks = {R, G, B};
+        } 
+        else if (command == "Ks") {   //specular
+            glm::vec3 Ks = {0, 0, 0};
+            line >> Ks.r, Ks.g, Ks.b;
             materials[currentMaterial].specular=Ks;
-        }else if (command == "d") {     //non-transparency, opposite of Tr
+        }
+        else if (command == "d") {     //non-transparency, opposite of Tr
             float d;
             line >> d;
-            materials[currentMaterial].transparency=1.0 - d;
-        } else if (command == "Tr") {   //transparency
-            float t;
-            line >> t;
-            materials[currentMaterial].transparency = t;
-        } else if (command == "Ns") {   //shininess
-            float ns;
-            line >> ns;
-            materials[currentMaterial].shininess = ns;
-        } else if (command == "illum") {//illumination
+            materials[currentMaterial].transparency = 1.0 - d;
+        } 
+        else if (command == "Tr") {   //transparency
+            line >> materials[currentMaterial].transparency;
+        } 
+        else if (command == "Ns") {   //shininess
+            line >> materials[currentMaterial].shininess;
+        } 
+        else if (command == "illum") {//illumination
             int mi;
             line >> mi;
             materials[currentMaterial].illumination = static_cast<Material::Illumination>(mi);
-        } else if (command == "map_Ka") {
+        } 
+        else if (command == "map_Ka") {//texture map - ambient
             string filename = "";
             line >> filename;
             auto path  = string{} + "res/" + filename;
