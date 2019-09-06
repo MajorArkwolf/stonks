@@ -56,25 +56,106 @@ ShaysWorld::ShaysWorld() {
     CreateTextureList();
     CreateTextures();
 }
+void drawSolidCube(float scale) {
+    glPushMatrix();
+    glScalef(scale, scale, scale);
+    // White side - BACK
+    glBegin(GL_POLYGON);
 
+    glVertex3f(0.5, -0.5, 0.5);
+    glVertex3f(0.5, 0.5, 0.5);
+    glVertex3f(-0.5, 0.5, 0.5);
+    glVertex3f(-0.5, -0.5, 0.5);
+    glEnd();
+
+    // Purple side - RIGHT
+    glBegin(GL_POLYGON);
+
+    glVertex3f(0.5, -0.5, -0.5);
+    glVertex3f(0.5, 0.5, -0.5);
+    glVertex3f(0.5, 0.5, 0.5);
+    glVertex3f(0.5, -0.5, 0.5);
+    glEnd();
+
+    // Green side - LEFT
+    glBegin(GL_POLYGON);
+
+    glVertex3f(-0.5, -0.5, 0.5);
+    glVertex3f(-0.5, 0.5, 0.5);
+    glVertex3f(-0.5, 0.5, -0.5);
+    glVertex3f(-0.5, -0.5, -0.5);
+    glEnd();
+
+    // Blue side - TOP
+    glBegin(GL_POLYGON);
+
+    glVertex3f(0.5, 0.5, 0.5);
+    glVertex3f(0.5, 0.5, -0.5);
+    glVertex3f(-0.5, 0.5, -0.5);
+    glVertex3f(-0.5, 0.5, 0.5);
+    glEnd();
+
+    // Red side - BOTTOM
+    glBegin(GL_POLYGON);
+
+    glVertex3f(0.5, -0.5, -0.5);
+    glVertex3f(0.5, -0.5, 0.5);
+    glVertex3f(-0.5, -0.5, 0.5);
+    glVertex3f(-0.5, -0.5, -0.5);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glVertex3f(0.5, -0.5, -0.5);  // P1 is red
+    glVertex3f(0.5, 0.5, -0.5);   // P2 is green
+    glVertex3f(-0.5, 0.5, -0.5);  // P3 is blue
+    glVertex3f(-0.5, -0.5, -0.5); // P4 is purple
+    glEnd();
+    glPopMatrix();
+}
 void ShaysWorld::Display() {
     auto &stonk = Stonk::Engine::get();
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_NOTEQUAL, 1, 0xff);
+    glStencilOp(GL_KEEP, GL_REPLACE, GL_REPLACE);
 
     ImGui_ImplOpenGL2_NewFrame();
     ImGui_ImplSDL2_NewFrame(stonk.window.get());
     ImGui::NewFrame();
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_DEPTH_TEST);
+    glStencilMask(0x00);
+
     glPushMatrix();
 
     DrawBackdrop();
     DisplaySigns();
 
+    glStencilFunc(GL_ALWAYS, 1, 0xFF);
+    glStencilMask(0xFF);
+
+    glDisable(GL_TEXTURE_2D);
+    glPushMatrix();
+    glColor3f(1, 0, 0);
+    glTranslatef(20000, 12000, 10000);
+
+    drawSolidCube(1000);
+
+    glColor3f(1, 1, 1);
+    glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+    glStencilMask(0x00);
+    glDisable(GL_DEPTH_TEST);
+    drawSolidCube(1050);
+    glStencilMask(0xff);
+
+    glPopMatrix();
+    glColor3f(1, 1, 1);
+
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_TEXTURE_2D);
+    glDisable(GL_STENCIL_TEST);
 
     if (this->shouldDrawAxis) {
         auto origin = this->cam.look + (this->cam.getForwardDir() * 1.01f);
