@@ -18,7 +18,7 @@ auto OBJ::Load(std::istream& is) -> Model {
     std::map<string, Material> mats = {};
     //Maps a material to an integer ID, for use in the model.
     std::map<string, int> materialMapping = {};
-    while (!std::getline(is >> std::ws, currentLine).eof()) {
+    while (std::getline(is >> std::ws, currentLine)) {
         // std::cout << "OBJ: " << currentLine << std::endl;
         auto ss = std::stringstream(currentLine);
         string command = "";
@@ -27,9 +27,8 @@ auto OBJ::Load(std::istream& is) -> Model {
             //comment, do nothing
         } else if (command == "v") //vertex
         {
-            float x, y, z;
-            ss >> x >> y >> z;
-            glm::vec3 v = {x, y, z};
+            glm::vec3 v = {0,0,0};
+            ss >> v.x >> v.y >> v.z;
             m.Vertices.push_back(v);
         } else if (command == "vn") //normal
         {
@@ -39,9 +38,8 @@ auto OBJ::Load(std::istream& is) -> Model {
             // m.Normals.push_back(n);
         } else if (command == "vt") //texture
         {
-            float u, v = 0;
-            ss >> u >> v;
-            glm::vec2 tex = {u, v};
+            glm::vec2 tex = {0,0};
+            ss >> tex.x >> tex.y;
             m.UVs.push_back(tex);
         } else if (command == "g") // group name
         {
@@ -50,7 +48,7 @@ auto OBJ::Load(std::istream& is) -> Model {
         } else if (command == "f") {// faces 
             Model::Face f{};
             f.Material = materialMapping[currentMaterial];
-            while (!ss.eof()) {
+            while (!(ss >> std::ws).eof()) {
                 string faceVert = "";
                 ss >> faceVert;
                 std::stringstream faceVertRead(faceVert);
@@ -71,13 +69,17 @@ auto OBJ::Load(std::istream& is) -> Model {
             m.Faces.push_back(f);
         } else if (command == "mtllib") {
             string mtlName = "";
-            ss >> mtlName;
+            std::getline(ss >> std::ws, mtlName);
+            if (mtlName[mtlName.size() - 1] == '\r') {
+                mtlName = mtlName.substr(0, mtlName.size() - 1);
+            }
             std::ifstream ifile(mtlName);
             mats = MTL::Load(ifile);    
         } else if (command == "usemtl") {
             ss >> currentMaterial;
-            m.Materials.push_back(mats[currentMaterial]);
-            materialMapping.try_emplace(currentMaterial, m.Materials.size() - 1);
+            if (materialMapping.try_emplace(currentMaterial, m.Materials.size()).second) {
+                m.Materials.push_back(mats[currentMaterial]);
+            }
         } else if (command == "o") {
             //do nothing - o command does nothing
             /* (From spec:)
@@ -85,6 +87,9 @@ auto OBJ::Load(std::istream& is) -> Model {
                 It specifies a user-defined object name for the elements defined
                 after this statement.
             */
+        } else if (command == "s") {
+            //smoothing groups, currently unimplemented
+            //todo: implement
         } else {
             std::cout << "Unrecognized OBJ command found: " << currentLine << std::endl;
         }
