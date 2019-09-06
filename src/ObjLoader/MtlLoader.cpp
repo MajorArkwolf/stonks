@@ -27,17 +27,17 @@ auto MTL::Load(std::istream& is) -> std::map<std::string, Material> {
         } 
         else if (command == "Ka") {   //ambient
             glm::vec3 Ka = {0, 0, 0};
-            line >> Ka.r, Ka.g, Ka.b;
+            line >> Ka.r >> Ka.g >> Ka.b;
             materials[currentMaterial].ambient=Ka;
         } 
         else if (command == "Kd") {   //diffuse
             glm::vec3 Kd = {0, 0, 0};
-            line >> Kd.r, Kd.g, Kd.b;
+            line >> Kd.r >> Kd.g >> Kd.b;
             materials[currentMaterial].diffuse=Kd;
         } 
         else if (command == "Ks") {   //specular
             glm::vec3 Ks = {0, 0, 0};
-            line >> Ks.r, Ks.g, Ks.b;
+            line >> Ks.r >> Ks.g >> Ks.b;
             materials[currentMaterial].specular=Ks;
         }
         else if (command == "d") {     //non-transparency, opposite of Tr

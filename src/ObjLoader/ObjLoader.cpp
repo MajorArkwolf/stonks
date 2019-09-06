@@ -90,7 +90,7 @@ auto OBJ::Load(std::istream& is) -> Model {
         } 
         else if (command == "usemtl") {
             ss >> currentMaterial;
-            if (materialMapping.try_emplace(currentMaterial, m.Materials.size()).second) {
+            if (materialMapping.try_emplace(currentMaterial, mdl.Materials.size()).second) {
                 mdl.Materials.push_back(mats[currentMaterial]);
             }
         } 
@@ -113,5 +113,5 @@ auto OBJ::Load(std::istream& is) -> Model {
         
         
     }
-    return m;
+    return mdl;
 }
