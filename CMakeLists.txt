@@ -33,8 +33,6 @@ set (SOURCES
     src/Stonk/Physics.cpp
     src/Stonk/Viewport.cpp
     
-    src/ObjLoader/Material.cpp
-    src/ObjLoader/Model.cpp
     src/ObjLoader/MtlLoader.cpp
     src/ObjLoader/ObjLoader.cpp
 
