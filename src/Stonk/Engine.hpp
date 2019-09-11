@@ -73,12 +73,12 @@ namespace Stonk {
         static auto run() -> void;
 
         /**
-         * @brief Overloaded assignment operator
+         * @brief Overloaded assignment operator, set to default overload
          */
         auto operator=(Engine &&) -> Engine & = default;
 
         /**
-         * @brief Overloaded const assignment operator
+         * @brief Overloaded const assignment operator, set to delete overload
          */
         auto operator=(const Engine &) -> Engine & = delete;
 
@@ -138,14 +138,14 @@ namespace Stonk {
 
         /**
          * @brief I DONT KNOW WHAT THIS DOES
-         * @param newState
-         * @param dt
+         * @param newState what do
+         * @param dt what do
          */
         auto update(State &newState, double dt) -> void;
 
         /**
          * @brief I DONT KNOW WHAT THIS DOES
-         * @param newState
+         * @param newState what do
          */
         auto render(const State &newState) const -> void;
     };

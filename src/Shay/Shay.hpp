@@ -270,7 +270,6 @@ namespace Shay {
         /**
          * @brief Handles Key events passed from the SDL2 subsystem
          * @param event The SDL2 event being read from
-         * @param m2 The mass of the second planet to calculate gravity from
          */
         auto handleKeyEvents(SDL_Event &event) -> void;
 
@@ -338,43 +337,178 @@ namespace Shay {
          */
         void DisplayCylinders();
 
-		 /**
+        /**
          * @brief Displays Door paving
          */
         void DisplayDoorPaving();
+
+        /**
+         * @brief Displays Door posts
+         */
         void DisplayDoorPosts();
+
+        /**
+         * @brief Displays Entrance steps
+         */
         void DisplayEntranceSteps();
+
+        /**
+         * @brief Displays Tavern Steps
+         */
         void DisplayTavSteps();
+
+        /**
+         * @brief Displays extras
+         */
         void DisplayExtras();
+
+        /**
+         * @brief Displays grass
+         */
         void DisplayGrass();
+
+        /**
+         * @brief Displays larger textures
+         */
         void DisplayLargerTextures();
+
+        /**
+         * @brief Displays Library posts
+         */
         void DisplayLibraryPosts();
+
+        /**
+         * @brief Displays Main posts
+         */
         void DisplayMainPosts();
+
+        /**
+         * @brief Displays Pavement
+         */
         void DisplayPavement();
+        /**
+         * @brief Displays Physical science building posts
+         */
         void DisplayPhysSciPosts();
+
+        /**
+         * @brief Displays purple posts
+         */
         void DisplayPurplePosts();
+
+        /**
+         * @brief Displays Red posts
+         */
         void DisplayRedPosts();
+
+        /**
+         * @brief Displays all roofs
+         */
         void DisplayRoof();
+
+        /**
+         * @brief Displays step bricks
+         */
         void DisplayStepBricks();
+
+        /**
+         * @brief Displays tavern step bricks
+         */
         void DisplayTavStepBricks();
+
+        /**
+         * @brief Displays lgihts
+         */
         void DisplayLights();
+
+        /**
+         * @brief Displays ECL ( does nothing)
+         */
         void DisplayECL();
+
+        /**
+         * @brief Creates list of textures
+         */
         void CreateTextureList();
+
+        /**
+         * @brief Draws grass
+         */
         void DrawGrass();
+
+        /**
+         * @brief Draws chancellor posts
+         */
         void DrawChancPosts();
+
+        /**
+         * @brief Draws door posts
+         */
         void DrawDoorPosts();
+
+        /**
+         * @brief Draws purple posts
+         */
         void DrawPurplePosts();
+
+        /**
+         * @brief Draws red posts
+         */
         void DrawRedPosts();
+
+        /**
+         * @brief Draws main posts
+         */
         void DrawMainPosts();
+
+        /**
+         * @brief Draws area above window block
+         */
         void DrawAboveWindowBlock();
+
+        /**
+         * @brief Draws door paving
+         */
         void DrawDoorPaving();
+
+        /**
+         * @brief Draws physical science building posts
+         */
         void DrawPhysSciPosts();
+
+        /**
+         * @brief Draws library posts
+         */
         void DrawLibraryPosts();
+
+        /**
+         * @brief Draws bricks
+         */
         void DrawBricks();
+
+        /**
+         * @brief Draws pavement
+         */
         void DrawPavement();
+
+        /**
+         * @brief Draws extras
+         */
         void DrawExtras();
+
+        /**
+         * @brief Draws roof
+         */
         void DrawRoof();
+
+        /**
+         * @brief Draws extrance steps
+         */
         void DrawEntranceSteps();
+
+        /**
+         * @brief Draws chancellor posts
+         */
         void DrawTavSteps();
         void DrawLargerTextures();
         void DrawLights();
