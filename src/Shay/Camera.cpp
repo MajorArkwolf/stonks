@@ -199,8 +199,8 @@ void Camera::DisplayMap(int screenWidth, int screenHeight, GLuint tempImage) {
 //----------------------------------------------------------------------------------------
 
 void Camera::DisplayWelcomeScreen(int screenWidth, int screenHeight,
-                                  int tempExit, GLuint tempImage) {
-    m_map.DisplayWelcomeScreen(screenWidth, screenHeight, tempExit, tempImage);
+                                  GLuint tempImage) {
+    m_map.DisplayWelcomeScreen(screenWidth, screenHeight, tempImage);
 }
 
 //--------------------------------------------------------------------------------------

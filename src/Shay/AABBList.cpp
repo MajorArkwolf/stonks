@@ -5,9 +5,10 @@
 using Shay::AABBList;
 using std::size_t;
 
+
 bool AABBList::AddToStart(GLfloat maxX, GLfloat minX, GLfloat maxY,
                           GLfloat minY, GLfloat maxZ, GLfloat minZ) {
-    /// Creates a temp node.
+    // Creates a temp node.
     AABBNode newNode{};
 
     // adds the values to the node

@@ -125,9 +125,9 @@ void ShaysWorld::Update(double dt) {
 
 void ShaysWorld::DisplaySigns() {
     if (DisplayWelcome) {
-        cam.DisplayWelcomeScreen(width, height, 1, tp.GetTexture(WELCOME));
+        cam.DisplayWelcomeScreen(width, height, tp.GetTexture(WELCOME));
     } else if (DisplayExit) {
-        cam.DisplayWelcomeScreen(width, height, 0, tp.GetTexture(EXIT));
+        cam.DisplayWelcomeScreen(width, height, tp.GetTexture(EXIT));
     }
 
     if (DisplayMap) {

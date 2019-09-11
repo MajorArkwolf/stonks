@@ -14,7 +14,7 @@ namespace Shay {
 
         // display the welcome screen
         void DisplayWelcomeScreen(int screenWidth, int screenHeight,
-                                  int tempExit, GLuint tempImage);
+                                  GLuint tempImage);
 
         void DisplayNoExit(int screenWidth, int screenHeight, GLuint tempImage);
 

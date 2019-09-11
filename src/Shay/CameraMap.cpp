@@ -4,10 +4,15 @@
 
 using Shay::CameraMap;
 
-//--------------------------------------------------------------------------------------
-//  Display a map with a cursor on it, which moves with the camera
-//--------------------------------------------------------------------------------------
 
+/**
+ * @brief Displays a map or murdoch with a pointer showing the player position
+ * @param screenWidth The current width of the screen
+ * @param screenHeight The current height of the screen
+ * @param xPos The x position of the player
+ * @param yPos The y position of the player
+ * @param tempImage The enum number of the texture to display
+ */
 void CameraMap::DisplayMap(int screenWidth, int screenHeight, GLfloat xPos,
                            GLfloat zPos, GLuint tempImage) {
     GLfloat tempX = xPos / 163.0f - 2096.0f / 163.0f;
@@ -45,11 +50,14 @@ void CameraMap::DisplayMap(int screenWidth, int screenHeight, GLfloat xPos,
     glPopMatrix();
 }
 
-//--------------------------------------------------------------------------------------
-//  Displays a welcome or exit screen
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Displays the welcome or exit screen
+ * @param screenWidth The current width of the screen
+ * @param screenHeight The current height of the screen
+ * @param textureNum The enum value for the texture
+ */
 void CameraMap::DisplayWelcomeScreen(int screenWidth, int screenHeight,
-                                     int tempExit, GLuint tempImage) {
+                                     GLuint textureNum) {
     glPushMatrix();
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
@@ -62,11 +70,9 @@ void CameraMap::DisplayWelcomeScreen(int screenWidth, int screenHeight,
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     // display exit screen or welcome screen
-    if (tempExit == 1) {
-        glBindTexture(GL_TEXTURE_2D, tempImage);
-    } else {
-        glBindTexture(GL_TEXTURE_2D, tempImage);
-    }
+
+    glBindTexture(GL_TEXTURE_2D, textureNum);
+
     // display image
     glCallList(449);
     // Reset Perspective Projection
@@ -76,7 +82,14 @@ void CameraMap::DisplayWelcomeScreen(int screenWidth, int screenHeight,
     glPopMatrix();
 }
 
-void CameraMap::DisplayNoExit(int screenWidth, int screenHeight, GLuint tempImage) {
+/**
+ * @brief Displays the no exit dialog
+ * @param screenWidth The current width of the screen
+ * @param screenHeight The current height of the screen
+ * @param textureNum The enum value for the texture
+ */
+
+void CameraMap::DisplayNoExit(int screenWidth, int screenHeight, GLuint textureNum) {
     glPushMatrix();
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
@@ -89,7 +102,7 @@ void CameraMap::DisplayNoExit(int screenWidth, int screenHeight, GLuint tempImag
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     // display sign
-    glBindTexture(GL_TEXTURE_2D, tempImage);
+    glBindTexture(GL_TEXTURE_2D, textureNum);
     // display image
     glCallList(454);
     // Reset Perspective Projection
