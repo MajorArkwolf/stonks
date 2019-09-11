@@ -180,6 +180,10 @@ void Camera::Update(double dt) {
               static_cast<double>(this->tilt.z));    //
 }
 
+/**
+ * @brief Moves the camera if no collision occurs
+ * @param newPos The new position to set the camera to
+ */
 void Camera::MoveIfOk(glm::vec3 newPos) {
     if (!(m_colDetect.Collide(newPos.x, newPos.y, newPos.z))) {
         this->position = newPos;
@@ -189,7 +193,12 @@ void Camera::MoveIfOk(glm::vec3 newPos) {
 //--------------------------------------------------------------------------------------
 // Display map of world
 //----------------------------------------------------------------------------------------
-
+/**
+ * @brief Displays the map
+ * @param screenWidth The width of the screen
+ * @param screenHeight The height of the screen
+ * @param tempImage The enum number of the map texture
+ */
 void Camera::DisplayMap(int screenWidth, int screenHeight, GLuint tempImage) {
     m_map.DisplayMap(screenWidth, screenHeight, GetLR(), GetFB(), tempImage);
 }
@@ -197,7 +206,12 @@ void Camera::DisplayMap(int screenWidth, int screenHeight, GLuint tempImage) {
 //--------------------------------------------------------------------------------------
 // Display welcome or exit page
 //----------------------------------------------------------------------------------------
-
+/**
+ * @brief Displays the welcome screen
+ * @param screenWidth The width of the screen
+ * @param screenHeight The height of the screen
+ * @param tempImage The enum number of the texture to display
+ */
 void Camera::DisplayWelcomeScreen(int screenWidth, int screenHeight,
                                   GLuint tempImage) {
     m_map.DisplayWelcomeScreen(screenWidth, screenHeight, tempImage);
@@ -206,13 +220,23 @@ void Camera::DisplayWelcomeScreen(int screenWidth, int screenHeight,
 //--------------------------------------------------------------------------------------
 // Display welcome or exit page
 //----------------------------------------------------------------------------------------
-
+/**
+ * @brief Displays the no exit screen
+ * @param screenWidth The width of the screen
+ * @param screenHeight The height of the screen
+ * @param tempImage The enum number of the texture to display
+ */
 void Camera::DisplayNoExit(int screenWidth, int screenHeight, GLuint tempImage) {
     m_map.DisplayNoExit(screenWidth, screenHeight, tempImage);
 }
 
 //----------------------------------------------------------------------------------------
 
+/**
+ * @brief Sets the world coordinates
+ * @param tempX The x coordinate of the world
+ * @param tempZ The y coordinate of the world
+ */
 void Camera::SetWorldCoordinates(GLfloat tempX, GLfloat tempZ) {
     m_colDetect.SetWorldX(tempX);
     m_colDetect.SetWorldZ(tempZ);
@@ -220,12 +244,26 @@ void Camera::SetWorldCoordinates(GLfloat tempX, GLfloat tempZ) {
 
 //----------------------------------------------------------------------------------------
 
+/**
+ * @brief  Adds a slope to the end of the vector
+ *
+ * @param tempType Slope type
+ * @param tempXs X start location
+ * @param tempXe X end location
+ * @param tempYs Y start location
+ * @param tempYe Y end location
+ * @param tempZs Z start location
+ * @param tempZe Z end location
+ */
 void Camera::SetPlains(Slope tempType, GLfloat tempXs, GLfloat tempXe,
                        GLfloat tempYs, GLfloat tempYe, GLfloat tempZs,
                        GLfloat tempZe) {
     m_Plain.AddToStart(tempType, tempXs, tempXe, tempYs, tempYe, tempZs, tempZe);
 }
 
+/**
+ * @brief  Finishes the current AABB by incrementing the AABB count
+ */
 auto Camera::FinishAABB() -> void {
     m_colDetect.FinishAABB();
 }

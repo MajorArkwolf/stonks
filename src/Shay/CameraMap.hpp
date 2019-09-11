@@ -5,8 +5,17 @@
 namespace Shay {
     class CameraMap {
       public:
+        /// Default constructor
         CameraMap() {}
+
+        /// Destructor
         ~CameraMap() {}
+
+        /// Copy constructor, set to delete
+        CameraMap(const CameraMap &cam) = delete;
+
+        /// Overloaded assignment operator, set to delete
+        CameraMap &operator=(const CameraMap &cam) = delete;
 
         // display the map
         void DisplayMap(int screenWidth, int screenHeight, GLfloat xPos,
@@ -17,8 +26,5 @@ namespace Shay {
                                   GLuint tempImage);
 
         void DisplayNoExit(int screenWidth, int screenHeight, GLuint tempImage);
-
-        CameraMap(const CameraMap &cam) = delete;
-        CameraMap &operator=(const CameraMap &cam) = delete;
     };
 }

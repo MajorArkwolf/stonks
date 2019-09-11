@@ -11,8 +11,13 @@ namespace Shay {
      */
     class PlainLinkedList {
       public:
-        PlainLinkedList()                             = default;
+        /// Default constructor, set to default
+        PlainLinkedList() = default;
+
+        /// Copy constructor, set to default
         PlainLinkedList(const PlainLinkedList &array) = default;
+
+        /// Overloaded assignment operator, set to default
         PlainLinkedList &operator=(const PlainLinkedList &array) = default;
 
         bool AddToStart(PlainNode::Slope tempType, GLfloat tempXs,
@@ -32,6 +37,7 @@ namespace Shay {
         std::size_t GetListSize();
 
       private:
+        /// Vector containing PlainNodes
         std::vector<PlainNode> nodes{};
     };
 }
