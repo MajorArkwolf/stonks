@@ -10,7 +10,8 @@
 
 using std::string;
 
-auto OBJ::Load(std::istream& is) -> Model {
+auto OBJ::Load(const std::string & filepath) -> Model {
+    auto is = std::ifstream(filepath);
     string currentLine = "";
     string groupName = "";
     string currentMaterial = "";
@@ -81,12 +82,12 @@ auto OBJ::Load(std::istream& is) -> Model {
             //We need to get the whole line
             std::getline(ss >> std::ws, mtlName);
             if (mtlName[mtlName.size() - 1] == '\r') {
-                //Thanks to the C++ spec, reading a line
-                //on linux will keep carriage returns in the string.
+                //Thanks to the C++ spec, reading a line on linux
+                //will keep around carriage returns, if the file
+                //is using windows-style line endings.
                 mtlName = mtlName.substr(0, mtlName.size() - 1);
             }
-            std::ifstream ifile(mtlName);
-            mats = MTL::Load(ifile);    
+            mats = MTL::Load(mtlName);    
         } 
         else if (command == "usemtl") {
             ss >> currentMaterial;

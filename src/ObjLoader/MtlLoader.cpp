@@ -2,14 +2,14 @@
 
 #include <string>
 #include <sstream>
-
-#include <iostream>
+#include <fstream>
 
 #include <stdexcept>
 
 using std::string;
 
-auto MTL::Load(std::istream& is) -> std::map<std::string, Material> {
+auto MTL::Load(const std::string & filepath) -> std::map<std::string, Material> {
+    auto is = std::ifstream(filepath);
     string currentLine = "";
     string currentMaterial = "";
     std::map<std::string, Material> materials = {};

@@ -6,5 +6,5 @@
 
 class MTL {
 public:
-    auto static Load(std::istream& is) -> std::map<std::string, Material>;
+    auto static Load(const std::string & filepath) -> std::map<std::string, Material>;
 };

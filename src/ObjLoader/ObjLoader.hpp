@@ -4,5 +4,5 @@
 
 class OBJ {
 public:
-    auto static Load(std::istream& is) -> Model;
+    auto static Load(const std::string & filepath) -> Model;
 };
