@@ -11,15 +11,24 @@
 #include "Stonk/OpenGl.hpp"
 
 namespace Shay {
+    /**
+     * @class  TexturedPolygons
+     * @brief A class used to represent a singular polygon with texture
+     */
     class TexturedPolygons {
       public:
-        static constexpr auto CHANNELS = 3;
-
         using Image = std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)>;
 
+        /// The number of colour channels in the texture
+        static constexpr auto CHANNELS = 3;
+
+        /// Default constructor, set to default
         TexturedPolygons() = default;
 
+        /// Overloaded copy constructor
         TexturedPolygons(const TexturedPolygons &) = delete;
+
+        /// Overloaded assignment operator
         TexturedPolygons &operator=(const TexturedPolygons &) = delete;
 
         GLuint GetTexture(GLuint tempIndex);
@@ -44,6 +53,7 @@ namespace Shay {
                                  int smallestZ);
 
       private:
+        /// Vector containing texture enum numbers
         std::vector<GLuint> m_texture = {};
 
         void CreateXtoZTextureList(GLfloat xImgSize, GLfloat zImgSize,

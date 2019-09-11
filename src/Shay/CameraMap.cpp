@@ -4,9 +4,8 @@
 
 using Shay::CameraMap;
 
-
 /**
- * @brief Displays a map or murdoch with a pointer showing the player position
+ * @brief Displays a map of murdoch with a pointer showing the player position
  * @param screenWidth The current width of the screen
  * @param screenHeight The current height of the screen
  * @param xPos The x position of the player

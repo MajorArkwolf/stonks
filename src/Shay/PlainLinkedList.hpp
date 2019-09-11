@@ -5,6 +5,10 @@
 #include "PlainNode.hpp"
 
 namespace Shay {
+    /**
+     * @class PlainLinkedList
+     * @brief Class used to store all data about the plains within Shay's World
+     */
     class PlainLinkedList {
       public:
         PlainLinkedList()                             = default;
