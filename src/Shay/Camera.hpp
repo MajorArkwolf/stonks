@@ -191,24 +191,9 @@ namespace Shay {
         std::size_t m_plainNo   = 0;
         GLfloat m_plainHeight   = 0.0;
 
-        // rotation variables
-        GLfloat m_rotateAngleLR = 0.0;
-        GLfloat m_deltaAngleLR  = 0.0;
-        GLfloat m_rotateAngleUD = 0.0;
-        GLfloat m_deltaAngleUD  = 0.0;
-
-        GLfloat m_x = 0.0, m_y = 0.0, m_z = 0.0, m_zLast = 0.0, m_xLast = 0.0;
-        GLfloat m_lookX = 0.0, m_lookY = 0.0, m_lookZ = 0.0;
-        GLfloat m_lookXX = 0.0, m_lookYY = 0.0, m_lookZZ = 0.0;
-        GLfloat m_deltaMoveLR = 0.0;
-        GLfloat m_deltaMoveFB = 0.0;
-        GLfloat m_deltaMoveUD = 0.0;
-        GLfloat m_direction   = 0.0;
-
         // movement speed (step size)
         GLfloat m_rotateSpeed = 0.0;
         GLfloat m_moveSpeed   = 0.0;
-
 
         void UpdatePosition(double dt);
         void UpdateLook(double dt);
