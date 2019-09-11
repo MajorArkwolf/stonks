@@ -1,6 +1,10 @@
 #pragma once
 
 namespace Stonk {
+    /**
+     * @class Viewport
+     * @brief Used to hold the default viewport values
+     */
     class Viewport {
       private:
         double fov    = 60.0;

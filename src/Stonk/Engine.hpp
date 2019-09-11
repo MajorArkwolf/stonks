@@ -82,71 +82,24 @@ namespace Stonk {
          */
         auto operator=(const Engine &) -> Engine & = delete;
 
-        /**
-         * @brief Handles SDL2 events regarding mouse movement, works by sending
-         * the events to the currently set game state
-         * @param event The SDL2 event being read from
-         */
         auto handleMouseMovement(SDL_Event &event) -> void;
 
-        /**
-         * @brief Handles SDL2 events regarding mouse button presses, works by sending
-         * the events to the currently set game state
-         * @param event The SDL2 event being read from
-         */
         auto handleMouseButtonPress(SDL_Event &event) -> void;
 
-        /**
-         * @brief Handles SDL2 events regarding mouse button releases, works by sending
-         * the events to the currently set game state
-         * @param event The SDL2 event being read from
-         */
         auto handleMouseButtonRelease(SDL_Event &event) -> void;
 
-        /**
-         * @brief Handles SDL2 events regarding mouse wheel motion, works by sending
-         * the events to the currently set game state
-         * @param event The SDL2 event being read from
-         */
         auto handleMouseWheelMotion(SDL_Event &event) -> void;
 
-        /**
-         * @brief Handles SDL2 events regarding keyboard key presses, works by sending
-         * the events to the currently set game state
-         * @param event The SDL2 event being read from
-         */
         auto handleKeyPress(SDL_Event &event) -> void;
 
-        /**
-         * @brief Handles SDL2 events regarding keyboard key releases, works by sending
-         * the events to the currently set game state
-         * @param event The SDL2 event being read from
-         */
         auto handleKeyRelease(SDL_Event &event) -> void;
 
-        /**
-         * @brief Checks to see if the engine is currently running
-         * @return A boolean, returns true if the engine is running
-         */
         auto getIsRunning() const -> bool;
 
-        /**
-         * @brief Parses all SDL2 events and sends them to the correct function
-         * to process them based on their event type
-         */
         auto processInput() -> void;
 
-        /**
-         * @brief I DONT KNOW WHAT THIS DOES
-         * @param newState what do
-         * @param dt what do
-         */
         auto update(State &newState, double dt) -> void;
 
-        /**
-         * @brief I DONT KNOW WHAT THIS DOES
-         * @param newState what do
-         */
         auto render(const State &newState) const -> void;
     };
 }

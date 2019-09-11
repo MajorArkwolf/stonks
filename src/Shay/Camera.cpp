@@ -190,9 +190,6 @@ void Camera::MoveIfOk(glm::vec3 newPos) {
     }
 }
 
-//--------------------------------------------------------------------------------------
-// Display map of world
-//----------------------------------------------------------------------------------------
 /**
  * @brief Displays the map
  * @param screenWidth The width of the screen
@@ -203,9 +200,6 @@ void Camera::DisplayMap(int screenWidth, int screenHeight, GLuint tempImage) {
     m_map.DisplayMap(screenWidth, screenHeight, GetLR(), GetFB(), tempImage);
 }
 
-//--------------------------------------------------------------------------------------
-// Display welcome or exit page
-//----------------------------------------------------------------------------------------
 /**
  * @brief Displays the welcome screen
  * @param screenWidth The width of the screen
@@ -217,9 +211,6 @@ void Camera::DisplayWelcomeScreen(int screenWidth, int screenHeight,
     m_map.DisplayWelcomeScreen(screenWidth, screenHeight, tempImage);
 }
 
-//--------------------------------------------------------------------------------------
-// Display welcome or exit page
-//----------------------------------------------------------------------------------------
 /**
  * @brief Displays the no exit screen
  * @param screenWidth The width of the screen
@@ -229,8 +220,6 @@ void Camera::DisplayWelcomeScreen(int screenWidth, int screenHeight,
 void Camera::DisplayNoExit(int screenWidth, int screenHeight, GLuint tempImage) {
     m_map.DisplayNoExit(screenWidth, screenHeight, tempImage);
 }
-
-//----------------------------------------------------------------------------------------
 
 /**
  * @brief Sets the world coordinates
@@ -242,10 +231,8 @@ void Camera::SetWorldCoordinates(GLfloat tempX, GLfloat tempZ) {
     m_colDetect.SetWorldZ(tempZ);
 }
 
-//----------------------------------------------------------------------------------------
-
 /**
- * @brief  Adds a slope to the end of the vector
+ * @brief  Adds a slope to the end of the slope vector
  *
  * @param tempType Slope type
  * @param tempXs X start location
