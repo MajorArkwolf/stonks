@@ -59,7 +59,7 @@ auto MTL::Load(const std::string & filepath) -> std::map<std::string, Material> 
         else if (command == "map_Ka") {//texture map - ambient
             string filename = "";
             line >> filename;
-            auto path  = string{} + "res/" + filename;
+            auto path  = string{/*base path*/} + "res/" + filename;
             // TODO: Load image
         }
     }
