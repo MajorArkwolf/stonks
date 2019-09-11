@@ -9,7 +9,7 @@ using Shay::CameraMap;
  * @param screenWidth The current width of the screen
  * @param screenHeight The current height of the screen
  * @param xPos The x position of the player
- * @param yPos The y position of the player
+ * @param zPos The z position of the player
  * @param tempImage The enum number of the texture to display
  */
 void CameraMap::DisplayMap(int screenWidth, int screenHeight, GLfloat xPos,

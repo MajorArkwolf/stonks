@@ -27,7 +27,7 @@ GLuint TexturedPolygons::GetTexture(GLuint tempIndex) {
 
 /**
  * @brief Returns an SDL2 image generated from the file at the given path
- * @param fileName The filename of the image file to read from
+ * @param filename The filename of the image file to read from
  * @return The SDL2 image that was generated
  */
 Image TexturedPolygons::LoadTexture(const string &filename) {
@@ -70,7 +70,7 @@ void TexturedPolygons::CreateTexture(GLuint textureNo, const Image &image) {
  *  I created these functions very early on in the program before I had a full understanding,
  *  therefore I would probably create a better function for the purpose, but this works well.
  *
- * @param xyz
+ * @param XYZ Switch case
  * @param listNo The list number
  * @param xImgSize Image size in X direction
  * @param zImgSize Image size in Z direction

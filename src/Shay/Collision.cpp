@@ -70,9 +70,9 @@ void Collision::CreateLinkedList() {
  * quadrants this is to be improved (for the project) so that the quadrants (or
  * levels) are stored in a list or tree data structure.
  *
- * @param endX
- * @param endY
- * @param endZ
+ * @param endX The end X coordinate
+ * @param endY The end Y coordinate
+ * @param endZ The end Z coordinate
  * @return Returns TRUE if a collision occurs
  */
 bool Collision::Collide(GLfloat endX, GLfloat endY, GLfloat endZ) {
@@ -107,9 +107,10 @@ bool Collision::Collide(GLfloat endX, GLfloat endY, GLfloat endZ) {
  * quadrants this is to be improved (for the project) so that the quadrants (or
  * levels) are stored in a list or tree data structure.
  *
- * @param endX
- * @param endY
- * @param endZ
+ * @param index The index location to check for a collision in
+ * @param endX The end X coordinate
+ * @param endY The end Y coordinate
+ * @param endZ The end Z coordinate
  * @return Returns TRUE if a collision occurs
  */
 bool Collision::CheckCollision(size_t index, GLfloat endX,
@@ -152,7 +153,7 @@ void Collision::SetAABBMinX(float tempX) {
 
 /**
  * @brief Sets the maximum Y value for the AABB
- * @param tempX The Y value to set as maximum
+ * @param tempY The Y value to set as maximum
  */
 void Collision::SetAABBMaxY(float tempY) {
     m_AABB.SetMaxY(tempY);
@@ -160,7 +161,7 @@ void Collision::SetAABBMaxY(float tempY) {
 
 /**
  * @brief Sets the minimum Y value for the AABB
- * @param tempX The Y value to set as minimum
+ * @param tempY The Y value to set as minimum
  */
 void Collision::SetAABBMinY(float tempY) {
     m_AABB.SetMinY(tempY);
@@ -168,7 +169,7 @@ void Collision::SetAABBMinY(float tempY) {
 
 /**
  * @brief Sets the maximum Z value for the AABB
- * @param tempX The Z value to set as maximum
+ * @param tempZ The Z value to set as maximum
  */
 void Collision::SetAABBMaxZ(float tempZ) {
     m_AABB.SetMaxZ(tempZ);
@@ -176,7 +177,7 @@ void Collision::SetAABBMaxZ(float tempZ) {
 
 /**
  * @brief Sets the minimum Z value for the AABB
- * @param tempX The Z value to set as minimum
+ * @param tempZ The Z value to set as minimum
  */
 void Collision::SetAABBMinZ(float tempZ) {
     m_AABB.SetMinZ(tempZ);
@@ -192,7 +193,7 @@ void Collision::SetWorldX(float tempX) {
 
 /**
  * @brief Sets Z value of the world size
- * @param tempX The Z value to set as world size
+ * @param tempZ The Z value to set as world size
  */
 void Collision::SetWorldZ(float tempZ) {
     m_worldSizeZ = tempZ;

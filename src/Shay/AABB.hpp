@@ -45,25 +45,25 @@ namespace Shay {
 
         /**
          * @brief Sets the max Y value for the bounding box
-         * @param tempX The maxmimum y-coordinate
+         * @param tempY The maxmimum y-coordinate
          */
         void SetMaxY(GLfloat tempY);
 
         /**
          * @brief Sets the min Y value for the bounding box
-         * @param tempX The minimum y-coordinate
+         * @param tempY The minimum y-coordinate
          */
         void SetMinY(GLfloat tempY);
 
         /**
          * @brief Sets the max Z value for the bounding box
-         * @param tempX The maxmimum z-coordinate
+         * @param tempZ The maxmimum z-coordinate
          */
         void SetMaxZ(GLfloat tempZ);
 
         /**
          * @brief Sets the min Z value for the bounding box
-         * @param tempX The minimum z-coordinate
+         * @param tempZ The minimum z-coordinate
          */
         void SetMinZ(GLfloat tempZ);
 
