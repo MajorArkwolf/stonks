@@ -4,8 +4,7 @@
 
 #include "Material.hpp"
 
-class MTL {
-public:
+namespace MTL {
 
     /**
      * Loads a material file, so long as it mostly adheres to the standard.

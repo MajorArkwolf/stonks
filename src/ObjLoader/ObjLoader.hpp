@@ -3,7 +3,7 @@
 #include <istream>
 
 namespace OBJ {
-    
+
     /**
      * Loads an OBJ model. Does not have full support for the OBJ standard, but
      * supports a majority of the actually used Obj commands.
