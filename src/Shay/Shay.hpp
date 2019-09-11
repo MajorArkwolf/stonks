@@ -8,8 +8,15 @@
 #include "TexturedPolygons.hpp"
 
 namespace Shay {
+
+    /**
+     * @brief A shay enum, no one knows
+     */
     enum ShayAxis : GLuint { XY = 0, XZ, YZ, YZ_FLIP, XY_FLIP };
 
+    /**
+     * @brief Enum list for all texture types
+     */
     enum ShayTexture : GLuint {
         GRASS = 0,
         GRASS_2,
@@ -239,21 +246,33 @@ namespace Shay {
       public:
         GLfloat stepIncrement  = 0.0f;
         GLfloat angleIncrement = 0.0f;
-        int frameCount         = 0;
-        clock_t lastClock      = {};
+
+        int frameCount    = 0;
+        clock_t lastClock = {};
 
         int width    = 0;
         int height   = 0;
         double ratio = 0.0;
 
-        bool DisplayMap     = false;
-        bool DisplayWelcome = true;
-        bool DisplayExit    = false;
-        bool lightsOn       = true;
-        bool displayECL     = true;
-        bool displayDebug   = true;
-        int calcFPS         = 0;
+        /// Toggle for displaying on screen map
+        bool DisplayMap = false;
 
+        /// Toggle for displaying the welcome screen
+        bool DisplayWelcome = true;
+
+        /// Toggle for displaying the exit screen
+        bool DisplayExit = false;
+
+        /// Toggle for displaying all lights
+        bool lightsOn = true;
+
+        /// Toggle for displaying ECL
+        bool displayECL = true;
+
+        /// Toggle for displaying the debugMenu
+        bool displayDebug = true;
+
+        /// Toggle for drawing 3d axis
         bool shouldDrawAxis = false;
 
         GLfloat step                = 0.0f;
@@ -261,10 +280,25 @@ namespace Shay {
         GLfloat stepLength          = 0.0f;
         GLUquadricObj *glu_cylinder = nullptr;
 
-        Camera cam          = {};
+        /**
+         * @brief Camera object
+         */
+        Camera cam = {};
+
+        /**
+         * @brief Textured polygon object
+         */
         TexturedPolygons tp = {};
 
+        /**
+         * @brief Shays world default constructor
+         */
         ShaysWorld();
+
+        /**
+         * @brief Returns the current shaysWorld isntance
+         * @return The current ShaysWorld instance
+         */
         static auto get() -> ShaysWorld &;
 
         /**
@@ -507,31 +541,102 @@ namespace Shay {
         void DrawEntranceSteps();
 
         /**
-         * @brief Draws chancellor posts
+         * @brief Draws tavern steps
          */
         void DrawTavSteps();
+
+        /**
+         * @brief Draws larger textures
+         */
         void DrawLargerTextures();
+
+        /**
+         * @brief Draws lights
+         */
         void DrawLights();
+
+        /**
+         * @brief Draws benches
+         */
         void DrawBench();
+
+        /**
+         * @brief Draws cylinders
+         */
         void DrawCylinders();
+
+        /**
+         * @brief Draws angled roof beams
+         * @param listNo The list number to create the new list as
+         * @param x The x coordinate of the start location of the beam
+         * @param y The y coordinate of the start location of the beam
+         * @param z The z coordinate of the start location of the beam
+         * @param beamSize The beam length
+         */
         void DrawAngledRoofBeam(GLuint listNo, GLfloat x, GLfloat y, GLfloat z,
                                 GLfloat beamSize);
+
+        /**
+         * @brief Draws angled roof beams
+         * @param listNo The list number to create the new list as
+         * @param x The x coordinate of the start location of the beam
+         * @param y The y coordinate of the start location of the beam
+         * @param z The z coordinate of the start location of the beam
+         * @param beamSize The beam length
+         */
         void DrawAngledRoofBeam2(GLuint listNo, GLfloat x, GLfloat y, GLfloat z,
                                  GLfloat beamSize);
+
+        /**
+         * @brief Draws step bricks
+         */
         void DrawStepBricks();
+        /**
+         * @brief Draws tavern step bricks
+         */
         void DrawTavStepBricks();
+
+        /**
+         * @brief Draws map exit
+         */
         void DrawMapExit();
-        void DrawECL();
-        void BindBridgeWall(GLint LR);
-        void BindBuildingWall();
-        void BindWallPosts(GLint LR);
+
+        /**
+         * @brief Increments the current frame cout
+         */
         void IncrementFrameCount();
+
+        /**
+         * @brief Creates all textures
+         */
         void CreateTextures();
+
+        /**
+         * @brief Creates all original shay bounding boxes
+         */
         void CreateBoundingBoxes();
 
+        /**
+         * @brief Creates post bounding boxes
+         */
         void CreatePostBoundingBoxes();
+
+        /**
+         * @brief Creates the angled plains
+         */
         void CreatePlains();
+
+        /**
+         * @brief Frees an image from memory
+         * @param tempImage The pointer to the unsigned char array to free
+         */
         void DeleteImageFromMemory(unsigned char *tempImage);
+
+        /**
+         * @brief Returns a pointer to the Shay camera
+         * @return A pointer to the shay camera
+         */
+
         auto getCamPtr() -> Shay::Camera *;
     };
 }
