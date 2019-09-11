@@ -267,8 +267,25 @@ namespace Shay {
         ShaysWorld();
         static auto get() -> ShaysWorld &;
 
+        /********************************************
+         * \brief Handles Key events passed from the SDL2 subsystem
+         * \param event The SDL2 event being read from
+         * \param m2 The mass of the second planet to calculate gravity from
+         ***********************************************/
         auto handleKeyEvents(SDL_Event &event) -> void;
+
+        /********************************************
+         * \brief Displays on screen signs, like the welcome screen
+         ***********************************************/
         auto DisplaySigns() -> void;
+
+        /********************************************
+         * \brief Draws a 3-dimensional spatial axis at the given coordinates at the given length
+		 * \param x The x-coordinate to start the axis
+		 * \param y The y-coordinate to start the axis
+		 * \param z The z-coordinate to start the axis
+		 * \param length The amount to extend the axis lines in each respective direction
+         ***********************************************/
         auto drawAxis(float x, float y, float z, float length) -> void;
 
         void DisplayDebugMenu();
