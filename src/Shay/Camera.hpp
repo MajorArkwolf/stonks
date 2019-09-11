@@ -185,8 +185,6 @@ namespace Shay {
         glm::vec2 mouse = {};
 
       private:
-        GLfloat m_incrementX    = 0.0;
-        GLfloat m_incrementZ    = 0.0;
         std::size_t m_No_Plains = 0;
         std::size_t m_plainNo   = 0;
         GLfloat m_plainHeight   = 0.0;
