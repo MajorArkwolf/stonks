@@ -267,37 +267,80 @@ namespace Shay {
         ShaysWorld();
         static auto get() -> ShaysWorld &;
 
-        /********************************************
-         * \brief Handles Key events passed from the SDL2 subsystem
-         * \param event The SDL2 event being read from
-         * \param m2 The mass of the second planet to calculate gravity from
-         ***********************************************/
+        /**
+         * @brief Handles Key events passed from the SDL2 subsystem
+         * @param event The SDL2 event being read from
+         * @param m2 The mass of the second planet to calculate gravity from
+         */
         auto handleKeyEvents(SDL_Event &event) -> void;
 
-        /********************************************
-         * \brief Displays on screen signs, like the welcome screen
-         ***********************************************/
+        /**
+         * @brief Displays on screen signs, like the welcome screen
+         */
         auto DisplaySigns() -> void;
 
-        /********************************************
-         * \brief Draws a 3-dimensional spatial axis at the given coordinates at the given length
-		 * \param x The x-coordinate to start the axis
-		 * \param y The y-coordinate to start the axis
-		 * \param z The z-coordinate to start the axis
-		 * \param length The amount to extend the axis lines in each respective direction
-         ***********************************************/
+        /**
+         * @brief Draws a 3-dimensional spatial axis at the given coordinates at the given length
+         * @param x The x-coordinate to start the axis
+         * @param y The y-coordinate to start the axis
+         * @param z The z-coordinate to start the axis
+         * @param length The amount to extend the axis lines in each respective direction
+         */
         auto drawAxis(float x, float y, float z, float length) -> void;
 
+        /**
+         * @brief Displays the IMGUI debug menu
+         */
         void DisplayDebugMenu();
+
+        /**
+         * @brief Initialises all the variables needed to display Shay's World
+         */
         void Init();
+
+        /**
+         * @brief Calls all other display functions to display Shay's world
+         */
         void Display();
+
+        /**
+         * @brief Updates camera variables based on the delta time between frames
+         */
         void Update(double dt);
+
+        /**
+         * @brief Draws the backdrop
+         */
         void DrawBackdrop();
+
+        /**
+         * @brief Displays objects above the window block
+         */
         void DisplayAboveWindowBlock();
+
+        /**
+         * @brief Displays the benches
+         */
         void DisplayBench();
+
+        /**
+         * @brief Displays the benches
+         */
         void DisplayBricks();
+
+        /**
+         * @brief Displays the chancellor side posts
+         */
         void DisplayChancPosts();
+
+        /**
+         * @brief Dispays all cylinders
+         */
         void DisplayCylinders();
+
+		 /**
+         * @brief Displays Door paving
+         */
         void DisplayDoorPaving();
         void DisplayDoorPosts();
         void DisplayEntranceSteps();

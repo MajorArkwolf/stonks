@@ -34,9 +34,9 @@ namespace Stonk {
         /* Game state. */
         State state = {};
 
-        /********************************************
-         * \brief The current gamemode, will eventually be used to determine where to send SDL2 events
-         ***********************************************/
+        /**
+         * @brief The current gamemode, will eventually be used to determine where to send SDL2 events
+         */
         GameMode gameMode = GameMode::SHAY;
 
         /* Subsystems. */
@@ -44,20 +44,20 @@ namespace Stonk {
         // Collision collision = {};
         Physics physics = {};
 
-        /********************************************
-         * \brief The current FPS
-         ***********************************************/
+        /**
+         * @brief The current FPS
+         */
         double fps = 0.0;
 
-        /********************************************
-         * \brief Boolean to tell whether to display the debug menu
-         ***********************************************/
+        /**
+         * @brief Boolean to tell whether to display the debug menu
+         */
         bool showDebugMenu = false;
 
       private:
-        /********************************************
-         * \brief A boolean signifying whether the game engine is running or not
-         ***********************************************/
+        /**
+         * @brief A boolean signifying whether the game engine is running or not
+         */
         bool isRunning = true;
 
         auto getTime() const -> double;
@@ -72,81 +72,81 @@ namespace Stonk {
         static auto get() -> Engine &;
         static auto run() -> void;
 
-        /********************************************
-         * \brief Overloaded assignment operator
-         ***********************************************/
+        /**
+         * @brief Overloaded assignment operator
+         */
         auto operator=(Engine &&) -> Engine & = default;
 
-        /********************************************
-         * \brief Overloaded const assignment operator
-         ***********************************************/
+        /**
+         * @brief Overloaded const assignment operator
+         */
         auto operator=(const Engine &) -> Engine & = delete;
 
-        /********************************************
-         * \brief Handles SDL2 events regarding mouse movement, works by sending
+        /**
+         * @brief Handles SDL2 events regarding mouse movement, works by sending
          * the events to the currently set game state
-         * \param event The SDL2 event being read from
-         ***********************************************/
+         * @param event The SDL2 event being read from
+         */
         auto handleMouseMovement(SDL_Event &event) -> void;
 
-        /********************************************
-         * \brief Handles SDL2 events regarding mouse button presses, works by sending
+        /**
+         * @brief Handles SDL2 events regarding mouse button presses, works by sending
          * the events to the currently set game state
-         * \param event The SDL2 event being read from
-         ***********************************************/
+         * @param event The SDL2 event being read from
+         */
         auto handleMouseButtonPress(SDL_Event &event) -> void;
 
-        /********************************************
-         * \brief Handles SDL2 events regarding mouse button releases, works by sending
+        /**
+         * @brief Handles SDL2 events regarding mouse button releases, works by sending
          * the events to the currently set game state
-         * \param event The SDL2 event being read from
-         ***********************************************/
+         * @param event The SDL2 event being read from
+         */
         auto handleMouseButtonRelease(SDL_Event &event) -> void;
 
-        /********************************************
-         * \brief Handles SDL2 events regarding mouse wheel motion, works by sending
+        /**
+         * @brief Handles SDL2 events regarding mouse wheel motion, works by sending
          * the events to the currently set game state
-         * \param event The SDL2 event being read from
-         ***********************************************/
+         * @param event The SDL2 event being read from
+         */
         auto handleMouseWheelMotion(SDL_Event &event) -> void;
 
-        /********************************************
-         * \brief Handles SDL2 events regarding keyboard key presses, works by sending
+        /**
+         * @brief Handles SDL2 events regarding keyboard key presses, works by sending
          * the events to the currently set game state
-         * \param event The SDL2 event being read from
-         ***********************************************/
+         * @param event The SDL2 event being read from
+         */
         auto handleKeyPress(SDL_Event &event) -> void;
 
-        /********************************************
-         * \brief Handles SDL2 events regarding keyboard key releases, works by sending
+        /**
+         * @brief Handles SDL2 events regarding keyboard key releases, works by sending
          * the events to the currently set game state
-         * \param event The SDL2 event being read from
-         ***********************************************/
+         * @param event The SDL2 event being read from
+         */
         auto handleKeyRelease(SDL_Event &event) -> void;
 
-        /********************************************
-         * \brief Checks to see if the engine is currently running
-         * \return A boolean, returns true if the engine is running
-         ***********************************************/
+        /**
+         * @brief Checks to see if the engine is currently running
+         * @return A boolean, returns true if the engine is running
+         */
         auto getIsRunning() const -> bool;
 
-        /********************************************
-         * \brief Parses all SDL2 events and sends them to the correct function
+        /**
+         * @brief Parses all SDL2 events and sends them to the correct function
          * to process them based on their event type
-         ***********************************************/
+         */
         auto processInput() -> void;
 
-        /********************************************
-         * \brief I DONT KNOW WHAT THIS DOES
-         * \param newState
-         * \param dt
-         ***********************************************/
+        /**
+         * @brief I DONT KNOW WHAT THIS DOES
+         * @param newState
+         * @param dt
+         */
         auto update(State &newState, double dt) -> void;
 
-        /********************************************
-         * \brief I DONT KNOW WHAT THIS DOES
-         * \param newState
-         ***********************************************/
+        /**
+         * @brief I DONT KNOW WHAT THIS DOES
+         * @param newState
+         */
         auto render(const State &newState) const -> void;
     };
 }
