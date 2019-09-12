@@ -329,6 +329,10 @@ auto Engine::update(State &newState, double dt) -> void {
  */
 auto Engine::render([[maybe_unused]] const State &newState) const -> void {}
 
+/**
+ * @brief I DONT KNOW WHAT THIS DOES
+ * @return What is this
+ */
 auto Engine::getTime() const -> double {
     return static_cast<double>(SDL_GetPerformanceCounter()) /
            static_cast<double>(SDL_GetPerformanceFrequency());

@@ -21,6 +21,9 @@ using std::stringstream;
 using Slope = Shay::PlainNode::Slope;
 using Image = Shay::TexturedPolygons::Image;
 
+/**
+ * @brief Shays world default constructor, initialises all required variables, objects and textures
+ */
 ShaysWorld::ShaysWorld() {
     auto &engine = Stonk::Engine::get();
     SDL_GL_GetDrawableSize(engine.window.get(), &width, &height);
@@ -57,6 +60,9 @@ ShaysWorld::ShaysWorld() {
     CreateTextures();
 }
 
+/**
+ * @brief Calls all other display functions to display Shay's world
+ */
 void ShaysWorld::Display() {
     auto &stonk = Stonk::Engine::get();
 
@@ -90,6 +96,9 @@ void ShaysWorld::Display() {
     SDL_GL_SwapWindow(stonk.window.get());
 }
 
+/**
+ * @brief Displays the IMGUI debug menu
+ */
 void ShaysWorld::DisplayDebugMenu() {
     auto &stonk = Stonk::Engine::get();
     auto buffer = stringstream{};
@@ -119,10 +128,16 @@ void ShaysWorld::DisplayDebugMenu() {
     }
 }
 
+/**
+ * @brief Updates camera variables based on the delta time between frames
+ */
 void ShaysWorld::Update(double dt) {
     cam.Update(dt);
 }
 
+/**
+ * @brief Displays on screen signs, like the welcome screen
+ */
 void ShaysWorld::DisplaySigns() {
     if (DisplayWelcome) {
         cam.DisplayWelcomeScreen(width, height, tp.GetTexture(WELCOME));
@@ -140,6 +155,13 @@ void ShaysWorld::DisplaySigns() {
     }
 }
 
+/**
+ * @brief Draws a 3-dimensional spatial axis at the given coordinates at the given length
+ * @param x The x-coordinate to start the axis
+ * @param y The y-coordinate to start the axis
+ * @param z The z-coordinate to start the axis
+ * @param length The amount to extend the axis lines in each respective direction
+ */
 auto ShaysWorld::drawAxis(float x, float y, float z, float length) -> void {
     glPushMatrix();
     glDepthMask(false);
@@ -175,6 +197,10 @@ auto ShaysWorld::drawAxis(float x, float y, float z, float length) -> void {
     glPopMatrix();
 }
 
+/**
+ * @brief Handles Key events passed from the SDL2 subsystem
+ * @param event The SDL2 event being read from
+ */
 auto ShaysWorld::handleKeyEvents(SDL_Event &event) -> void {
     switch (event.type) {
         case SDL_KEYDOWN: {
@@ -207,16 +233,28 @@ auto ShaysWorld::handleKeyEvents(SDL_Event &event) -> void {
     }
 }
 
+/**
+ * @brief Returns the current shaysWorld isntance
+ * @return The current ShaysWorld instance
+ */
 auto ShaysWorld::get() -> ShaysWorld & {
     static auto instance = ShaysWorld{};
 
     return instance;
 }
 
+/**
+ * @brief Returns a pointer to the Shay camera
+ * @return A pointer to the shay camera
+ */
+
 auto ShaysWorld::getCamPtr() -> Camera * {
     return &cam;
 }
 
+/**
+ * @brief Creates all original shay bounding boxes
+ */
 void ShaysWorld::CreateBoundingBoxes() {
     // chanc block
     cam.SetAABBMaxX(35879.0);
@@ -340,6 +378,9 @@ void ShaysWorld::CreateBoundingBoxes() {
     CreatePostBoundingBoxes();
 }
 
+/**
+ * @brief Creates post bounding boxes
+ */
 void ShaysWorld::CreatePostBoundingBoxes() {
     // This code is based on DisplayMainPosts.
     step       = 0.0f;
@@ -401,9 +442,10 @@ void ShaysWorld::CreatePostBoundingBoxes() {
     cam.SetAABBMinZ(chancelleryPillarZOffset);
     cam.FinishAABB();
 }
-//--------------------------------------------------------------------------------------
-// Set up co-ordinates of different plains
-//--------------------------------------------------------------------------------------
+
+/**
+ * @brief Set up co-ordinates of different plains
+ */
 void ShaysWorld::CreatePlains() {
     // grass slope
     cam.SetPlains(Slope::ZY, 4848.0, 31568.0, 9536.0, 10450.0, 6200.0, 10000.0);
@@ -451,11 +493,9 @@ void ShaysWorld::CreatePlains() {
     cam.SetPlains(Slope::ZY, 3200.0, 4800.0, 10450.0, 9370.0, 53400.0, 57900.0);
 }
 
-//--------------------------------------------------------------------------------------
-
-//--------------------------------------------------------------------------------------
-// Load and Create Textures
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Load and creates all textures
+ */
 void ShaysWorld::CreateTextures() {
     // set texture count
     tp.SetTextureCount(250);
@@ -1127,9 +1167,9 @@ void ShaysWorld::CreateTextures() {
     tp.CreateTexture(EXIT, image);
 }
 
-//--------------------------------------------------------------------------------------
-//  Called from the main display function to draw the backdrop (all images)
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Called from the main display function to draw the backdrop (all images)
+ */
 void ShaysWorld::DrawBackdrop() {
     DisplayAboveWindowBlock();
     DisplayBench();
@@ -1156,9 +1196,9 @@ void ShaysWorld::DrawBackdrop() {
         DisplayLights();
 }
 
-//--------------------------------------------------------------------------------------
-// Display the chancellery windoe and door posts
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Display the chancellery windoe and door posts
+ */
 void ShaysWorld::DisplayChancPosts() {
     // Windowposts Chanc (downstairs)
     step = 0.0f;
@@ -1298,6 +1338,9 @@ void ShaysWorld::DisplayChancPosts() {
     glPopMatrix();
 }
 
+/**
+ * @brief Draws chancellor posts
+ */
 void ShaysWorld::DrawChancPosts() {
     // Front of Window Post Chanc
     tp.CreateDisplayList(YZ, 11, 1024.0f, 128.0f, 33848.0f, 10237.0f, 9505.0f,
@@ -1344,10 +1387,9 @@ void ShaysWorld::DrawChancPosts() {
     glEndList();
 }
 
-//--------------------------------------------------------------------------------------
-// Display Door Posts
-//--------------------------------------------------------------------------------------
-
+/**
+ * @brief Displays Door posts
+ */
 void ShaysWorld::DisplayDoorPosts() {
     // Door Posts Chanc
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(DOOR_POST_SECURITY));
@@ -1382,6 +1424,9 @@ void ShaysWorld::DisplayDoorPosts() {
     glPopMatrix();
 }
 
+/**
+ * @brief Draws door posts
+ */
 void ShaysWorld::DrawDoorPosts() {
     // DOORPOSTS_CHANC
     tp.CreateDisplayList(YZ_FLIP, 25, 1024.0f, 128.0f, 33848.0f, 10000.0f,
@@ -1394,9 +1439,9 @@ void ShaysWorld::DrawDoorPosts() {
                          10465.0f, 0.83f, 0.7344f); // post
 }
 
-//--------------------------------------------------------------------------------------
-// Display blocks above Windows and Posts
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Displays objects above the window block
+ */
 void ShaysWorld::DisplayAboveWindowBlock() {
     // Blocks Above Windows Chanc & Phys Sci
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ABOVE_WINDOW_BLOCK));
@@ -1595,6 +1640,10 @@ void ShaysWorld::DisplayAboveWindowBlock() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ABOVE_CHANC_EDGE));
     glCallList(424);
 }
+
+/**
+ * @brief Draws area above window block
+ */
 
 void ShaysWorld::DrawAboveWindowBlock() {
     tp.CreateDisplayList(YZ, 20, 128.0f, 256.0f, 33808.0f, 10832.0f, 9552.0f, 1.0f,
@@ -1810,9 +1859,9 @@ void ShaysWorld::DrawAboveWindowBlock() {
                          0.78f, 139.25f);
 }
 
-//--------------------------------------------------------------------------------------
-// Display Purple Posts by Guild Shop
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Display Purple Posts by Guild Shop
+ */
 void ShaysWorld::DisplayPurplePosts() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(PURPLE_POST));
     glCallList(29);
@@ -1858,6 +1907,9 @@ void ShaysWorld::DisplayPurplePosts() {
     glCallList(32);
 }
 
+/**
+ * @brief Draws purple posts
+ */
 void ShaysWorld::DrawPurplePosts() {
     tp.CreateDisplayList(YZ, 29, 64.0f, 128.0f, 33802.0f, 10000.0f, 31407.0f, 13.0f,
                          0.875f); // front
@@ -1869,10 +1921,9 @@ void ShaysWorld::DrawPurplePosts() {
                          13.0f); // side
 }
 
-//--------------------------------------------------------------------------------------
-// Display Red Posts by Sta Travel Shop
-//--------------------------------------------------------------------------------------
-
+/**
+ * @brief Displays Red posts by the Sta Travel Shop
+ */
 void ShaysWorld::DisplayRedPosts() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(RED_POST));
     glCallList(33);
@@ -1909,6 +1960,9 @@ void ShaysWorld::DisplayRedPosts() {
     glPopMatrix();
 }
 
+/**
+ * @brief Draws red posts
+ */
 void ShaysWorld::DrawRedPosts() {
     tp.CreateDisplayList(YZ, 33, 64.0f, 128.0f, 33802.0f, 10000.0f, 39200.0f, 13.0f,
                          0.125f); // front
@@ -1918,9 +1972,9 @@ void ShaysWorld::DrawRedPosts() {
                          13.0f); // side
 }
 
-//--------------------------------------------------------------------------------------
-// Display Main Posts
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Displays Main posts
+ */
 void ShaysWorld::DisplayMainPosts() {
     step       = 0.0f;
     stepLength = 0.0f;
@@ -2013,6 +2067,9 @@ void ShaysWorld::DisplayMainPosts() {
     glPopMatrix();
 }
 
+/**
+ * @brief Draws main posts
+ */
 void ShaysWorld::DrawMainPosts() {
     tp.CreateDisplayList(XY, 18, 128.0f, 256.0f, 31740.0f, 9995.0f, 10105.0f,
                          1.0f, 4.48f);
@@ -2024,9 +2081,9 @@ void ShaysWorld::DrawMainPosts() {
                          1.0f); // 1st by steps
 }
 
-//--------------------------------------------------------------------------------------
-//  Display Window and Door Posts on Phys SCi Building
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Display Window and Door Posts on Phys SCi Building
+ */
 void ShaysWorld::DisplayPhysSciPosts() {
     step = 0.0f;
     for (GLuint i = 0; i < 16; i++) {
@@ -2122,6 +2179,9 @@ void ShaysWorld::DisplayPhysSciPosts() {
     }
 }
 
+/**
+ * @brief Draws physical science building posts
+ */
 void ShaysWorld::DrawPhysSciPosts() {
     // WINDOWPOST_PS
     tp.CreateDisplayList(YZ, 36, 512.0f, 128.0f, 33848.0f, 11347.0f, 26625.0f,
@@ -2179,15 +2239,18 @@ void ShaysWorld::DrawPhysSciPosts() {
     glEndList();
 }
 
-//--------------------------------------------------------------------------------------
-//  Display Paving Around Shop Doorway
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Display Paving Around Shop Doorway
+ */
 void ShaysWorld::DisplayDoorPaving() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(DOORPAVE_1));
     glCallList(47);
     glCallList(48);
 }
 
+/**
+ * @brief Draws door paving
+ */
 void ShaysWorld::DrawDoorPaving() {
     tp.CreateDisplayList(XZ, 47, 128.0f, 256.0f, 33808.0f, 10000.0f, 31508.0f, 0.75f,
                          7.5f); // phy sci 1st doorway
@@ -2195,9 +2258,9 @@ void ShaysWorld::DrawDoorPaving() {
                          3.5f); // phy sci 2nd doorway
 }
 
-//--------------------------------------------------------------------------------------
-// Display window and door posts of library
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Display window and door posts of library
+ */
 void ShaysWorld::DisplayLibraryPosts() {
     stepLength = 0.0f;
     for (int j = 0; j < 2; j++) {
@@ -2285,6 +2348,9 @@ void ShaysWorld::DisplayLibraryPosts() {
     glPopMatrix();
 }
 
+/**
+ * @brief Draws library posts
+ */
 void ShaysWorld::DrawLibraryPosts() {
     // WINDOWPOST_LIB_FRONT
     tp.CreateDisplayList(XY, 57, 128.0f, 512.0f, 24035.0f, 10304.0f, 43096.0f,
@@ -2344,9 +2410,9 @@ void ShaysWorld::DrawLibraryPosts() {
                            42992.0f, 43056.0f, 43056.0f, 42992.0f, 6, 1);
 }
 
-//--------------------------------------------------------------------------------------
-//  Display Pavement
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Displays Pavement
+ */
 void ShaysWorld::DisplayPavement() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(PAVEMENT));
     for (GLuint i = 72; i < 74; i++)
@@ -2416,6 +2482,9 @@ void ShaysWorld::DisplayPavement() {
     glPopMatrix();
 }
 
+/**
+ * @brief Draws pavement
+ */
 void ShaysWorld::DrawPavement() {
     // PAVEMENT
     tp.CreateDisplayList(XZ, 87, 128.0f, 64.0f, 2608.0f, 10000.0f, 10000.0f,
@@ -2561,10 +2630,9 @@ void ShaysWorld::DrawPavement() {
                          13.5f); // phys sci toilet doorways
 }
 
-//--------------------------------------------------------------------------------------
-// Display Wall Bricks
-//--------------------------------------------------------------------------------------
-
+/**
+ * @brief Display Wall Bricks
+ */
 void ShaysWorld::DisplayBricks() {
     // WALL_BRICK_YZ
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_YZ));
@@ -2709,6 +2777,9 @@ void ShaysWorld::DisplayBricks() {
     glCallList(190);
 }
 
+/**
+ * @brief Draws bricks
+ */
 void ShaysWorld::DrawBricks() {
     // WALL_BRICK_YZ
     // --------  (Face of Cancerllary Building) --------
@@ -2969,9 +3040,9 @@ void ShaysWorld::DrawBricks() {
                          6.5f); // as above but upstairs
 }
 
-//--------------------------------------------------------------------------------------
-// Display Roof
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Displays all roofs
+ */
 void ShaysWorld::DisplayRoof() {
     // main roof planks
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ROOF_PLANKS));
@@ -3280,6 +3351,9 @@ void ShaysWorld::DisplayRoof() {
     glCallList(216);
 }
 
+/**
+ * @brief Draws roof
+ */
 void ShaysWorld::DrawRoof() {
     // Chanc Top of Roof
     glNewList(214, GL_COMPILE);
@@ -3583,9 +3657,14 @@ void ShaysWorld::DrawRoof() {
                         2.36f);
 }
 
-// --------------------------------------------------------------------------------------
-//  Creates Angled Roof Beams
-// --------------------------------------------------------------------------------------
+/**
+ * @brief Draws angled roof beams
+ * @param listNo The list number to create the new list as
+ * @param x The x coordinate of the start location of the beam
+ * @param y The y coordinate of the start location of the beam
+ * @param z The z coordinate of the start location of the beam
+ * @param beamSize The beam length
+ */
 void ShaysWorld::DrawAngledRoofBeam(GLuint listNo, GLfloat x, GLfloat y,
                                     GLfloat z, GLfloat beamSize) {
     glNewList(listNo, GL_COMPILE);
@@ -3614,6 +3693,14 @@ void ShaysWorld::DrawAngledRoofBeam(GLuint listNo, GLfloat x, GLfloat y,
     glEndList();
 }
 
+/**
+ * @brief Draws angled roof beams
+ * @param listNo The list number to create the new list as
+ * @param x The x coordinate of the start location of the beam
+ * @param y The y coordinate of the start location of the beam
+ * @param z The z coordinate of the start location of the beam
+ * @param beamSize The beam length
+ */
 void ShaysWorld::DrawAngledRoofBeam2(GLuint listNo, GLfloat x, GLfloat y,
                                      GLfloat z, GLfloat beamSize) {
     glNewList(listNo, GL_COMPILE);
@@ -3642,9 +3729,9 @@ void ShaysWorld::DrawAngledRoofBeam2(GLuint listNo, GLfloat x, GLfloat y,
     glEndList();
 }
 
-//--------------------------------------------------------------------------------------
-// Display Steps
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Displays Entrance steps
+ */
 void ShaysWorld::DisplayEntranceSteps() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(STEP_PAVING_1));
     for (GLuint i = 258; i < 274; i++)
@@ -3685,6 +3772,9 @@ void ShaysWorld::DisplayEntranceSteps() {
     glPopMatrix();
 }
 
+/**
+ * @brief Draws extrance steps
+ */
 void ShaysWorld::DrawEntranceSteps() {
     step       = 10000.0f;
     stepLength = 9808.0f;
@@ -3718,9 +3808,9 @@ void ShaysWorld::DrawEntranceSteps() {
                          0.609f, 0.942f);
 }
 
-//--------------------------------------------------------------------------------------
-// Display Tavern Steps
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Displays Tavern Steps
+ */
 void ShaysWorld::DisplayTavSteps() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(STEP_PAVING_1));
     for (GLuint i = 1258; i < 1274; i++)
@@ -3731,6 +3821,9 @@ void ShaysWorld::DisplayTavSteps() {
         glCallList(i);
 }
 
+/**
+ * @brief Draws tavern steps
+ */
 void ShaysWorld::DrawTavSteps() {
     step       = 10000.0f;
     stepLength = 9808.0f;
@@ -3746,9 +3839,9 @@ void ShaysWorld::DrawTavSteps() {
     stepLength = 8882.0f;
 }
 
-//--------------------------------------------------------------------------------------
-// Display Bench
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Displays the benches
+ */
 void ShaysWorld::DisplayBench() {
     step2 = 3860.0f;
     for (int j = 0; j < 11; j++) {
@@ -3890,6 +3983,9 @@ void ShaysWorld::DisplayBench() {
     }
 }
 
+/**
+ * @brief Draws benches
+ */
 void ShaysWorld::DrawBench() {
     tp.CreateDisplayList(XZ, 400, 64.0f, 64.0f, 31760.0f, 10147.0f, 10894.0f,
                          3.0f, 7.5f);
@@ -3922,9 +4018,9 @@ void ShaysWorld::DrawBench() {
                          41008.0f, 0.78f, 0.625f);
 }
 
-//--------------------------------------------------------------------------------------
-// Display Extras (signs etc)
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Displays extras
+ */
 void ShaysWorld::DisplayExtras() {
     // Rusty Man like Sculpture
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(RUSTY_MAN));
@@ -4205,6 +4301,9 @@ void ShaysWorld::DisplayExtras() {
     glPopMatrix();
 }
 
+/**
+ * @brief Draws extras
+ */
 void ShaysWorld::DrawExtras() {
     tp.CreateDisplayList(YZ, 300, 256.0f, 1024.0f, 33808.0f, 10576.0f, 25472.0f,
                          1.0f,
@@ -4397,10 +4496,9 @@ void ShaysWorld::DrawExtras() {
                          49.0f); // ticket box ledge edge side
 }
 
-// --------------------------------------------------------------------------------------
-// Display larger textures such as windows and doors
-// --------------------------------------------------------------------------------------
-
+/**
+ * @brief Display larger textures such as windows and doors
+ */
 void ShaysWorld::DisplayLargerTextures() {
     // Gap betweem chanc and phys sci
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOW_1));
@@ -4685,6 +4783,9 @@ void ShaysWorld::DisplayLargerTextures() {
     glCallList(453);
 }
 
+/**
+ * @brief Draws larger textures
+ */
 void ShaysWorld::DrawLargerTextures() {
     // CHANC
     // Gap between chanc and phy sci y1142 z3248
@@ -4806,10 +4907,9 @@ void ShaysWorld::DrawLargerTextures() {
                          1380.0f); // block at bottom of steps
 }
 
-// --------------------------------------------------------------------------------------
-// Display grass and slopes
-// --------------------------------------------------------------------------------------
-
+/**
+ * @brief Displays grass and slopes
+ */
 void ShaysWorld::DisplayGrass() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(GRASS));
     glPushMatrix();
@@ -4831,6 +4931,9 @@ void ShaysWorld::DisplayGrass() {
     // for (int i = 461; i < 477; i++) glCallList(i);
 }
 
+/**
+ * @brief Draws grass
+ */
 void ShaysWorld::DrawGrass() {
     float lowerPlaneExtendMult = 10;
     // Lower flat plane
@@ -4916,9 +5019,9 @@ void ShaysWorld::DrawGrass() {
                            33000.0f, 33000.0f, 36000.0f, 36000.0f, 1, 1);
 }
 
-// --------------------------------------------------------------------------------------
-// Display Light Fittings
-// --------------------------------------------------------------------------------------
+/**
+ * @brief Display Light Fittings
+ */
 void ShaysWorld::DisplayLights() {
     // Light Fitting
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(LIGHT));
@@ -4988,6 +5091,9 @@ void ShaysWorld::DisplayLights() {
     }
 }
 
+/**
+ * @brief Draws lights
+ */
 void ShaysWorld::DrawLights() {
     // Fittings
     glNewList(376, GL_COMPILE);
@@ -5003,10 +5109,9 @@ void ShaysWorld::DrawLights() {
                          220.0f); // supports
 }
 
-// --------------------------------------------------------------------------------------
-// Display drainpipe and tuckshop serving counter
-// --------------------------------------------------------------------------------------
-
+/**
+ * @brief Display drainpipe and tuckshop serving counter
+ */
 void ShaysWorld::DisplayCylinders() {
     // drainpipe
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(DRAINPIPE));
@@ -5042,6 +5147,9 @@ void ShaysWorld::DisplayCylinders() {
     glPopMatrix();
 }
 
+/**
+ * @brief Draws cylinders
+ */
 void ShaysWorld::DrawCylinders() {
     // Drainpipe
     glNewList(437, GL_COMPILE);
@@ -5069,9 +5177,9 @@ void ShaysWorld::DrawCylinders() {
                          30.0f, 1.0f);
 }
 
-// --------------------------------------------------------------------------------------
-// Display Wall by Entrance
-// --------------------------------------------------------------------------------------
+/**
+ * @brief Display Wall by Entrance
+ */
 void ShaysWorld::DisplayStepBricks() {
     step = 0.0f;
 
@@ -5154,6 +5262,10 @@ void ShaysWorld::DisplayStepBricks() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_STEPS_EDGE_2));
     glCallList(507);
 }
+
+/**
+ * @brief Draws step bricks
+ */
 void ShaysWorld::DrawStepBricks() {
     tp.CreateDisplayList(YZ, 478, 128.0f, 128.0f, 31582.0f, 9914.0f, 9872.0f,
                          1.7188f, 1.75f);
@@ -5228,9 +5340,9 @@ void ShaysWorld::DrawStepBricks() {
                          1.0f, 3.4376f);
 }
 
-// --------------------------------------------------------------------------------------
-// Display Wall by Tavern
-// --------------------------------------------------------------------------------------
+/**
+ * @brief Displays tavern step bricks
+ */
 void ShaysWorld::DisplayTavStepBricks() {
     step = 0.0f;
 
@@ -5314,6 +5426,9 @@ void ShaysWorld::DisplayTavStepBricks() {
     glCallList(1507);
 }
 
+/**
+ * @brief Draws tavern step bricks
+ */
 void ShaysWorld::DrawTavStepBricks() {
     float xCord = 4880.0f;
     tp.CreateDisplayList(YZ, 1478, 128.0f, 128.0f, xCord, 9914.0f, 9872.0f,
@@ -5391,9 +5506,9 @@ void ShaysWorld::DrawTavStepBricks() {
                          1.0f, 3.4376f);
 }
 
-//--------------------------------------------------------------------------------------
-//  Map and Welcome screens
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Draws map exit
+ */
 void ShaysWorld::DrawMapExit() {
     tp.CreateDisplayList(0, 448, 256.0f, 256.0f, 10.0f, 10.0f, 0.0f, 0.855f,
                          1.0f); // map
@@ -5404,9 +5519,13 @@ void ShaysWorld::DrawMapExit() {
 }
 
 //--------------------------------------------------------------------------------------
-//  Create display lists
-//	Numbers indicate list numbers
+
 //--------------------------------------------------------------------------------------
+
+/**
+ *  @brief   Create display lists
+ *	Numbers indicate list numbers
+ */
 void ShaysWorld::CreateTextureList() {
     DrawGrass();            // 79, 111, 198, 460-477
     DrawChancPosts();       // 11-15, 235-237
@@ -5436,9 +5555,9 @@ void ShaysWorld::CreateTextureList() {
                           // 455-459
 }
 
-//--------------------------------------------------------------------------------------
-//  Increments frame count used for setting movement speed
-//--------------------------------------------------------------------------------------
+        /**
+ * @brief Increments the current frame cout
+ */
 void ShaysWorld::IncrementFrameCount() {
     float t = (static_cast<GLfloat>((clock() - lastClock))) /
               static_cast<GLfloat>(CLOCKS_PER_SEC);

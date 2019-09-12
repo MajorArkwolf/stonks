@@ -290,352 +290,131 @@ namespace Shay {
          */
         TexturedPolygons tp = {};
 
-        /**
-         * @brief Shays world default constructor
-         */
         ShaysWorld();
 
-        /**
-         * @brief Returns the current shaysWorld isntance
-         * @return The current ShaysWorld instance
-         */
         static auto get() -> ShaysWorld &;
 
-        /**
-         * @brief Handles Key events passed from the SDL2 subsystem
-         * @param event The SDL2 event being read from
-         */
         auto handleKeyEvents(SDL_Event &event) -> void;
 
-        /**
-         * @brief Displays on screen signs, like the welcome screen
-         */
         auto DisplaySigns() -> void;
 
-        /**
-         * @brief Draws a 3-dimensional spatial axis at the given coordinates at the given length
-         * @param x The x-coordinate to start the axis
-         * @param y The y-coordinate to start the axis
-         * @param z The z-coordinate to start the axis
-         * @param length The amount to extend the axis lines in each respective direction
-         */
         auto drawAxis(float x, float y, float z, float length) -> void;
 
-        /**
-         * @brief Displays the IMGUI debug menu
-         */
         void DisplayDebugMenu();
 
-        /**
-         * @brief Initialises all the variables needed to display Shay's World
-         */
-        void Init();
-
-        /**
-         * @brief Calls all other display functions to display Shay's world
-         */
         void Display();
 
-        /**
-         * @brief Updates camera variables based on the delta time between frames
-         */
         void Update(double dt);
 
-        /**
-         * @brief Draws the backdrop
-         */
         void DrawBackdrop();
 
-        /**
-         * @brief Displays objects above the window block
-         */
         void DisplayAboveWindowBlock();
 
-        /**
-         * @brief Displays the benches
-         */
         void DisplayBench();
 
-        /**
-         * @brief Displays the benches
-         */
         void DisplayBricks();
 
-        /**
-         * @brief Displays the chancellor side posts
-         */
         void DisplayChancPosts();
 
-        /**
-         * @brief Dispays all cylinders
-         */
         void DisplayCylinders();
 
-        /**
-         * @brief Displays Door paving
-         */
         void DisplayDoorPaving();
 
-        /**
-         * @brief Displays Door posts
-         */
         void DisplayDoorPosts();
 
-        /**
-         * @brief Displays Entrance steps
-         */
         void DisplayEntranceSteps();
 
-        /**
-         * @brief Displays Tavern Steps
-         */
         void DisplayTavSteps();
 
-        /**
-         * @brief Displays extras
-         */
         void DisplayExtras();
 
-        /**
-         * @brief Displays grass
-         */
         void DisplayGrass();
 
-        /**
-         * @brief Displays larger textures
-         */
         void DisplayLargerTextures();
 
-        /**
-         * @brief Displays Library posts
-         */
         void DisplayLibraryPosts();
 
-        /**
-         * @brief Displays Main posts
-         */
         void DisplayMainPosts();
 
-        /**
-         * @brief Displays Pavement
-         */
         void DisplayPavement();
-        /**
-         * @brief Displays Physical science building posts
-         */
+
         void DisplayPhysSciPosts();
 
-        /**
-         * @brief Displays purple posts
-         */
         void DisplayPurplePosts();
 
-        /**
-         * @brief Displays Red posts
-         */
         void DisplayRedPosts();
 
-        /**
-         * @brief Displays all roofs
-         */
         void DisplayRoof();
 
-        /**
-         * @brief Displays step bricks
-         */
         void DisplayStepBricks();
 
-        /**
-         * @brief Displays tavern step bricks
-         */
         void DisplayTavStepBricks();
 
-        /**
-         * @brief Displays lgihts
-         */
         void DisplayLights();
 
-        /**
-         * @brief Displays ECL ( does nothing)
-         */
-        void DisplayECL();
-
-        /**
-         * @brief Creates list of textures
-         */
         void CreateTextureList();
 
-        /**
-         * @brief Draws grass
-         */
         void DrawGrass();
 
-        /**
-         * @brief Draws chancellor posts
-         */
         void DrawChancPosts();
 
-        /**
-         * @brief Draws door posts
-         */
         void DrawDoorPosts();
 
-        /**
-         * @brief Draws purple posts
-         */
         void DrawPurplePosts();
 
-        /**
-         * @brief Draws red posts
-         */
         void DrawRedPosts();
 
-        /**
-         * @brief Draws main posts
-         */
         void DrawMainPosts();
 
-        /**
-         * @brief Draws area above window block
-         */
         void DrawAboveWindowBlock();
 
-        /**
-         * @brief Draws door paving
-         */
         void DrawDoorPaving();
 
-        /**
-         * @brief Draws physical science building posts
-         */
         void DrawPhysSciPosts();
 
-        /**
-         * @brief Draws library posts
-         */
         void DrawLibraryPosts();
 
-        /**
-         * @brief Draws bricks
-         */
         void DrawBricks();
 
-        /**
-         * @brief Draws pavement
-         */
         void DrawPavement();
 
-        /**
-         * @brief Draws extras
-         */
         void DrawExtras();
 
-        /**
-         * @brief Draws roof
-         */
         void DrawRoof();
 
-        /**
-         * @brief Draws extrance steps
-         */
         void DrawEntranceSteps();
 
-        /**
-         * @brief Draws tavern steps
-         */
         void DrawTavSteps();
 
-        /**
-         * @brief Draws larger textures
-         */
         void DrawLargerTextures();
 
-        /**
-         * @brief Draws lights
-         */
         void DrawLights();
 
-        /**
-         * @brief Draws benches
-         */
         void DrawBench();
 
-        /**
-         * @brief Draws cylinders
-         */
         void DrawCylinders();
 
-        /**
-         * @brief Draws angled roof beams
-         * @param listNo The list number to create the new list as
-         * @param x The x coordinate of the start location of the beam
-         * @param y The y coordinate of the start location of the beam
-         * @param z The z coordinate of the start location of the beam
-         * @param beamSize The beam length
-         */
         void DrawAngledRoofBeam(GLuint listNo, GLfloat x, GLfloat y, GLfloat z,
                                 GLfloat beamSize);
 
-        /**
-         * @brief Draws angled roof beams
-         * @param listNo The list number to create the new list as
-         * @param x The x coordinate of the start location of the beam
-         * @param y The y coordinate of the start location of the beam
-         * @param z The z coordinate of the start location of the beam
-         * @param beamSize The beam length
-         */
         void DrawAngledRoofBeam2(GLuint listNo, GLfloat x, GLfloat y, GLfloat z,
                                  GLfloat beamSize);
 
-        /**
-         * @brief Draws step bricks
-         */
         void DrawStepBricks();
-        /**
-         * @brief Draws tavern step bricks
-         */
+
         void DrawTavStepBricks();
 
-        /**
-         * @brief Draws map exit
-         */
         void DrawMapExit();
 
-        /**
-         * @brief Increments the current frame cout
-         */
         void IncrementFrameCount();
 
-        /**
-         * @brief Creates all textures
-         */
         void CreateTextures();
 
-        /**
-         * @brief Creates all original shay bounding boxes
-         */
         void CreateBoundingBoxes();
 
-        /**
-         * @brief Creates post bounding boxes
-         */
         void CreatePostBoundingBoxes();
 
-        /**
-         * @brief Creates the angled plains
-         */
         void CreatePlains();
-
-        /**
-         * @brief Frees an image from memory
-         * @param tempImage The pointer to the unsigned char array to free
-         */
-        void DeleteImageFromMemory(unsigned char *tempImage);
-
-        /**
-         * @brief Returns a pointer to the Shay camera
-         * @return A pointer to the shay camera
-         */
 
         auto getCamPtr() -> Shay::Camera *;
     };
