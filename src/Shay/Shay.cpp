@@ -113,6 +113,7 @@ void drawSolidCube(float scale) {
     glEnd();
     glPopMatrix();
 }
+
 void ShaysWorld::Display() {
     auto &stonk = Stonk::Engine::get();
 
@@ -133,7 +134,6 @@ void ShaysWorld::Display() {
 
     glPopMatrix();
 
-
     // Draw Portal frame
     glEnable(GL_STENCIL_TEST);
     glStencilFunc(GL_ALWAYS, 1, 0xFF);
@@ -144,19 +144,28 @@ void ShaysWorld::Display() {
     glDisable(GL_TEXTURE_2D);
     glPushMatrix();
     glColor3f(97.0f / 255.0f, 140.0f / 255.0f, 185.0f / 255.0f);
-    glTranslatef(20000, 10700, 10000);
+    glTranslatef(20000, 10700, 15000);
     drawSolidCube(1000);
-    glPopMatrix();
+
     glColor3f(1, 1, 1);
 
+    // Draw highlighting
+    glDisable(GL_TEXTURE_2D);
+    glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+    glColor3f(1,1,1);
+    glStencilMask(0x00);
+    drawSolidCube(1050);
+    glPopMatrix();
+
     // Draw Portal World
+    glColor3f(1,1,1);
     glEnable(GL_TEXTURE_2D);
     glStencilFunc(GL_EQUAL, 1, 0xFF);
     glStencilMask(0x00);
     glDepthMask(GL_TRUE);
     glClear(GL_DEPTH_BUFFER_BIT);
     glPushMatrix();
-    glTranslatef(10000, -500, -10000);
+    glTranslatef(10000, -500, -15000);
     DrawBackdrop();
     DisplaySigns();
     glPopMatrix();
