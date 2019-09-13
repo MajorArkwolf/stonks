@@ -12,5 +12,5 @@ namespace MTL {
      * @param filepath The path of the material file to load
      * @return A mapping of material names to material data.
      */
-    auto static Load(const std::string & filepath) -> std::map<std::string, Material>;
-};
+    auto Load(const std::string & filepath) -> std::map<std::string, Material>;
+}

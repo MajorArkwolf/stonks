@@ -11,5 +11,5 @@ namespace OBJ {
      * @param filepath The path of the OBJ file to load
      * @return The model itsself
      */
-    auto static Load(const std::string & filepath) -> Model;
-};
+    auto Load(const std::string & filepath) -> Model;
+}
