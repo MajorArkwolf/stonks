@@ -109,7 +109,7 @@ auto OBJ::Load(const std::string & filepath) -> Model {
             //TODO: Implement
         } 
         else {
-            std::cout << "Unrecognized OBJ command found: " << currentLine << std::endl;
+            // std::cout << "Unrecognized OBJ command found: " << currentLine << std::endl;
         }
         
         
