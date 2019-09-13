@@ -56,6 +56,7 @@ ShaysWorld::ShaysWorld() {
     CreateTextureList();
     CreateTextures();
 }
+
 void drawSolidCube(float scale) {
     glPushMatrix();
     glScalef(scale, scale, scale);
@@ -114,48 +115,58 @@ void drawSolidCube(float scale) {
 }
 void ShaysWorld::Display() {
     auto &stonk = Stonk::Engine::get();
-    glEnable(GL_STENCIL_TEST);
-    glStencilFunc(GL_NOTEQUAL, 1, 0xff);
-    glStencilOp(GL_KEEP, GL_REPLACE, GL_REPLACE);
 
     ImGui_ImplOpenGL2_NewFrame();
     ImGui_ImplSDL2_NewFrame(stonk.window.get());
     ImGui::NewFrame();
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_DEPTH_TEST);
-    glStencilMask(0x00);
 
+    // Draw normal scene
     glPushMatrix();
 
     DrawBackdrop();
     DisplaySigns();
 
-    glStencilFunc(GL_ALWAYS, 1, 0xFF);
-    glStencilMask(0xFF);
+    glPopMatrix();
 
+
+    // Draw Portal frame
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_ALWAYS, 1, 0xFF);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+    glStencilMask(0xFF);
+    glDepthMask(GL_FALSE);
+    glClear(GL_STENCIL_BUFFER_BIT);
     glDisable(GL_TEXTURE_2D);
     glPushMatrix();
-    glColor3f(1, 0, 0);
-    glTranslatef(20000, 12000, 10000);
-
+    glColor3f(97.0f / 255.0f, 140.0f / 255.0f, 185.0f / 255.0f);
+    glTranslatef(20000, 10700, 10000);
     drawSolidCube(1000);
-
-    glColor3f(1, 1, 1);
-    glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-    glStencilMask(0x00);
-    glDisable(GL_DEPTH_TEST);
-    drawSolidCube(1050);
-    glStencilMask(0xff);
-
     glPopMatrix();
     glColor3f(1, 1, 1);
 
+    // Draw Portal World
+    glEnable(GL_TEXTURE_2D);
+    glStencilFunc(GL_EQUAL, 1, 0xFF);
+    glStencilMask(0x00);
+    glDepthMask(GL_TRUE);
+    glClear(GL_DEPTH_BUFFER_BIT);
+    glPushMatrix();
+    glTranslatef(10000, -500, -10000);
+    DrawBackdrop();
+    DisplaySigns();
+    glPopMatrix();
+
+    // scene
+    glDepthMask(GL_TRUE);
+    glDisable(GL_STENCIL_TEST);
+
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_TEXTURE_2D);
-    glDisable(GL_STENCIL_TEST);
 
     if (this->shouldDrawAxis) {
         auto origin = this->cam.look + (this->cam.getForwardDir() * 1.01f);
