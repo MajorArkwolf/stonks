@@ -7,6 +7,10 @@
 #include "Camera.hpp"
 #include "TexturedPolygons.hpp"
 
+/**
+ * @namespace Shay
+ * @brief The global Shay namespace
+ */
 namespace Shay {
 
     /**
@@ -242,6 +246,10 @@ namespace Shay {
         NO_EXIT,
     };
 
+    /**
+     * @class ShaysWorld
+     * @brief The ultimate Shay class used to handle all others
+     */
     class ShaysWorld {
       public:
         GLfloat stepIncrement  = 0.0f;

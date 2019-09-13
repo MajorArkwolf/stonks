@@ -10,6 +10,10 @@
 #include "Stonk/Physics.hpp"
 #include "Stonk/Player.hpp"
 
+/**
+ * @namespace Stonk
+ * @brief The global Stonk namespace
+ */
 namespace Stonk {
     enum class GameMode { SHAY, STONK, MENU };
     /**

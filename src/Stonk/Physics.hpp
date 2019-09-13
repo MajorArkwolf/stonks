@@ -15,6 +15,10 @@ namespace Stonk {
         Entities entities = Entities{};
     };
 
+	    /**
+     * @class Physics
+     * @brief Stonk physics subsystem
+     */
     class Physics {
       public:
         auto update(State &state, double dt) -> void;

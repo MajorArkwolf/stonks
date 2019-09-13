@@ -1,12 +1,5 @@
 #pragma once
 
-/**
- * @class AABBList
- * @brief AABB collision list array
- *
- * Updated Shay's Linklist format to a vector improving access speeds.
- */
-
 #include <cstddef>
 #include <vector>
 

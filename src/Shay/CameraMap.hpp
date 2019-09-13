@@ -3,6 +3,10 @@
 #include "Stonk/OpenGl.hpp"
 
 namespace Shay {
+    /**
+     * @class CameraMap
+     * @brief 	Handles the player map
+     */
     class CameraMap {
       public:
         /// Default constructor

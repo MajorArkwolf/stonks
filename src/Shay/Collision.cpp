@@ -131,7 +131,7 @@ bool Collision::CheckCollision(size_t index, GLfloat endX,
  * @brief  Finishes current AABB by incrementing AABB count
  */
 
-auto Collision::Collision::FinishAABB() -> void {
+auto Collision::FinishAABB() -> void {
     m_AABB.FinishAABB();
 }
 

@@ -13,12 +13,15 @@
 
 //  camera.h
 //  Header file for the camera class
-//	Allows the camera to be navigated around the world.
-//	Also sets Plains, Bounding Boxes and view Maps
 //
 //  Shay Leary, March 2005
 
 namespace Shay {
+    /**
+     * @class Camera
+     * @brief 	Allows the camera to be navigated around the world.
+     *	Also sets Plains, Bounding Boxes and view Maps
+     */
     class Camera {
       public:
         /// Movement speed multiplier for the camera
