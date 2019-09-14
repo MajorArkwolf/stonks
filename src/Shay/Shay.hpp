@@ -253,7 +253,7 @@ namespace Shay {
         bool displayECL     = true;
         bool displayDebug   = true;
         int calcFPS         = 0;
-
+        int portalSpinAngle = 0;
         bool shouldDrawAxis = false;
 
         GLfloat step                = 0.0f;
