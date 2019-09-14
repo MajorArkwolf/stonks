@@ -44,7 +44,7 @@ auto MTL::Load(const std::string & filepath) -> std::map<std::string, Material> 
         else if (command == "d") {     //non-transparency, opposite of Tr
             float d;
             line >> d;
-            materials[currentMaterial].transparency = 1.0 - d;
+            materials[currentMaterial].transparency = 1.0f - d;
         } 
         else if (command == "Tr") {   //transparency
             line >> materials[currentMaterial].transparency;
