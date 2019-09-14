@@ -268,6 +268,7 @@ namespace Shay {
         static auto get() -> ShaysWorld &;
 
         auto handleKeyEvents(SDL_Event &event) -> void;
+        auto handleMouseEvents(SDL_Event &event) -> void;
         auto DisplaySigns() -> void;
         auto drawAxis(float x, float y, float z, float length) -> void;
 

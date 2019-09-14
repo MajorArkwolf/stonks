@@ -191,6 +191,9 @@ auto ShaysWorld::handleKeyEvents(SDL_Event &event) -> void {
                 case SDL_SCANCODE_LSHIFT: {
                     getCamPtr()->MOVEMENT_SPEED = 10000.0f;
                 } break;
+                case SDL_SCANCODE_ESCAPE: {
+                    this->DisplayExit = (this->DisplayExit) ? false : true;
+                } break;
                 default: break;
             }
         } break;
@@ -203,6 +206,20 @@ auto ShaysWorld::handleKeyEvents(SDL_Event &event) -> void {
             }
 
         } break;
+        default: break;
+    }
+}
+
+auto ShaysWorld::handleMouseEvents(SDL_Event &event) -> void {
+
+    switch (event.button.button) {
+        case SDL_BUTTON_LEFT: {
+            if (DisplayExit == 1) {
+                exit(0);
+            }
+        } break;
+        case SDL_BUTTON_RIGHT: break;
+        case SDL_BUTTON_MIDDLE: break;
         default: break;
     }
 }
