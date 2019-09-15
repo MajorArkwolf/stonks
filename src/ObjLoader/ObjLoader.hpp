@@ -1,6 +1,7 @@
 #pragma once
-#include "Model.hpp"
 #include <istream>
+
+#include "Model.hpp"
 
 namespace OBJ {
 
@@ -11,5 +12,5 @@ namespace OBJ {
      * @param filepath The path of the OBJ file to load
      * @return The model itsself
      */
-    auto Load(const std::string & filepath) -> Model;
+    auto Load(const std::string &filepath) -> Model;
 }

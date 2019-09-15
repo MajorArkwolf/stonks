@@ -7,14 +7,11 @@
  * @brief Defines a Material for rendering.
  */
 class Material {
-public:
+  public:
     /**
      * @brief Illumination used by this model
      */
-    enum class Illumination {
-        Flat = 1,
-        Specular = 2
-    };
+    enum class Illumination { Flat = 1, Specular = 2 };
     /**
      * @brief Ambient colour
      */
@@ -39,7 +36,7 @@ public:
      * Illumination model used by the material. No default value
      * is provided in the spec, so I've assumed Flat as the default.
      * @brief The illumination model for this material.
-     * 
+     *
      */
     Illumination illumination = Illumination::Flat;
 };
