@@ -36,8 +36,10 @@ ShaysWorld::ShaysWorld() {
     glMatrixMode(GL_MODELVIEW);
 
     // set light position
-    light_position[0] = 7000, light_position[1] = 14000,
-    light_position[2] = -5000, light_position[3] = 1;
+    light_position[0] = 7000;
+    light_position[1] = 14000;
+    light_position[2] = -5000;
+    light_position[3] = 1;
 
     // set background (sky colour)
     glClearColor(97.0f / 255.0f, 140.0f / 255.0f, 185.0f / 255.0f, 1.0f);
@@ -79,7 +81,7 @@ void ShaysWorld::displayModel(Model model, float scale) {
         glMaterialf(GL_FRONT, GL_SHININESS,
                     model.Materials[face.Material].shininess);*/
         for (auto vertind : face.Vertices) {
-            auto &vert = model.Vertices[vertind];
+            auto &vert = model.Vertices[static_cast<unsigned long>(vertind)];
             glVertex3f(vert.x, vert.y, vert.z);
         }
         glEnd();
