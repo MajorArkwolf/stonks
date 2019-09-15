@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 
 #include "Camera.hpp"
+#include "ObjLoader/ObjLoader.hpp"
 #include "TexturedPolygons.hpp"
 
 namespace Shay {
@@ -260,17 +261,22 @@ namespace Shay {
         GLfloat step2               = 0.0f;
         GLfloat stepLength          = 0.0f;
         GLUquadricObj *glu_cylinder = nullptr;
-
+        std::vector<Model> modelList;
         Camera cam          = {};
         TexturedPolygons tp = {};
+
+        GLfloat light_position[4];
 
         ShaysWorld();
         static auto get() -> ShaysWorld &;
 
+        auto displayModel(Model model, float scale) -> void;
         auto handleKeyEvents(SDL_Event &event) -> void;
+        auto handleMouseEvents(SDL_Event &event) -> void;
         auto DisplaySigns() -> void;
         auto drawAxis(float x, float y, float z, float length) -> void;
 
+        void displayTavern();
         void DisplayDebugMenu();
         void Init();
         void Display();
