@@ -21,6 +21,9 @@ using std::string;
 using Stonk::Engine;
 using Stonk::State;
 
+/**
+ * @brief The game engine main loop
+ */
 auto Engine::run() -> void {
     auto &engine     = Engine::get();
     auto &shaysWorld = ShaysWorld::get();
@@ -50,6 +53,9 @@ auto Engine::run() -> void {
     }
 }
 
+/**
+ * @brief Game engine default constructor, sets up all variables and settings required for operation
+ */
 Engine::Engine() {
     // Start SDL.
     auto status = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
@@ -117,6 +123,10 @@ Engine::Engine() {
     ImGui_ImplOpenGL2_Init();
 }
 
+/**
+ * @brief Engine default destructor
+ * Safely closes Engine and frees memory
+ */
 Engine::~Engine() {
     ImGui_ImplOpenGL2_Shutdown();
     ImGui_ImplSDL2_Shutdown();
@@ -125,16 +135,29 @@ Engine::~Engine() {
     SDL_Quit();
 }
 
+/**
+ * @brief Returns the current instance of the engine
+ * @return The current engine instance
+ */
 auto Engine::get() -> Engine & {
     static auto instance = Engine{};
 
     return instance;
 }
 
+/**
+ * @brief Checks to see if the engine is currently running
+ * @return A boolean, returns true if the engine is running
+ */
 auto Engine::getIsRunning() const -> bool {
     return this->isRunning;
 }
 
+/**
+ * @brief Handles SDL2 events regarding keyboard key presses, works by sending
+ * the events to the currently set game state
+ * @param event The SDL2 event being read from
+ */
 auto Engine::handleKeyPress(SDL_Event &event) -> void {
     auto &shaysWorld = ShaysWorld::get();
 
@@ -158,6 +181,11 @@ auto Engine::handleKeyPress(SDL_Event &event) -> void {
     }
 }
 
+/**
+ * @brief Handles SDL2 events regarding keyboard key releases, works by sending
+ * the events to the currently set game state
+ * @param event The SDL2 event being read from
+ */
 auto Engine::handleKeyRelease(SDL_Event &event) -> void {
     auto &shaysWorld = ShaysWorld::get();
     switch (gameMode) {
@@ -176,11 +204,21 @@ auto Engine::handleKeyRelease(SDL_Event &event) -> void {
     }
 }
 
+/**
+ * @brief Handles SDL2 events regarding mouse movement, works by sending
+ * the events to the currently set game state
+ * @param event The SDL2 event being read from
+ */
 auto Engine::handleMouseMovement(SDL_Event &event) -> void {
     this->mouse.x = static_cast<float>(event.motion.xrel);
     this->mouse.y = static_cast<float>(event.motion.yrel);
 }
 
+/**
+ * @brief Handles SDL2 events regarding mouse button presses, works by sending
+ * the events to the currently set game state
+ * @param event The SDL2 event being read from
+ */
 auto Engine::handleMouseButtonPress(SDL_Event &event) -> void {
     // int numClicks =
     //     event.button.clicks; // Number of clicks received as event   e.g. 1 =
@@ -207,6 +245,11 @@ auto Engine::handleMouseButtonPress(SDL_Event &event) -> void {
     }
 }
 
+/**
+ * @brief Handles SDL2 events regarding mouse button releases, works by sending
+ * the events to the currently set game state
+ * @param event The SDL2 event being read from
+ */
 auto Engine::handleMouseButtonRelease(SDL_Event &event) -> void {
     // int numClicks =
     //     event.button.clicks; // Number of clicks received as event   e.g. 1 =
@@ -222,11 +265,20 @@ auto Engine::handleMouseButtonRelease(SDL_Event &event) -> void {
     }
 }
 
+/**
+ * @brief Handles SDL2 events regarding mouse wheel motion, works by sending
+ * the events to the currently set game state
+ * @param event The SDL2 event being read from
+ */
 auto Engine::handleMouseWheelMotion([[maybe_unused]] SDL_Event &event) -> void {
     // int amountScrolledX = event.wheel.x; // Amount scrolled left or right
     // int amountScrolledY = event.wheel.y; // Amount scrolled up or down
 }
 
+/**
+ * @brief Parses all SDL2 events and sends them to the correct function
+ * to process them based on their event type
+ */
 auto Engine::processInput() -> void {
     auto event        = SDL_Event{};
     auto handledMouse = false;
@@ -267,12 +319,25 @@ auto Engine::processInput() -> void {
     }
 }
 
+/**
+ * @brief I DONT KNOW WHAT THIS DOES
+ * @param newState what do
+ * @param dt what do
+ */
 auto Engine::update(State &newState, double dt) -> void {
     this->physics.update(newState, dt);
 }
 
+/**
+ * @brief I DONT KNOW WHAT THIS DOES
+ * @param newState what do
+ */
 auto Engine::render([[maybe_unused]] const State &newState) const -> void {}
 
+/**
+ * @brief I DONT KNOW WHAT THIS DOES
+ * @return What is this
+ */
 auto Engine::getTime() const -> double {
     return static_cast<double>(SDL_GetPerformanceCounter()) /
            static_cast<double>(SDL_GetPerformanceFrequency());

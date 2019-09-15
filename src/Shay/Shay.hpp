@@ -8,9 +8,20 @@
 #include "ObjLoader/ObjLoader.hpp"
 #include "TexturedPolygons.hpp"
 
+/**
+ * @namespace Shay
+ * @brief The global Shay namespace
+ */
 namespace Shay {
+
+    /**
+     * @brief A shay enum, no one knows
+     */
     enum ShayAxis : GLuint { XY = 0, XZ, YZ, YZ_FLIP, XY_FLIP };
 
+    /**
+     * @brief Enum list for all texture types
+     */
     enum ShayTexture : GLuint {
         GRASS = 0,
         GRASS_2,
@@ -236,114 +247,191 @@ namespace Shay {
         NO_EXIT,
     };
 
+    /**
+     * @class ShaysWorld
+     * @brief The ultimate Shay class used to handle all others
+     */
     class ShaysWorld {
       public:
         GLfloat stepIncrement  = 0.0f;
         GLfloat angleIncrement = 0.0f;
-        int frameCount         = 0;
-        clock_t lastClock      = {};
+
+        int frameCount    = 0;
+        clock_t lastClock = {};
 
         int width    = 0;
         int height   = 0;
         double ratio = 0.0;
 
-        bool DisplayMap     = false;
-        bool DisplayWelcome = true;
-        bool DisplayExit    = false;
-        bool lightsOn       = true;
-        bool displayECL     = true;
-        bool displayDebug   = true;
-        int calcFPS         = 0;
+        /// Toggle for displaying on screen map
+        bool DisplayMap = false;
 
+        /// Toggle for displaying the welcome screen
+        bool DisplayWelcome = true;
+
+        /// Toggle for displaying the exit screen
+        bool DisplayExit = false;
+
+        /// Toggle for displaying all lights
+        bool lightsOn = true;
+
+        /// Toggle for displaying ECL
+        bool displayECL = true;
+
+        /// Toggle for displaying the debugMenu
+        bool displayDebug = true;
+
+        /// Toggle for drawing 3d axis
         bool shouldDrawAxis = false;
 
         GLfloat step                = 0.0f;
         GLfloat step2               = 0.0f;
         GLfloat stepLength          = 0.0f;
         GLUquadricObj *glu_cylinder = nullptr;
-        std::vector<Model> modelList;
-        Camera cam          = {};
+		std::vector<Model> modelList;
+        /**
+         * @brief Camera object
+         */
+        Camera cam = {};
+
+        /**
+         * @brief Textured polygon object
+         */
         TexturedPolygons tp = {};
 
         GLfloat light_position[4];
 
         ShaysWorld();
+
         static auto get() -> ShaysWorld &;
 
         auto displayModel(Model model, float scale) -> void;
+
         auto handleKeyEvents(SDL_Event &event) -> void;
+
         auto handleMouseEvents(SDL_Event &event) -> void;
+
         auto DisplaySigns() -> void;
+
         auto drawAxis(float x, float y, float z, float length) -> void;
 
         void displayTavern();
         void DisplayDebugMenu();
-        void Init();
+
         void Display();
+
         void Update(double dt);
+
         void DrawBackdrop();
+
         void DisplayAboveWindowBlock();
+
         void DisplayBench();
+
         void DisplayBricks();
+
         void DisplayChancPosts();
+
         void DisplayCylinders();
+
         void DisplayDoorPaving();
+
         void DisplayDoorPosts();
+
         void DisplayEntranceSteps();
+
         void DisplayTavSteps();
+
         void DisplayExtras();
+
         void DisplayGrass();
+
         void DisplayLargerTextures();
+
         void DisplayLibraryPosts();
+
         void DisplayMainPosts();
+
         void DisplayPavement();
+
         void DisplayPhysSciPosts();
+
         void DisplayPurplePosts();
+
         void DisplayRedPosts();
+
         void DisplayRoof();
+
         void DisplayStepBricks();
+
         void DisplayTavStepBricks();
+
         void DisplayLights();
-        void DisplayECL();
+
         void CreateTextureList();
+
         void DrawGrass();
+
         void DrawChancPosts();
+
         void DrawDoorPosts();
+
         void DrawPurplePosts();
+
         void DrawRedPosts();
+
         void DrawMainPosts();
+
         void DrawAboveWindowBlock();
+
         void DrawDoorPaving();
+
         void DrawPhysSciPosts();
+
         void DrawLibraryPosts();
+
         void DrawBricks();
+
         void DrawPavement();
+
         void DrawExtras();
+
         void DrawRoof();
+
         void DrawEntranceSteps();
+
         void DrawTavSteps();
+
         void DrawLargerTextures();
+
         void DrawLights();
+
         void DrawBench();
+
         void DrawCylinders();
+
         void DrawAngledRoofBeam(GLuint listNo, GLfloat x, GLfloat y, GLfloat z,
                                 GLfloat beamSize);
+
         void DrawAngledRoofBeam2(GLuint listNo, GLfloat x, GLfloat y, GLfloat z,
                                  GLfloat beamSize);
+
         void DrawStepBricks();
+
         void DrawTavStepBricks();
+
         void DrawMapExit();
-        void DrawECL();
-        void BindBridgeWall(GLint LR);
-        void BindBuildingWall();
-        void BindWallPosts(GLint LR);
+
         void IncrementFrameCount();
+
         void CreateTextures();
+
         void CreateBoundingBoxes();
 
         void CreatePostBoundingBoxes();
+
         void CreatePlains();
-        void DeleteImageFromMemory(unsigned char *tempImage);
+
         auto getCamPtr() -> Shay::Camera *;
     };
 }

@@ -10,6 +10,10 @@
 #include "Stonk/Physics.hpp"
 #include "Stonk/Player.hpp"
 
+/**
+ * @namespace Stonk
+ * @brief The global Stonk namespace
+ */
 namespace Stonk {
     enum class GameMode { SHAY, STONK, MENU };
     /**
@@ -32,7 +36,11 @@ namespace Stonk {
         Context context = nullptr;
 
         /* Game state. */
-        State state       = {};
+        State state = {};
+
+        /**
+         * @brief The current gamemode, will eventually be used to determine where to send SDL2 events
+         */
         GameMode gameMode = GameMode::SHAY;
 
         /* Subsystems. */
@@ -40,11 +48,20 @@ namespace Stonk {
         // Collision collision = {};
         Physics physics = {};
 
+        /**
+         * @brief The current FPS
+         */
         double fps = 0.0;
 
+        /**
+         * @brief Boolean to tell whether to display the debug menu
+         */
         bool showDebugMenu = false;
 
       private:
+        /**
+         * @brief A boolean signifying whether the game engine is running or not
+         */
         bool isRunning = true;
 
         auto getTime() const -> double;
@@ -59,18 +76,34 @@ namespace Stonk {
         static auto get() -> Engine &;
         static auto run() -> void;
 
+        /**
+         * @brief Overloaded assignment operator, set to default overload
+         */
         auto operator=(Engine &&) -> Engine & = default;
+
+        /**
+         * @brief Overloaded const assignment operator, set to delete overload
+         */
         auto operator=(const Engine &) -> Engine & = delete;
 
         auto handleMouseMovement(SDL_Event &event) -> void;
+
         auto handleMouseButtonPress(SDL_Event &event) -> void;
+
         auto handleMouseButtonRelease(SDL_Event &event) -> void;
+
         auto handleMouseWheelMotion(SDL_Event &event) -> void;
+
         auto handleKeyPress(SDL_Event &event) -> void;
+
         auto handleKeyRelease(SDL_Event &event) -> void;
+
         auto getIsRunning() const -> bool;
+
         auto processInput() -> void;
+
         auto update(State &newState, double dt) -> void;
+
         auto render(const State &newState) const -> void;
     };
 }
