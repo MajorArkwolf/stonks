@@ -32,6 +32,9 @@ set (SOURCES
     src/Stonk/Collision.cpp
     src/Stonk/Physics.cpp
     src/Stonk/Viewport.cpp
+    
+    src/ObjLoader/MtlLoader.cpp
+    src/ObjLoader/ObjLoader.cpp
 
     src/Shay/AABBList.cpp
     src/Shay/PlainNode.cpp
