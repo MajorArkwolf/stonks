@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include <SDL2/SDL.h>
+#include <glm/gtc/type_ptr.hpp>
 #include <glm/vec3.hpp>
 
 #include "Shay/PlainNode.hpp"
@@ -29,11 +30,19 @@ ShaysWorld::ShaysWorld() {
     SDL_GL_GetDrawableSize(engine.window.get(), &width, &height);
     ShaysWorld::ratio = static_cast<double>(width) / static_cast<double>(height);
 
+    modelList.push_back(OBJ::Load("tav.obj"));
+
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glViewport(0, 0, width, height);
     gluPerspective(60, ShaysWorld::ratio, 1, 50000);
     glMatrixMode(GL_MODELVIEW);
+
+    // set light position
+    light_position[0] = 7000;
+    light_position[1] = 14000;
+    light_position[2] = -5000;
+    light_position[3] = 1;
 
     // set background (sky colour)
     glClearColor(97.0f / 255.0f, 140.0f / 255.0f, 185.0f / 255.0f, 1.0f);
@@ -60,6 +69,30 @@ ShaysWorld::ShaysWorld() {
     CreateTextures();
 }
 
+
+void ShaysWorld::displayModel(Model model, float scale) {
+    glPushMatrix();
+    glScalef(scale, scale, scale);
+    for (const auto &face : model.Faces) {
+        glBegin(GL_POLYGON);
+        /*glColor3fv(glm::value_ptr(model.Materials[face.Material].diffuse));
+        glMaterialfv(GL_FRONT, GL_AMBIENT,
+                     glm::value_ptr(model.Materials[face.Material].ambient));
+        glMaterialfv(GL_FRONT, GL_SPECULAR,
+                     glm::value_ptr(model.Materials[face.Material].specular));
+        glMaterialfv(GL_FRONT, GL_DIFFUSE,
+                     glm::value_ptr(model.Materials[face.Material].diffuse));
+        glMaterialf(GL_FRONT, GL_SHININESS,
+                    model.Materials[face.Material].shininess);*/
+        for (auto vertind : face.Vertices) {
+            auto &vert = model.Vertices[static_cast<unsigned long>(vertind)];
+            glVertex3f(vert.x, vert.y, vert.z);
+        }
+        glEnd();
+    }
+    glPopMatrix();
+}
+
 /**
  * @brief Calls all other display functions to display Shay's world
  */
@@ -72,13 +105,15 @@ void ShaysWorld::Display() {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glEnable(GL_TEXTURE_2D);
     glEnable(GL_DEPTH_TEST);
+    displayTavern();
+    glEnable(GL_TEXTURE_2D);
     glPushMatrix();
 
     DrawBackdrop();
     DisplaySigns();
 
+    glPopMatrix();
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_TEXTURE_2D);
 
@@ -86,8 +121,6 @@ void ShaysWorld::Display() {
         auto origin = this->cam.look + (this->cam.getForwardDir() * 1.01f);
         drawAxis(origin.x, origin.y, origin.z, 0.5f);
     }
-
-    glPopMatrix();
 
     DisplayDebugMenu();
 
@@ -217,6 +250,9 @@ auto ShaysWorld::handleKeyEvents(SDL_Event &event) -> void {
                 case SDL_SCANCODE_LSHIFT: {
                     getCamPtr()->MOVEMENT_SPEED = 10000.0f;
                 } break;
+                case SDL_SCANCODE_ESCAPE: {
+                    this->DisplayExit = (this->DisplayExit) ? false : true;
+                } break;
                 default: break;
             }
         } break;
@@ -229,6 +265,20 @@ auto ShaysWorld::handleKeyEvents(SDL_Event &event) -> void {
             }
 
         } break;
+        default: break;
+    }
+}
+
+auto ShaysWorld::handleMouseEvents(SDL_Event &event) -> void {
+
+    switch (event.button.button) {
+        case SDL_BUTTON_LEFT: {
+            if (DisplayExit == 1) {
+                exit(0);
+            }
+        } break;
+        case SDL_BUTTON_RIGHT: break;
+        case SDL_BUTTON_MIDDLE: break;
         default: break;
     }
 }
@@ -312,12 +362,12 @@ void ShaysWorld::CreateBoundingBoxes() {
     cam.SetAABBMinZ(24996.0);
     cam.FinishAABB();
 
-    // bottom of steps
-    cam.SetAABBMaxX(33808.0);
-    cam.SetAABBMinX(0.0);
-    cam.SetAABBMaxZ(4688.0);
-    cam.SetAABBMinZ(0.0);
-    cam.FinishAABB();
+    //// bottom of steps
+    // cam.SetAABBMaxX(33808.0);
+    // cam.SetAABBMinX(0.0);
+    // cam.SetAABBMaxZ(4688.0);
+    // cam.SetAABBMinZ(0.0);
+    // cam.FinishAABB();
 
     // end of phy sci block exit (top of steps)
     cam.SetAABBMaxX(35879.0);
@@ -376,6 +426,25 @@ void ShaysWorld::CreateBoundingBoxes() {
     cam.FinishAABB();
 
     CreatePostBoundingBoxes();
+}
+void ShaysWorld::displayTavern() {
+    glPushMatrix();
+    glEnable(GL_LIGHTING);
+    glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_LIGHT0);
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    glColorMaterial(GL_FRONT,
+                    GL_AMBIENT_AND_DIFFUSE); // GL_AMBIENT_AND_DIFFUSE
+
+    glPushMatrix();
+    glTranslatef(7000, 9100, -5000);
+    displayModel(modelList[0], 3.f);
+    glPopMatrix();
+
+
+    glDisable(GL_LIGHTING);
+    glDisable(GL_COLOR_MATERIAL);
+    glPopMatrix();
 }
 
 /**
