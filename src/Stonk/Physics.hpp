@@ -15,7 +15,7 @@ namespace Stonk {
         Entities entities = Entities{};
     };
 
-	    /**
+    /**
      * @class Physics
      * @brief Stonk physics subsystem
      */
