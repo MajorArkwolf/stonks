@@ -30,7 +30,7 @@ ShaysWorld::ShaysWorld() {
     SDL_GL_GetDrawableSize(engine.window.get(), &width, &height);
     ShaysWorld::ratio = static_cast<double>(width) / static_cast<double>(height);
 
-    modelList.push_back(OBJ::Load("tav3.obj"));
+    modelList.push_back(OBJ::Load("tav.obj"));
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -69,7 +69,6 @@ ShaysWorld::ShaysWorld() {
     CreateTextures();
 }
 
-
 void ShaysWorld::displayModel(Model model, float scale) {
     glPushMatrix();
     glScalef(scale, scale, scale);
@@ -91,6 +90,7 @@ void ShaysWorld::displayModel(Model model, float scale) {
         glEnd();
     }
     glPopMatrix();
+    glColor3f(1, 1, 1);
 }
 
 /**
@@ -429,21 +429,20 @@ void ShaysWorld::CreateBoundingBoxes() {
 }
 void ShaysWorld::displayTavern() {
     glPushMatrix();
-    glEnable(GL_LIGHTING);
-    glEnable(GL_COLOR_MATERIAL);
-    glEnable(GL_LIGHT0);
-    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-    glColorMaterial(GL_FRONT,
-                    GL_AMBIENT_AND_DIFFUSE); // GL_AMBIENT_AND_DIFFUSE
+    // glEnable(GL_LIGHTING);
+    // glEnable(GL_COLOR_MATERIAL);
+    // glEnable(GL_LIGHT0);
+    // glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    // glColorMaterial(GL_FRONT,
+    //                GL_AMBIENT_AND_DIFFUSE); // GL_AMBIENT_AND_DIFFUSE
 
     glPushMatrix();
     glTranslatef(7000, 9100, -5000);
     displayModel(modelList[0], 3.f);
     glPopMatrix();
 
-
-    glDisable(GL_LIGHTING);
-    glDisable(GL_COLOR_MATERIAL);
+    /*glDisable(GL_LIGHTING);
+    glDisable(GL_COLOR_MATERIAL);*/
     glPopMatrix();
 }
 
@@ -5624,7 +5623,7 @@ void ShaysWorld::CreateTextureList() {
                           // 455-459
 }
 
-        /**
+/**
  * @brief Increments the current frame cout
  */
 void ShaysWorld::IncrementFrameCount() {
