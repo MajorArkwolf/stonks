@@ -308,7 +308,7 @@ namespace Shay {
 
         static auto get() -> ShaysWorld &;
 
-        auto displayModel(Model model, float scale) -> void;
+        auto displayModel(const Model &model, float scale) -> void;
 
         auto handleKeyEvents(SDL_Event &event) -> void;
 
