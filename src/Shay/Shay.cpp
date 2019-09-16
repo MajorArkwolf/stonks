@@ -3882,11 +3882,11 @@ void ShaysWorld::DrawEntranceSteps() {
  */
 void ShaysWorld::DisplayTavSteps() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(STEP_PAVING_1));
-    for (GLuint i = 1258; i < 1274; i++)
+    for (GLuint i = 1258; i < 1279; i++)
         glCallList(i);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(STEP_EDGE));
-    for (GLuint i = 1274; i < 1290; i++)
+    for (GLuint i = 1279; i < 1300; i++)
         glCallList(i);
 }
 
@@ -3896,16 +3896,14 @@ void ShaysWorld::DisplayTavSteps() {
 void ShaysWorld::DrawTavSteps() {
     step       = 10000.0f;
     stepLength = 9808.0f;
-    for (GLuint i = 1258; i < 1274; i++) {
+    for (GLuint i = 1258; i < 1279; i++) {
         tp.CreateDisplayList(XZ, i, 1024.0f, 512.0f, 2600.0f, step, stepLength,
                              2.2f, 0.277f);
-        tp.CreateDisplayList(XY, i + 16, 64.0f, 64.0f, 2600.0f, step - 64.0f,
+        tp.CreateDisplayList(XY, i + 21, 64.0f, 64.0f, 2600.0f, step - 64.0f,
                              stepLength, 35.0f, 1.0f);
         step -= 48.0f;
         stepLength -= 142.0f;
     }
-    step       = 9808.0f;
-    stepLength = 8882.0f;
 }
 
 /**
