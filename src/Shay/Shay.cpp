@@ -40,7 +40,7 @@ ShaysWorld::ShaysWorld() {
 
     // set light position
     light_position[0] = 7000;
-    light_position[1] = 14000;
+    light_position[1] = 20000;
     light_position[2] = -5000;
     light_position[3] = 1;
 
@@ -75,13 +75,13 @@ void ShaysWorld::displayModel(Model model, float scale) {
     for (const auto &face : model.Faces) {
         glBegin(GL_POLYGON);
         glColor3fv(glm::value_ptr(model.Materials[face.Material].diffuse));
-        glMaterialfv(GL_FRONT, GL_AMBIENT,
+        glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,
                      glm::value_ptr(model.Materials[face.Material].ambient));
-        glMaterialfv(GL_FRONT, GL_SPECULAR,
-                     glm::value_ptr(model.Materials[face.Material].specular));
-        glMaterialfv(GL_FRONT, GL_DIFFUSE,
+        glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,
+                     glm::value_ptr(model.Materials[face.Material].ambient));
+        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,
                      glm::value_ptr(model.Materials[face.Material].diffuse));
-        glMaterialf(GL_FRONT, GL_SHININESS,
+        glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS,
                     model.Materials[face.Material].shininess);
         for (auto vertind : face.Vertices) {
             auto &vert = model.Vertices[static_cast<unsigned long>(vertind)];
@@ -429,20 +429,18 @@ void ShaysWorld::CreateBoundingBoxes() {
 }
 void ShaysWorld::displayTavern() {
     glPushMatrix();
-    // glEnable(GL_LIGHTING);
-    // glEnable(GL_COLOR_MATERIAL);
-    // glEnable(GL_LIGHT0);
-    // glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-    // glColorMaterial(GL_FRONT,
-    //                GL_AMBIENT_AND_DIFFUSE); // GL_AMBIENT_AND_DIFFUSE
+    glEnable(GL_LIGHTING);
+    glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_LIGHT0);
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 
     glPushMatrix();
     glTranslatef(7000, 9100, -5000);
     displayModel(modelList[0], 3.f);
     glPopMatrix();
 
-    /*glDisable(GL_LIGHTING);
-    glDisable(GL_COLOR_MATERIAL);*/
+    glDisable(GL_LIGHTING);
+    glDisable(GL_COLOR_MATERIAL);
     glPopMatrix();
 }
 
