@@ -30,7 +30,7 @@ ShaysWorld::ShaysWorld() {
     SDL_GL_GetDrawableSize(engine.window.get(), &width, &height);
     ShaysWorld::ratio = static_cast<double>(width) / static_cast<double>(height);
 
-    modelList.push_back(OBJ::Load("tav.obj"));
+    modelList.push_back(OBJ::Load("tav3.obj"));
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -75,7 +75,7 @@ void ShaysWorld::displayModel(Model model, float scale) {
     glScalef(scale, scale, scale);
     for (const auto &face : model.Faces) {
         glBegin(GL_POLYGON);
-        /*glColor3fv(glm::value_ptr(model.Materials[face.Material].diffuse));
+        glColor3fv(glm::value_ptr(model.Materials[face.Material].diffuse));
         glMaterialfv(GL_FRONT, GL_AMBIENT,
                      glm::value_ptr(model.Materials[face.Material].ambient));
         glMaterialfv(GL_FRONT, GL_SPECULAR,
@@ -83,7 +83,7 @@ void ShaysWorld::displayModel(Model model, float scale) {
         glMaterialfv(GL_FRONT, GL_DIFFUSE,
                      glm::value_ptr(model.Materials[face.Material].diffuse));
         glMaterialf(GL_FRONT, GL_SHININESS,
-                    model.Materials[face.Material].shininess);*/
+                    model.Materials[face.Material].shininess);
         for (auto vertind : face.Vertices) {
             auto &vert = model.Vertices[static_cast<unsigned long>(vertind)];
             glVertex3f(vert.x, vert.y, vert.z);

@@ -25,6 +25,12 @@ struct Model {
          * @sa Model.UVs
          */
         std::vector<int> VertTexts = {};
+
+		/**
+         * @brief The UV coordinates for each of the Normals.
+         * @sa Model.Norms
+         */
+		std::vector<int> VertNorms = {};
         /**
          * @brief The index for the material for this face.
          * @sa Model.Materials
@@ -36,6 +42,10 @@ struct Model {
      * @brief Vertices
      */
     std::vector<glm::vec3> Vertices = {};
+    /**
+     * @brief Vertices
+     */
+    std::vector<glm::vec3> Normals = {};
     /**
      * @brief Faces
      */

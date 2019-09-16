@@ -40,9 +40,9 @@ auto OBJ::Load(const std::string &filepath) -> Model {
             mdl.Vertices.push_back(v);
         } else if (command == "vn") // normals
         {
-            // glm::vec3 n = {0, 0, 0};
-            // ss >> n.x >> n.y >> n.z;
-            // mdl.Normals.push_back(n);
+             glm::vec3 n = {0, 0, 0};
+             ss >> n.x >> n.y >> n.z;
+             mdl.Normals.push_back(n);
         } else if (command == "vt") // texture
         {
             glm::vec2 tex = {0, 0};
@@ -73,7 +73,7 @@ auto OBJ::Load(const std::string &filepath) -> Model {
                 std::stringstream(vnStr) >> vn;
                 f.Vertices.push_back(v - 1);
                 f.VertTexts.push_back(vt - 1);
-                // f.VertNorms.push_back(vn);
+                f.VertNorms.push_back(vn);
             }
             mdl.Faces.push_back(f);
         } else if (command == "mtllib") {
