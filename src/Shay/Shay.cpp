@@ -112,7 +112,7 @@ void ShaysWorld::Display() {
     ImGui_ImplOpenGL2_NewFrame();
     ImGui_ImplSDL2_NewFrame(stonk.window.get());
     ImGui::NewFrame();
-    portalSpinAngle++ % 360;
+    portalSpinAngle++;
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glEnable(GL_DEPTH_TEST);
@@ -138,11 +138,11 @@ void ShaysWorld::Display() {
     glDisable(GL_TEXTURE_2D);
 
     glPushMatrix();
-    glColor3f(0.9, 0.1, 0);
+    glColor3f(0.9f, 0.1f, 0.f);
     // glColor3f(97.0f / 255.0f, 140.0f / 255.0f, 185.0f / 255.0f);
 
     glTranslatef(20000, 10100, 15000);
-    glRotatef(portalSpinAngle, 0, 1, 0);
+    glRotatef(static_cast<float>(portalSpinAngle), 0.f, 1.f, 0.f);
     displayModel(modelList[2], 5000);
     // drawSolidCube(1000);
 
