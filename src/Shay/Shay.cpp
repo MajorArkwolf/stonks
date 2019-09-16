@@ -127,7 +127,7 @@ void ShaysWorld::Display() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
     displayTavern();
-    displayPortalFrame();
+    //displayPortalFrame();
     glEnable(GL_TEXTURE_2D);
     DrawBackdrop();
     DisplaySigns();
@@ -173,9 +173,10 @@ void ShaysWorld::Display() {
     glDepthMask(GL_TRUE);
     glClear(GL_DEPTH_BUFFER_BIT);
     glPushMatrix();
-    glTranslatef(-10000, -00, -25000);
+    //glTranslatef(-10000, -00, -25000);
     glDisable(GL_TEXTURE_2D);
     displayTavern();
+
     // displayPortalFrame();
     glEnable(GL_TEXTURE_2D);
     glColor3f(1, 0.5, 0.5);
@@ -183,6 +184,7 @@ void ShaysWorld::Display() {
     DisplaySigns();
     glPopMatrix();
     glColor3f(1, 1, 1);
+
     // scene
     glDepthMask(GL_TRUE);
     glDisable(GL_STENCIL_TEST);
