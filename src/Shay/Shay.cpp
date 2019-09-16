@@ -69,7 +69,6 @@ ShaysWorld::ShaysWorld() {
     CreateTextures();
 }
 
-
 void ShaysWorld::displayModel(Model model, float scale) {
     glPushMatrix();
     glScalef(scale, scale, scale);
@@ -440,7 +439,6 @@ void ShaysWorld::displayTavern() {
     glTranslatef(7000, 9100, -5000);
     displayModel(modelList[0], 3.f);
     glPopMatrix();
-
 
     glDisable(GL_LIGHTING);
     glDisable(GL_COLOR_MATERIAL);
@@ -2502,6 +2500,15 @@ void ShaysWorld::DisplayPavement() {
     glPopMatrix();
     glCallList(241);
     glCallList(428);
+
+    glPushMatrix();
+    glTranslatef(-29090, 0, 1000);
+    for (auto i = 0; i < 10; i++) {
+
+        glCallList(249);
+        glTranslatef(0, 0, -2870);
+    }
+    glPopMatrix();
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(PAVEMENT_TOP));
     for (GLuint i = 91; i < 93; i++)
@@ -5622,7 +5629,7 @@ void ShaysWorld::CreateTextureList() {
                           // 455-459
 }
 
-        /**
+/**
  * @brief Increments the current frame cout
  */
 void ShaysWorld::IncrementFrameCount() {
