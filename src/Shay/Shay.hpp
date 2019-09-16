@@ -266,16 +266,19 @@ namespace Shay {
         TexturedPolygons tp = {};
 
         GLfloat light_position[4];
+        GLfloat light_position1[4];
 
         ShaysWorld();
         static auto get() -> ShaysWorld &;
 
-        auto displayModel(Model model, float scale) -> void;
+        auto displayModel(const Model &model, float scale) -> void;
         auto handleKeyEvents(SDL_Event &event) -> void;
         auto handleMouseEvents(SDL_Event &event) -> void;
         auto DisplaySigns() -> void;
         auto drawAxis(float x, float y, float z, float length) -> void;
 
+        void drawSolidCube(float scale);
+        void displayPortalFrame();
         void displayTavern();
         void DisplayDebugMenu();
         void Init();
