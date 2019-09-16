@@ -284,13 +284,13 @@ namespace Shay {
         /// Toggle for drawing 3d axis
         bool shouldDrawAxis = false;
 
-		int portalSpinAngle = 0;
+        int portalSpinAngle = 0;
 
         GLfloat step                = 0.0f;
         GLfloat step2               = 0.0f;
         GLfloat stepLength          = 0.0f;
         GLUquadricObj *glu_cylinder = nullptr;
-		std::vector<Model> modelList;
+        std::vector<Model> modelList;
         /**
          * @brief Camera object
          */
