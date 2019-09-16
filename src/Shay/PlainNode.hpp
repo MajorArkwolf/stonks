@@ -7,6 +7,10 @@
 #include "Stonk/OpenGl.hpp"
 
 namespace Shay {
+    /**
+     * @class  PlainNode
+     * @brief A class used to represent a slope node within the plain vector
+     */
     class PlainNode {
       public:
         enum class Slope { FLAT, ZY, XY };
@@ -35,47 +39,16 @@ namespace Shay {
          */
         PlainNode &operator=(const PlainNode &newNode) = default;
 
-        // Depreciated, to be deleted when safe to do so.
+        // Deprecated, to be deleted when safe to do so.
         void Clear();
 
-        /*
-         * @brief Gets the Type value from the node
-         */
         Slope GetType();
-
-        /*
-         * @brief Gets the X start value from the node
-         */
         GLfloat GetXstart();
-
-        /*
-         * @brief Gets the X end value from the node
-         */
         GLfloat GetXend();
-
-        /*
-         * @brief Gets the Y start value from the node
-         */
         GLfloat GetYstart();
-
-        /*
-         * @brief Gets the Y end value from the node
-         */
         GLfloat GetYend();
-
-        /*
-         * @brief Gets the Z start value from the node
-         */
         GLfloat GetZstart();
-
-        /*
-         * @brief Gets the Z end value from the node
-         */
         GLfloat GetZend();
-
-        /**
-         * @brief  Sets the data at the given point in the array.
-         */
         void SetData(Slope tempType, GLfloat tempXs, GLfloat tempXe, GLfloat tempYs,
                      GLfloat tempYe, GLfloat tempZs, GLfloat tempZe);
 

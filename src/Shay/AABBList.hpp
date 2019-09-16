@@ -1,12 +1,5 @@
 #pragma once
 
-/**
- * @class AABBList
- * @brief AABB collision list array
- *
- * Updated Shay's Linklist format to a vector improving access speeds.
- */
-
 #include <cstddef>
 #include <vector>
 
@@ -14,13 +7,36 @@
 #include "Stonk/OpenGl.hpp"
 
 namespace Shay {
+
+    /**
+     * @class AABBList
+     * @brief A class used for storing a number of Axis Aligned Bounding Boxes
+     */
     class AABBList {
       public:
+        /**
+         * @brief  Default constructor, set to default
+         */
         AABBList() = default;
 
-        AABBList(AABBList &&)      = default;
+        /**
+         * @brief  Copy constructor, set to default
+         */
+        AABBList(AABBList &&) = default;
+
+        /**
+         * @brief  Const copy constructor, set to default
+         */
         AABBList(const AABBList &) = default;
+
+        /**
+         * @brief  Assignment operator overload, set to default
+         */
         AABBList &operator=(AABBList &&) = default;
+
+        /**
+         * @brief  Const assignment operator overload, set to default
+         */
         AABBList &operator=(const AABBList &) = default;
 
         bool AddToStart(GLfloat maxX, GLfloat minX, GLfloat maxY, GLfloat minY,
@@ -38,6 +54,7 @@ namespace Shay {
         std::size_t GetListSize();
 
       private:
+        /// A vector used to store AABB's
         std::vector<AABBNode> nodes{};
         void Delete();
         void Clear();

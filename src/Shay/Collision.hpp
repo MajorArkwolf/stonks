@@ -6,6 +6,11 @@
 #include "AABBList.hpp"
 
 namespace Shay {
+    /**
+     * @class Collision
+     * @brief A class to handle all collisions within shays world
+     * Uses axis-aligned bounding boxes
+     */
     class Collision {
       public:
         Collision() = default;
