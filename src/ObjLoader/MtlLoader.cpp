@@ -5,11 +5,14 @@
 #include <stdexcept>
 #include <string>
 
+#include <SDL2/SDL.h>
+
 using std::string;
 
 auto MTL::Load(const std::string &filepath) -> std::map<std::string, Material> {
-    auto is                = std::ifstream(filepath);
-    string currentLine     = "";
+    auto path          = string{SDL_GetBasePath()} + "res/model/" + filepath;
+    auto is            = std::ifstream(path);
+    string currentLine = "";
     string currentMaterial = "";
     // An MTL file can define multiple materials, which are stored by name here.
     std::map<std::string, Material> materials = {};
