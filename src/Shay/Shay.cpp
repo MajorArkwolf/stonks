@@ -69,7 +69,7 @@ ShaysWorld::ShaysWorld() {
     CreateTextures();
 }
 
-void ShaysWorld::displayModel(Model model, float scale) {
+void ShaysWorld::displayModel(const Model &model, float scale) {
     glPushMatrix();
     glScalef(scale, scale, scale);
     for (const auto &face : model.Faces) {
