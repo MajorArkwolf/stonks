@@ -284,11 +284,13 @@ namespace Shay {
         /// Toggle for drawing 3d axis
         bool shouldDrawAxis = false;
 
+        int portalSpinAngle = 0;
+
         GLfloat step                = 0.0f;
         GLfloat step2               = 0.0f;
         GLfloat stepLength          = 0.0f;
         GLUquadricObj *glu_cylinder = nullptr;
-		std::vector<Model> modelList;
+        std::vector<Model> modelList;
         /**
          * @brief Camera object
          */
@@ -300,6 +302,7 @@ namespace Shay {
         TexturedPolygons tp = {};
 
         GLfloat light_position[4];
+        GLfloat light_position1[4];
 
         ShaysWorld();
 
@@ -315,6 +318,8 @@ namespace Shay {
 
         auto drawAxis(float x, float y, float z, float length) -> void;
 
+        void drawSolidCube(float scale);
+        void displayPortalFrame();
         void displayTavern();
         void DisplayDebugMenu();
 
