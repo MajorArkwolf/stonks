@@ -575,7 +575,6 @@ void ShaysWorld::displayTavern() {
     displayModel(modelList[0], 3.f);
     glPopMatrix();
 
-
     glDisable(GL_LIGHTING);
     glDisable(GL_COLOR_MATERIAL);
     glPopMatrix();
@@ -2637,6 +2636,15 @@ void ShaysWorld::DisplayPavement() {
     glCallList(241);
     glCallList(428);
 
+    glPushMatrix();
+    glTranslatef(-29090, 0, 1000);
+    for (auto i = 0; i < 10; i++) {
+
+        glCallList(249);
+        glTranslatef(0, 0, -2870);
+    }
+    glPopMatrix();
+
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(PAVEMENT_TOP));
     for (GLuint i = 91; i < 93; i++)
         glCallList(i);
@@ -4016,11 +4024,11 @@ void ShaysWorld::DrawEntranceSteps() {
  */
 void ShaysWorld::DisplayTavSteps() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(STEP_PAVING_1));
-    for (GLuint i = 1258; i < 1274; i++)
+    for (GLuint i = 1258; i < 1277; i++)
         glCallList(i);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(STEP_EDGE));
-    for (GLuint i = 1274; i < 1290; i++)
+    for (GLuint i = 1277; i < 1298; i++)
         glCallList(i);
 }
 
@@ -4030,16 +4038,14 @@ void ShaysWorld::DisplayTavSteps() {
 void ShaysWorld::DrawTavSteps() {
     step       = 10000.0f;
     stepLength = 9808.0f;
-    for (GLuint i = 1258; i < 1274; i++) {
+    for (GLuint i = 1258; i < 1277; i++) {
         tp.CreateDisplayList(XZ, i, 1024.0f, 512.0f, 2600.0f, step, stepLength,
                              2.2f, 0.277f);
-        tp.CreateDisplayList(XY, i + 16, 64.0f, 64.0f, 2600.0f, step - 64.0f,
+        tp.CreateDisplayList(XY, i + 19, 64.0f, 64.0f, 2600.0f, step - 64.0f,
                              stepLength, 35.0f, 1.0f);
         step -= 48.0f;
         stepLength -= 142.0f;
     }
-    step       = 9808.0f;
-    stepLength = 8882.0f;
 }
 
 /**
@@ -5758,7 +5764,7 @@ void ShaysWorld::CreateTextureList() {
                           // 455-459
 }
 
-        /**
+/**
  * @brief Increments the current frame cout
  */
 void ShaysWorld::IncrementFrameCount() {
