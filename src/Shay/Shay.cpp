@@ -74,17 +74,17 @@ void ShaysWorld::displayModel(Model model, float scale) {
     glScalef(scale, scale, scale);
     for (const auto &face : model.Faces) {
         glBegin(GL_POLYGON);
-        glColor3fv(glm::value_ptr(model.Materials[face.Material].diffuse));
+        glColor3fv(glm::value_ptr(model.Materials[static_cast<size_t>(face.Material)].diffuse));
         glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,
-                     glm::value_ptr(model.Materials[face.Material].ambient));
+                     glm::value_ptr(model.Materials[static_cast<size_t>(face.Material)].ambient));
         glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,
-                     glm::value_ptr(model.Materials[face.Material].ambient));
+                     glm::value_ptr(model.Materials[static_cast<size_t>(face.Material)].ambient));
         glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,
-                     glm::value_ptr(model.Materials[face.Material].diffuse));
+                     glm::value_ptr(model.Materials[static_cast<size_t>(face.Material)].diffuse));
         glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS,
-                    model.Materials[face.Material].shininess);
+                    model.Materials[static_cast<size_t>(face.Material)].shininess);
         for (auto vertind : face.Vertices) {
-            auto &vert = model.Vertices[static_cast<unsigned long>(vertind)];
+            auto &vert = model.Vertices[static_cast<size_t>(vertind)];
             glVertex3f(vert.x, vert.y, vert.z);
         }
         glEnd();

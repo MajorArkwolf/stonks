@@ -200,6 +200,8 @@ auto Engine::handleKeyRelease(SDL_Event &event) -> void {
         } break;
     }
     switch (event.key.keysym.scancode) {
+        case SDL_SCANCODE_P: {
+        } break;
         default: break;
     }
 }
