@@ -31,6 +31,8 @@ ShaysWorld::ShaysWorld() {
     ShaysWorld::ratio = static_cast<double>(width) / static_cast<double>(height);
 
     modelList.push_back(OBJ::Load("tav.obj"));
+    modelList.push_back(OBJ::Load("pentagram.obj"));
+    modelList.push_back(OBJ::Load("orb.obj"));
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -43,6 +45,11 @@ ShaysWorld::ShaysWorld() {
     light_position[1] = 14000;
     light_position[2] = -5000;
     light_position[3] = 1;
+
+    light_position1[0] = 20000;
+    light_position1[1] = 12000;
+    light_position1[2] = 15000;
+    light_position1[3] = 1;
 
     // set background (sky colour)
     glClearColor(97.0f / 255.0f, 140.0f / 255.0f, 185.0f / 255.0f, 1.0f);
@@ -69,7 +76,7 @@ ShaysWorld::ShaysWorld() {
     CreateTextures();
 }
 
-void ShaysWorld::displayModel(Model model, float scale) {
+void ShaysWorld::displayModel(const Model &model, float scale) {
     glPushMatrix();
     glScalef(scale, scale, scale);
     for (const auto &face : model.Faces) {
@@ -92,6 +99,16 @@ void ShaysWorld::displayModel(Model model, float scale) {
     glPopMatrix();
 }
 
+void ShaysWorld::displayPortalFrame() {
+
+    glPushMatrix();
+    glColor3f(1, 1, 1);
+    glTranslatef(20000, 10000, 15000);
+    displayModel(modelList[1], 300);
+    glColor3f(1, 1, 1);
+    glPopMatrix();
+}
+
 /**
  * @brief Calls all other display functions to display Shay's world
  */
@@ -101,16 +118,76 @@ void ShaysWorld::Display() {
     ImGui_ImplOpenGL2_NewFrame();
     ImGui_ImplSDL2_NewFrame(stonk.window.get());
     ImGui::NewFrame();
-
+    portalSpinAngle++;
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glEnable(GL_DEPTH_TEST);
-    displayTavern();
-    glEnable(GL_TEXTURE_2D);
-    glPushMatrix();
 
+    // Draw normal scene
+    glPushMatrix();
+    glDisable(GL_TEXTURE_2D);
+    displayTavern();
+    //displayPortalFrame();
+    glEnable(GL_TEXTURE_2D);
     DrawBackdrop();
     DisplaySigns();
+
+    glPopMatrix();
+
+    // Draw Portal frame
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_ALWAYS, 1, 0xFF);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+    glStencilMask(0xFF);
+    glDepthMask(GL_FALSE);
+    glClear(GL_STENCIL_BUFFER_BIT);
+    glDisable(GL_TEXTURE_2D);
+
+    glPushMatrix();
+    glColor3f(0.9f, 0.1f, 0.f);
+    // glColor3f(97.0f / 255.0f, 140.0f / 255.0f, 185.0f / 255.0f);
+
+    glTranslatef(20000, 10100, 15000);
+    glRotatef(static_cast<float>(portalSpinAngle), 0.f, 1.f, 0.f);
+    displayModel(modelList[2], 5000);
+    // drawSolidCube(1000);
+
+    glColor3f(1, 1, 1);
+
+    // Draw highlighting
+    glDisable(GL_TEXTURE_2D);
+    glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+    glColor3f(1, 0, 0);
+    glStencilMask(0x00);
+    glPushMatrix();
+    glTranslatef(0,-20,0);
+    displayModel(modelList[2], 5100);
+    glPopMatrix();
+    // drawSolidCube(1050);
+    glPopMatrix();
+
+    // Draw Portal World
+    glEnable(GL_TEXTURE_2D);
+    glStencilFunc(GL_EQUAL, 1, 0xFF);
+    glStencilMask(0x00);
+    glDepthMask(GL_TRUE);
+    glClear(GL_DEPTH_BUFFER_BIT);
+    glPushMatrix();
+    //glTranslatef(-10000, -00, -25000);
+    glDisable(GL_TEXTURE_2D);
+    displayTavern();
+
+    // displayPortalFrame();
+    glEnable(GL_TEXTURE_2D);
+    glColor3f(1, 0.5, 0.5);
+    DrawBackdrop();
+    DisplaySigns();
+    glPopMatrix();
+    glColor3f(1, 1, 1);
+
+    // scene
+    glDepthMask(GL_TRUE);
+    glDisable(GL_STENCIL_TEST);
 
     glPopMatrix();
     glDisable(GL_DEPTH_TEST);
@@ -426,6 +503,64 @@ void ShaysWorld::CreateBoundingBoxes() {
 
     CreatePostBoundingBoxes();
 }
+
+void ShaysWorld::drawSolidCube(float scale) {
+    glPushMatrix();
+    glScalef(scale, scale, scale);
+    // White side - BACK
+    glBegin(GL_POLYGON);
+
+    glVertex3f(0.5, -0.5, 0.5);
+    glVertex3f(0.5, 0.5, 0.5);
+    glVertex3f(-0.5, 0.5, 0.5);
+    glVertex3f(-0.5, -0.5, 0.5);
+    glEnd();
+
+    // Purple side - RIGHT
+    glBegin(GL_POLYGON);
+
+    glVertex3f(0.5, -0.5, -0.5);
+    glVertex3f(0.5, 0.5, -0.5);
+    glVertex3f(0.5, 0.5, 0.5);
+    glVertex3f(0.5, -0.5, 0.5);
+    glEnd();
+
+    // Green side - LEFT
+    glBegin(GL_POLYGON);
+
+    glVertex3f(-0.5, -0.5, 0.5);
+    glVertex3f(-0.5, 0.5, 0.5);
+    glVertex3f(-0.5, 0.5, -0.5);
+    glVertex3f(-0.5, -0.5, -0.5);
+    glEnd();
+
+    // Blue side - TOP
+    glBegin(GL_POLYGON);
+
+    glVertex3f(0.5, 0.5, 0.5);
+    glVertex3f(0.5, 0.5, -0.5);
+    glVertex3f(-0.5, 0.5, -0.5);
+    glVertex3f(-0.5, 0.5, 0.5);
+    glEnd();
+
+    // Red side - BOTTOM
+    glBegin(GL_POLYGON);
+
+    glVertex3f(0.5, -0.5, -0.5);
+    glVertex3f(0.5, -0.5, 0.5);
+    glVertex3f(-0.5, -0.5, 0.5);
+    glVertex3f(-0.5, -0.5, -0.5);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glVertex3f(0.5, -0.5, -0.5);  // P1 is red
+    glVertex3f(0.5, 0.5, -0.5);   // P2 is green
+    glVertex3f(-0.5, 0.5, -0.5);  // P3 is blue
+    glVertex3f(-0.5, -0.5, -0.5); // P4 is purple
+    glEnd();
+    glPopMatrix();
+}
+
 void ShaysWorld::displayTavern() {
     glPushMatrix();
     glEnable(GL_LIGHTING);
