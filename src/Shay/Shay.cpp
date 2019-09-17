@@ -30,7 +30,7 @@ ShaysWorld::ShaysWorld() {
     SDL_GL_GetDrawableSize(engine.window.get(), &width, &height);
     ShaysWorld::ratio = static_cast<double>(width) / static_cast<double>(height);
 
-    modelList.push_back(OBJ::Load("tav.obj"));
+    modelList.push_back(OBJ::Load("tav7.obj"));
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
