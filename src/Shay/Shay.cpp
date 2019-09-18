@@ -515,7 +515,7 @@ void ShaysWorld::CreateBoundingBoxes() {
     CreatePostBoundingBoxes();
 }
 
-void ShaysWorld::drawSolidCube(float scale) {
+/*void ShaysWorld::drawSolidCube(float scale) {
     glPushMatrix();
     glScalef(scale, scale, scale);
     // White side - BACK
@@ -570,7 +570,7 @@ void ShaysWorld::drawSolidCube(float scale) {
     glVertex3f(-0.5, -0.5, -0.5); // P4 is purple
     glEnd();
     glPopMatrix();
-}
+}*/
 
 /**
  * @brief Calls all methods needed to display the tavern and light it
