@@ -31,7 +31,6 @@ ShaysWorld::ShaysWorld() {
     ShaysWorld::ratio = static_cast<double>(width) / static_cast<double>(height);
 
     modelList.push_back(OBJ::Load("tav7.obj"));
-    // modelList.push_back(OBJ::Load("pentagram.obj"));
     modelList.push_back(OBJ::Load("orb.obj"));
 
     glMatrixMode(GL_PROJECTION);
@@ -76,6 +75,12 @@ ShaysWorld::ShaysWorld() {
     CreateTextures();
 }
 
+/**
+ * @brief Draws and displays a passed in model at the given scale
+ * @param model The model to display
+ * @param scale The scale multilper for the object
+ * @param colourFaces Wehther to set material values on individual faces
+ */
 void ShaysWorld::displayModel(const Model &model, float scale, bool colourFaces) {
     glPushMatrix();
     glScalef(scale, scale, scale);
@@ -109,15 +114,6 @@ void ShaysWorld::displayModel(const Model &model, float scale, bool colourFaces)
     glColor3f(1, 1, 1);
 }
 
-// void ShaysWorld::displayPortalFrame() {
-//
-//    glPushMatrix();
-//    glColor3f(1, 1, 1);
-//    glTranslatef(20000, 10000, 15000);
-//    displayModel(modelList[1], 300);
-//    glColor3f(1, 1, 1);
-//    glPopMatrix();
-//}
 
 /**
  * @brief Calls all other display functions to display Shay's world
@@ -355,6 +351,11 @@ auto ShaysWorld::handleKeyEvents(SDL_Event &event) -> void {
     }
 }
 
+
+/**
+ * @brief Handles all mouse events passed to shays world
+ * @param event The SL2 event to read from mouse events from
+ */
 auto ShaysWorld::handleMouseEvents(SDL_Event &event) -> void {
 
     switch (event.button.button) {
@@ -571,6 +572,9 @@ void ShaysWorld::drawSolidCube(float scale) {
     glPopMatrix();
 }
 
+/**
+ * @brief Calls all methods needed to display the tavern and light it
+ */
 void ShaysWorld::displayTavern() {
     glPushMatrix();
     glEnable(GL_LIGHTING);
