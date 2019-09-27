@@ -39,4 +39,14 @@ class Material {
      *
      */
     Illumination illumination = Illumination::Flat;
+    /**
+     * Ambient texture id, -1 is no texture
+     * @sa MTL::Textures
+     */
+    int ambientTextureId = -1;
+    /**
+     * Diffuse texture id, -1 is no texture.
+     * @sa MTL::Textures
+     */
+    int diffuseTextureId = -1;
 };

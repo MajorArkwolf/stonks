@@ -1,7 +1,8 @@
 #pragma once
 #include <istream>
 #include <map>
-
+#include <memory>
+#include <vector>
 #include "Material.hpp"
 
 namespace MTL {
@@ -13,4 +14,15 @@ namespace MTL {
      * @return A mapping of material names to material data.
      */
     auto Load(const std::string &filepath) -> std::map<std::string, Material>;
+
+    // Stolen from TexturedPolygons.hpp
+    using Image = std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)>;
+    /**
+     * Storage of loaded textures
+     */
+    std::vector<Image> Textures = {};
+    /**
+     * Mapping of filename to texture id
+     */
+    std::map<std::string, size_t> TextureNames = {};
 }

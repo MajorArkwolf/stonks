@@ -6,6 +6,7 @@
 #include <string>
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 using std::string;
 
@@ -51,11 +52,22 @@ auto MTL::Load(const std::string &filepath) -> std::map<std::string, Material> {
             line >> mi;
             materials[currentMaterial].illumination =
                 static_cast<Material::Illumination>(mi);
-        } else if (command == "map_Ka") { // texture map - ambient
+        } else if (command == "map_Ka" || command == "map_Kd") { // texture maps
             string filename = "";
             line >> filename;
-
-            // TODO: Load image
+            //  TODO: This leaks memory (just like almost every use of SDL_GetBasePath in this codebase)
+            auto texturePath  = string{SDL_GetBasePath()} + "res/model/" + filename;
+            int id = 0;
+            if (TextureNames.try_emplace(texturePath, id = TextureNames.size()).second) {
+                Textures[id] = Image{IMG_Load(path.c_str()), &SDL_FreeSurface};
+            } else {
+                id = MTL::TextureNames[path];
+            }
+            if (command == "map_Ka") {
+                materials[currentMaterial].ambientTextureId = id;
+            } else if (command == "map_Kd") {
+                materials[currentMaterial].diffuseTextureId = id;
+            }
         }
     }
     return materials;
