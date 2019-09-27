@@ -24,5 +24,5 @@ namespace MTL {
     /**
      * Mapping of filename to texture id
      */
-    std::map<std::string, size_t> TextureNames = {};
+    std::map<std::string, int> TextureNames = {};
 }
