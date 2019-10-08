@@ -9,6 +9,8 @@
 #include <SDL2/SDL_image.h>
 
 using std::string;
+std::vector<MTL::Image> MTL::Textures = {};
+std::map<std::string, int> MTL::TextureNames = {};
 
 auto MTL::Load(const std::string &filepath) -> std::map<std::string, Material> {
     auto path          = string{SDL_GetBasePath()} + "res/model/" + filepath;

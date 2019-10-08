@@ -21,9 +21,9 @@ class MTL {
     /**
      * Storage of loaded textures
      */
-    static std::vector<Image> Textures = {};
+    static std::vector<Image> Textures;
     /**
      * Mapping of filename to texture id
      */
-    static std::map<std::string, int> TextureNames = {};
+    static std::map<std::string, int> TextureNames;
 }
