@@ -3,9 +3,10 @@
 #include <map>
 #include <memory>
 #include <vector>
+#include <SDL2/SDL_image.h>
 #include "Material.hpp"
 
-namespace MTL {
+class MTL {
 
     /**
      * Loads a material file, so long as it mostly adheres to the standard.
@@ -20,9 +21,9 @@ namespace MTL {
     /**
      * Storage of loaded textures
      */
-    std::vector<Image> Textures = {};
+    static std::vector<Image> Textures = {};
     /**
      * Mapping of filename to texture id
      */
-    std::map<std::string, int> TextureNames = {};
+    static std::map<std::string, int> TextureNames = {};
 }
