@@ -12,7 +12,7 @@ if [[ "${TRAVIS_OS_NAME}" == "linux" ]] || [[ "${TRAVIS_OS_NAME}" == "osx" ]]; t
     mkdir -p build
     cd build
     cmake ${build_args} ..
-    cmake --build .
+    VERBOSE=1 cmake --build .
 fi
 
 if [[ "${TRAVIS_OS_NAME}" == "windows" ]]; then
