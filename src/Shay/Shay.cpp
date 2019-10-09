@@ -80,27 +80,42 @@ void ShaysWorld::displayModel(const Model &model, float scale, bool colourFaces)
     glPushMatrix();
     glScalef(scale, scale, scale);
     for (const auto &face : model.Faces) {
+        const auto hasMaterial = !model.Materials.empty();
+        const auto& material = model.Materials[static_cast<size_t>(face.Material)];
+        if (hasMaterial && material.diffuseTextureId != -1) {
+            glBindTexture(GL_TEXTURE_2D, material.diffuseTextureId);
+            // glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+        }
+
         glBegin(GL_POLYGON);
         if (colourFaces) {
             glColor3fv(glm::value_ptr(
-                model.Materials[static_cast<size_t>(face.Material)].diffuse));
+                material.diffuse));
             glMaterialfv(
                 GL_FRONT_AND_BACK, GL_AMBIENT,
                 glm::value_ptr(
-                    model.Materials[static_cast<size_t>(face.Material)].ambient));
+                    material.ambient));
             glMaterialfv(
                 GL_FRONT_AND_BACK, GL_SPECULAR,
                 glm::value_ptr(
-                    model.Materials[static_cast<size_t>(face.Material)].ambient));
+                    material.ambient));
             glMaterialfv(
                 GL_FRONT_AND_BACK, GL_DIFFUSE,
                 glm::value_ptr(
-                    model.Materials[static_cast<size_t>(face.Material)].diffuse));
+                    material.diffuse));
             glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS,
-                        model.Materials[static_cast<size_t>(face.Material)].shininess);
+                    material.shininess);
         }
-        for (auto vertind : face.Vertices) {
-            auto &vert = model.Vertices[static_cast<size_t>(vertind)];
+        for (size_t i = 0; i < face.Vertices.size(); i++) {
+            auto vertind = face.Vertices[i];
+            auto uvind = face.VertTexts[i];
+            const auto &vert = model.Vertices[static_cast<size_t>(vertind)];
+            if (hasMaterial && material.diffuseTextureId != -1) {
+                const auto &uv = model.UVs[static_cast<size_t>(uvind)];
+                glTexCoord2fv(glm::value_ptr(
+                    uv
+                ));
+            }
             glVertex3f(vert.x, vert.y, vert.z);
         }
         glEnd();
