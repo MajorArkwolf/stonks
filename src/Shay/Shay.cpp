@@ -84,7 +84,6 @@ void ShaysWorld::displayModel(const Model &model, float scale, bool colourFaces)
         const auto& material = model.Materials[static_cast<size_t>(face.Material)];
         if (hasMaterial && material.diffuseTextureId != -1) {
             glBindTexture(GL_TEXTURE_2D, material.diffuseTextureId);
-            // glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
         }
 
         glBegin(GL_POLYGON);
