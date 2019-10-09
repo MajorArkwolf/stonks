@@ -82,7 +82,7 @@ void ShaysWorld::displayModel(const Model &model, float scale, bool colourFaces)
     for (const auto &face : model.Faces) {
         const auto hasMaterial = !model.Materials.empty();
         const auto& material = model.Materials[static_cast<size_t>(face.Material)];
-        if (hasMaterial && material.diffuseTextureId != -1) {
+        if (hasMaterial && material.hasDiffuseTex) {
             glBindTexture(GL_TEXTURE_2D, material.diffuseTextureId);
         }
 
@@ -109,7 +109,7 @@ void ShaysWorld::displayModel(const Model &model, float scale, bool colourFaces)
             auto vertind = face.Vertices[i];
             auto uvind = face.VertTexts[i];
             const auto &vert = model.Vertices[static_cast<size_t>(vertind)];
-            if (hasMaterial && material.diffuseTextureId != -1) {
+            if (hasMaterial && material.hasDiffuseTex) {
                 const auto &uv = model.UVs[static_cast<size_t>(uvind)];
                 glTexCoord2fv(glm::value_ptr(
                     uv

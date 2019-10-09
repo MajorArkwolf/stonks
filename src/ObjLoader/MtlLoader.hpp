@@ -19,13 +19,18 @@ public:
 
     // Stolen from TexturedPolygons.hpp
     using Image = std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)>;
+
     /**
-     * Storage of loaded textures
+     * Stores images.
      */
-    static std::vector<Image> Images;
-    static std::vector<GLuint> Textures;
+    static auto GetImages() -> std::vector<Image>&;
     /**
-     * Mapping of filename to texture id
+     * Stores textures (OpenGL bound)
      */
-    static std::map<std::string, int> ImageNames;
+    static auto GetTextures() -> std::vector<GLuint>&;
+    /**
+     * Image paths tell you where in the Images vector you can find an image.
+     * This prevents the same image file from being loaded multiple times.
+     */
+    static auto GetImagePaths() -> std::map<std::string, size_t>&;
 };

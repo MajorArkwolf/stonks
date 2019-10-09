@@ -48,7 +48,7 @@ auto OBJ::Load(const std::string &filepath) -> Model {
         {
             glm::vec2 tex = {0, 0};
             ss >> tex.x >> tex.y;
-            tex.y = 1.0 - tex.y; // invert the y
+            tex.y = 1.0f - tex.y; // invert the y
             mdl.UVs.push_back(tex);
         } else if (command == "g") // group name
         {
