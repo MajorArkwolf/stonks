@@ -9,8 +9,9 @@
 #include <SDL2/SDL_image.h>
 
 using std::string;
-std::vector<MTL::Image> MTL::Textures = {};
-std::map<std::string, int> MTL::TextureNames = {};
+std::vector<MTL::Image> MTL::Images = {};
+std::vector<GLuint> MTL::Textures = {};
+std::map<std::string, int> MTL::ImageNames = {};
 
 auto MTL::Load(const std::string &filepath) -> std::map<std::string, Material> {
     auto path          = string{SDL_GetBasePath()} + "res/model/" + filepath;
@@ -60,10 +61,22 @@ auto MTL::Load(const std::string &filepath) -> std::map<std::string, Material> {
             //  TODO: This leaks memory (just like almost every use of SDL_GetBasePath in this codebase)
             auto texturePath  = string{SDL_GetBasePath()} + "res/model/" + filename;
             int id = 0;
-            if (TextureNames.try_emplace(texturePath, id = TextureNames.size()).second) {
-                Textures[id] = Image{IMG_Load(path.c_str()), &SDL_FreeSurface};
+            if (ImageNames.try_emplace(texturePath, id = ImageNames.size()).second) {
+                GLuint boundTex;
+                glGenTextures(1, &boundTex);
+                glBindTexture(GL_TEXTURE_2D, boundTex);
+                Images.push_back(Image{IMG_Load(texturePath.c_str()), &SDL_FreeSurface});
+                const int level_of_detail = 0, border_width = 0;
+                const auto& img = Images[id];
+                const auto bpp = img->format->BytesPerPixel;
+                const auto image_format = bpp == 4 ? GL_UNSIGNED_INT
+                                        : bpp == 2 ? GL_UNSIGNED_SHORT
+                                        : GL_UNSIGNED_BYTE;
+                const auto image_format = GL_UNSIGNED_BYTE;
+                glTexImage2D(GL_TEXTURE_2D, level_of_detail, GL_RGB, img->w, img->h, border_width, GL_RGB, image_format, img->pixels);
+                Textures.push_back(boundTex);
             } else {
-                id = MTL::TextureNames[path];
+                id = MTL::ImageNames[path];
             }
             if (command == "map_Ka") {
                 materials[currentMaterial].ambientTextureId = id;
