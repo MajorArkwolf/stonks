@@ -59,29 +59,27 @@ auto MTL::Load(const std::string &filepath) -> std::map<std::string, Material> {
             string filename = "";
             line >> filename;
             //  TODO: This leaks memory (just like almost every use of SDL_GetBasePath in this codebase)
-            auto texturePath  = string{SDL_GetBasePath()} + "res/model/" + filename;
-            int id = 0;
-            if (ImageNames.try_emplace(texturePath, id = ImageNames.size()).second) {
+            auto texturePath  = string{SDL_GetBasePath()} + "res/tex/" + filename;
+            int index = 0;
+            if (ImageNames.try_emplace(texturePath, index = ImageNames.size()).second) {
+                //generate an openGL texture for this image
                 GLuint boundTex;
                 glGenTextures(1, &boundTex);
                 glBindTexture(GL_TEXTURE_2D, boundTex);
                 Images.push_back(Image{IMG_Load(texturePath.c_str()), &SDL_FreeSurface});
-                const int level_of_detail = 0, border_width = 0;
-                const auto& img = Images[id];
-                const auto bpp = img->format->BytesPerPixel;
-                const auto image_format = bpp == 4 ? GL_UNSIGNED_INT
-                                        : bpp == 2 ? GL_UNSIGNED_SHORT
-                                        : GL_UNSIGNED_BYTE;
-                const auto image_format = GL_UNSIGNED_BYTE;
-                glTexImage2D(GL_TEXTURE_2D, level_of_detail, GL_RGB, img->w, img->h, border_width, GL_RGB, image_format, img->pixels);
-                Textures.push_back(boundTex);
+
+                const auto& image = Images[index];
+                glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+                gluBuild2DMipmaps(GL_TEXTURE_2D, 3, image->w, image->h, GL_RGB,
+                                GL_UNSIGNED_BYTE, image->pixels);Textures.push_back(boundTex);
             } else {
-                id = MTL::ImageNames[path];
+                index = MTL::ImageNames[path];
             }
             if (command == "map_Ka") {
-                materials[currentMaterial].ambientTextureId = id;
+                materials[currentMaterial].ambientTextureId = Textures[index];
             } else if (command == "map_Kd") {
-                materials[currentMaterial].diffuseTextureId = id;
+                materials[currentMaterial].diffuseTextureId = Textures[index];
             }
         }
     }

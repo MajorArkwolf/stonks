@@ -5,7 +5,7 @@
 #include <vector>
 #include <SDL2/SDL_image.h>
 #include "Material.hpp"
-#include <GL/gl.h>
+#include "../Stonk/OpenGl.hpp"
 
 class MTL {
 public:
