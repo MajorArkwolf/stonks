@@ -6,7 +6,7 @@
 #include <glm/vec3.hpp>
 
 #include "Stonk/Engine.hpp"
-#include "Stonk/OpenGL.hpp"
+#include "Stonk/OpenGl.hpp"
 
 #include "Stonk/Pathing/Pathfinding.hpp"
 #include "Stonk/ProceduralGen/BSP/BSP.hpp"
