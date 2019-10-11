@@ -5,10 +5,10 @@
 #include <SDL2/SDL.h>
 #include <glm/vec3.hpp>
 
-#include "..\Engine.hpp"
-#include "..\Pathing\Pathfinding.hpp"
-#include "..\ProceduralGen\BSP\BSP.hpp"
-#include "..\GridDisplay\GridDisplay.hpp"
+#include "Stonk\Engine.hpp"
+#include "Stonk\Pathing\Pathfinding.hpp"
+#include "Stonk\ProceduralGen\BSP\BSP.hpp"
+#include "Stonk\GridDisplay\GridDisplay.hpp"
 
 using Pathing::Grid;
 using Pathing::Node;
