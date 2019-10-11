@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Stonk\Pathing\Grid.hpp"
+#include "Stonk/Pathing/Grid.hpp"
 #include "Node.hpp"
 
 namespace BSP {

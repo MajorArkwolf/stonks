@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <iostream>
 
-#include "..\OpenGL.hpp"
+#include "Stonk/OpenGL.hpp"
 
 namespace GridDisplay {
 

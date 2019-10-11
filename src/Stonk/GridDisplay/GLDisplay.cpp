@@ -6,9 +6,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/vec3.hpp>
 
-#include "..\Engine.hpp"
-#include "..\OpenGL.hpp"
-
 using View::GLDisplay;
 using namespace GridDisplay;
 using namespace Pathing;
