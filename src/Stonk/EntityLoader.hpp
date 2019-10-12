@@ -5,10 +5,13 @@ using std::string;
 
 struct EntityStats {
     string name    = "";
+    unsigned int level  = 1;
+    string HD          = "d8";
     string faction = "";
     string AI      = "";
     string model   = "";
-    string texture;
+    string texture = "";
+    bool assignedHP    = false;
     int HP             = 1;
     int strength       = 10;
     int dexterity      = 10;
@@ -34,4 +37,7 @@ class EntityLoader {
     ~EntityLoader() = default;
     void LoadEntity(string filename);
     EntityStats entity;
+
+  private:
+    void CheckStats();
 };

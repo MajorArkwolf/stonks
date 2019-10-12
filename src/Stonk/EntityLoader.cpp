@@ -1,4 +1,4 @@
-#include "EntityLoader.h"
+#include "EntityLoader.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -36,6 +36,7 @@ void EntityLoader::LoadEntity(string filename) {
             std::getline(value >> std::ws, entity.texture);
         } else if (command == "Health:") {
             value >> entity.HP;
+            entity.assignedHP = true;
         } else if (command == "Strength:") {
             value >> entity.strength;
         } else if (command == "Dexterity:") {
@@ -68,8 +69,19 @@ void EntityLoader::LoadEntity(string filename) {
             value >> entity.nameWeapon4;
         } else if (command == "ShieldStat:") {
             value >> entity.weapon4;
-        } else {
+		} else if (command == "Level:") {
+			value >> entity.level;
+        } else if (command == "HD:") {
+			value >> entity.level;
+		} else {
             std::cout << "Value not used" << command << std::endl;
         }
+        CheckStats();
     }
+}
+
+void EntityLoader::CheckStats() {
+    if (!entity.assignedHP) {
+    
+	}
 }
