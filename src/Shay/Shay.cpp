@@ -31,8 +31,8 @@ ShaysWorld::ShaysWorld() {
     ShaysWorld::ratio = static_cast<double>(width) / static_cast<double>(height);
 
     modelList.push_back(OBJ::Load("tav7.obj"));
-    // modelList.push_back(OBJ::Load("pentagram.obj"));
     modelList.push_back(OBJ::Load("orb.obj"));
+    //modelList.push_back(OBJ::Load("penta.obj"));
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -81,39 +81,34 @@ void ShaysWorld::displayModel(const Model &model, float scale, bool colourFaces)
     glScalef(scale, scale, scale);
     for (const auto &face : model.Faces) {
         const auto hasMaterial = !model.Materials.empty();
-        if (hasMaterial && model.Materials[static_cast<size_t>(face.Material)].hasDiffuseTex) {
-            glBindTexture(GL_TEXTURE_2D, model.Materials[static_cast<size_t>(face.Material)].diffuseTextureId);
+        if (hasMaterial &&
+            model.Materials[static_cast<size_t>(face.Material)].hasDiffuseTex) {
+            glBindTexture(
+                GL_TEXTURE_2D,
+                model.Materials[static_cast<size_t>(face.Material)].diffuseTextureId);
         }
 
         glBegin(GL_POLYGON);
         if (colourFaces) {
-            const auto& material = model.Materials[static_cast<size_t>(face.Material)];
-            glColor3fv(glm::value_ptr(
-                material.diffuse));
-            glMaterialfv(
-                GL_FRONT_AND_BACK, GL_AMBIENT,
-                glm::value_ptr(
-                    material.ambient));
-            glMaterialfv(
-                GL_FRONT_AND_BACK, GL_SPECULAR,
-                glm::value_ptr(
-                    material.ambient));
-            glMaterialfv(
-                GL_FRONT_AND_BACK, GL_DIFFUSE,
-                glm::value_ptr(
-                    material.diffuse));
-            glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS,
-                    material.shininess);
+            const auto &material =
+                model.Materials[static_cast<size_t>(face.Material)];
+            glColor3fv(glm::value_ptr(material.diffuse));
+            glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,
+                         glm::value_ptr(material.ambient));
+            glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,
+                         glm::value_ptr(material.ambient));
+            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,
+                         glm::value_ptr(material.diffuse));
+            glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, material.shininess);
         }
         for (size_t i = 0; i < face.Vertices.size(); i++) {
-            auto vertind = face.Vertices[i];
-            auto uvind = face.VertTexts[i];
+            auto vertind     = face.Vertices[i];
+            auto uvind       = face.VertTexts[i];
             const auto &vert = model.Vertices[static_cast<size_t>(vertind)];
-            if (hasMaterial && model.Materials[static_cast<size_t>(face.Material)].hasDiffuseTex) {
+            if (hasMaterial &&
+                model.Materials[static_cast<size_t>(face.Material)].hasDiffuseTex) {
                 const auto &uv = model.UVs[static_cast<size_t>(uvind)];
-                glTexCoord2fv(glm::value_ptr(
-                    uv
-                ));
+                glTexCoord2fv(glm::value_ptr(uv));
             }
             glVertex3f(vert.x, vert.y, vert.z);
         }
@@ -151,8 +146,10 @@ void ShaysWorld::Display() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
     displayTavern();
+
     // displayPortalFrame();
     glEnable(GL_TEXTURE_2D);
+    //displayModel(modelList[2], 1000, 1);
     DrawBackdrop();
     DisplaySigns();
 
