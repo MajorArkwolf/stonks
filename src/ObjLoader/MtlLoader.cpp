@@ -30,12 +30,12 @@ auto MTL::Load(const std::string &filepath) -> std::map<std::string, Material> {
     string currentMaterial = "";
     // An MTL file can define multiple materials, which are stored by name here.
     std::map<std::string, Material> materials = {};
-    auto& material = materials[currentMaterial];
     while (std::getline(is >> std::ws, currentLine)) {
 
         auto line      = std::stringstream(currentLine);
         string command = "";
         line >> command;
+        auto& material = materials[currentMaterial];
 
         if (command[0] == '#') {
             // comment, do nothing
