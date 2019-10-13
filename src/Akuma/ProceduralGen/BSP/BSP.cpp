@@ -42,6 +42,10 @@ const BSP::BSPTree &BSP::BSPTree::operator=(const BSPTree &rhs) {
     return *this;
 }
 
+BSP::BSPTree::BSPTree(const BSPTree &other) {
+    copyTree(this->root, other.root);
+}
+
 void BSP::BSPTree::deleteTree() {
     delete (root);
     root = nullptr;

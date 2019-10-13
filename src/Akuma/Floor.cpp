@@ -10,13 +10,13 @@ Akuma::Floor::Floor() {
     loadGrid();
 }
 
-Akuma::Floor::Floor(glm::uvec2 size, unsigned subdivisions) {
+Akuma::Floor::Floor(glm::uvec2 size, int subdivisions) {
     this->grid = Grid(size.x, size.y);
     this->tree = BSPTree(size, subdivisions);
     loadGrid();
 }
 
-Akuma::Floor::Floor(unsigned sizeX, unsigned sizeY, unsigned subdivisions) {
+Akuma::Floor::Floor(unsigned sizeX, unsigned sizeY, int subdivisions) {
     glm::vec2 size = {sizeX, sizeY};
     this->grid            = Grid(sizeX, sizeY);
     this->tree            = BSPTree(size, subdivisions);

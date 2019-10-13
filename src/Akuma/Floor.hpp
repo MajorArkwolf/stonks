@@ -9,8 +9,8 @@ namespace Akuma {
     class Floor {
       public:
         Floor();
-        Floor(glm::uvec2 size, unsigned subdivisions);
-        Floor(unsigned sizeX, unsigned sizeY, unsigned subdivisions);
+        Floor(glm::uvec2 size, int subdivisions);
+        Floor(unsigned sizeX, unsigned sizeY, int subdivisions);
         auto getGridSize() -> glm::uvec2;
         auto getRoomList() -> std::vector<BSP::Node *>;
         auto getGrid() -> Pathing::Grid;
@@ -26,6 +26,6 @@ namespace Akuma {
         auto loadGrid() -> void;
 
         const glm::uvec2 defaultGridSize   = {20, 20};
-        const unsigned defaultSubdivisions = 3;
+        const int defaultSubdivisions = 3;
     };
 };

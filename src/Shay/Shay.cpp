@@ -220,7 +220,7 @@ void ShaysWorld::Display() {
     SDL_GL_SwapWindow(stonk.window.get());
 }
 
-void ShaysWorld::displayPentagram() {
+void ShaysWorld::displayPentagram(void) {
     glPushMatrix();
     glTranslatef(20000, 10000, 15000);
     displayModel(modelList[2], 300, 1);

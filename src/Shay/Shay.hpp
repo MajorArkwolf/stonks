@@ -320,7 +320,7 @@ namespace Shay {
 
         void drawSolidCube(float scale);
 
-		void displayPentagram();
+		void displayPentagram(void);
 
         void displayTavern();
 
