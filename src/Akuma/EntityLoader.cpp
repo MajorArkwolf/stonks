@@ -35,6 +35,10 @@ auto EntityLoader::LoadEntity(string filename) -> void {
             std::getline(value >> std::ws, entity.model);
         } else if (command == "Texture:") {
             std::getline(value >> std::ws, entity.texture);
+        } else if (command == "Level:") {
+            value >> entity.level;
+        } else if (command == "HD:") {
+            value >> entity.HD;
         } else if (command == "Health:") {
             value >> entity.HP;
             entity.assignedHP = true;
@@ -48,34 +52,12 @@ auto EntityLoader::LoadEntity(string filename) -> void {
             value >> entity.vitality;
         } else if (command == "Intelligence:") {
             value >> entity.intelligence;
-        } else if (command == "Armor:") {
-            value >> entity.armor;
-        } else if (command == "ArmorStat:") {
-            value >> entity.armorStats;
-        } else if (command == "Weapon1:") {
-            value >> entity.nameWeapon1;
-        } else if (command == "Damage1:") {
-            value >> entity.weapon1;
-        } else if (command == "Weapon2:") {
-            value >> entity.nameWeapon2;
-        } else if (command == "Damage2:") {
-            value >> entity.weapon2;
-        } else if (command == "Weapon3:") {
-            value >> entity.nameWeapon3;
-        } else if (command == "Damage3:") {
-            value >> entity.weapon3;
-        } else if (command == "Weapon4:") {
-            value >> entity.nameWeapon4;
-        } else if (command == "Damage4:") {
-            value >> entity.weapon4;
-        } else if (command == "Shield:") {
-            value >> entity.nameWeapon4;
-        } else if (command == "ShieldStat:") {
-            value >> entity.weapon4;
-        } else if (command == "Level:") {
-            value >> entity.level;
-        } else if (command == "HD:") {
-            value >> entity.HD;
+        } else if (command == "ArmorID:") {
+            value >> entity.armorID;
+        } else if (command == "Weapon1ID:") {
+            value >> entity.weapon1ID;
+        } else if (command == "Weapon2ID:") {
+            value >> entity.weapon2ID;
         } else {
             std::cout << "Value not used" << command << std::endl;
         }
