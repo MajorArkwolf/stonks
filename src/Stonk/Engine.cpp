@@ -7,6 +7,7 @@
 
 #include <SDL2/SDL.h>
 
+#include "Akuma/GridDisplay/GLDisplay.hpp"
 #include "Shay/Shay.hpp"
 #include "Stonk/Camera.hpp"
 #include "Stonk/Collision.hpp"
@@ -25,8 +26,10 @@ using Stonk::State;
  * @brief The game engine main loop
  */
 auto Engine::run() -> void {
+    //auto &grid       = View::GLDisplay::get();
     auto &engine     = Engine::get();
     auto &shaysWorld = ShaysWorld::get();
+    
 
     auto frameCount    = 0l;
     auto lastFpsUpdate = 0.0;

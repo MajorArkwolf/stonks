@@ -32,6 +32,13 @@ set (SOURCES
     src/Stonk/Collision.cpp
     src/Stonk/Physics.cpp
     src/Stonk/Viewport.cpp
+	src/Akuma/ProceduralGen/BSP/BSP.cpp
+	src/Akuma/ProceduralGen/BSP/Node.cpp
+	src/Akuma/Pathing/Grid.cpp
+	src/Akuma/Pathing/Node.cpp
+	src/Akuma/Pathing/Pathfinding.cpp
+	src/Akuma/GridDisplay/GLDisplay.cpp
+	src/Akuma/GridDisplay/GridDisplay.cpp
     
     src/ObjLoader/MtlLoader.cpp
     src/ObjLoader/ObjLoader.cpp
@@ -77,11 +84,12 @@ target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:GNU>:
 target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/W4>)
 
 # Enable Clang's address and memory sanitizers.
-target_compile_options(${PROJECT_NAME} PUBLIC
-    $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
-target_link_libraries(${PROJECT_NAME} PUBLIC
-    $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
-
+if (NOT MSVC)
+	target_compile_options(${PROJECT_NAME} PUBLIC
+		$<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
+	target_link_libraries(${PROJECT_NAME} PUBLIC
+		$<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined,leak>)
+endif()
 # Treat warnings as errors if enabled.
 if (WarningsAsErrors)
     target_compile_options(${PROJECT_NAME} PUBLIC
