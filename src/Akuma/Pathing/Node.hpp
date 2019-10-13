@@ -5,14 +5,15 @@ namespace Pathing {
       public:
         Node();
         Node(int _x, int _y) {
-            x = _x, y = _y;
+            x      = _x;
+            y      = _y;
             parent = nullptr;
-        };
+        }
 
         Node *parent = nullptr;
 
         /// gCost + hCost;
-        const int fCost() const;
+        int fCost() const;
         /// Distance from end node
         int hCost = 0;
         /// Distance from starting node
@@ -24,8 +25,8 @@ namespace Pathing {
         /// If node is traversable then walkable == 1
         bool walkable = 1;
 
-        const bool operator<(const Node &rhs) const;
-        const bool operator==(const Node &rhs) const;
+        bool operator<(const Node &rhs) const;
+        bool operator==(const Node &rhs) const;
 
         auto toggleWalkable() -> void;
         auto setWalkable(bool _walkable) -> void;

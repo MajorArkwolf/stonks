@@ -34,7 +34,19 @@
       "buildCommandArgs": "-v",
       "ctestCommandArgs": "",
       "inheritEnvironments": [ "clang_cl_x64" ],
-      "variables": []
+      "variables": [
+        {
+          "name": "SDL2_INCLUDE_DIR",
+          "value": "D:/Programming/vcpkg/installed/x64-windows/include/SDL2",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2main_LIBRARIES",
+          "value": "D:/Programming/vcpkg/installed/x64-windows/lib/manual-link/SDL2main.lib",
+          "type": "FILEPATH"
+        }
+      ],
+      "intelliSenseMode": "windows-clang-x64"
     }
   ]
 }

@@ -1,15 +1,16 @@
 #include "Node.hpp"
 
 Pathing::Node::Node() {
-    x = 0, y = 0;
+    x      = 0;
+    y      = 0;
     parent = nullptr;
 }
 
-const int Pathing::Node::fCost() const {
+int Pathing::Node::fCost() const {
     return this->gCost + this->hCost;
 }
 
-const bool Pathing::Node::operator<(const Node &rhs) const {
+bool Pathing::Node::operator<(const Node &rhs) const {
 
     if (fCost() == rhs.fCost()) {
         return hCost < rhs.hCost;
@@ -18,7 +19,7 @@ const bool Pathing::Node::operator<(const Node &rhs) const {
     }
 }
 
-const bool Pathing::Node::operator==(const Node &rhs) const {
+bool Pathing::Node::operator==(const Node &rhs) const {
     return (x == rhs.x && y == rhs.y);
 }
 
