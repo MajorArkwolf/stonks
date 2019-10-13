@@ -7,7 +7,7 @@
 
 #include <SDL2/SDL.h>
 
-#include "GridDisplay/GLDisplay.hpp"
+#include "Akuma/GridDisplay/GLDisplay.hpp"
 #include "Shay/Shay.hpp"
 #include "Stonk/Camera.hpp"
 #include "Stonk/Collision.hpp"

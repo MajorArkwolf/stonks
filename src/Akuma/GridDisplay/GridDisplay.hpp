@@ -2,9 +2,9 @@
 
 #include <glm/vec2.hpp>
 
-#include "Stonk/Pathing/Grid.hpp"
-#include "Stonk/Pathing/Pathfinding.hpp"
-#include "Stonk/ProceduralGen/BSP/BSP.hpp"
+#include "Akuma/Pathing/Grid.hpp"
+#include "Akuma/Pathing/Pathfinding.hpp"
+#include "Akuma/ProceduralGen/BSP/BSP.hpp"
 
 using BSP::BSPTree;
 using Pathing::Grid;

@@ -32,13 +32,13 @@ set (SOURCES
     src/Stonk/Collision.cpp
     src/Stonk/Physics.cpp
     src/Stonk/Viewport.cpp
-	src/Stonk/ProceduralGen/BSP/BSP.cpp
-	src/Stonk/ProceduralGen/BSP/Node.cpp
-	src/Stonk/Pathing/Grid.cpp
-	src/Stonk/Pathing/Node.cpp
-	src/Stonk/Pathing/Pathfinding.cpp
-	src/Stonk/GridDisplay/GLDisplay.cpp
-	src/Stonk/GridDisplay/GridDisplay.cpp
+	src/Akuma/ProceduralGen/BSP/BSP.cpp
+	src/Akuma/ProceduralGen/BSP/Node.cpp
+	src/Akuma/Pathing/Grid.cpp
+	src/Akuma/Pathing/Node.cpp
+	src/Akuma/Pathing/Pathfinding.cpp
+	src/Akuma/GridDisplay/GLDisplay.cpp
+	src/Akuma/GridDisplay/GridDisplay.cpp
     
     src/ObjLoader/MtlLoader.cpp
     src/ObjLoader/ObjLoader.cpp

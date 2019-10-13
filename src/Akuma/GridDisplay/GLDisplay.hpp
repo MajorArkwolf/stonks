@@ -8,9 +8,9 @@
 #include "Stonk/Engine.hpp"
 #include "Stonk/OpenGl.hpp"
 
-#include "Stonk/Pathing/Pathfinding.hpp"
-#include "Stonk/ProceduralGen/BSP/BSP.hpp"
-#include "Stonk/GridDisplay/GridDisplay.hpp"
+#include "Akuma/Pathing/Pathfinding.hpp"
+#include "Akuma/ProceduralGen/BSP/BSP.hpp"
+#include "Akuma/GridDisplay/GridDisplay.hpp"
 
 using Pathing::Grid;
 using Pathing::Node;
