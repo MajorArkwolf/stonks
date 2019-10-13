@@ -32,7 +32,7 @@ ShaysWorld::ShaysWorld() {
 
     modelList.push_back(OBJ::Load("tav7.obj"));
     modelList.push_back(OBJ::Load("orb.obj"));
-    //modelList.push_back(OBJ::Load("penta.obj"));
+    modelList.push_back(OBJ::Load("penta.obj"));
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -149,7 +149,12 @@ void ShaysWorld::Display() {
 
     // displayPortalFrame();
     glEnable(GL_TEXTURE_2D);
-    //displayModel(modelList[2], 1000, 1);
+
+    glPushMatrix();
+    glTranslatef(20000, 10100, 15000);
+    displayModel(modelList[2], 300, 1);
+    glPopMatrix();
+
     DrawBackdrop();
     DisplaySigns();
 
