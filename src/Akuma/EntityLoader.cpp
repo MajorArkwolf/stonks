@@ -11,8 +11,7 @@ using std::ifstream;
 using std::string;
 using std::stringstream;
 
-void EntityLoader::LoadEntity(string filename) {
-    auto path        = string("entities/");
+auto EntityLoader::LoadEntity(string filename) -> void {
     filename         = path + filename;
     auto fileinput   = ifstream();
     auto currentLine = string();
@@ -73,36 +72,35 @@ void EntityLoader::LoadEntity(string filename) {
             value >> entity.nameWeapon4;
         } else if (command == "ShieldStat:") {
             value >> entity.weapon4;
-		} else if (command == "Level:") {
-			value >> entity.level;
+        } else if (command == "Level:") {
+            value >> entity.level;
         } else if (command == "HD:") {
-			value >> entity.HD;
-		} else {
+            value >> entity.HD;
+        } else {
             std::cout << "Value not used" << command << std::endl;
-        }        
+        }
     }
     CheckStats();
 }
 
-void EntityLoader::CheckStats() {
+auto EntityLoader::CheckStats() -> void {
     auto diceRoller = Dice();
     if (!entity.assignedHP) {
-        for (auto i = 0; i < entity.level; ++i) {
-            if (i = 0) {
-                entity.HP = entity.HD + GetMod(entity.vitality)
+        for (int i = 0; i < entity.level; ++i) {
+            if (i == 0) {
+                entity.HP = entity.HD + GetMod(entity.vitality);
             } else {
                 entity.HP += diceRoller.Roll(entity.HD) + GetMod(entity.vitality);
-			}
-			
-		}
+            }
+        }
         entity.assignedHP = true;
-	}
+    }
 }
 
-void EntityLoader::GetMod(int stat) {
+auto EntityLoader::GetMod(int stat) -> int {
     if (stat < 10) {
         return (((11 - 1) / 2) * -1);
-	}else {
+    } else {
         return ((stat - 10) / 2);
-	}
+    }
 }

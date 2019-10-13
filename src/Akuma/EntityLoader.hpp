@@ -4,20 +4,20 @@
 using std::string;
 
 struct EntityStats {
-    string name    = "";
-    unsigned int level  = 1;
-    int HD          = 8;
-    string faction = "";
-    string AI      = "";
-    string model   = "";
-    string texture = "";
+    string name        = "";
+    int level          = 1;
+    int HD             = 8;
+    string faction     = "";
+    string AI          = "";
+    string model       = "";
+    string texture     = "";
     bool assignedHP    = false;
     int HP             = 1;
     int strength       = 10;
     int dexterity      = 10;
     int luck           = 10;
     int intelligence   = 10;
-    int vitality        = 10;
+    int vitality       = 10;
     string armor       = "";
     int armorStats     = 0;
     string shield      = "";
@@ -36,10 +36,11 @@ class EntityLoader {
   public:
     EntityLoader()  = default;
     ~EntityLoader() = default;
-    void LoadEntity(string filename);
+    auto LoadEntity(string filename) -> void;
     EntityStats entity;
 
   private:
-    void CheckStats();
-    void GetMod(int stat);
+    string path = "entities/";
+    auto CheckStats() -> void;
+    auto GetMod(int stat) -> int;
 };
