@@ -140,7 +140,7 @@ void ShaysWorld::Display() {
     // displayPortalFrame();
     glEnable(GL_TEXTURE_2D);
 
-	displayPentagram();
+    displayPentagram();
 
     DrawBackdrop();
     DisplaySigns();
