@@ -27,6 +27,21 @@ BSP::BSPTree::~BSPTree() {
     root = nullptr;
 }
 
+const BSP::BSPTree &BSP::BSPTree::operator=(const BSPTree &rhs) {
+    if (this != &rhs) {
+        if (root != nullptr) {
+            delete (root);
+        }
+        if (rhs.root == nullptr) {
+             root == nullptr;
+        } else {
+            copyTree(root, rhs.root);
+        }
+    }
+
+    return *this;
+}
+
 void BSP::BSPTree::deleteTree() {
     delete (root);
     root = nullptr;
@@ -48,12 +63,12 @@ void BSP::BSPTree::populateTree(BSP::Node *node, int subdivisions) {
     if (node->depth < subdivisions) {
 
         if (node->left == nullptr) {
-            node->left         = new Node();
+            node->left         = new BSP::Node();
             node->left->depth  = node->depth + 1;
             node->left->parent = node;
         }
         if (node->right == nullptr) {
-            node->right         = new Node();
+            node->right         = new BSP::Node();
             node->right->depth  = node->depth + 1;
             node->right->parent = node;
         }
@@ -148,6 +163,18 @@ int BSP::BSPTree::traverse(BSP::Node *node, std::vector<Node *> &list) {
     }
 
     return 0;
+}
+
+void BSP::BSPTree::copyTree(Node *&copiedTreeRoot, Node *otherTreeRoot) {
+    if(otherTreeRoot == nullptr) copiedTreeRoot = nullptr;
+    else {
+        copiedTreeRoot       = new Node;
+        copiedTreeRoot->gridBottomLeft = otherTreeRoot->gridBottomLeft;
+        copiedTreeRoot->gridTopRight = otherTreeRoot->gridTopRight;
+        copiedTreeRoot->depth = otherTreeRoot->depth;
+        copyTree(copiedTreeRoot->left, otherTreeRoot->left);
+        copyTree(copiedTreeRoot->right, otherTreeRoot->right);
+    }
 }
 
 int BSP::BSPTree::traverse(BSP::Node *node) {

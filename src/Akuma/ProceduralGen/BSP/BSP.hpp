@@ -9,6 +9,7 @@ namespace BSP {
         BSPTree(glm::vec2 size, int subdivisions);
         BSPTree();
         ~BSPTree();
+        const BSPTree& operator=(const BSPTree &rhs);
 
         void deleteTree();
         void reGen(glm::vec2 size, int subdivisions);
@@ -23,5 +24,6 @@ namespace BSP {
 
         int traverse(BSP::Node *node);
         int traverse(BSP::Node *node, std::vector<Node *> &list);
+        void copyTree(Node *&copiedTreeRoot, Node *otherTreeRoot);
     };
 };

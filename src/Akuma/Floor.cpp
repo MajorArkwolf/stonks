@@ -5,21 +5,21 @@
 #include <Akuma\Pathing\Pathfinding.hpp>
 
 Akuma::Floor::Floor() {
-    grid = Grid(defaultGridSize.x, defaultGridSize.y);
-    tree = BSPTree(defaultGridSize, defaultSubdivisions);
+    this->grid = Grid(defaultGridSize.x, defaultGridSize.y);
+    this->tree = BSPTree(defaultGridSize, defaultSubdivisions);
     loadGrid();
 }
 
 Akuma::Floor::Floor(glm::uvec2 size, unsigned subdivisions) {
-    grid = Grid(size.x, size.y);
-    tree = BSPTree(size, subdivisions);
+    this->grid = Grid(size.x, size.y);
+    this->tree = BSPTree(size, subdivisions);
     loadGrid();
 }
 
 Akuma::Floor::Floor(unsigned sizeX, unsigned sizeY, unsigned subdivisions) {
-    glm::uvec2 size = {sizeX, sizeY};
-    grid            = Grid(sizeX, sizeY);
-    tree            = BSPTree(size, subdivisions);
+    glm::vec2 size = {sizeX, sizeY};
+    this->grid            = Grid(sizeX, sizeY);
+    this->tree            = BSPTree(size, subdivisions);
     loadGrid();
 }
 

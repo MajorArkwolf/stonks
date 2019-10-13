@@ -9,6 +9,7 @@
 #include "Stonk/Collision.hpp"
 #include "Stonk/Physics.hpp"
 #include "Stonk/Player.hpp"
+#include "Akuma/Floor.hpp"
 
 /**
  * @namespace Stonk
@@ -25,6 +26,8 @@ namespace Stonk {
       public:
         using Window  = std::shared_ptr<SDL_Window>;
         using Context = std::shared_ptr<void>;
+        glm::vec2 size     = {40, 40};
+
 
         static constexpr auto FPS_UPDATE_INTERVAL = 0.5;
 

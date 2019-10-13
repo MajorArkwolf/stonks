@@ -6,8 +6,8 @@ BSP::Node::Node(glm::vec2 _bottomLeft, glm::vec2 _topRight) {
 }
 
 BSP::Node::~Node() {
-    delete (left);
-    delete (right);
+    delete (this->left);
+    delete (this->right);
     right  = nullptr;
     left   = nullptr;
     parent = nullptr;
