@@ -36,6 +36,9 @@ set (SOURCES
     src/ObjLoader/MtlLoader.cpp
     src/ObjLoader/ObjLoader.cpp
 
+	src/Akuma/Dice.cpp
+	src/Akuma/EntityLoader.cpp
+
     src/Shay/AABBList.cpp
     src/Shay/PlainNode.cpp
     src/Shay/CameraMap.cpp

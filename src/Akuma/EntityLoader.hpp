@@ -6,7 +6,7 @@ using std::string;
 struct EntityStats {
     string name    = "";
     unsigned int level  = 1;
-    string HD          = "d8";
+    int HD          = 8;
     string faction = "";
     string AI      = "";
     string model   = "";
@@ -17,6 +17,7 @@ struct EntityStats {
     int dexterity      = 10;
     int luck           = 10;
     int intelligence   = 10;
+    int vitality        = 10;
     string armor       = "";
     int armorStats     = 0;
     string shield      = "";
@@ -40,4 +41,5 @@ class EntityLoader {
 
   private:
     void CheckStats();
+    void GetMod(int stat);
 };

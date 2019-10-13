@@ -5,6 +5,8 @@
 #include <sstream>
 #include <string>
 
+#include "Dice.hpp"
+
 using std::ifstream;
 using std::string;
 using std::stringstream;
@@ -43,6 +45,8 @@ void EntityLoader::LoadEntity(string filename) {
             value >> entity.dexterity;
         } else if (command == "Luck:") {
             value >> entity.luck;
+        } else if (command == "Vitality:") {
+            value >> entity.vitality;
         } else if (command == "Intelligence:") {
             value >> entity.intelligence;
         } else if (command == "Armor:") {
@@ -81,7 +85,24 @@ void EntityLoader::LoadEntity(string filename) {
 }
 
 void EntityLoader::CheckStats() {
+    auto diceRoller = Dice();
     if (!entity.assignedHP) {
-		
+        for (auto i = 0; i < entity.level; ++i) {
+            if (i = 0) {
+                entity.HP = entity.HD + GetMod(entity.vitality)
+            } else {
+                entity.HP += diceRoller.Roll(entity.HD) + GetMod(entity.vitality);
+			}
+			
+		}
+        entity.assignedHP = true;
+	}
+}
+
+void EntityLoader::GetMod(int stat) {
+    if (stat < 10) {
+        return (((11 - 1) / 2) * -1);
+	}else {
+        return ((stat - 10) / 2);
 	}
 }
