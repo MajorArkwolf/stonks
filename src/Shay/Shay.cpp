@@ -151,6 +151,7 @@ void ShaysWorld::Display() {
     glEnable(GL_TEXTURE_2D);
 
     glPushMatrix();
+    glColor3f(1, 1, 1);
     glTranslatef(20000, 10100, 15000);
     displayModel(modelList[2], 300, 1);
     glPopMatrix();
