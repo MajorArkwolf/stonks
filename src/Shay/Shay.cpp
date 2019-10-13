@@ -47,7 +47,7 @@ ShaysWorld::ShaysWorld() {
     light_position[3] = 1;
 
     light_position1[0] = 20000;
-    light_position1[1] = 12000;
+    light_position1[1] = 11000;
     light_position1[2] = 15000;
     light_position1[3] = 1;
 
@@ -118,16 +118,6 @@ void ShaysWorld::displayModel(const Model &model, float scale, bool colourFaces)
     glColor3f(1, 1, 1);
 }
 
-// void ShaysWorld::displayPortalFrame() {
-//
-//    glPushMatrix();
-//    glColor3f(1, 1, 1);
-//    glTranslatef(20000, 10000, 15000);
-//    displayModel(modelList[1], 300);
-//    glColor3f(1, 1, 1);
-//    glPopMatrix();
-//}
-
 /**
  * @brief Calls all other display functions to display Shay's world
  */
@@ -150,11 +140,7 @@ void ShaysWorld::Display() {
     // displayPortalFrame();
     glEnable(GL_TEXTURE_2D);
 
-    glPushMatrix();
-    glColor3f(1, 1, 1);
-    glTranslatef(20000, 10100, 15000);
-    displayModel(modelList[2], 300, 1);
-    glPopMatrix();
+	displayPentagram();
 
     DrawBackdrop();
     DisplaySigns();
@@ -206,6 +192,8 @@ void ShaysWorld::Display() {
 
     // displayPortalFrame();
     glEnable(GL_TEXTURE_2D);
+
+    displayPentagram();
     glColor3f(1, 0.5, 0.5);
     DrawBackdrop();
     DisplaySigns();
@@ -230,6 +218,13 @@ void ShaysWorld::Display() {
     ImGui::Render();
     ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
     SDL_GL_SwapWindow(stonk.window.get());
+}
+
+void ShaysWorld::displayPentagram() {
+    glPushMatrix();
+    glTranslatef(20000, 10000, 15000);
+    displayModel(modelList[2], 300, 1);
+    glPopMatrix();
 }
 
 /**
