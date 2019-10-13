@@ -6,6 +6,7 @@
 #include <string>
 
 #include <SDL2/SDL.h>
+#include "Akuma/Floor.hpp"
 
 #include "Akuma/GridDisplay/GLDisplay.hpp"
 #include "Shay/Shay.hpp"

@@ -39,6 +39,7 @@ set (SOURCES
 	src/Akuma/Pathing/Pathfinding.cpp
 	src/Akuma/GridDisplay/GLDisplay.cpp
 	src/Akuma/GridDisplay/GridDisplay.cpp
+    src/Akuma/Floor.cpp
     
     src/ObjLoader/MtlLoader.cpp
     src/ObjLoader/ObjLoader.cpp
