@@ -319,8 +319,11 @@ namespace Shay {
         auto drawAxis(float x, float y, float z, float length) -> void;
 
         void drawSolidCube(float scale);
-        void displayPortalFrame();
+
+		void displayPentagram();
+
         void displayTavern();
+
         void DisplayDebugMenu();
 
         void Display();
