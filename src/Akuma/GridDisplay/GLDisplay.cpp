@@ -29,7 +29,7 @@ GLDisplay::GLDisplay() {
     glClearColor(0.f, 0.f, 0.f, 1.f);
 
     gluLookAt(camera.position.x, camera.position.y, camera.position.z,
-              camera.look.x, camera.look.z, camera.look.z, camera.up.x,
+              camera.look.x, camera.look.y, camera.look.z, camera.up.x,
               camera.up.y, camera.up.z);
 
     glm::vec2 size = {testGrid.gridSizeX - 1, testGrid.gridSizeY - 1};

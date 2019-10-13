@@ -82,7 +82,6 @@ std::vector<Node *> Pathing::Pathfinding::findPath(Grid &nodeGrid, Node &startNo
 
         // Path find
         if (currentNode == &endNode) {
-            std::cout << "Found Path\n";
             return traceRoute(&endNode);
         }
 
@@ -116,7 +115,7 @@ std::vector<Node *> Pathing::Pathfinding::findPath(Grid &nodeGrid, Node &startNo
             openSet.push_back(neighbour);
         }
     }
-    std::cout << "No path\n";
+
     std::vector<Node *> emptyList;
     return emptyList;
 }
