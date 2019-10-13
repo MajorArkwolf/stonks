@@ -75,13 +75,13 @@ void EntityLoader::LoadEntity(string filename) {
 			value >> entity.level;
 		} else {
             std::cout << "Value not used" << command << std::endl;
-        }
-        CheckStats();
+        }        
     }
+    CheckStats();
 }
 
 void EntityLoader::CheckStats() {
     if (!entity.assignedHP) {
-    
+		
 	}
 }
