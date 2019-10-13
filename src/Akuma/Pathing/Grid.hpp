@@ -13,7 +13,7 @@ namespace Pathing {
 
       public:
         Grid();
-        Grid(int _gridSizeX, int _gridSizeY);
+        Grid(unsigned _gridSizeX, unsigned _gridSizeY);
 
         Node &getStartNode();
         Node &getEndNode();
@@ -21,24 +21,24 @@ namespace Pathing {
 
         void resetGridCosts();
         void resetGrid();
-        Node *getNode(glm::ivec2 pos);
+        Node *getNode(glm::uvec2 pos);
 
-        void resizeGrid(int x, int y);
+        void resizeGrid(unsigned x, unsigned y);
 
         /// 2Dimensional Vector of nodes
         vector<vector<Node>> nodeGrid;
 
         /// The number of columns of nodes
-        int gridSizeX = 20;
+        unsigned gridSizeX = 20;
 
         /// The number of rows of nodes
-        int gridSizeY = 20;
+        unsigned gridSizeY = 20;
 
-        int selected[2]  = {0, 0};
-        int pathStart[2] = {0, 0};
-        int pathEnd[2]   = {0, 0};
+        unsigned selected[2]  = {0, 0};
+        unsigned pathStart[2] = {0, 0};
+        unsigned pathEnd[2]   = {0, 0};
 
         vector<Node *> getNeighbours(Node &_node);
-        vector<Node *> getNeighbours(Node &_node, int radius);
+        vector<Node *> getNeighbours(Node &_node, int radius, bool oct);
     };
 };

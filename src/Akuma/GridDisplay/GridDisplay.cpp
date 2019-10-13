@@ -1,5 +1,3 @@
-#pragma once
-
 #include "GridDisplay.hpp"
 
 #include <algorithm>
@@ -10,8 +8,8 @@
 namespace GridDisplay {
 
     void displayGrid(Grid &grid) {
-        for (int x = 0; x < grid.gridSizeX; x++) {
-            for (int y = 0; y < grid.gridSizeY; y++) {
+        for (unsigned x = 0; x < grid.gridSizeX; x++) {
+            for (unsigned y = 0; y < grid.gridSizeY; y++) {
                 glPushMatrix();
                 glTranslatef(x - 0.5f * grid.gridSizeX,
                              y - 0.5f * grid.gridSizeY, 0);
@@ -60,18 +58,18 @@ namespace GridDisplay {
                        bool walkable) -> void {
         for (auto i = bottomLeft.x; i < topRight.x; i++) {
             for (auto j = bottomLeft.y; j < topRight.y; j++) {
-                grid.nodeGrid[i][j].setWalkable(walkable);
+                grid.nodeGrid[static_cast<size_t>(i)][static_cast<size_t>(j)].setWalkable(
+                    walkable);
             }
         }
     }
 
-    auto loadBSP(Pathing::Grid &grid, int subdivisions) -> void {
+    auto loadBSP(Pathing::Grid &grid, BSP::BSPTree &tree) -> void {
 
         glm::vec2 bottomLeft = {0, 0};
         glm::vec2 topRight   = {grid.gridSizeX, grid.gridSizeY};
         setGridSquare(bottomLeft, topRight, grid, 0);
 
-        auto tree     = BSPTree(grid, subdivisions);
         auto roomList = tree.getRooms();
 
         for (auto n : roomList) {
@@ -83,15 +81,15 @@ namespace GridDisplay {
         Grid blankGrid = Grid(grid.gridSizeX, grid.gridSizeY);
 
         if (!roomList.empty()) {
-            for (auto i = 0, j = 0; i < roomList.size(); i++) {
+            for (unsigned i = 0, j = 0; i < roomList.size(); i++) {
                 auto startPoint = roomList[i]->getCentrePoint();
                 j               = i;
-                for (j; j < roomList.size(); j++) {
+                for (; j < roomList.size(); j++) {
                     auto endPoint  = roomList[j]->getCentrePoint();
                     auto startNode = blankGrid.getNode(startPoint);
                     auto endNode   = blankGrid.getNode(endPoint);
                     paths.push_back(Pathing::Pathfinding::findPath(
-                        blankGrid, *startNode, *endNode));
+                        blankGrid, *startNode, *endNode, 0));
                 }
                 std::sort(paths.begin(), paths.end(),
                           [](const std::vector<Node *> &a,
@@ -103,10 +101,10 @@ namespace GridDisplay {
             }
         }
 
-        for (auto i = 0; i < allPaths.size(); i++) {
-            for (auto j = 0; j < allPaths[i].size() && j < 2; j++) {
-                for (auto k = 0; k < allPaths[i][j].size(); k++) {
-                    glm::vec2 pos = {allPaths[i][j][k]->x, allPaths[i][j][k]->y};
+        for (unsigned i = 0; i < allPaths.size(); i++) {
+            for (unsigned j = 0; j < allPaths[i].size() && j < 2; j++) {
+                for (unsigned k = 0; k < allPaths[i][j].size(); k++) {
+                    glm::uvec2 pos = {allPaths[i][j][k]->x, allPaths[i][j][k]->y};
                     grid.getNode(pos)->setWalkable(1);
                 }
             }

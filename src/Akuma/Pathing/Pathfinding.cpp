@@ -1,4 +1,3 @@
-#pragma once
 
 #include "Pathfinding.hpp"
 
@@ -10,9 +9,17 @@
 using Pathing::Node;
 using Pathing::Pathfinding;
 
-int Pathing::Pathfinding::findDistance(Node &nodeA, Node &nodeB) {
-    int dstX = abs(nodeA.x - nodeB.x);
-    int dstY = abs(nodeA.y - nodeB.y);
+int Pathing::Pathfinding::findDistance(Node &nodeA, Node &nodeB, bool oct) {
+
+    int diagonalCost = 20;
+    int straightCost = 10;
+
+    if (oct) {
+        diagonalCost = 14;
+    }
+
+    int dstX = abs(static_cast<int>(nodeA.x) - static_cast<int>(nodeB.x));
+    int dstY = abs(static_cast<int>(nodeA.y) - static_cast<int>(nodeB.y));
 
     if (dstX > dstY)
         return diagonalCost * dstY + straightCost * (dstX - dstY);
@@ -42,7 +49,7 @@ std::vector<Node *> Pathing::Pathfinding::traceRoute(Node *endNode) {
 }
 
 std::vector<Node *> Pathing::Pathfinding::findPath(Grid &nodeGrid, Node &startNode,
-                                                   Node &endNode) {
+                                                   Node &endNode, bool oct) {
     std::vector<Node *> openSet;
     std::vector<Node *> closedSet;
     nodeGrid.resetGridCosts();
@@ -54,7 +61,7 @@ std::vector<Node *> Pathing::Pathfinding::findPath(Grid &nodeGrid, Node &startNo
         Node *currentNode = openSet[0];
 
         // Find best node to use from open set
-        for (int i = 1; i < openSet.size(); i++) {
+        for (unsigned i = 1; i < openSet.size(); i++) {
             if (openSet[i]->fCost() < currentNode->fCost() ||
                 openSet[i]->fCost() == currentNode->fCost()) {
                 if (openSet[i]->hCost < currentNode->hCost)
@@ -80,7 +87,7 @@ std::vector<Node *> Pathing::Pathfinding::findPath(Grid &nodeGrid, Node &startNo
         }
 
         // For each surrounding node
-        for (auto neighbour : nodeGrid.getNeighbours(*currentNode)) {
+        for (auto neighbour : nodeGrid.getNeighbours(*currentNode, 1, oct)) {
 
             // Skip to next neighbour if current neighbour is unwalkable or in the closedSet
             if (containsNode(closedSet, neighbour) || !neighbour->walkable) {
@@ -89,13 +96,13 @@ std::vector<Node *> Pathing::Pathfinding::findPath(Grid &nodeGrid, Node &startNo
 
             // Calculate costs and set parents
             int newCostToNeighbour =
-                currentNode->gCost + findDistance(*currentNode, *neighbour);
+                currentNode->gCost + findDistance(*currentNode, *neighbour, oct);
             // std::cout << newCostToNeighbour << std::endl;
 
             if (newCostToNeighbour < neighbour->gCost ||
                 !containsNode(openSet, neighbour)) {
                 neighbour->gCost  = newCostToNeighbour;
-                neighbour->hCost  = findDistance(*neighbour, endNode);
+                neighbour->hCost  = findDistance(*neighbour, endNode, oct);
                 neighbour->parent = currentNode;
             }
 

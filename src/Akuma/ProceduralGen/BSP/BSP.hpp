@@ -6,12 +6,12 @@
 namespace BSP {
     class BSPTree {
       public:
-        BSPTree(Pathing::Grid &grid, int subdivisions);
+        BSPTree(glm::vec2 size, int subdivisions);
         BSPTree();
         ~BSPTree();
 
         void deleteTree();
-        void reGen(Pathing::Grid &grid, int subdivisions);
+        void reGen(glm::vec2 size, int subdivisions);
 
         std::vector<Node *> getRooms();
 

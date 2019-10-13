@@ -26,10 +26,11 @@ namespace View {
 
       public:
         struct Camera {
-            glm::vec3 position = {0.f, 0.f, 0.f};
-            glm::vec3 look     = {0.f, 0.f, -1.f};
-            glm::vec3 up       = {0.f, 1.f, 0.f};
+            glm::dvec3 position = {0.f, 0.f, 0.f};
+            glm::dvec3 look     = {0.f, 0.f, -1.f};
+            glm::dvec3 up       = {0.f, 1.f, 0.f};
         } camera;
+
         GLDisplay();
         static auto get() -> GLDisplay &;
         auto updateCamera() -> void;

@@ -18,6 +18,6 @@ namespace GridDisplay {
     auto displayPath(std::vector<Node *> path, Grid &grid) -> void;
     auto setGridSquare(glm::ivec2 bottomLeft, glm::ivec2 topRight, Grid &grid,
                        bool walkable) -> void;
-    auto loadBSP(Pathing::Grid &grid, int subdivisions) -> void;
+    auto loadBSP(Pathing::Grid &grid, BSP::BSPTree &tree) -> void;
 
 };

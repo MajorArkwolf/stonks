@@ -46,7 +46,7 @@
           "type": "FILEPATH"
         }
       ],
-      "intelliSenseMode": "windows-clang-x64"
+      "intelliSenseMode": "windows-msvc-x64"
     }
   ]
 }

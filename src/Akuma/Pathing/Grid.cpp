@@ -17,7 +17,7 @@ Grid::Grid() {
     initialiseSelections();
 }
 
-Grid::Grid(int _gridSizeX, int _gridSizeY) {
+Grid::Grid(unsigned _gridSizeX, unsigned _gridSizeY) {
     this->resizeGrid(_gridSizeX, _gridSizeY);
     initialiseSelections();
 }
@@ -35,8 +35,8 @@ Node &Pathing::Grid::getSelectedNode() {
 }
 
 void Pathing::Grid::resetGridCosts() {
-    for (auto x = 0; x < gridSizeX; x++) {
-        for (auto y = 0; y < gridSizeY; y++) {
+    for (unsigned x = 0; x < gridSizeX; x++) {
+        for (unsigned y = 0; y < gridSizeY; y++) {
             nodeGrid[x][y].gCost  = 0;
             nodeGrid[x][y].hCost  = 0;
             nodeGrid[x][y].parent = nullptr;
@@ -45,8 +45,8 @@ void Pathing::Grid::resetGridCosts() {
 }
 
 void Pathing::Grid::resetGrid() {
-    for (auto x = 0; x < gridSizeX; x++) {
-        for (auto y = 0; y < gridSizeY; y++) {
+    for (unsigned x = 0; x < gridSizeX; x++) {
+        for (unsigned y = 0; y < gridSizeY; y++) {
             nodeGrid[x][y].gCost    = 0;
             nodeGrid[x][y].hCost    = 0;
             nodeGrid[x][y].walkable = 0;
@@ -54,21 +54,22 @@ void Pathing::Grid::resetGrid() {
     }
 }
 
-Node *Pathing::Grid::getNode(glm::ivec2 pos) {
+Node *Pathing::Grid::getNode(glm::uvec2 pos) {
     return &nodeGrid[pos.x][pos.y];
 }
 
-void Grid::resizeGrid(int _gridSizeX, int _gridSizeY) {
+void Grid::resizeGrid(unsigned _gridSizeX, unsigned _gridSizeY) {
     nodeGrid.resize(_gridSizeX);
 
     for (auto &array : nodeGrid) {
         array.resize(_gridSizeY);
     }
 
-    gridSizeX = _gridSizeX, gridSizeY = _gridSizeY;
+    gridSizeX = _gridSizeX;
+    gridSizeY = _gridSizeY;
 
-    for (auto x = 0; x < gridSizeX; x++) {
-        for (auto y = 0; y < gridSizeY; y++) {
+    for (unsigned x = 0; x < gridSizeX; x++) {
+        for (unsigned y = 0; y < gridSizeY; y++) {
             nodeGrid[x][y].x = x;
             nodeGrid[x][y].y = y;
         }
@@ -76,10 +77,10 @@ void Grid::resizeGrid(int _gridSizeX, int _gridSizeY) {
 }
 
 vector<Node *> Grid::getNeighbours(Node &node) {
-    return this->getNeighbours(node, 1);
+    return this->getNeighbours(node, 1, 1);
 }
 
-vector<Node *> Grid::getNeighbours(Node &node, int radius) {
+vector<Node *> Grid::getNeighbours(Node &node, int radius, bool oct) {
     vector<Node *> newList;
     long long int nodeX = node.x;
     long long int nodeY = node.y;
@@ -89,9 +90,14 @@ vector<Node *> Grid::getNeighbours(Node &node, int radius) {
             if (x != 0 || y != 0) {
                 if (!(nodeX + x <= -1 || nodeX + x >= gridSizeX ||
                       nodeY + y <= -1 || nodeY + y >= gridSizeY)) {
-                    if ((y == 0 || x == 0)) {
-
-                        newList.push_back(&nodeGrid[nodeX + x][nodeY + y]);
+                    if (!oct) {
+                        if ((y == 0 || x == 0)) {
+                            newList.push_back(&nodeGrid[static_cast<unsigned>(
+                                nodeX + x)][static_cast<unsigned>(nodeY + y)]);
+                        }
+                    } else {
+                        newList.push_back(&nodeGrid[static_cast<unsigned>(
+                            nodeX + x)][static_cast<unsigned>(nodeY + y)]);
                     }
                 }
             }

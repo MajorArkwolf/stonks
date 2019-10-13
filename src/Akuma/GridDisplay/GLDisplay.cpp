@@ -15,7 +15,7 @@ GLDisplay::GLDisplay() {
     auto &engine = Stonk::Engine::get();
 
     path = Pathfinding::findPath(testGrid, testGrid.getStartNode(),
-                                 testGrid.getEndNode());
+                                 testGrid.getEndNode(), 1);
 
     SDL_GL_GetDrawableSize(engine.window.get(), &width, &height);
     GLDisplay::ratio = static_cast<double>(width) / static_cast<double>(height);
@@ -28,9 +28,13 @@ GLDisplay::GLDisplay() {
 
     glClearColor(0.f, 0.f, 0.f, 1.f);
 
-    gluLookAt(0.f, 0.f, 0.f, 0.f, 0.f, -1.f, 0.f, 1.f, 0.f);
+    gluLookAt(camera.position.x, camera.position.y, camera.position.z,
+              camera.look.x, camera.look.z, camera.look.z, camera.up.x,
+              camera.up.y, camera.up.z);
 
-    loadBSP(testGrid, 3);
+    glm::vec2 size = {testGrid.gridSizeX - 1, testGrid.gridSizeY - 1};
+    BSPTree tree   = BSPTree(size, 3);
+    loadBSP(testGrid, tree);
 
     /*std::vector<std::vector<Node *>> paths;
     Grid blankGrid  = Grid(40, 40);
@@ -54,7 +58,7 @@ GLDisplay::GLDisplay() {
          }
      }*/
     path = Pathfinding::findPath(testGrid, testGrid.getStartNode(),
-                                 testGrid.getEndNode());
+                                 testGrid.getEndNode(), 1);
 }
 
 auto GLDisplay::display() -> void {
@@ -83,16 +87,16 @@ auto View::GLDisplay::handleKeyPress(SDL_Event &event) -> void {
         case SDL_SCANCODE_S: {
             testGrid.selected[1] =
                 ((testGrid.selected[1] - 1) % testGrid.gridSizeY);
-            if (testGrid.selected[1] < 0) {
-                testGrid.selected[1] = testGrid.gridSizeY - 1;
-            }
+
+            testGrid.selected[1] = testGrid.gridSizeY - 1;
+
         } break;
         case SDL_SCANCODE_A: {
             testGrid.selected[0] =
                 ((testGrid.selected[0] - 1) % testGrid.gridSizeX);
-            if (testGrid.selected[0] < 0) {
-                testGrid.selected[0] = testGrid.gridSizeX - 1;
-            }
+
+            testGrid.selected[0] = testGrid.gridSizeX - 1;
+
         } break;
         case SDL_SCANCODE_D: {
             testGrid.selected[0] =
@@ -101,7 +105,7 @@ auto View::GLDisplay::handleKeyPress(SDL_Event &event) -> void {
         case SDL_SCANCODE_SPACE: {
             testGrid.getSelectedNode().toggleWalkable();
             path = Pathfinding::findPath(testGrid, testGrid.getStartNode(),
-                                         testGrid.getEndNode());
+                                         testGrid.getEndNode(), 1);
         } break;
         case SDL_SCANCODE_UP: {
             gridTranslation.y -= 1;
@@ -119,29 +123,30 @@ auto View::GLDisplay::handleKeyPress(SDL_Event &event) -> void {
             testGrid.pathStart[0] = testGrid.selected[0];
             testGrid.pathStart[1] = testGrid.selected[1];
             path = Pathfinding::findPath(testGrid, testGrid.getStartNode(),
-                                         testGrid.getEndNode());
+                                         testGrid.getEndNode(), 1);
         } break;
         case SDL_SCANCODE_X: {
             testGrid.pathEnd[0] = testGrid.selected[0];
             testGrid.pathEnd[1] = testGrid.selected[1];
             path = Pathfinding::findPath(testGrid, testGrid.getStartNode(),
-                                         testGrid.getEndNode());
-        } break;
-        case SDL_SCANCODE_L: {
-            auto neighbours = testGrid.getNeighbours(
-                testGrid.nodeGrid[testGrid.selected[0]][testGrid.selected[1]]);
-            for (auto n : neighbours) {
-                n->toggleWalkable();
-            }
+                                         testGrid.getEndNode(), 1);
         } break;
         case SDL_SCANCODE_B: {
-            loadBSP(testGrid, 3);
-            testGrid.pathStart[0] = 1;
-            testGrid.pathStart[1] = 1;
-            testGrid.pathEnd[0]   = testGrid.gridSizeX - 2;
-            testGrid.pathEnd[1]   = testGrid.gridSizeY - 2;
+            glm::vec2 size = {testGrid.gridSizeX - 1, testGrid.gridSizeY - 1};
+            BSPTree tree   = BSPTree(size, 3);
+            loadBSP(testGrid, tree);
+            auto roomList  = tree.getRooms();
+            auto startNode = *roomList.begin();
+            auto endNode   = *--roomList.end();
+
+            testGrid.pathStart[0] =
+                testGrid.getNode(startNode->getCentrePoint())->x;
+            testGrid.pathStart[1] =
+                testGrid.getNode(startNode->getCentrePoint())->y;
+            testGrid.pathEnd[0] = testGrid.getNode(endNode->getCentrePoint())->x;
+            testGrid.pathEnd[1] = testGrid.getNode(endNode->getCentrePoint())->y;
             path = Pathfinding::findPath(testGrid, testGrid.getStartNode(),
-                                         testGrid.getEndNode());
+                                         testGrid.getEndNode(), 1);
 
         } break;
 

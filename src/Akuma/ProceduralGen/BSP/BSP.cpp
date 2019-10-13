@@ -8,9 +8,9 @@
 
 using BSP::Node;
 
-BSP::BSPTree::BSPTree(Pathing::Grid &grid, int subdivisions) {
+BSP::BSPTree::BSPTree(glm::vec2 size, int subdivisions) {
     glm::vec2 bottomLeft = {1, 1};
-    glm::vec2 topRight   = {grid.gridSizeX - 1, grid.gridSizeY - 1};
+    glm::vec2 topRight   = {size.x, size.y};
     root                 = new Node(bottomLeft, topRight);
 
     populateTree(root, subdivisions);
@@ -32,11 +32,11 @@ void BSP::BSPTree::deleteTree() {
     root = nullptr;
 }
 
-void BSP::BSPTree::reGen(Pathing::Grid &grid, int subdivisions) {
+void BSP::BSPTree::reGen(glm::vec2 size, int subdivisions) {
     deleteTree();
 
     glm::vec2 bottomLeft = {0, 0};
-    glm::vec2 topRight   = {grid.gridSizeX, grid.gridSizeY};
+    glm::vec2 topRight   = {size.x, size.y};
     root                 = new Node(bottomLeft, topRight);
 
     populateTree(root, subdivisions);
@@ -80,7 +80,7 @@ std::vector<Node *> BSP::BSPTree::getRooms() {
 bool BSP::BSPTree::splitNode(BSP::Node *node) {
 
     bool vertical = 1;
-    int cutoffRange =
+    unsigned cutoffRange =
         30; // Needs to be between 10 and 40 for best results, higher = more random room sizes
 
     std::random_device dev;
@@ -89,7 +89,7 @@ bool BSP::BSPTree::splitNode(BSP::Node *node) {
 
     auto parentSize = node->gridTopRight - node->gridBottomLeft;
 
-    if ((parentSize.x / parentSize.y) < 1.5) {
+    if ((parentSize.x / parentSize.y) < 1.5f) {
         vertical = 0;
     }
     /*if (dist(rng) > 50) {

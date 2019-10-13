@@ -4,7 +4,7 @@ namespace Pathing {
     class Node {
       public:
         Node();
-        Node(int _x, int _y) {
+        Node(unsigned _x, unsigned _y) {
             x      = _x;
             y      = _y;
             parent = nullptr;
@@ -19,9 +19,9 @@ namespace Pathing {
         /// Distance from starting node
         int gCost = 0;
         /// X location in grid
-        int x = 0;
+        unsigned x = 0;
         // Y location in grid
-        int y = 0;
+        unsigned y = 0;
         /// If node is traversable then walkable == 1
         bool walkable = 1;
 
