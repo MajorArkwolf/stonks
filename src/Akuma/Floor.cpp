@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include <Akuma\Pathing\Pathfinding.hpp>
+#include "Pathing/Pathfinding.hpp"
 
 Akuma::Floor::Floor() {
     this->grid = Grid(defaultGridSize.x, defaultGridSize.y);

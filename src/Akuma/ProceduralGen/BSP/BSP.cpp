@@ -33,7 +33,7 @@ const BSP::BSPTree &BSP::BSPTree::operator=(const BSPTree &rhs) {
             delete (root);
         }
         if (rhs.root == nullptr) {
-             root == nullptr;
+             root = nullptr;
         } else {
             copyTree(root, rhs.root);
         }
