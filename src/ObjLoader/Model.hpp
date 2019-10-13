@@ -58,4 +58,8 @@ struct Model {
      * @brief Materials used by the model.
      */
     std::vector<Material> Materials = {};
+    /**
+     * @brief Filename, for debugging
+     */
+    std::string Filename = "";
 };

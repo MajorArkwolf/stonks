@@ -22,6 +22,7 @@ auto OBJ::Load(const std::string &filepath) -> Model {
     string groupName       = "";
     string currentMaterial = "";
     Model mdl              = {};
+    mdl.Filename = filepath;
     // Materials currently loaded by the model
     std::map<string, Material> mats = {};
     // Maps a material to an integer ID, for use in the model.
@@ -47,6 +48,7 @@ auto OBJ::Load(const std::string &filepath) -> Model {
         {
             glm::vec2 tex = {0, 0};
             ss >> tex.x >> tex.y;
+            tex.y = 1.0f - tex.y; // invert the y
             mdl.UVs.push_back(tex);
         } else if (command == "g") // group name
         {

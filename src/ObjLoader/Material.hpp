@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/vec3.hpp>
+#include "../Stonk/OpenGl.hpp"
 /**
  * Material data for OBJ files.
  * Default values from https://people.sc.fsu.edu/~jburkardt/data/mtl/mtl.html.
@@ -39,4 +40,22 @@ class Material {
      *
      */
     Illumination illumination = Illumination::Flat;
+    /**
+     * Has ambient texture?
+     */
+    bool hasAmbientTex = false;
+    /**
+     * Ambient texture id
+     * @sa MTL::Textures
+     */
+    GLuint ambientTextureId = 0;
+    /**
+     * Has diffuse texture?
+     */
+    bool hasDiffuseTex = false;
+    /**
+     * Diffuse texture id
+     * @sa MTL::Textures
+     */
+    GLuint diffuseTextureId = 0;
 };
