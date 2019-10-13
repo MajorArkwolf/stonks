@@ -76,7 +76,7 @@ void EntityLoader::LoadEntity(string filename) {
 		} else if (command == "Level:") {
 			value >> entity.level;
         } else if (command == "HD:") {
-			value >> entity.level;
+			value >> entity.HD;
 		} else {
             std::cout << "Value not used" << command << std::endl;
         }        
