@@ -12,7 +12,7 @@ using std::stringstream;
  * @brief Default constructor for the Akuma game state
  */
 Akuma::Akuma::Akuma() {
-    hardInit();
+
 }
 
 // Akuma::Akuma::~Akuma() {} //Maybe unneeded
@@ -107,9 +107,11 @@ void Akuma::Akuma::displayDebugMenu() {
 
 auto Akuma::Akuma::unInit() -> void {}
 
-auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {}
+auto Akuma::Akuma::handleInput([[maybe_unused]] SDL_Event &event) -> void {
 
-void Akuma::update(double dt) {}
+}
+
+void Akuma::update([[maybe_unused]] double dt) {}
 
 
 /**

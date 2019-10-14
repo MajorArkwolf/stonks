@@ -260,10 +260,6 @@ namespace Shay {
         int frameCount    = 0;
         clock_t lastClock = {};
 
-        int width    = 0;
-        int height   = 0;
-        double ratio = 0.0;
-
         /// Toggle for displaying on screen map
         bool DisplayMap = false;
 

@@ -34,10 +34,6 @@ class Akuma : public BaseState {
         glm::dvec3 position = {0.f, 0.f, 0.f};
         glm::dvec3 look     = {0.f, 0.f, -1.f};
         glm::dvec3 up       = {0.f, 1.f, 0.f};
-        auto Camera::getForwardDir() const -> glm::vec3 {
-            return glm::vec3{std::sin(this->up.x), std::sin(this->up.y),
-                             std::cos(this->up.x)};
-        }
     } camera;
 
   private:

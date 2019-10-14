@@ -30,9 +30,7 @@ ShaysWorld::ShaysWorld() {
     SDL_GL_GetDrawableSize(engine.window.get(), &width, &height);
     ShaysWorld::ratio = static_cast<double>(width) / static_cast<double>(height);
 
-    modelList.push_back(OBJ::Load("tav7.obj"));
-    modelList.push_back(OBJ::Load("orb.obj"));
-    modelList.push_back(OBJ::Load("penta.obj"));
+    
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -76,23 +74,28 @@ ShaysWorld::ShaysWorld() {
     CreateTextures();
 }
 
-auto Shay::ShaysWorld::hardInit() -> void {}
+auto Shay::ShaysWorld::hardInit() -> void {
+    modelList.push_back(OBJ::Load("tav7.obj"));
+    modelList.push_back(OBJ::Load("orb.obj"));
+    modelList.push_back(OBJ::Load("penta.obj"));
+	softInit();
+}
 
 auto Shay::ShaysWorld::softInit() -> void {}
 
 auto Shay::ShaysWorld::handleInput(SDL_Event &event) -> void {
     switch (event.type) {
-            case SDL_KEYDOWN: 
-            case SDL_KEYUP: {
-                this->handleKeyEvents(event);
-            } break;
-            case SDL_MOUSEBUTTONDOWN:
-            case SDL_MOUSEBUTTONUP: 
-            case SDL_MOUSEMOTION: {
-                this->handleMouseEvents(event);
-            } break;
-            default: break;
-        }
+        case SDL_KEYDOWN:
+        case SDL_KEYUP: {
+            this->handleKeyEvents(event);
+        } break;
+        case SDL_MOUSEBUTTONDOWN:
+        case SDL_MOUSEBUTTONUP:
+        case SDL_MOUSEMOTION: {
+            this->handleMouseEvents(event);
+        } break;
+        default: break;
+    }
 }
 
 auto Shay::ShaysWorld::unInit() -> void {}
@@ -406,7 +409,7 @@ auto ShaysWorld::handleMouseEvents(SDL_Event &event) -> void {
 // * @brief Returns the current shaysWorld isntance
 // * @return The current ShaysWorld instance
 // */
-//auto ShaysWorld::get() -> ShaysWorld & {
+// auto ShaysWorld::get() -> ShaysWorld & {
 //    static auto instance = ShaysWorld{};
 //
 //    return instance;
