@@ -109,6 +109,8 @@ auto Akuma::Akuma::unInit() -> void {}
 
 auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {}
 
+void Akuma::update(double dt) {}
+
 
 /**
  * @brief Draws a 3-dimensional spatial axis at the given coordinates at the given length

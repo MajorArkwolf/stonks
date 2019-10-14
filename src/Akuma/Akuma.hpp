@@ -25,6 +25,7 @@ class Akuma : public BaseState {
     auto displayDebugMenu() -> void;
     auto unInit() -> void;
     auto handleInput(SDL_Event &event) -> void;
+    void update(double dt);
     static auto get() -> Akuma &;
 
     glm::vec3 gridTranslation = {0, 0, -50.f};

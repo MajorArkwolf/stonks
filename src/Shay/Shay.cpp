@@ -76,6 +76,27 @@ ShaysWorld::ShaysWorld() {
     CreateTextures();
 }
 
+auto Shay::ShaysWorld::hardInit() -> void {}
+
+auto Shay::ShaysWorld::softInit() -> void {}
+
+auto Shay::ShaysWorld::handleInput(SDL_Event &event) -> void {
+    switch (event.type) {
+            case SDL_KEYDOWN: 
+            case SDL_KEYUP: {
+                this->handleKeyEvents(event);
+            } break;
+            case SDL_MOUSEBUTTONDOWN:
+            case SDL_MOUSEBUTTONUP: 
+            case SDL_MOUSEMOTION: {
+                this->handleMouseEvents(event);
+            } break;
+            default: break;
+        }
+}
+
+auto Shay::ShaysWorld::unInit() -> void {}
+
 void ShaysWorld::displayModel(const Model &model, float scale, bool colourFaces) {
     glPushMatrix();
     glScalef(scale, scale, scale);
@@ -121,7 +142,7 @@ void ShaysWorld::displayModel(const Model &model, float scale, bool colourFaces)
 /**
  * @brief Calls all other display functions to display Shay's world
  */
-void ShaysWorld::Display() {
+void ShaysWorld::display() {
     auto &stonk = Stonk::Engine::get();
 
     ImGui_ImplOpenGL2_NewFrame();
@@ -262,7 +283,7 @@ void ShaysWorld::DisplayDebugMenu() {
 /**
  * @brief Updates camera variables based on the delta time between frames
  */
-void ShaysWorld::Update(double dt) {
+void ShaysWorld::update(double dt) {
     cam.Update(dt);
 }
 
@@ -381,15 +402,15 @@ auto ShaysWorld::handleMouseEvents(SDL_Event &event) -> void {
     }
 }
 
-/**
- * @brief Returns the current shaysWorld isntance
- * @return The current ShaysWorld instance
- */
-auto ShaysWorld::get() -> ShaysWorld & {
-    static auto instance = ShaysWorld{};
-
-    return instance;
-}
+///**
+// * @brief Returns the current shaysWorld isntance
+// * @return The current ShaysWorld instance
+// */
+//auto ShaysWorld::get() -> ShaysWorld & {
+//    static auto instance = ShaysWorld{};
+//
+//    return instance;
+//}
 
 /**
  * @brief Returns a pointer to the Shay camera

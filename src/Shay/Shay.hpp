@@ -7,6 +7,7 @@
 #include "Camera.hpp"
 #include "ObjLoader/ObjLoader.hpp"
 #include "TexturedPolygons.hpp"
+#include "Stonk/BaseState.hpp"
 
 /**
  * @namespace Shay
@@ -251,7 +252,7 @@ namespace Shay {
      * @class ShaysWorld
      * @brief The ultimate Shay class used to handle all others
      */
-    class ShaysWorld {
+    class ShaysWorld :public BaseState {
       public:
         GLfloat stepIncrement  = 0.0f;
         GLfloat angleIncrement = 0.0f;
@@ -308,6 +309,14 @@ namespace Shay {
 
         static auto get() -> ShaysWorld &;
 
+		auto hardInit() -> void;
+
+		auto softInit() -> void;
+
+		auto handleInput(SDL_Event &event) -> void;
+
+		auto unInit() -> void;
+
         auto displayModel(const Model &model, float scale,bool colourFaces) -> void;
 
         auto handleKeyEvents(SDL_Event &event) -> void;
@@ -326,9 +335,9 @@ namespace Shay {
 
         void DisplayDebugMenu();
 
-        void Display();
+        void display();
 
-        void Update(double dt);
+        void update(double dt);
 
         void DrawBackdrop();
 
