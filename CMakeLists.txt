@@ -78,7 +78,7 @@ target_compile_options(${PROJECT_NAME} PUBLIC
     $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:
     -Weverything -fcolor-diagnostics
     # These warnings are not useful.
-    -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded
+    -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded -Wno-weak-vtables
     -Wno-deprecated-declarations -Wno-exit-time-destructors -Wno-switch-enum>)
 # Set GCC compile flags.
 target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:GNU>:
