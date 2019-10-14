@@ -40,6 +40,7 @@ set (SOURCES
 	src/Akuma/GridDisplay/GLDisplay.cpp
 	src/Akuma/GridDisplay/GridDisplay.cpp
     src/Akuma/Floor.cpp
+	src/Akuma/Akuma.cpp
     
     src/ObjLoader/MtlLoader.cpp
     src/ObjLoader/ObjLoader.cpp

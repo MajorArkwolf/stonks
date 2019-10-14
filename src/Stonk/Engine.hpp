@@ -9,8 +9,7 @@
 #include "Stonk/Collision.hpp"
 #include "Stonk/Physics.hpp"
 #include "Stonk/Player.hpp"
-#include "Akuma/Floor.hpp"
-
+#include "Akuma/Akuma.hpp"
 /**
  * @namespace Stonk
  * @brief The global Stonk namespace

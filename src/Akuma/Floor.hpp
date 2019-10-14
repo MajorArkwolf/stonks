@@ -25,7 +25,7 @@ namespace Akuma {
 
         auto loadGrid() -> void;
 
-        const glm::uvec2 defaultGridSize   = {20, 20};
+        const glm::uvec2 defaultGridSize   = {30, 30};
         const int defaultSubdivisions = 3;
     };
 };

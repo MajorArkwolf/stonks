@@ -5,10 +5,9 @@
 #include <stdexcept>
 #include <string>
 
-#include <SDL2/SDL.h>
-#include "Akuma/Floor.hpp"
 
-#include "Akuma/GridDisplay/GLDisplay.hpp"
+#include <SDL2/SDL.h>
+
 #include "Shay/Shay.hpp"
 #include "Stonk/Camera.hpp"
 #include "Stonk/Collision.hpp"
@@ -27,10 +26,10 @@ using Stonk::State;
  * @brief The game engine main loop
  */
 auto Engine::run() -> void {
-    //auto &grid       = View::GLDisplay::get();
-    auto &engine     = Engine::get();
-    auto &shaysWorld = ShaysWorld::get();
-    
+    // auto &grid       = View::GLDisplay::get();
+    auto &engine = Engine::get();
+    // auto &shaysWorld = ShaysWorld::get();
+    auto &akuma = Akuma::Akuma::get();
 
     auto frameCount    = 0l;
     auto lastFpsUpdate = 0.0;
@@ -51,9 +50,10 @@ auto Engine::run() -> void {
             frameCount    = 0;
         }
 
-        engine.processInput();
-        shaysWorld.Update(deltaTime);
-        shaysWorld.Display();
+        //engine.processInput();
+        //shaysWorld.Update(deltaTime);
+        //shaysWorld.Display();
+        akuma.display();
     }
 }
 
