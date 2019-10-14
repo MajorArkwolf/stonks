@@ -30,8 +30,6 @@ ShaysWorld::ShaysWorld() {
     SDL_GL_GetDrawableSize(engine.window.get(), &width, &height);
     ShaysWorld::ratio = static_cast<double>(width) / static_cast<double>(height);
 
-    
-
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glViewport(0, 0, width, height);
@@ -78,7 +76,7 @@ auto Shay::ShaysWorld::hardInit() -> void {
     modelList.push_back(OBJ::Load("tav7.obj"));
     modelList.push_back(OBJ::Load("orb.obj"));
     modelList.push_back(OBJ::Load("penta.obj"));
-	softInit();
+    softInit();
 }
 
 auto Shay::ShaysWorld::softInit() -> void {}

@@ -10,8 +10,7 @@
       "buildCommandArgs": "-v",
       "ctestCommandArgs": "",
       "inheritEnvironments": [ "msvc_x64_x64" ],
-      "variables": [],
-      "intelliSenseMode": "windows-msvc-x64"
+      "variables": []
     },
     {
       "name": "x64-Release",

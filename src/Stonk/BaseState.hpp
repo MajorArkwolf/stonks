@@ -14,5 +14,4 @@ class BaseState {
     virtual void unInit()                      = 0;
     virtual void handleInput(SDL_Event &event) = 0;
     virtual void update(double dt)             = 0;
-    
 };

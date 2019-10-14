@@ -62,7 +62,7 @@ namespace Stonk {
          */
         bool showDebugMenu = false;
 
-		auto popStack() -> void;
+        auto popStack() -> void;
 
       private:
         /**

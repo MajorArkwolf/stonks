@@ -33,7 +33,7 @@ const BSP::BSPTree &BSP::BSPTree::operator=(const BSPTree &rhs) {
             delete (root);
         }
         if (rhs.root == nullptr) {
-             root = nullptr;
+            root = nullptr;
         } else {
             copyTree(root, rhs.root);
         }
@@ -170,12 +170,13 @@ int BSP::BSPTree::traverse(BSP::Node *node, std::vector<Node *> &list) {
 }
 
 void BSP::BSPTree::copyTree(Node *&copiedTreeRoot, Node *otherTreeRoot) {
-    if(otherTreeRoot == nullptr) copiedTreeRoot = nullptr;
+    if (otherTreeRoot == nullptr)
+        copiedTreeRoot = nullptr;
     else {
-        copiedTreeRoot       = new Node;
+        copiedTreeRoot                 = new Node;
         copiedTreeRoot->gridBottomLeft = otherTreeRoot->gridBottomLeft;
-        copiedTreeRoot->gridTopRight = otherTreeRoot->gridTopRight;
-        copiedTreeRoot->depth = otherTreeRoot->depth;
+        copiedTreeRoot->gridTopRight   = otherTreeRoot->gridTopRight;
+        copiedTreeRoot->depth          = otherTreeRoot->depth;
         copyTree(copiedTreeRoot->left, otherTreeRoot->left);
         copyTree(copiedTreeRoot->right, otherTreeRoot->right);
     }

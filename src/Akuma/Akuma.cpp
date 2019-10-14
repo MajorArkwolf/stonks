@@ -11,9 +11,7 @@ using std::stringstream;
 /**
  * @brief Default constructor for the Akuma game state
  */
-Akuma::Akuma::Akuma() {
-
-}
+Akuma::Akuma::Akuma() {}
 
 // Akuma::Akuma::~Akuma() {} //Maybe unneeded
 
@@ -31,13 +29,13 @@ auto Akuma::Akuma::display() -> void {
     displayGrid();
     glPopMatrix();
 
-	glDisable(GL_DEPTH_TEST);
+    glDisable(GL_DEPTH_TEST);
 
     displayDebugMenu();
 
-	/*if (this->shouldDrawAxis) {
-        auto origin = this->camera.look + (this->camera.getForwardDir() * 1.01f);
-        drawAxis(origin.x, origin.y, origin.z, 0.5f);
+    /*if (this->shouldDrawAxis) {
+        auto origin = this->camera.look + (this->camera.getForwardDir()
+    * 1.01f); drawAxis(origin.x, origin.y, origin.z, 0.5f);
     }*/
 
     ImGui::Render();
@@ -107,12 +105,9 @@ void Akuma::Akuma::displayDebugMenu() {
 
 auto Akuma::Akuma::unInit() -> void {}
 
-auto Akuma::Akuma::handleInput([[maybe_unused]] SDL_Event &event) -> void {
-
-}
+auto Akuma::Akuma::handleInput([[maybe_unused]] SDL_Event &event) -> void {}
 
 void Akuma::update([[maybe_unused]] double dt) {}
-
 
 /**
  * @brief Draws a 3-dimensional spatial axis at the given coordinates at the given length

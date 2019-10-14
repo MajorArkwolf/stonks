@@ -9,8 +9,8 @@ namespace BSP {
         BSPTree(glm::vec2 size, int subdivisions);
         BSPTree();
         ~BSPTree();
-        const BSPTree& operator=(const BSPTree &rhs);
-        BSPTree(const BSPTree & other);
+        const BSPTree &operator=(const BSPTree &rhs);
+        BSPTree(const BSPTree &other);
 
         void deleteTree();
         void reGen(glm::vec2 size, int subdivisions);

@@ -95,7 +95,7 @@ auto Floor::loadGrid() -> void {
 }
 
 auto Floor::setGridSquare(glm::uvec2 bottomLeft, glm::uvec2 topRight,
-                                 bool walkable) -> void {
+                          bool walkable) -> void {
     for (auto i = bottomLeft.x; i < topRight.x; i++) {
         for (auto j = bottomLeft.y; j < topRight.y; j++) {
             grid.nodeGrid[static_cast<size_t>(i)][static_cast<size_t>(j)].setWalkable(
