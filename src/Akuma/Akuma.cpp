@@ -8,7 +8,6 @@
 
 using std::stringstream;
 
-
 /**
  * @brief Default constructor for the Akuma game state
  */
@@ -106,7 +105,10 @@ void Akuma::Akuma::displayDebugMenu() {
     }
 }
 
-auto Akuma::Akuma::unit() -> void {}
+auto Akuma::Akuma::unInit() -> void {}
+
+auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {}
+
 
 /**
  * @brief Draws a 3-dimensional spatial axis at the given coordinates at the given length
@@ -203,11 +205,7 @@ auto Akuma::Akuma::drawRectangle(float _width, float _height, bool wireframe)
     glEnd();
 }
 
-/**
- * @brief Returns the current shaysWorld isntance
- * @return The current ShaysWorld instance
- */
-auto Akuma::Akuma::get() -> Akuma & {
+auto Akuma::get() -> Akuma & {
     static auto instance = Akuma{};
 
     return instance;

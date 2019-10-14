@@ -32,6 +32,7 @@ set (SOURCES
     src/Stonk/Collision.cpp
     src/Stonk/Physics.cpp
     src/Stonk/Viewport.cpp
+	src/Stonk/BaseState.hpp
 	src/Akuma/ProceduralGen/BSP/BSP.cpp
 	src/Akuma/ProceduralGen/BSP/Node.cpp
 	src/Akuma/Pathing/Grid.cpp

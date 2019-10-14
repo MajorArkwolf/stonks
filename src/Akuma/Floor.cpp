@@ -4,7 +4,7 @@
 
 #include "Pathing/Pathfinding.hpp"
 
-Akuma::Floor::Floor() {
+Floor::Floor() {
     auto size = defaultGridSize;
     size.x -= 1;
     size.y -= 1;
@@ -13,41 +13,41 @@ Akuma::Floor::Floor() {
     loadGrid();
 }
 
-Akuma::Floor::Floor(glm::uvec2 size, int subdivisions) {
+Floor::Floor(glm::uvec2 size, int subdivisions) {
     this->grid = Grid(size.x - 1, size.y - 1);
     this->tree = BSPTree(size, subdivisions);
     loadGrid();
 }
 
-Akuma::Floor::Floor(unsigned sizeX, unsigned sizeY, int subdivisions) {
+Floor::Floor(unsigned sizeX, unsigned sizeY, int subdivisions) {
     glm::vec2 size = {sizeX - 1, sizeY - 1};
     this->grid     = Grid(sizeX, sizeY);
     this->tree     = BSPTree(size, subdivisions);
     loadGrid();
 }
 
-auto Akuma::Floor::getGridSize() -> glm::uvec2 {
+auto Floor::getGridSize() -> glm::uvec2 {
     glm::uvec2 size = {grid.gridSizeX, grid.gridSizeY};
     return size;
 }
 
-auto Akuma::Floor::getRoomList() -> std::vector<BSP::Node *> {
+auto Floor::getRoomList() -> std::vector<BSP::Node *> {
     return tree.getRooms();
 }
 
-auto Akuma::Floor::getGrid() -> Pathing::Grid {
+auto Floor::getGrid() -> Pathing::Grid {
     return grid;
 }
 
-auto Akuma::Floor::getBSP() -> BSP::BSPTree {
+auto Floor::getBSP() -> BSP::BSPTree {
     return tree;
 }
 
-auto Akuma::Floor::getGridNode(unsigned x, unsigned y) -> Pathing::Node * {
+auto Floor::getGridNode(unsigned x, unsigned y) -> Pathing::Node * {
     return &grid.nodeGrid[x][y];
 }
 
-auto Akuma::Floor::loadGrid() -> void {
+auto Floor::loadGrid() -> void {
 
     glm::vec2 bottomLeft = {0, 0};
     glm::vec2 topRight   = {grid.gridSizeX, grid.gridSizeY};
@@ -94,7 +94,7 @@ auto Akuma::Floor::loadGrid() -> void {
     }
 }
 
-auto Akuma::Floor::setGridSquare(glm::uvec2 bottomLeft, glm::uvec2 topRight,
+auto Floor::setGridSquare(glm::uvec2 bottomLeft, glm::uvec2 topRight,
                                  bool walkable) -> void {
     for (auto i = bottomLeft.x; i < topRight.x; i++) {
         for (auto j = bottomLeft.y; j < topRight.y; j++) {

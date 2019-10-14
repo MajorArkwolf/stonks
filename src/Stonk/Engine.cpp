@@ -5,7 +5,6 @@
 #include <stdexcept>
 #include <string>
 
-
 #include <SDL2/SDL.h>
 
 #include "Shay/Shay.hpp"
@@ -22,6 +21,7 @@ using std::string;
 using Stonk::Engine;
 using Stonk::State;
 
+
 /**
  * @brief The game engine main loop
  */
@@ -29,7 +29,8 @@ auto Engine::run() -> void {
     // auto &grid       = View::GLDisplay::get();
     auto &engine = Engine::get();
     // auto &shaysWorld = ShaysWorld::get();
-    auto &akuma = Akuma::Akuma::get();
+    auto &akuma = Akuma::get();
+    auto &stack = Engine::getStack();
 
     auto frameCount    = 0l;
     auto lastFpsUpdate = 0.0;
@@ -50,10 +51,10 @@ auto Engine::run() -> void {
             frameCount    = 0;
         }
 
-        //engine.processInput();
-        //shaysWorld.Update(deltaTime);
-        //shaysWorld.Display();
-        akuma.display();
+        // engine.processInput();
+        // shaysWorld.Update(deltaTime);
+        // shaysWorld.Display();
+        stack.top()->display();
     }
 }
 
@@ -125,6 +126,10 @@ Engine::Engine() {
     ImGui::StyleColorsDark();
     ImGui_ImplSDL2_InitForOpenGL(this->window.get(), this->context.get());
     ImGui_ImplOpenGL2_Init();
+
+	auto &akuma = Akuma::get();
+    daGameStack.push(&akuma);
+
 }
 
 /**
@@ -148,6 +153,18 @@ auto Engine::get() -> Engine & {
 
     return instance;
 }
+
+auto Engine::getStack() -> std::stack<BaseState*> & {
+    return daGameStack;
+ }
+
+///**
+// * @brief Returns the current instance of the engine
+// * @return The current engine instance
+// */
+//auto Engine::getStack() -> std::stack<BaseState*> & {
+//    return daGameStack;
+//}
 
 /**
  * @brief Checks to see if the engine is currently running

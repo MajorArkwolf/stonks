@@ -1,15 +1,17 @@
 #pragma once
 
 #include <memory>
+#include <stack>
 
 #include <SDL2/SDL.h>
 #include <glm/vec3.hpp>
 
+#include "Akuma/Akuma.hpp"
 #include "Stonk/Camera.hpp"
 #include "Stonk/Collision.hpp"
 #include "Stonk/Physics.hpp"
 #include "Stonk/Player.hpp"
-#include "Akuma/Akuma.hpp"
+
 /**
  * @namespace Stonk
  * @brief The global Stonk namespace
@@ -25,8 +27,8 @@ namespace Stonk {
       public:
         using Window  = std::shared_ptr<SDL_Window>;
         using Context = std::shared_ptr<void>;
-        glm::vec2 size     = {40, 40};
 
+        static std::stack<BaseState *> daGameStack;
 
         static constexpr auto FPS_UPDATE_INTERVAL = 0.5;
 
@@ -67,6 +69,8 @@ namespace Stonk {
         bool isRunning = true;
 
         auto getTime() const -> double;
+
+        static auto getStack() -> std::stack<BaseState *> &;
 
         Engine();
 
