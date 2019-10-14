@@ -31,6 +31,7 @@ auto Engine::run() -> void {
     if (engine.daGameStack.empty()) {
         BaseState *bp = new ShaysWorld();
         engine.daGameStack.push(bp);
+        engine.daGameStack.top()->hardInit();
     }
 
     auto frameCount    = 0l;
