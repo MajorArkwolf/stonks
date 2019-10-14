@@ -15,7 +15,7 @@
 class Akuma : public BaseState {
   public:
     Akuma();
-    //~Akuma();
+    ~Akuma() = default;
     auto display() -> void;
     auto softInit() -> void;
     auto hardInit() -> void;
@@ -25,11 +25,8 @@ class Akuma : public BaseState {
     auto displayDebugMenu() -> void;
     auto unInit() -> void;
     auto handleInput(SDL_Event &event) -> void;
-    static auto Akuma::get() -> Akuma &;
+    static auto get() -> Akuma &;
 
-    int width                 = 0;
-    int height                = 0;
-    double ratio              = 0.0;
     glm::vec3 gridTranslation = {0, 0, -50.f};
 
     struct Camera {

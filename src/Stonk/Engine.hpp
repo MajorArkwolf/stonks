@@ -28,7 +28,7 @@ namespace Stonk {
         using Window  = std::shared_ptr<SDL_Window>;
         using Context = std::shared_ptr<void>;
 
-        static std::stack<BaseState *> daGameStack;
+        std::stack<BaseState *> daGameStack;
 
         static constexpr auto FPS_UPDATE_INTERVAL = 0.5;
 
@@ -62,6 +62,8 @@ namespace Stonk {
          */
         bool showDebugMenu = false;
 
+		auto popStack() -> void;
+
       private:
         /**
          * @brief A boolean signifying whether the game engine is running or not
@@ -70,7 +72,7 @@ namespace Stonk {
 
         auto getTime() const -> double;
 
-        static auto getStack() -> std::stack<BaseState *> &;
+        auto getStack() -> std::stack<BaseState *> &;
 
         Engine();
 

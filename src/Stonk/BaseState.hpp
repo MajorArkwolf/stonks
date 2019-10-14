@@ -4,6 +4,7 @@
 
 class BaseState {
   public:
+    virtual ~BaseState()                       = default;
     int width                                  = 0;
     int height                                 = 0;
     double ratio                               = 0;

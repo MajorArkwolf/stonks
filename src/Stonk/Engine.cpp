@@ -21,16 +21,18 @@ using std::string;
 using Stonk::Engine;
 using Stonk::State;
 
-
 /**
  * @brief The game engine main loop
  */
 auto Engine::run() -> void {
-    // auto &grid       = View::GLDisplay::get();
     auto &engine = Engine::get();
     // auto &shaysWorld = ShaysWorld::get();
-    auto &akuma = Akuma::get();
-    auto &stack = Engine::getStack();
+    auto &stack = engine.getStack();
+
+    if (stack.empty()) {
+        BaseState *bp = new Akuma();
+        stack.push(bp);
+    }
 
     auto frameCount    = 0l;
     auto lastFpsUpdate = 0.0;
@@ -126,10 +128,6 @@ Engine::Engine() {
     ImGui::StyleColorsDark();
     ImGui_ImplSDL2_InitForOpenGL(this->window.get(), this->context.get());
     ImGui_ImplOpenGL2_Init();
-
-	auto &akuma = Akuma::get();
-    daGameStack.push(&akuma);
-
 }
 
 /**
@@ -154,15 +152,19 @@ auto Engine::get() -> Engine & {
     return instance;
 }
 
-auto Engine::getStack() -> std::stack<BaseState*> & {
-    return daGameStack;
- }
+auto Engine::popStack() -> void{
+
+}
+
+auto Engine::getStack() -> std::stack<BaseState *> & {
+    return this->daGameStack;
+}
 
 ///**
 // * @brief Returns the current instance of the engine
 // * @return The current engine instance
 // */
-//auto Engine::getStack() -> std::stack<BaseState*> & {
+// auto Engine::getStack() -> std::stack<BaseState*> & {
 //    return daGameStack;
 //}
 
