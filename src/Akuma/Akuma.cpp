@@ -14,8 +14,10 @@ using std::stringstream;
  */
 Akuma::Akuma::Akuma() {}
 
-// Akuma::Akuma::~Akuma() {} //Maybe unneeded
 
+/**
+ * @brief Akuma display function
+ */
 auto Akuma::Akuma::display() -> void {
     auto &stonk = Stonk::Engine::get();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -44,8 +46,12 @@ auto Akuma::Akuma::display() -> void {
     SDL_GL_SwapWindow(stonk.window.get());
 }
 
-auto Akuma::Akuma::softInit() -> void {
+/**
+ * @brief Soft initialiser for the Akuma gamestate
+ */
 
+auto Akuma::Akuma::softInit() -> void {
+    glLoadIdentity();
     glLineWidth(1);
     auto &engine = Stonk::Engine::get();
 
@@ -66,6 +72,9 @@ auto Akuma::Akuma::softInit() -> void {
               camera.up.y, camera.up.z);
 }
 
+/**
+ * @brief Hard initialiser for the Akuma gamestate
+ */
 auto Akuma::Akuma::hardInit() -> void {
     // Load models textures etc here
     softInit();
@@ -103,8 +112,15 @@ void Akuma::Akuma::displayDebugMenu() {
     }
 }
 
+/**
+ * @brief Uninitialiser for the Akuma gamestate
+ */
 auto Akuma::Akuma::unInit() -> void {}
 
+/**
+ * @brief Handles input for the Akuma gamestate
+ * @param event The SDL event to read input from
+ */
 auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {
 
     switch (event.type) {
@@ -121,9 +137,17 @@ auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {
     }
 }
 
-void Akuma::update(double dt) {}
+/**
+ * @brief Physics update function for the Akuma gamestate
+ * @param dt Delta time since last frame
+ */
+void Akuma::update([[maybe_unused]]double dt) {}
 
-void Akuma::handleKeyPress(SDL_Event &event) {
+/**
+ * @brief Handles key presses for the Akuma game state
+ * @param event The SDL event containing the key press event
+ */
+void Akuma::handleKeyPress([[maybe_unused]]SDL_Event &event) {
     this->hardInit();
 }
 
@@ -169,6 +193,9 @@ auto Akuma::Akuma::drawAxis(float x, float y, float z, float length) -> void {
     glPopMatrix();
 }
 
+/**
+ * @brief Displays the current grid within the room object
+ */
 auto Akuma::Akuma::displayGrid() -> void {
     auto gridSize = floor.getGridSize();
     for (unsigned x = 0; x < gridSize.x; x++) {
@@ -204,10 +231,21 @@ auto Akuma::Akuma::displayGrid() -> void {
     }
 }
 
+/**
+ * @brief Draws a square on screen matching the given parameters
+ * @param size The size of the square to create
+ * @param wireframe Whether to draw a wireframe square or a polygon
+ */
 void Akuma::Akuma::drawSquare(float size, bool wireframe) {
     drawRectangle(size, size, wireframe);
 }
 
+/**
+ * @brief Draws a rectangle on screen matching the given parameters
+ * @param _height The height of the rectangle to create
+ * @param _width The width of the rectangle to create
+ * @param wireframe Whether to draw a wireframe or polygon
+ */
 auto Akuma::Akuma::drawRectangle(float _width, float _height, bool wireframe)
     -> void {
     if (wireframe) {

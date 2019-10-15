@@ -37,8 +37,9 @@ class Akuma : public BaseState {
     } camera;
 
   private:
+	  /// The floor
     Floor floor;
-    /// Toggle for drawing 3d axis
-    bool shouldDrawAxis = false;
+    // Toggle for drawing 3d axis
+    //bool shouldDrawAxis = false;
     auto drawAxis(float x, float y, float z, float length) -> void;
 };

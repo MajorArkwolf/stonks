@@ -16,18 +16,24 @@ class Floor {
     Floor(unsigned sizeX, unsigned sizeY, int subdivisions);
     auto getGridSize() -> glm::uvec2;
     auto getRoomList() -> std::vector<BSP::Node *>;
-    auto getGrid() -> Pathing::Grid&;
-    auto getBSP() -> BSP::BSPTree&;
+    auto getGrid() -> Pathing::Grid &;
+    auto getBSP() -> BSP::BSPTree &;
     auto getGridNode(unsigned x, unsigned y) -> Pathing::Node *;
     auto setGridSquare(glm::uvec2 bottomLeft, glm::uvec2 topRight, bool walkable)
         -> void;
 
   private:
+    /// The grid representation of the room
     Pathing::Grid grid;
+
+	/// The BSP tree that gets loaded into the grid
     BSP::BSPTree tree;
 
     auto loadGrid() -> void;
 
+    /// The default size of the grid to create
     const glm::uvec2 defaultGridSize = {30, 30};
-    const int defaultSubdivisions    = 3;
+
+    /// The default amount of times to subdivide the grid
+    const int defaultSubdivisions = 3;
 };
