@@ -1,5 +1,6 @@
 #include "Akuma.hpp"
 
+#include <iostream>
 #include <sstream>
 
 #include "imgui.h"
@@ -31,7 +32,7 @@ auto Akuma::Akuma::display() -> void {
 
     glDisable(GL_DEPTH_TEST);
 
-    displayDebugMenu();
+     displayDebugMenu();
 
     /*if (this->shouldDrawAxis) {
         auto origin = this->camera.look + (this->camera.getForwardDir()
@@ -44,9 +45,8 @@ auto Akuma::Akuma::display() -> void {
 }
 
 auto Akuma::Akuma::softInit() -> void {
-    glClearColor(0, 0, 0, 1);
-    glColor3f(1, 1, 1);
 
+    glLineWidth(1);
     auto &engine = Stonk::Engine::get();
 
     SDL_GL_GetDrawableSize(engine.window.get(), &width, &height);
@@ -55,7 +55,7 @@ auto Akuma::Akuma::softInit() -> void {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glViewport(0, 0, width, height);
-    gluPerspective(60, ratio, 1, 50000);
+    gluPerspective(60, ratio, 1, 500);
     glMatrixMode(GL_MODELVIEW);
 
     glClearColor(0.f, 0.f, 0.f, 1.f);
@@ -91,7 +91,7 @@ void Akuma::Akuma::displayDebugMenu() {
         ImGui::Text("Angles: %.2f, %.2f", static_cast<double>(angles.x),
                     static_cast<double>(angles.y));
         ImGui::Separator();
-        ImGui::Checkbox("Draw axis", &this->shouldDrawAxis);
+        ImGui::Checkbox("Quit", &stonk.isRunning);
         ImGui::End();
 
         ImGui::Begin("FPS", nullptr,
@@ -105,9 +105,27 @@ void Akuma::Akuma::displayDebugMenu() {
 
 auto Akuma::Akuma::unInit() -> void {}
 
-auto Akuma::Akuma::handleInput([[maybe_unused]] SDL_Event &event) -> void {}
+auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {
 
-void Akuma::update([[maybe_unused]] double dt) {}
+    switch (event.type) {
+        case SDL_KEYDOWN:
+        case SDL_KEYUP: {
+            this->handleKeyPress(event);
+        } break;
+        case SDL_MOUSEBUTTONDOWN:
+        case SDL_MOUSEBUTTONUP:
+        case SDL_MOUSEMOTION: {
+            // this->handleMouseEvents(event);
+        } break;
+        default: break;
+    }
+}
+
+void Akuma::update(double dt) {}
+
+void Akuma::handleKeyPress(SDL_Event &event) {
+    this->hardInit();
+}
 
 /**
  * @brief Draws a 3-dimensional spatial axis at the given coordinates at the given length
@@ -202,10 +220,4 @@ auto Akuma::Akuma::drawRectangle(float _width, float _height, bool wireframe)
     glVertex3f(0.5f * _width, -0.5f * _height, 0);
     glVertex3f(-0.5f * _width, -0.5f * _height, 0);
     glEnd();
-}
-
-auto Akuma::get() -> Akuma & {
-    static auto instance = Akuma{};
-
-    return instance;
 }

@@ -54,8 +54,10 @@ auto Engine::run() -> void {
         }
 
         engine.processInput();
-        engine.daGameStack.top()->update(deltaTime);
-        engine.daGameStack.top()->display();
+        if (!engine.daGameStack.empty()) {
+            engine.daGameStack.top()->update(deltaTime);
+            engine.daGameStack.top()->display();
+        }
     }
 }
 
@@ -95,7 +97,7 @@ Engine::Engine() {
     // Create window.
     this->window = Engine::Window{
         SDL_CreateWindow("Shay's World", 0, 0, display.w, display.h,
-                         SDL_WINDOW_BORDERLESS | SDL_WINDOW_OPENGL |
+                          SDL_WINDOW_OPENGL |
                              SDL_WINDOW_ALLOW_HIGHDPI),
         &SDL_DestroyWindow};
 
@@ -157,10 +159,12 @@ auto Engine::popStack() -> void {
     auto &stack  = engine.getStack();
 
     if (!stack.empty()) {
+        stack.top()->unInit();
         delete (stack.top());
         stack.pop();
         BaseState *bp = new Akuma();
-        stack.push(bp);
+        engine.daGameStack.push(bp);
+        engine.daGameStack.top()->hardInit();
     }
 }
 
@@ -198,8 +202,13 @@ auto Engine::handleKeyPress(SDL_Event &event) -> void {
     switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_P: {
 
-            // popStack();
+            
             this->showDebugMenu = !this->showDebugMenu;
+        } break;
+        case SDL_SCANCODE_G: {
+
+            popStack();
+            // this->showDebugMenu = !this->showDebugMenu;
         } break;
         default: break;
     }
@@ -306,7 +315,9 @@ auto Engine::processInput() -> void {
         ImGui_ImplSDL2_ProcessEvent(&event);
         SDL_SetRelativeMouseMode(this->showDebugMenu ? SDL_FALSE : SDL_TRUE);
 
-        engine.daGameStack.top()->handleInput(event);
+        if (!engine.daGameStack.empty()) {
+            engine.daGameStack.top()->handleInput(event);
+        }
 
         if (event.type == SDL_MOUSEMOTION) {
             this->handleMouseMovement(event);

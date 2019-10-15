@@ -5,6 +5,10 @@
 using BSP::BSPTree;
 using Pathing::Grid;
 
+/**
+ * @class Floor
+ * @brief Class representing a floor within the Akuma game
+ */
 class Floor {
   public:
     Floor();
@@ -12,8 +16,8 @@ class Floor {
     Floor(unsigned sizeX, unsigned sizeY, int subdivisions);
     auto getGridSize() -> glm::uvec2;
     auto getRoomList() -> std::vector<BSP::Node *>;
-    auto getGrid() -> Pathing::Grid;
-    auto getBSP() -> BSP::BSPTree;
+    auto getGrid() -> Pathing::Grid&;
+    auto getBSP() -> BSP::BSPTree&;
     auto getGridNode(unsigned x, unsigned y) -> Pathing::Node *;
     auto setGridSquare(glm::uvec2 bottomLeft, glm::uvec2 topRight, bool walkable)
         -> void;
