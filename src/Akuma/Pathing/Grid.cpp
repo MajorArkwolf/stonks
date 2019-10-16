@@ -3,37 +3,26 @@
 using Pathing::Grid;
 using Pathing::Node;
 
-void Pathing::Grid::initialiseSelections() {
-    selected[0]  = 1;
-    selected[1]  = 1;
-    pathStart[0] = 0;
-    pathStart[1] = 0;
-    pathEnd[0]   = gridSizeX - 1;
-    pathEnd[1]   = gridSizeY - 1;
-}
-
+/**
+ * @brief Default constructor for grid
+ * Creates a grid
+ */
 Grid::Grid() {
     this->resizeGrid(this->gridSizeX, this->gridSizeY);
-    initialiseSelections();
 }
 
+/**
+ * @brief Overloaded constructor for grid, creates a grid using the passed in parameters
+ * @param _gridSizeX X size of grid to create
+ * @param _gridSizeY Y size of grid to create
+ */
 Grid::Grid(unsigned _gridSizeX, unsigned _gridSizeY) {
     this->resizeGrid(_gridSizeX, _gridSizeY);
-    initialiseSelections();
 }
 
-Node &Pathing::Grid::getStartNode() {
-    return this->nodeGrid[pathStart[0]][pathStart[1]];
-}
-
-Node &Pathing::Grid::getEndNode() {
-    return this->nodeGrid[pathEnd[0]][pathEnd[1]];
-}
-
-Node &Pathing::Grid::getSelectedNode() {
-    return this->nodeGrid[selected[0]][selected[1]];
-}
-
+/**
+ * @brief Resets the costs of all nodes in grid, needs to happen for pathfinding
+ */
 void Pathing::Grid::resetGridCosts() {
     for (unsigned x = 0; x < gridSizeX; x++) {
         for (unsigned y = 0; y < gridSizeY; y++) {
@@ -44,20 +33,34 @@ void Pathing::Grid::resetGridCosts() {
     }
 }
 
+/**
+ * @brief Resets grid back to base
+ */
 void Pathing::Grid::resetGrid() {
     for (unsigned x = 0; x < gridSizeX; x++) {
         for (unsigned y = 0; y < gridSizeY; y++) {
             nodeGrid[x][y].gCost    = 0;
             nodeGrid[x][y].hCost    = 0;
             nodeGrid[x][y].walkable = 0;
+            nodeGrid[x][y].parent   = nullptr;
         }
     }
 }
 
+/**
+ * @brief Returns a pointer to the node at the given position
+ * @param pos glm unsigned vec 2 of position of node to return
+ * @return Pointer to node at given coordinate
+ */
 Node *Pathing::Grid::getNode(glm::uvec2 pos) {
     return &nodeGrid[pos.x][pos.y];
 }
 
+/**
+ * @brief Resiszes the grid to the passed in values
+ * @param _gridSizeX X size of grid to create
+ * @param _gridSizeY Y size of grid to create
+ */
 void Grid::resizeGrid(unsigned _gridSizeX, unsigned _gridSizeY) {
     nodeGrid.resize(_gridSizeX);
 
@@ -76,10 +79,22 @@ void Grid::resizeGrid(unsigned _gridSizeX, unsigned _gridSizeY) {
     }
 }
 
+/**
+ * @brief Returns all 8 neighbours of a given node if they exist
+ * @param node The node to get neighbours from
+ * @return A vector containing pointers to all the node neighbours
+ */
 vector<Node *> Grid::getNeighbours(Node &node) {
     return this->getNeighbours(node, 1, 1);
 }
 
+/**
+ * @brief Returns the specified number of neighbours of a given node if they exist
+ * @param node The node to get neighbours from
+ * @param radius The radius to get neighbours from, Use 1 for default
+ * @param oct True = return all 8 neighbours, False = return the 4 neighbours in each cardinal direction
+ * @return A vector containing pointers to all the node neighbours
+ */
 vector<Node *> Grid::getNeighbours(Node &node, int radius, bool oct) {
     vector<Node *> newList;
     long long int nodeX = node.x;

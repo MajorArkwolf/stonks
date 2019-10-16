@@ -76,6 +76,29 @@ ShaysWorld::ShaysWorld() {
     CreateTextures();
 }
 
+auto Shay::ShaysWorld::hardInit() -> void {
+    softInit();
+}
+
+auto Shay::ShaysWorld::softInit() -> void {}
+
+auto Shay::ShaysWorld::handleInput(SDL_Event &event) -> void {
+    switch (event.type) {
+        case SDL_KEYDOWN:
+        case SDL_KEYUP: {
+            this->handleKeyEvents(event);
+        } break;
+        case SDL_MOUSEBUTTONDOWN:
+        case SDL_MOUSEBUTTONUP:
+        case SDL_MOUSEMOTION: {
+            this->handleMouseEvents(event);
+        } break;
+        default: break;
+    }
+}
+
+auto Shay::ShaysWorld::unInit() -> void {}
+
 void ShaysWorld::displayModel(const Model &model, float scale, bool colourFaces) {
     glPushMatrix();
     glScalef(scale, scale, scale);
@@ -121,7 +144,7 @@ void ShaysWorld::displayModel(const Model &model, float scale, bool colourFaces)
 /**
  * @brief Calls all other display functions to display Shay's world
  */
-void ShaysWorld::Display() {
+void ShaysWorld::display() {
     auto &stonk = Stonk::Engine::get();
 
     ImGui_ImplOpenGL2_NewFrame();
@@ -220,7 +243,7 @@ void ShaysWorld::Display() {
     SDL_GL_SwapWindow(stonk.window.get());
 }
 
-void ShaysWorld::displayPentagram() {
+void ShaysWorld::displayPentagram(void) {
     glPushMatrix();
     glTranslatef(20000, 10000, 15000);
     displayModel(modelList[2], 300, 1);
@@ -262,7 +285,7 @@ void ShaysWorld::DisplayDebugMenu() {
 /**
  * @brief Updates camera variables based on the delta time between frames
  */
-void ShaysWorld::Update(double dt) {
+void ShaysWorld::update(double dt) {
     cam.Update(dt);
 }
 

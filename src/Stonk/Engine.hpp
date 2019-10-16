@@ -1,10 +1,12 @@
 #pragma once
 
 #include <memory>
+#include <stack>
 
 #include <SDL2/SDL.h>
 #include <glm/vec3.hpp>
 
+#include "Akuma/Akuma.hpp"
 #include "Stonk/Camera.hpp"
 #include "Stonk/Collision.hpp"
 #include "Stonk/Physics.hpp"
@@ -17,6 +19,7 @@
 namespace Stonk {
     enum class GameMode { SHAY, STONK, MENU };
     /**
+     * @class Engine
      * @brief Stonk game engine.
      *
      * At least it's not Shay's World.
@@ -58,12 +61,12 @@ namespace Stonk {
          */
         bool showDebugMenu = false;
 
-      private:
         /**
          * @brief A boolean signifying whether the game engine is running or not
          */
         bool isRunning = true;
 
+      private:
         auto getTime() const -> double;
 
         Engine();

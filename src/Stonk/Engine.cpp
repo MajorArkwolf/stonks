@@ -7,7 +7,6 @@
 
 #include <SDL2/SDL.h>
 
-#include "Akuma/GridDisplay/GLDisplay.hpp"
 #include "Shay/Shay.hpp"
 #include "Stonk/Camera.hpp"
 #include "Stonk/Collision.hpp"
@@ -26,10 +25,8 @@ using Stonk::State;
  * @brief The game engine main loop
  */
 auto Engine::run() -> void {
-    //auto &grid       = View::GLDisplay::get();
-    auto &engine     = Engine::get();
-    auto &shaysWorld = ShaysWorld::get();
-    
+    auto &engine = Engine::get();
+    auto &shay   = ShaysWorld::get();
 
     auto frameCount    = 0l;
     auto lastFpsUpdate = 0.0;
@@ -51,8 +48,8 @@ auto Engine::run() -> void {
         }
 
         engine.processInput();
-        shaysWorld.Update(deltaTime);
-        shaysWorld.Display();
+        shay.update(deltaTime);
+        shay.display();
     }
 }
 
@@ -92,8 +89,7 @@ Engine::Engine() {
     // Create window.
     this->window = Engine::Window{
         SDL_CreateWindow("Shay's World", 0, 0, display.w, display.h,
-                         SDL_WINDOW_BORDERLESS | SDL_WINDOW_OPENGL |
-                             SDL_WINDOW_ALLOW_HIGHDPI),
+                         SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI),
         &SDL_DestroyWindow};
 
     if (this->window.get() == nullptr) {
@@ -162,23 +158,11 @@ auto Engine::getIsRunning() const -> bool {
  * @param event The SDL2 event being read from
  */
 auto Engine::handleKeyPress(SDL_Event &event) -> void {
-    auto &shaysWorld = ShaysWorld::get();
-
-    switch (gameMode) {
-        case GameMode::SHAY: {
-            shaysWorld.handleKeyEvents(event);
-        } break;
-        case GameMode::STONK: {
-            // Send event to stonk input handler
-        } break;
-        case GameMode::MENU: {
-            // Send event to menu handler
-        } break;
-    }
-
     switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_P: {
             this->showDebugMenu = !this->showDebugMenu;
+        } break;
+        case SDL_SCANCODE_G: {
         } break;
         default: break;
     }
@@ -190,18 +174,6 @@ auto Engine::handleKeyPress(SDL_Event &event) -> void {
  * @param event The SDL2 event being read from
  */
 auto Engine::handleKeyRelease(SDL_Event &event) -> void {
-    auto &shaysWorld = ShaysWorld::get();
-    switch (gameMode) {
-        case GameMode::SHAY: {
-            shaysWorld.handleKeyEvents(event);
-        } break;
-        case GameMode::STONK: {
-            // Send event to stonk input handler
-        } break;
-        case GameMode::MENU: {
-            // Send event to menu handler
-        } break;
-    }
     switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_P: {
         } break;
@@ -230,18 +202,6 @@ auto Engine::handleMouseButtonPress(SDL_Event &event) -> void {
     //                          // single click, 2 = double click
     // int releaseXPos = event.button.x; // X-position of mouse when pressed
     // int releaseYPos = event.button.y; // Y-position of mouse when pressed
-    auto &shaysWorld = ShaysWorld::get();
-    switch (gameMode) {
-        case GameMode::SHAY: {
-            shaysWorld.handleMouseEvents(event);
-        } break;
-        case GameMode::STONK: {
-            // Send event to stonk input handler
-        } break;
-        case GameMode::MENU: {
-            // Send event to menu handler
-        } break;
-    }
     switch (event.button.button) {
         case SDL_BUTTON_LEFT: break;
         case SDL_BUTTON_RIGHT: break;
@@ -287,35 +247,19 @@ auto Engine::handleMouseWheelMotion([[maybe_unused]] SDL_Event &event) -> void {
 auto Engine::processInput() -> void {
     auto event        = SDL_Event{};
     auto handledMouse = false;
+    auto &shay        = ShaysWorld::get();
 
     while (SDL_PollEvent(&event)) {
         ImGui_ImplSDL2_ProcessEvent(&event);
         SDL_SetRelativeMouseMode(this->showDebugMenu ? SDL_FALSE : SDL_TRUE);
 
-        switch (event.type) {
-            case SDL_KEYDOWN: {
-                this->handleKeyPress(event);
-            } break;
-            case SDL_KEYUP: {
-                this->handleKeyRelease(event);
-            } break;
-            case SDL_MOUSEBUTTONDOWN: {
-                this->handleMouseButtonPress(event);
-            } break;
-            case SDL_MOUSEBUTTONUP: {
-                this->handleMouseButtonRelease(event);
-            } break;
-            case SDL_MOUSEMOTION: {
-                this->handleMouseMovement(event);
-                handledMouse = true;
-            } break;
-            case SDL_MOUSEWHEEL: {
-                this->handleMouseWheelMotion(event);
-            } break;
-            case SDL_QUIT: {
-                this->isRunning = false;
-            } break;
-            default: break;
+        shay.handleInput(event);
+
+        if (event.type == SDL_MOUSEMOTION) {
+            this->handleMouseMovement(event);
+            handledMouse = true;
+        } else if (event.type == SDL_KEYDOWN) {
+            this->handleKeyPress(event);
         }
     }
 

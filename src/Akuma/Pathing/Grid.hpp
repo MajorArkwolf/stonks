@@ -6,23 +6,24 @@
 
 using std::vector;
 
+/**
+ * @namespace Pathing
+ * @brief A namespace for the A* pathfinding algorithm
+ */
 namespace Pathing {
-    class Grid {
-      private:
-        void initialiseSelections();
 
+    /**
+     * @class Grid
+     * @brief A class used to represent a grid using a vector of a vector of nodes
+     */
+    class Grid {
       public:
         Grid();
         Grid(unsigned _gridSizeX, unsigned _gridSizeY);
 
-        Node &getStartNode();
-        Node &getEndNode();
-        Node &getSelectedNode();
-
         void resetGridCosts();
         void resetGrid();
         Node *getNode(glm::uvec2 pos);
-
         void resizeGrid(unsigned x, unsigned y);
 
         /// 2Dimensional Vector of nodes
@@ -33,10 +34,6 @@ namespace Pathing {
 
         /// The number of rows of nodes
         unsigned gridSizeY = 20;
-
-        unsigned selected[2]  = {0, 0};
-        unsigned pathStart[2] = {0, 0};
-        unsigned pathEnd[2]   = {0, 0};
 
         vector<Node *> getNeighbours(Node &_node);
         vector<Node *> getNeighbours(Node &_node, int radius, bool oct);
