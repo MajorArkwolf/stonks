@@ -38,8 +38,6 @@ set (SOURCES
     src/Akuma/Pathing/Grid.cpp
     src/Akuma/Pathing/Node.cpp
     src/Akuma/Pathing/Pathfinding.cpp
-    src/Akuma/GridDisplay/GLDisplay.cpp
-    src/Akuma/GridDisplay/GridDisplay.cpp
     src/Akuma/Floor.cpp
     src/Akuma/Akuma.cpp
     

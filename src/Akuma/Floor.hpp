@@ -26,7 +26,7 @@ class Floor {
     /// The grid representation of the room
     Pathing::Grid grid;
 
-	/// The BSP tree that gets loaded into the grid
+    /// The BSP tree that gets loaded into the grid
     BSP::BSPTree tree;
 
     auto loadGrid() -> void;

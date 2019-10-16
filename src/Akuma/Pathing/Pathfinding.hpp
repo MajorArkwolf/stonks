@@ -3,6 +3,10 @@
 
 #include "Grid.hpp"
 
+/**
+ * @namespace Pathing
+ * @brief A namespace for the A* pathfinding algorithm
+ */
 namespace Pathing {
     class Pathfinding {
       public:

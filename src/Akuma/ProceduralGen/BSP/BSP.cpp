@@ -8,9 +8,22 @@
 
 using BSP::Node;
 
-BSP::BSPTree::BSPTree(glm::vec2 size, int subdivisions) {
-    glm::vec2 bottomLeft = {1, 1};
-    glm::vec2 topRight   = {size.x, size.y};
+/**
+ * @brief Default constructor for BSP Tree
+ * Sets root to nullptr
+ */
+BSP::BSPTree::BSPTree() {
+    root = nullptr;
+}
+
+/**
+ * @brief Overloaded constructor for BSP Tree
+ * @param size Size of square to partition
+ * @param subdivisions Amount of times to subdivide base square, number of rooms = 2^subdivisions
+ */
+BSP::BSPTree::BSPTree(glm::uvec2 size, int subdivisions) {
+    glm::uvec2 bottomLeft = {1, 1};
+    glm::uvec2 topRight   = {size.x, size.y};
     root                 = new Node(bottomLeft, topRight);
 
     populateTree(root, subdivisions);
@@ -18,15 +31,21 @@ BSP::BSPTree::BSPTree(glm::vec2 size, int subdivisions) {
     traverse(root);
 }
 
-BSP::BSPTree::BSPTree() {
-    root = nullptr;
-}
-
+/**
+ * @brief Destructor for BSP tree
+ * Safely destructs tree and frees memory
+ */
 BSP::BSPTree::~BSPTree() {
     delete (root);
     root = nullptr;
 }
 
+/**
+ * @brief Assignment operator overload for BSPTree
+ * Safely performs a deep copy from left hand tree to right hand tree
+ * @param rhs BSPTree on right hand side
+ * @return Copied tree
+ */
 const BSP::BSPTree &BSP::BSPTree::operator=(const BSPTree &rhs) {
     if (this != &rhs) {
         if (root != nullptr) {
@@ -42,15 +61,28 @@ const BSP::BSPTree &BSP::BSPTree::operator=(const BSPTree &rhs) {
     return *this;
 }
 
+/**
+ * @brief Copy constructor for BSPTree
+ * @param other Tree to deep copy this tree into
+ */
 BSP::BSPTree::BSPTree(const BSPTree &other) {
     copyTree(this->root, other.root);
 }
 
+/**
+ * @brief Safely destructs tree by calling root node destructor
+ * Causes destruction cascade due to node destructor
+ */
 void BSP::BSPTree::deleteTree() {
     delete (root);
     root = nullptr;
 }
 
+/**
+ * @brief Regenerates current BSP based on passed in parameters
+ * @param size Size of square to partition
+ * @param subdivisions Amount of times to subdivide base square, number of rooms = 2^subdivisions
+ */
 void BSP::BSPTree::reGen(glm::vec2 size, int subdivisions) {
     deleteTree();
 
@@ -63,6 +95,11 @@ void BSP::BSPTree::reGen(glm::vec2 size, int subdivisions) {
     traverse(root);
 }
 
+/**
+ * @brief Recursive function used to generate tree nodes and subdivide rooms
+ * @param node Current node being worked on
+ * @param subdivisions Amount of times to subdivide base square, number of rooms = 2^subdivisions
+ */
 void BSP::BSPTree::populateTree(BSP::Node *node, int subdivisions) {
     if (node->depth < subdivisions) {
 
@@ -88,6 +125,10 @@ void BSP::BSPTree::populateTree(BSP::Node *node, int subdivisions) {
     }
 }
 
+/**
+ * @brief Returns all rooms in tree
+ * @return A stl vector containing all Nodes in the tree that have no children (rooms)
+ */
 std::vector<Node *> BSP::BSPTree::getRooms() {
     std::vector<Node *> roomList;
 
@@ -96,6 +137,10 @@ std::vector<Node *> BSP::BSPTree::getRooms() {
     return roomList;
 }
 
+/**
+ * @brief Splits the given node semi randomly and creates children
+ * @param node Node to split
+ */
 bool BSP::BSPTree::splitNode(BSP::Node *node) {
 
     bool vertical = 1;
@@ -108,13 +153,12 @@ bool BSP::BSPTree::splitNode(BSP::Node *node) {
 
     auto parentSize = node->gridTopRight - node->gridBottomLeft;
 
+    //if (dist(rng) > 50) {
+    //    vertical = 0;
+    //}
     if ((parentSize.x / parentSize.y) < 1.5f) {
         vertical = 0;
     }
-    /*if (dist(rng) > 50) {
-        vertical = 0;
-    }*/
-
     std::uniform_int_distribution<std::mt19937::result_type> dist35(
         50 - cutoffRange, 50 + cutoffRange);
 
@@ -148,6 +192,11 @@ bool BSP::BSPTree::splitNode(BSP::Node *node) {
     return 0;
 }
 
+/**
+ * @brief Tree traversal function used by getRooms to push nodes without children onto vector
+ * @param node Current node being looked at
+ * @param list The vector to push childless nodes onto
+ */
 int BSP::BSPTree::traverse(BSP::Node *node, std::vector<Node *> &list) {
 
     if (node == nullptr) {
@@ -169,6 +218,11 @@ int BSP::BSPTree::traverse(BSP::Node *node, std::vector<Node *> &list) {
     return 0;
 }
 
+/**
+ * @brief Method used to deep copy one tree to another
+ * @param copiedTreeRoot Root node of tree being copied
+ * @param otherTreeRoot Root node of tree being copied into
+ */
 void BSP::BSPTree::copyTree(Node *&copiedTreeRoot, Node *otherTreeRoot) {
     if (otherTreeRoot == nullptr)
         copiedTreeRoot = nullptr;
@@ -182,21 +236,15 @@ void BSP::BSPTree::copyTree(Node *&copiedTreeRoot, Node *otherTreeRoot) {
     }
 }
 
+/**
+ * @brief Tree traversal method, does nothing but traverse
+ * @param node Current node
+ */
 int BSP::BSPTree::traverse(BSP::Node *node) {
 
     if (node == nullptr) {
         return 0;
     }
-    /*if (node->depth == 3) {
-
-        std::cout << "Node info: " << std::endl
-                  << "Depth: " << node->depth << std::endl
-                  << "Bottom left grid space : " << node->gridBottomLeft.x
-                  << ", " << node->gridBottomLeft.y << std::endl
-                  << "Top right grid space : " << node->gridTopRight.x << ", "
-                  << node->gridTopRight.y << std::endl
-                  << std::endl;
-    }*/
 
     if (node->left != nullptr) {
         traverse(node->left);
