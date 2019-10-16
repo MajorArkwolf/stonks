@@ -65,7 +65,7 @@ auto Floor::getRoomList() -> std::vector<BSP::Node *> {
  * @brief Returns a reference to the grid
  * @return A reference to the grid
  */
-auto Floor::getGrid() -> Pathing::Grid& {
+auto Floor::getGrid() -> Pathing::Grid & {
     return grid;
 }
 
@@ -73,7 +73,7 @@ auto Floor::getGrid() -> Pathing::Grid& {
  * @brief Returns a reference to the BSP tree
  * @return A reference to the BSP tree
  */
-auto Floor::getBSP() -> BSP::BSPTree& {
+auto Floor::getBSP() -> BSP::BSPTree & {
     return tree;
 }
 
@@ -86,7 +86,7 @@ auto Floor::getGridNode(unsigned x, unsigned y) -> Pathing::Node * {
     auto size = getGridSize();
     if (x > size.x || y > size.y) {
         return &grid.nodeGrid[0][0];
-	}
+    }
     return &grid.nodeGrid[x][y];
 }
 

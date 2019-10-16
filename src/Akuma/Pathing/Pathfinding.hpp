@@ -8,6 +8,11 @@
  * @brief A namespace for the A* pathfinding algorithm
  */
 namespace Pathing {
+
+    /**
+     * @class Pathfinding
+     * @brief A class for finding a path using the A* pathfinding algorithm
+     */
     class Pathfinding {
       public:
         static int findDistance(Node &nodeA, Node &nodeB, bool oct);

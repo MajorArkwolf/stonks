@@ -26,7 +26,6 @@ using Stonk::State;
  */
 auto Engine::run() -> void {
     auto &engine = Engine::get();
-    // auto &stack = engine.getStack();
 
     if (engine.daGameStack.empty()) {
         BaseState *bp = new ShaysWorld();
@@ -97,8 +96,7 @@ Engine::Engine() {
     // Create window.
     this->window = Engine::Window{
         SDL_CreateWindow("Shay's World", 0, 0, display.w, display.h,
-                          SDL_WINDOW_OPENGL |
-                             SDL_WINDOW_ALLOW_HIGHDPI),
+                         SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI),
         &SDL_DestroyWindow};
 
     if (this->window.get() == nullptr) {
@@ -172,14 +170,6 @@ auto Engine::getStack() -> std::stack<BaseState *> & {
     return this->daGameStack;
 }
 
-///**
-// * @brief Returns the current instance of the engine
-// * @return The current engine instance
-// */
-// auto Engine::getStack() -> std::stack<BaseState*> & {
-//    return daGameStack;
-//}
-
 /**
  * @brief Checks to see if the engine is currently running
  * @return A boolean, returns true if the engine is running
@@ -194,21 +184,12 @@ auto Engine::getIsRunning() const -> bool {
  * @param event The SDL2 event being read from
  */
 auto Engine::handleKeyPress(SDL_Event &event) -> void {
-    // auto &engine = Engine::get();
-    // auto &stack = engine.getStack();
-
-    // stack.top()->handleInput(event);
-
     switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_P: {
-
-            
             this->showDebugMenu = !this->showDebugMenu;
         } break;
         case SDL_SCANCODE_G: {
-
             popStack();
-            // this->showDebugMenu = !this->showDebugMenu;
         } break;
         default: break;
     }
@@ -220,10 +201,6 @@ auto Engine::handleKeyPress(SDL_Event &event) -> void {
  * @param event The SDL2 event being read from
  */
 auto Engine::handleKeyRelease(SDL_Event &event) -> void {
-    //   auto &engine = Engine::get();
-    //   auto &stack = engine.getStack();
-    ////
-
     switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_P: {
         } break;
@@ -252,18 +229,6 @@ auto Engine::handleMouseButtonPress(SDL_Event &event) -> void {
     //                          // single click, 2 = double click
     // int releaseXPos = event.button.x; // X-position of mouse when pressed
     // int releaseYPos = event.button.y; // Y-position of mouse when pressed
-    // auto &shaysWorld = ShaysWorld::get();
-    // switch (gameMode) {
-    //    case GameMode::SHAY: {
-    //        shaysWorld.handleMouseEvents(event);
-    //    } break;
-    //    case GameMode::STONK: {
-    //        // Send event to stonk input handler
-    //    } break;
-    //    case GameMode::MENU: {
-    //        // Send event to menu handler
-    //    } break;
-    //}
     switch (event.button.button) {
         case SDL_BUTTON_LEFT: break;
         case SDL_BUTTON_RIGHT: break;

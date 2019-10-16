@@ -14,7 +14,6 @@ using std::stringstream;
  */
 Akuma::Akuma::Akuma() {}
 
-
 /**
  * @brief Akuma display function
  */
@@ -34,7 +33,7 @@ auto Akuma::Akuma::display() -> void {
 
     glDisable(GL_DEPTH_TEST);
 
-     displayDebugMenu();
+    displayDebugMenu();
 
     /*if (this->shouldDrawAxis) {
         auto origin = this->camera.look + (this->camera.getForwardDir()
@@ -141,13 +140,13 @@ auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {
  * @brief Physics update function for the Akuma gamestate
  * @param dt Delta time since last frame
  */
-void Akuma::update([[maybe_unused]]double dt) {}
+void Akuma::update([[maybe_unused]] double dt) {}
 
 /**
  * @brief Handles key presses for the Akuma game state
  * @param event The SDL event containing the key press event
  */
-void Akuma::handleKeyPress([[maybe_unused]]SDL_Event &event) {
+void Akuma::handleKeyPress([[maybe_unused]] SDL_Event &event) {
     this->hardInit();
 }
 

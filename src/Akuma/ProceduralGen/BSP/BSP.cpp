@@ -24,7 +24,7 @@ BSP::BSPTree::BSPTree() {
 BSP::BSPTree::BSPTree(glm::uvec2 size, int subdivisions) {
     glm::uvec2 bottomLeft = {1, 1};
     glm::uvec2 topRight   = {size.x, size.y};
-    root                 = new Node(bottomLeft, topRight);
+    root                  = new Node(bottomLeft, topRight);
 
     populateTree(root, subdivisions);
     splitNode(root);
@@ -153,7 +153,7 @@ bool BSP::BSPTree::splitNode(BSP::Node *node) {
 
     auto parentSize = node->gridTopRight - node->gridBottomLeft;
 
-    //if (dist(rng) > 50) {
+    // if (dist(rng) > 50) {
     //    vertical = 0;
     //}
     if ((parentSize.x / parentSize.y) < 1.5f) {
