@@ -90,7 +90,6 @@ class Entity {
 
 class Manager {
   private:
-  public:
     std::vector<std::unique_ptr<Entity>> entities;
 
   public:
