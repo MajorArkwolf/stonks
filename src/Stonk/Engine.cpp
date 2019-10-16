@@ -204,6 +204,7 @@ auto Stonk::Engine::purgeStack() -> void {
 
     while (!stack.empty()) {
         stack.top()->unInit();
+        delete (stack.top());
         stack.pop();
     }
 }
@@ -219,6 +220,7 @@ auto Stonk::Engine::popStack() -> void {
     auto &stack = Engine::get().daGameStateStack;
     if (!stack.empty()) {
         stack.top()->unInit();
+        delete (stack.top());
         stack.pop();
     }
 }
