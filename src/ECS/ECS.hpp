@@ -94,11 +94,11 @@ public:
   }
 
   void refresh() {
-    entities.erase(std::remove_if(std::begin(entites), std::end(entities),
+      entities.erase(std::remove_if(std::begin(entities), std::end(entities),
       [](const std::unique_ptr<Entity> &mEntity) {
         return !mEntity->isActive();
       }),
-      std::end(entites));
+                     std::end(entities));
   }
 
   Entity& addEntity() {
