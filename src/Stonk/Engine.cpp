@@ -93,7 +93,8 @@ Engine::Engine() {
     // Create window.
     this->window = Engine::Window{
         SDL_CreateWindow("Shay's World", 0, 0, display.w, display.h,
-                         SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI),
+                         SDL_WINDOW_BORDERLESS | SDL_WINDOW_OPENGL |
+                             SDL_WINDOW_ALLOW_HIGHDPI),
         &SDL_DestroyWindow};
 
     if (this->window.get() == nullptr) {
