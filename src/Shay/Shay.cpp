@@ -26,19 +26,6 @@ using Image = Shay::TexturedPolygons::Image;
  * @brief Shays world default constructor, initialises all required variables, objects and textures
  */
 ShaysWorld::ShaysWorld() {
-    auto &engine = Stonk::Engine::get();
-    SDL_GL_GetDrawableSize(engine.window.get(), &width, &height);
-    ShaysWorld::ratio = static_cast<double>(width) / static_cast<double>(height);
-
-    modelList.push_back(OBJ::Load("tav7.obj"));
-    modelList.push_back(OBJ::Load("orb.obj"));
-    modelList.push_back(OBJ::Load("penta.obj"));
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glViewport(0, 0, width, height);
-    gluPerspective(60, ShaysWorld::ratio, 1, 50000);
-    glMatrixMode(GL_MODELVIEW);
 
     // set light position
     light_position[0] = 7000;
@@ -50,12 +37,12 @@ ShaysWorld::ShaysWorld() {
     light_position1[1] = 11000;
     light_position1[2] = 15000;
     light_position1[3] = 1;
+}
 
-    // set background (sky colour)
-    glClearColor(97.0f / 255.0f, 140.0f / 255.0f, 185.0f / 255.0f, 1.0f);
-
-    // set perpsective
-    gluLookAt(0.0, 1.75, 0.0, 0.0, 1.75, -1.0, 0.0, 1.0, 0.0);
+auto Shay::ShaysWorld::hardInit() -> void {
+    modelList.push_back(OBJ::Load("tav7.obj"));
+    modelList.push_back(OBJ::Load("orb.obj"));
+    modelList.push_back(OBJ::Load("penta.obj"));
 
     // settings for glut cylinders
     glu_cylinder = gluNewQuadric();
@@ -74,13 +61,28 @@ ShaysWorld::ShaysWorld() {
     // load texture images and create display lists
     CreateTextureList();
     CreateTextures();
-}
 
-auto Shay::ShaysWorld::hardInit() -> void {
     softInit();
 }
 
-auto Shay::ShaysWorld::softInit() -> void {}
+auto Shay::ShaysWorld::softInit() -> void {
+
+    auto &engine = Stonk::Engine::get();
+    SDL_GL_GetDrawableSize(engine.window.get(), &width, &height);
+    ShaysWorld::ratio = static_cast<double>(width) / static_cast<double>(height);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glViewport(0, 0, width, height);
+    gluPerspective(60, ShaysWorld::ratio, 1, 50000);
+    glMatrixMode(GL_MODELVIEW);
+
+    // set background (sky colour)
+    glClearColor(97.0f / 255.0f, 140.0f / 255.0f, 185.0f / 255.0f, 1.0f);
+
+    // set perpsective
+    gluLookAt(0.0, 1.75, 0.0, 0.0, 1.75, -1.0, 0.0, 1.0, 0.0);
+}
 
 auto Shay::ShaysWorld::handleInput(SDL_Event &event) -> void {
     switch (event.type) {
@@ -138,7 +140,6 @@ void ShaysWorld::displayModel(const Model &model, float scale, bool colourFaces)
         glEnd();
     }
     glPopMatrix();
-    glColor3f(1, 1, 1);
 }
 
 /**
