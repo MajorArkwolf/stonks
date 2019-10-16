@@ -26,12 +26,7 @@ using Stonk::State;
  */
 auto Engine::run() -> void {
     auto &engine = Engine::get();
-
-    if (engine.daGameStack.empty()) {
-        BaseState *bp = new ShaysWorld();
-        engine.daGameStack.push(bp);
-        engine.daGameStack.top()->hardInit();
-    }
+    auto &shay   = ShaysWorld::get();
 
     auto frameCount    = 0l;
     auto lastFpsUpdate = 0.0;
@@ -53,10 +48,8 @@ auto Engine::run() -> void {
         }
 
         engine.processInput();
-        if (!engine.daGameStack.empty()) {
-            engine.daGameStack.top()->update(deltaTime);
-            engine.daGameStack.top()->display();
-        }
+        shay.update(deltaTime);
+        shay.display();
     }
 }
 
@@ -151,25 +144,6 @@ auto Engine::get() -> Engine & {
     return instance;
 }
 
-auto Engine::popStack() -> void {
-
-    auto &engine = Engine::get();
-    auto &stack  = engine.getStack();
-
-    if (!stack.empty()) {
-        stack.top()->unInit();
-        delete (stack.top());
-        stack.pop();
-        BaseState *bp = new Akuma();
-        engine.daGameStack.push(bp);
-        engine.daGameStack.top()->hardInit();
-    }
-}
-
-auto Engine::getStack() -> std::stack<BaseState *> & {
-    return this->daGameStack;
-}
-
 /**
  * @brief Checks to see if the engine is currently running
  * @return A boolean, returns true if the engine is running
@@ -189,7 +163,6 @@ auto Engine::handleKeyPress(SDL_Event &event) -> void {
             this->showDebugMenu = !this->showDebugMenu;
         } break;
         case SDL_SCANCODE_G: {
-            popStack();
         } break;
         default: break;
     }
@@ -274,15 +247,13 @@ auto Engine::handleMouseWheelMotion([[maybe_unused]] SDL_Event &event) -> void {
 auto Engine::processInput() -> void {
     auto event        = SDL_Event{};
     auto handledMouse = false;
-    auto &engine      = Engine::get();
+    auto &shay        = ShaysWorld::get();
 
     while (SDL_PollEvent(&event)) {
         ImGui_ImplSDL2_ProcessEvent(&event);
         SDL_SetRelativeMouseMode(this->showDebugMenu ? SDL_FALSE : SDL_TRUE);
 
-        if (!engine.daGameStack.empty()) {
-            engine.daGameStack.top()->handleInput(event);
-        }
+        shay.handleInput(event);
 
         if (event.type == SDL_MOUSEMOTION) {
             this->handleMouseMovement(event);

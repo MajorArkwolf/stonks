@@ -19,7 +19,7 @@
 namespace Stonk {
     enum class GameMode { SHAY, STONK, MENU };
     /**
-	 * @class Engine
+     * @class Engine
      * @brief Stonk game engine.
      *
      * At least it's not Shay's World.
@@ -28,8 +28,6 @@ namespace Stonk {
       public:
         using Window  = std::shared_ptr<SDL_Window>;
         using Context = std::shared_ptr<void>;
-
-        std::stack<BaseState *> daGameStack;
 
         static constexpr auto FPS_UPDATE_INTERVAL = 0.5;
 
@@ -63,18 +61,13 @@ namespace Stonk {
          */
         bool showDebugMenu = false;
 
-        auto popStack() -> void;
         /**
          * @brief A boolean signifying whether the game engine is running or not
          */
         bool isRunning = true;
 
       private:
-
-
         auto getTime() const -> double;
-
-        auto getStack() -> std::stack<BaseState *> &;
 
         Engine();
 

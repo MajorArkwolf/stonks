@@ -30,6 +30,10 @@ ShaysWorld::ShaysWorld() {
     SDL_GL_GetDrawableSize(engine.window.get(), &width, &height);
     ShaysWorld::ratio = static_cast<double>(width) / static_cast<double>(height);
 
+    modelList.push_back(OBJ::Load("tav7.obj"));
+    modelList.push_back(OBJ::Load("orb.obj"));
+    modelList.push_back(OBJ::Load("penta.obj"));
+
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glViewport(0, 0, width, height);
@@ -73,9 +77,6 @@ ShaysWorld::ShaysWorld() {
 }
 
 auto Shay::ShaysWorld::hardInit() -> void {
-    modelList.push_back(OBJ::Load("tav7.obj"));
-    modelList.push_back(OBJ::Load("orb.obj"));
-    modelList.push_back(OBJ::Load("penta.obj"));
     softInit();
 }
 
@@ -403,15 +404,15 @@ auto ShaysWorld::handleMouseEvents(SDL_Event &event) -> void {
     }
 }
 
-///**
-// * @brief Returns the current shaysWorld isntance
-// * @return The current ShaysWorld instance
-// */
-// auto ShaysWorld::get() -> ShaysWorld & {
-//    static auto instance = ShaysWorld{};
-//
-//    return instance;
-//}
+/**
+ * @brief Returns the current shaysWorld isntance
+ * @return The current ShaysWorld instance
+ */
+auto ShaysWorld::get() -> ShaysWorld & {
+    static auto instance = ShaysWorld{};
+
+    return instance;
+}
 
 /**
  * @brief Returns a pointer to the Shay camera
