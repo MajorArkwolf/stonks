@@ -13,7 +13,7 @@ Grid::Grid() {
 
 /**
  * @brief Overloaded constructor for grid, creates a grid using the passed in parameters
- * @param _griSizeX X size of grid to create
+ * @param _gridSizeX X size of grid to create
  * @param _gridSizeY Y size of grid to create
  */
 Grid::Grid(unsigned _gridSizeX, unsigned _gridSizeY) {
@@ -58,7 +58,7 @@ Node *Pathing::Grid::getNode(glm::uvec2 pos) {
 
 /**
  * @brief Resiszes the grid to the passed in values
- * @param _griSizeX X size of grid to create
+ * @param _gridSizeX X size of grid to create
  * @param _gridSizeY Y size of grid to create
  */
 void Grid::resizeGrid(unsigned _gridSizeX, unsigned _gridSizeY) {

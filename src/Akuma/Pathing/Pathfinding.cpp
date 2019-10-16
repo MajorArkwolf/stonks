@@ -50,8 +50,8 @@ bool Pathing::Pathfinding::containsNode(std::vector<Node *> &set, Node *node) {
 
 /**
  * @brief Returns the route from the end node to the start node in a vector
- * @param endNode
- * @return
+ * @param endNode The node to read the path backwards from
+ * @return A vector containing the current path, ordered from start to end
  */
 std::vector<Node *> Pathing::Pathfinding::traceRoute(Node *endNode) {
 
@@ -68,11 +68,11 @@ std::vector<Node *> Pathing::Pathfinding::traceRoute(Node *endNode) {
 
 /**
  * @brief A method to find a path between two nodes using A* pathfinding
- * @param nodeGrid
- * @param startNode
- * @param endNode
- * @param oct
- * @return
+ * @param nodeGrid The grid to read from
+ * @param startNode The node to start from
+ * @param endNode The node to end at
+ * @param oct Whether the path will assume diagonal movement or not
+ * @return The path from the start node to the end node in vector form
  */
 std::vector<Node *> Pathing::Pathfinding::findPath(Grid &nodeGrid, Node &startNode,
                                                    Node &endNode, bool oct) {
