@@ -43,6 +43,11 @@ set (SOURCES
     src/ObjLoader/MtlLoader.cpp
     src/ObjLoader/ObjLoader.cpp
 
+	src/ECS/ECS.hpp
+	src/ECS/InventoryComponent.hpp
+	src/ECS/PlayerComponent.hpp
+	src/ECS/SpriteComponent.hpp
+
     src/Shay/AABBList.cpp
     src/Shay/PlainNode.cpp
     src/Shay/CameraMap.cpp
