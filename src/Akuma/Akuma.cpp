@@ -18,6 +18,10 @@ Akuma::Akuma::Akuma() {}
  * @brief Akuma display function
  */
 auto Akuma::Akuma::display() -> void {
+    glLoadIdentity();
+    gluLookAt(camera.position.x, camera.position.y, camera.position.z,
+              camera.look.x, camera.look.y, camera.look.z, camera.up.x,
+              camera.up.y, camera.up.z);
     auto &stonk = Stonk::Engine::get();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
@@ -31,7 +35,6 @@ auto Akuma::Akuma::display() -> void {
     displayGrid();
     glPopMatrix();
     glEnable(GL_TEXTURE_2D);
-
 
     glPushMatrix();
     glTranslatef(0, 0, -20);
@@ -70,7 +73,7 @@ auto Akuma::Akuma::softInit() -> void {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glViewport(0, 0, width, height);
-    gluPerspective(60, ratio, 1, 500);
+    gluPerspective(60, ratio, 1, 150);
     glMatrixMode(GL_MODELVIEW);
 
     glClearColor(0.f, 0.f, 0.f, 1.f);
@@ -85,8 +88,8 @@ auto Akuma::Akuma::softInit() -> void {
  * @brief Hard initialiser for the Akuma gamestate
  */
 auto Akuma::Akuma::hardInit() -> void {
-    modelList.push_back(OBJ::Load("tile1.obj"));
     // Load models textures etc here
+    //modelList.push_back(OBJ::Load("flattile.obj"));
     softInit();
 }
 
@@ -159,12 +162,25 @@ void Akuma::update([[maybe_unused]] double dt) {}
  */
 void Akuma::handleKeyPress(SDL_Event &event) {
     switch (event.key.keysym.scancode) {
-        case SDL_SCANCODE_F: {
-
+        case SDL_SCANCODE_W: {
+            camera.position.z++;
+        } break;
+        case SDL_SCANCODE_A: {
+            camera.position.x--;
+        } break;
+        case SDL_SCANCODE_S: {
+            camera.position.z--;
+        } break;
+        case SDL_SCANCODE_D: {
+            camera.position.x++;
         } break;
 
         default: break;
     }
+
+    gluLookAt(camera.position.x, camera.position.y, camera.position.z,
+              camera.look.x, camera.look.y, camera.look.z, camera.up.x,
+              camera.up.y, camera.up.z);
 }
 
 /**
@@ -218,7 +234,10 @@ auto Akuma::Akuma::displayGrid() -> void {
         for (unsigned y = 0; y < gridSize.y; y++) {
             glPushMatrix();
             glTranslatef(x - 0.5f * gridSize.x, 0, y - 0.5f * gridSize.y);
+            glPushMatrix();
+            // glTranslatef(0, 0.01, 0);
             drawSquare(1, 1);
+            glPopMatrix();
             if (!floor.getGridNode(x, y)->walkable) {
                 glPushMatrix();
                 glColor3f(0.7f, 0.7f, 0.7f);
@@ -229,12 +248,13 @@ auto Akuma::Akuma::displayGrid() -> void {
             }
             if (floor.getGridNode(x, y)->walkable) {
                 glPushMatrix();
+                // glColor3f(0.2, .2f, .2f);
                 glEnable(GL_TEXTURE_2D);
-                glTranslatef(0.f, 0.f, -0.01f);
-                OBJ::displayModel(modelList[0], 0.3, 0);
+                glTranslatef(-0.5f, 0.0f, -0.5);
+                // drawSquare(1.f, 0.f);
+                //OBJ::displayModel(modelList[0], 0.2);
                 glDisable(GL_TEXTURE_2D);
-                //drawSquare(1.f, 0.f);
-                //glColor3f(1.f, 1.f, 1.f);
+                glColor3f(1.f, 1.f, 1.f);
                 glPopMatrix();
             }
             /*if (x == grid.selected[0] && y == grid.selected[1]) {
@@ -284,4 +304,19 @@ auto Akuma::Akuma::drawRectangle(float _width, float _height, bool wireframe)
     glVertex3f(0.5f * _width, 0, -0.5f * _height);
     glVertex3f(-0.5f * _width, 0, -0.5f * _height);
     glEnd();
+}
+
+auto Akuma::Akuma::drawCube(float size, bool wireframe) -> void {
+
+    float vertices[8][3] = {{}, {}, {}, {}, {}, {}, {}, {}};
+    glPushMatrix();
+    glScalef(size, size, size);
+    if (wireframe) {
+        glBegin(GL_LINE_LOOP);
+    } else {
+        glBegin(GL_POLYGON);
+	}
+
+	glEnd();
+    glPopMatrix();
 }
