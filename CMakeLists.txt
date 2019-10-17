@@ -43,6 +43,7 @@ set (SOURCES
     
     src/ObjLoader/MtlLoader.cpp
     src/ObjLoader/ObjLoader.cpp
+    src/ObjLoader/ObjDisplay.cpp
 
     src/Shay/AABBList.cpp
     src/Shay/PlainNode.cpp

@@ -247,7 +247,9 @@ void ShaysWorld::display() {
 void ShaysWorld::displayPentagram(void) {
     glPushMatrix();
     glTranslatef(20000, 10000, 15000);
+    glEnable(GL_CULL_FACE);
     displayModel(modelList[2], 300, 1);
+    glDisable(GL_CULL_FACE);
     glPopMatrix();
 }
 

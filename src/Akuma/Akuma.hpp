@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include "Akuma/Floor.hpp"
+#include "ObjLoader/ObjDisplay.hpp"
 #include "Stonk/BaseState.hpp"
 #include "Stonk/Engine.hpp"
 #include "Stonk/OpenGl.hpp"
@@ -31,10 +32,11 @@ class Akuma : public BaseState {
     glm::vec3 gridTranslation = {0, 0, -50.f};
 
     struct Camera {
-        glm::dvec3 position = {0.f, 0.f, 0.f};
+        glm::dvec3 position = {0.f, 10.f, 20.f};
         glm::dvec3 look     = {0.f, 0.f, -1.f};
         glm::dvec3 up       = {0.f, 1.f, 0.f};
     } camera;
+
 
   private:
     /// The floor
@@ -42,4 +44,5 @@ class Akuma : public BaseState {
     // Toggle for drawing 3d axis
     // bool shouldDrawAxis = false;
     auto drawAxis(float x, float y, float z, float length) -> void;
+    std::vector<Model> modelList;
 };
