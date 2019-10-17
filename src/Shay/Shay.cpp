@@ -119,7 +119,7 @@ void ShaysWorld::displayModel(const Model &model, float scale, bool colourFaces)
             glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,
                          glm::value_ptr(material.ambient));
             glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,
-                         glm::value_ptr(material.diffuse));
+                         glm::value_ptr(material.specular));
             glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,
                          glm::value_ptr(material.diffuse));
             glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, material.shininess);
