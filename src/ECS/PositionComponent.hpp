@@ -1,56 +1,56 @@
 #pragma once
-#include <glm/vec3.hpp>
-#include "Components.h"
-#include "SDL.h"
 
+#include "Components.hpp"
+#include <glm/vec2.hpp>
 
 /* This will need to handle all positions of entities. */
 class PositionComponent : public Component {
   public:
     PositionComponent() = default;
-	PositionComponent(int x, int y) {
-        this->position.xPos = x;
-        this->position.yPos = y;
-	}
-	PositionComponent(glm::vec2 newPos) {
-        this->position.xPos = newPos.xPos;
-        this->position.yPos = newPos.yPos;
-	}    
+    PositionComponent(float x, float y) {
+        this->position.x = x;
+        this->position.y = y;
+    }
+    PositionComponent(glm::vec2 newPos) {
+        this->position.x = newPos.x;
+        this->position.y = newPos.y;
+    }
     void init() {}
     void update() {}
     void draw() {}
 
-	void setPos(Vec2d newPos) {
-        this->position.xPos = newPos.xPos;
-        this->position.yPos = newPos.yPos;
-	}
-
-	void setPos(int x, int y) {
-        this->position.xPos = x;
-        this->position.yPos = y;
-	}
-
-	void setXPos(int x) {
-        this->position.xPos = x;
-	}
-
-	void setXPos(int y) {
-        this->position.yPos = y;
+    void setPos(glm::vec2 newPos) {
+        this->position.x = newPos.x;
+        this->position.y = newPos.y;
     }
 
-	void getPos() {
+    void setPos(float x, float y) {
+        this->position.x = x;
+        this->position.y = y;
+    }
+
+    void setXPos(float x) {
+        this->position.x = x;
+    }
+
+    void setYPos(float y) {
+        this->position.y = y;
+    }
+
+    glm::vec2 getPos() {
         return position;
-	}
+    }
 
-	void getXPos() {
-        return this->position.xPos;
-	}
+    GLfloat getXPos() {
+        return this->position.x;
+    }
 
-	void getYPos() {
-        return this->position.yPos;
+    GLfloat getYPos() {
+        return this->position.y;
     }
 
     ~PositionComponent() = default;
+
   private:
-    glm::vec3 position;
-}
+    glm::vec2 position;
+};

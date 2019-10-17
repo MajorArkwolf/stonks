@@ -41,6 +41,8 @@ class Component {
 
 class Entity {
   public:
+    Entity() = default;
+    ~Entity() = default;
     void update() {
         for (auto &c : components)
             c->update();
@@ -93,6 +95,8 @@ class Manager {
     std::vector<std::unique_ptr<Entity>> entities;
 
   public:
+    Manager() = default;
+    ~Manager() = default;
     void update() {
         for (auto &e : entities)
             e->update();

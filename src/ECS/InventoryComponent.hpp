@@ -2,18 +2,18 @@
 
 #include <array>
 #include <string>
+#include "Components.hpp"
 
-#include "Components.h"
-#include "SDL.h"
+using std::string;
 
 /// This needs to be removed and instead use the Items module.
 struct Item {
     size_t itemID   = 0;
     size_t quantity = 0;
-    string name     = "";
+    string itemName     = "";
 };
 
-using std::string;
+
 
 class InventoryComponent : public Component {
   public:
@@ -25,13 +25,13 @@ class InventoryComponent : public Component {
             if(updateable){
 				do something.
 			}
-			*/
-		}
+			
+		}*/
 	}
     void draw() {}
     bool addItem(Item item) {
         /// Searches through the current inventory to see if the item exists in the inventory.
-        for (size_t i = 0; i <= uniqueItemAmount) {
+        for (size_t i = 0; i <= uniqueItemAmount; ++i) {
             /// If the item is found, it checks the quantity.
             if (inventory[i].itemID == item.itemID) {
                 if (inventory[i].quantity < 100) {
@@ -45,7 +45,7 @@ class InventoryComponent : public Component {
         }
         /// If the item isnt found then attempt to add to your inventory.
         if (uniqueItemAmount < inventory.max_size()) {
-            inventory[size + 1] = item;
+            inventory[uniqueItemAmount + 1] = item;
             uniqueItemAmount++;
         } else {
             /// If the player has 99 unique items then they wont be able to pick up.
@@ -65,8 +65,9 @@ class InventoryComponent : public Component {
 		
 		return temp;
     }
-    void useItem(size_t listID) {
-        return inventory[listID];
+    bool useItem(size_t listID) {
+        auto temp = inventory[listID];
+        return true;
     }
 
 	///Used to get rid of invalid objects.
