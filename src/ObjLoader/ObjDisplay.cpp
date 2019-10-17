@@ -18,7 +18,7 @@ auto OBJ::displayModel(const Model &model, float scale, bool colourFaces) -> voi
             hasDiffuse = true;
         } else {
             hasDiffuse = false;
-		}
+        }
 
         glBegin(GL_POLYGON);
         if (colourFaces) {
@@ -33,27 +33,26 @@ auto OBJ::displayModel(const Model &model, float scale, bool colourFaces) -> voi
                          glm::value_ptr(material.diffuse));
             glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, material.shininess);
         }
-        
+
         if (hasDiffuse) {
             for (size_t i = 0; i < face.Vertices.size(); i++) {
                 vert = &model.Vertices[static_cast<size_t>(face.Vertices[i])];
-                    glTexCoord2fv(glm::value_ptr(
-                       model.UVs[static_cast<size_t>(face.VertTexts[i])]));
+                glTexCoord2fv(glm::value_ptr(
+                    model.UVs[static_cast<size_t>(face.VertTexts[i])]));
                 glVertex3f(vert->x, vert->y, vert->z);
             }
-        } else {        
-			for (size_t i = 0; i < face.Vertices.size(); i++) {
-				vert =
-					&model.Vertices[static_cast<size_t>(face.Vertices[i])];
+        } else {
+            for (size_t i = 0; i < face.Vertices.size(); i++) {
+                vert = &model.Vertices[static_cast<size_t>(face.Vertices[i])];
                 glVertex3f(vert->x, vert->y, vert->z);
-			}
+            }
         }
         glEnd();
     }
     glPopMatrix();
-    glColor3f(1, 1, 1);   
-	vert = nullptr;
-    }
+    glColor3f(1, 1, 1);
+    vert = nullptr;
+}
 
 auto OBJ::displayModel(const Model &model, float scale) -> void {
     displayModel(model, scale, 1);
