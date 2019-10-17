@@ -124,6 +124,8 @@ Engine::Engine() {
     ImGui::StyleColorsDark();
     ImGui_ImplSDL2_InitForOpenGL(this->window.get(), this->context.get());
     ImGui_ImplOpenGL2_Init();
+
+	getBasePath();
 }
 
 /**
@@ -349,4 +351,10 @@ auto Engine::render([[maybe_unused]] const State &newState) const -> void {}
 auto Engine::getTime() const -> double {
     return static_cast<double>(SDL_GetPerformanceCounter()) /
            static_cast<double>(SDL_GetPerformanceFrequency());
+}
+
+auto Engine::getBasePath() -> void {
+    char *base_path  = SDL_GetBasePath();
+    std::string basepath = std::string(base_path);
+	SDL_free(base_path);
 }

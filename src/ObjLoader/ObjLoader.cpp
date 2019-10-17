@@ -10,10 +10,13 @@
 #include <glm/vec3.hpp>
 
 #include "MtlLoader.hpp"
+#include "Stonk/Engine.hpp"
+
 using std::string;
 
 auto OBJ::Load(const std::string &filepath) -> Model {
-    auto path              = string{SDL_GetBasePath()} + "res/model/" + filepath;
+    auto &engine = Stonk::Engine::get();
+    auto path       = engine.basepath + "res/model/" + filepath;
     auto is                = std::ifstream(path);
     if (!is.is_open()) {
         std::cout << "Read failure on " << path << std::endl;

@@ -43,7 +43,7 @@ ShaysWorld::ShaysWorld() {
 auto Shay::ShaysWorld::hardInit() -> void {
     modelList.push_back(OBJ::Load("tav7.obj"));
     modelList.push_back(OBJ::Load("orb.obj"));
-    modelList.push_back(OBJ::Load("penta.obj"));
+    modelList.push_back(OBJ::Load("tile1.obj"));
 
     // settings for glut cylinders
     glu_cylinder = gluNewQuadric();
@@ -206,9 +206,10 @@ void ShaysWorld::display() {
 
 void ShaysWorld::displayPentagram(void) {
     glPushMatrix();
-    glTranslatef(20000, 10000, 15000);
+    glTranslatef(20000, 10100, 15000);
+    glRotatef(90.f, 0, 0, 1);
     glEnable(GL_CULL_FACE);
-    OBJ::displayModel(modelList[2], 300, 1);
+    OBJ::depDisplayModel(modelList[2], 300, 1);
     glDisable(GL_CULL_FACE);
     glPopMatrix();
 }

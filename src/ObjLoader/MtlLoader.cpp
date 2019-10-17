@@ -8,6 +8,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#include "Stonk/Engine.hpp"
+
 using std::string;
 
 auto MTL::GetImages() -> std::vector<Image>& {
@@ -24,7 +26,8 @@ auto MTL::GetImagePaths() -> std::map<std::string, size_t>& {
 };
 
 auto MTL::Load(const std::string &filepath) -> std::map<std::string, Material> {
-    auto path          = string{SDL_GetBasePath()} + "res/model/" + filepath;
+    auto &engine = Stonk::Engine::get();
+    auto path              = engine.basepath + "res/model/" + filepath;
     auto is            = std::ifstream(path);
     string currentLine = "";
     string currentMaterial = "";
@@ -70,7 +73,8 @@ auto MTL::Load(const std::string &filepath) -> std::map<std::string, Material> {
             string filename = "";
             line >> filename;
             //  TODO: This leaks memory (just like almost every use of SDL_GetBasePath in this codebase)
-            auto texturePath  = string{SDL_GetBasePath()} + "res/tex/" + filename;
+            auto &engine     = Stonk::Engine::get();
+            auto texturePath = string{} + "res/tex/" + filename;
             size_t index = 0;
             if (MTL::GetImagePaths().try_emplace(texturePath, index = MTL::GetImagePaths().size()).second) {
                 //generate an openGL texture for this image
