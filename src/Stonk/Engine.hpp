@@ -17,7 +17,7 @@
  * @brief The global Stonk namespace
  */
 namespace Stonk {
-    enum class GameMode { SHAY, STONK, MENU };
+    enum class GameMode { SHAY, AKUMA, MENU };
     /**
      * @class Engine
      * @brief Stonk game engine.
@@ -79,6 +79,13 @@ namespace Stonk {
         static auto get() -> Engine &;
         static auto run() -> void;
 
+        auto loadState(GameMode) -> void;
+
+        std::stack<BaseState *> daGameStateStack;
+
+        auto purgeStack() -> void;
+        auto checkStack() -> void;
+        auto popStack() -> void;
         /**
          * @brief Overloaded assignment operator, set to default overload
          */
