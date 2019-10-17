@@ -135,7 +135,7 @@ void ShaysWorld::displayModel(const Model &model, float scale, bool colourFaces)
                 const auto &uv = model.UVs[static_cast<size_t>(uvind)];
                 glTexCoord2fv(glm::value_ptr(uv));
             }
-            glVertex3f(vert.x, vert.y, vert.z);
+            glVertex3fv(glm::value_ptr(vert));
         }
         glEnd();
     }
