@@ -31,9 +31,9 @@ auto Akuma::Akuma::display() -> void {
               camera.up.y, camera.up.z);
 
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.051);
-    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.01);
-    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 359);
+    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.051f);
+    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.01f);
+    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 359.f);
 
     ImGui_ImplOpenGL2_NewFrame();
     ImGui_ImplSDL2_NewFrame(stonk.window.get());
@@ -266,7 +266,7 @@ auto Akuma::Akuma::displayGrid() -> void {
                 glPushMatrix();
                 glTranslatef(-0.5, 0, 0.5);
 
-                drawCube(0.2, 0);
+                drawCube(0.2f, 0.f);
 
                 glPopMatrix();
                 drawSquare(1.f, 0.f);
@@ -279,7 +279,7 @@ auto Akuma::Akuma::displayGrid() -> void {
                 glEnable(GL_TEXTURE_2D);
                 glTranslatef(-0.5f, 0.0f, -0.5);
                 // drawSquare(1.f, 0.f);
-               OBJ::displayModel(modelList[0], 0.2);
+               OBJ::displayModel(modelList[0], 0.2f);
                 glDisable(GL_TEXTURE_2D);
                 glColor3f(1.f, 1.f, 1.f);
                 glPopMatrix();
@@ -333,7 +333,7 @@ auto Akuma::Akuma::drawRectangle(float _width, float _height, bool wireframe)
     glEnd();
 }
 
-auto Akuma::Akuma::drawCube(float size, bool wireframe) -> void {
+auto Akuma::Akuma::drawCube(float size, [[maybe_unused]]bool wireframe) -> void {
     glEnable(GL_TEXTURE_2D);
     OBJ::displayModel(modelList[1], size);
     glDisable(GL_TEXTURE_2D);

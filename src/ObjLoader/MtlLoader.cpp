@@ -73,7 +73,6 @@ auto MTL::Load(const std::string &filepath) -> std::map<std::string, Material> {
             string filename = "";
             line >> filename;
             //  TODO: This leaks memory (just like almost every use of SDL_GetBasePath in this codebase)
-            auto &engine     = Stonk::Engine::get();
             auto texturePath = engine.basepath + "res/tex/" + filename;
             size_t index = 0;
             if (MTL::GetImagePaths().try_emplace(texturePath, index = MTL::GetImagePaths().size()).second) {
