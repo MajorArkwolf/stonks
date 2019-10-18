@@ -30,12 +30,12 @@ public:
         }
     }
     auto offset() -> glm::vec3& {
-        return this->offset;
+        return this->offsetVec;
     }
 private:
     size_t modelId;
     bool hasModel;
-    glm::vec3 offset;
+    glm::vec3 offsetVec;
     bool hasScale;
     ScaleComponent& scale;
 };
