@@ -41,13 +41,12 @@ auto Akuma::Akuma::display() -> void {
     ImGui_ImplSDL2_NewFrame(stonk.window.get());
     ImGui::NewFrame();
 
-
     glPushMatrix();
     // glTranslatef(gridTranslation.x, gridTranslation.y, gridTranslation.z);
     displayGrid();
     glPopMatrix();
 
-	glDisable(GL_LIGHT0);
+    glDisable(GL_LIGHT0);
     glDisable(GL_LIGHTING);
     glEnable(GL_TEXTURE_2D);
 
@@ -66,6 +65,8 @@ auto Akuma::Akuma::display() -> void {
         auto origin = this->camera.look + (this->camera.getForwardDir()
     * 1.01f); drawAxis(origin.x, origin.y, origin.z, 0.5f);
     }*/
+
+	manager.draw();
 
     ImGui::Render();
     ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
@@ -98,6 +99,13 @@ auto Akuma::Akuma::softInit() -> void {
     light_position[2] = 10;
     light_position[3] = 1;
 
+    player = &manager.addEntity();
+    player->addComponentID<ScaleComponent>();
+    player->getComponent<ScaleComponent>().setScale(glm::vec3{10, 10, 10});
+    player->addComponentID<ModelComponent>();
+    player->getComponent<ModelComponent>().setModel("player_female.obj");
+    player->addComponentID<PositionComponent>();
+    player->getComponent<PositionComponent>().setPos(glm::vec2{5, 5});
 }
 
 /**
@@ -171,7 +179,9 @@ auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {
  * @brief Physics update function for the Akuma gamestate
  * @param dt Delta time since last frame
  */
-void Akuma::update([[maybe_unused]] double dt) {}
+void Akuma::update([[maybe_unused]] double dt) {
+    manager.update();
+}
 
 /**
  * @brief Handles key presses for the Akuma game state
@@ -281,7 +291,7 @@ auto Akuma::Akuma::displayGrid() -> void {
                 glEnable(GL_TEXTURE_2D);
                 glTranslatef(-0.5f, 0.0f, -0.5);
                 // drawSquare(1.f, 0.f);
-               OBJ::displayModel(modelList[0], 0.2f);
+                OBJ::displayModel(modelList[0], 0.2f);
                 glDisable(GL_TEXTURE_2D);
                 glColor3f(1.f, 1.f, 1.f);
                 glPopMatrix();
@@ -335,75 +345,75 @@ auto Akuma::Akuma::drawRectangle(float _width, float _height, bool wireframe)
     glEnd();
 }
 
-auto Akuma::Akuma::drawCube(float size, [[maybe_unused]]bool wireframe) -> void {
+auto Akuma::Akuma::drawCube(float size, [[maybe_unused]] bool wireframe) -> void {
     glEnable(GL_TEXTURE_2D);
     OBJ::displayModel(modelList[1], size);
     glDisable(GL_TEXTURE_2D);
-    //float vertices[8][3] = {{-0.5, -0.5, -0.5}, {-0.5, 1.5, -0.5},
+    // float vertices[8][3] = {{-0.5, -0.5, -0.5}, {-0.5, 1.5, -0.5},
     //                        {0.5, 1.5, -0.5},   {0.5, -0.5, -0.5},
     //                        {-0.5, -0.5, 0.5},  {-0.5, 1.5, 0.5},
     //                        {0.5, 1.5, 0.5},    {0.5, -0.5, 0.5}};
-    //glPushMatrix();
-    //glScalef(size, size, size);
-    //if (wireframe) { // FRONT?
+    // glPushMatrix();
+    // glScalef(size, size, size);
+    // if (wireframe) { // FRONT?
     //    glBegin(GL_LINE_LOOP);
     //} else {
     //    glBegin(GL_POLYGON);
     //}
-    //glVertex3fv(vertices[0]);
-    //glVertex3fv(vertices[1]);
-    //glVertex3fv(vertices[2]);
-    //glVertex3fv(vertices[3]);
-    //glEnd();
+    // glVertex3fv(vertices[0]);
+    // glVertex3fv(vertices[1]);
+    // glVertex3fv(vertices[2]);
+    // glVertex3fv(vertices[3]);
+    // glEnd();
 
-    //if (wireframe) {
-    //    glBegin(GL_LINE_LOOP);
-    //} else {
-    //    glBegin(GL_POLYGON);
-    //}
-
-    //glVertex3fv(vertices[7]);
-    //glVertex3fv(vertices[6]);
-    //glVertex3fv(vertices[5]);
-    //glVertex3fv(vertices[4]);
-
-    //glEnd();
-
-    //if (wireframe) {
-    //    glBegin(GL_LINE_LOOP);
-    //} else {
-    //    glBegin(GL_POLYGON);
-    //}
-    //glVertex3fv(vertices[3]);
-    //glVertex3fv(vertices[2]);
-    //glVertex3fv(vertices[6]);
-    //glVertex3fv(vertices[7]);
-
-    //glEnd();
-
-    //if (wireframe) {
+    // if (wireframe) {
     //    glBegin(GL_LINE_LOOP);
     //} else {
     //    glBegin(GL_POLYGON);
     //}
 
-    //glVertex3fv(vertices[4]);
-    //glVertex3fv(vertices[5]);
-    //glVertex3fv(vertices[1]);
-    //glVertex3fv(vertices[0]);
+    // glVertex3fv(vertices[7]);
+    // glVertex3fv(vertices[6]);
+    // glVertex3fv(vertices[5]);
+    // glVertex3fv(vertices[4]);
 
-    //glEnd();
+    // glEnd();
 
-    //if (wireframe) { // Top
+    // if (wireframe) {
     //    glBegin(GL_LINE_LOOP);
     //} else {
     //    glBegin(GL_POLYGON);
     //}
-    //glVertex3fv(vertices[5]);
-    //glVertex3fv(vertices[6]);
-    //glVertex3fv(vertices[2]);
-    //glVertex3fv(vertices[1]);
-    //glEnd();
+    // glVertex3fv(vertices[3]);
+    // glVertex3fv(vertices[2]);
+    // glVertex3fv(vertices[6]);
+    // glVertex3fv(vertices[7]);
 
-    //glPopMatrix();
+    // glEnd();
+
+    // if (wireframe) {
+    //    glBegin(GL_LINE_LOOP);
+    //} else {
+    //    glBegin(GL_POLYGON);
+    //}
+
+    // glVertex3fv(vertices[4]);
+    // glVertex3fv(vertices[5]);
+    // glVertex3fv(vertices[1]);
+    // glVertex3fv(vertices[0]);
+
+    // glEnd();
+
+    // if (wireframe) { // Top
+    //    glBegin(GL_LINE_LOOP);
+    //} else {
+    //    glBegin(GL_POLYGON);
+    //}
+    // glVertex3fv(vertices[5]);
+    // glVertex3fv(vertices[6]);
+    // glVertex3fv(vertices[2]);
+    // glVertex3fv(vertices[1]);
+    // glEnd();
+
+    // glPopMatrix();
 }
