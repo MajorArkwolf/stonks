@@ -86,7 +86,8 @@ auto MTL::Load(const std::string &filepath) -> std::map<std::string, Material> {
                 const auto& image = MTL::GetImages()[index];
                 glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
                 glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-                gluBuild2DMipmaps(GL_TEXTURE_2D, 3, image->w, image->h, GL_RGB,
+                gluBuild2DMipmaps(GL_TEXTURE_2D, 3, image->w, image->h, 
+                                image->format->BytesPerPixel == 3 ? GL_RGB : GL_RGBA,
                                 GL_UNSIGNED_BYTE, image->pixels);
                 MTL::GetTextures().push_back(boundTex);
             } else {
