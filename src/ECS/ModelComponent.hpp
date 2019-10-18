@@ -10,7 +10,10 @@ public:
         this->modelId = 0;
         this->hasModel = false;
         this->offset = {0,0,0};
-        this->scale = 1;
+        this->hasScale = this->entity->hasComponent<ScaleComponent>();
+        if (hasScale) {
+            this->scale = this->entity->getComponent<ScaleComponent>();
+        }
     }
     void setModel(std::string filename) {
         hasModel = true;
@@ -19,18 +22,20 @@ public:
     void update() {}
     void draw() {
         if (hasModel) {
-            ModelManager::DrawModel(this->modelId, this->scale, this->offset);
+            if (hasScale) {
+                ModelManager::DrawModel(this->modelId, this->scale.getScale(), this->offset);
+            } else {
+                ModelManager::DrawModel(this->modelId, this->offset);
+            }
         }
     }
     auto offset() -> glm::vec3& {
         return this->offset;
     }
-    auto scale() -> float& {
-        return this->scale;
-    }
 private:
     size_t modelId;
     bool hasModel;
     glm::vec3 offset;
-    float scale;
+    bool hasScale;
+    ScaleComponent& scale;
 };

@@ -16,12 +16,15 @@ public:
             return id->second;
         }
     }
-    static auto DrawModel(size_t id, float scale, const glm::vec3& offset) -> void {
+    static auto DrawModel(size_t id, const glm::vec3& scale, const glm::vec3& offset) -> void {
         glPushMatrix();
         glTranslatef(offset.x, offset.y, offset.z);
         // ModelDisplay::displayModel(ModelRepo()[id], scale, 1);
         throw "DrawModel( ... ) not implemented";
         glPopMatrix();
+    }
+    static auto DrawModel(size_t id, const glm::vec3& offset) -> void {
+        DrawModel(id, {1,1,1}, offset);
     }
 private:
     static auto ModelRepo() -> std::vector<Model> {
