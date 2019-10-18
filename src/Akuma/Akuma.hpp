@@ -44,7 +44,7 @@ class Akuma : public BaseState {
   private:
     Manager manager;
     Entity *player;
-    //std::vector<Entity *> enemies;
+    std::vector<Entity *> enemies;
     /// The floor
     Floor floor;
     // Toggle for drawing 3d axis

@@ -11,17 +11,19 @@ class PositionComponent : public Component {
         this->position.x = x;
         this->position.y = y;
     }
-    PositionComponent(glm::vec2 newPos) {
+    PositionComponent(glm::vec3 newPos) {
         this->position.x = newPos.x;
         this->position.y = newPos.y;
+        this->position.z = newPos.z;
     }
     void init() {}
     void update() {}
     void draw() {}
 
-    void setPos(glm::vec2 newPos) {
+    void setPos(glm::vec3 newPos) {
         this->position.x = newPos.x;
         this->position.y = newPos.y;
+        this->position.z = newPos.z;
     }
 
     void setPos(float x, float y) {
@@ -37,8 +39,8 @@ class PositionComponent : public Component {
         this->position.y = y;
     }
 
-    glm::vec2 getPos() {
-        return position;
+    glm::vec3 getPos() {
+        return this->position;
     }
 
     GLfloat getXPos() {
@@ -48,9 +50,12 @@ class PositionComponent : public Component {
     GLfloat getYPos() {
         return this->position.y;
     }
+	GLfloat getZPos() {
+        return this->position.z;
+	}
 
     ~PositionComponent() = default;
 
   private:
-    glm::vec2 position;
+    glm::vec3 position = {1, 1, 1};
 };

@@ -103,11 +103,20 @@ auto Akuma::Akuma::softInit() -> void {
 
     player = &manager.addEntity();
     player->addComponentID<ScaleComponent>();
-    player->getComponent<ScaleComponent>().setScale(glm::vec3{1, 1, 1});
+    player->getComponent<ScaleComponent>().setScale(glm::vec3{0.5, 0.5, 0.5});
+    player->addComponentID<PositionComponent>();
+    player->getComponent<PositionComponent>().setPos(glm::vec3{2, 0, 1});
     player->addComponentID<ModelComponent>();
     player->getComponent<ModelComponent>().setModel("player_female.obj");
-    player->addComponentID<PositionComponent>();
-    player->getComponent<PositionComponent>().setPos(glm::vec2{5, 5});
+    enemies.push_back(&manager.addEntity());
+    enemies.at(0)->addComponentID<ScaleComponent>();
+    enemies.at(0)->addComponentID<ScaleComponent>();
+    enemies.at(0)->getComponent<ScaleComponent>().setScale(glm::vec3{0.5, 0.5, 0.5});
+    enemies.at(0)->addComponentID<PositionComponent>();
+    enemies.at(0)->getComponent<PositionComponent>().setPos(glm::vec3{1, 0, 1});
+    enemies.at(0)->addComponentID<ModelComponent>();
+    enemies.at(0)->getComponent<ModelComponent>().setModel("player_male.obj");
+
 }
 
 /**
