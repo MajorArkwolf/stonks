@@ -89,7 +89,7 @@ auto Akuma::Akuma::softInit() -> void {
  */
 auto Akuma::Akuma::hardInit() -> void {
     // Load models textures etc here
-    //modelList.push_back(OBJ::Load("flattile.obj"));
+    // modelList.push_back(OBJ::Load("flattile.obj"));
     softInit();
 }
 
@@ -242,6 +242,10 @@ auto Akuma::Akuma::displayGrid() -> void {
                 glPushMatrix();
                 glColor3f(0.7f, 0.7f, 0.7f);
                 glTranslatef(0.f, 0.f, -0.01f);
+                glPushMatrix();
+                glTranslatef(0, 0.5, 0);
+                drawCube(1, 0);
+                glPopMatrix();
                 drawSquare(1.f, 0.f);
                 glColor3f(1.f, 1.f, 1.f);
                 glPopMatrix();
@@ -252,7 +256,7 @@ auto Akuma::Akuma::displayGrid() -> void {
                 glEnable(GL_TEXTURE_2D);
                 glTranslatef(-0.5f, 0.0f, -0.5);
                 // drawSquare(1.f, 0.f);
-                //OBJ::displayModel(modelList[0], 0.2);
+                // OBJ::displayModel(modelList[0], 0.2);
                 glDisable(GL_TEXTURE_2D);
                 glColor3f(1.f, 1.f, 1.f);
                 glPopMatrix();
@@ -308,15 +312,73 @@ auto Akuma::Akuma::drawRectangle(float _width, float _height, bool wireframe)
 
 auto Akuma::Akuma::drawCube(float size, bool wireframe) -> void {
 
-    float vertices[8][3] = {{}, {}, {}, {}, {}, {}, {}, {}};
+    float vertices[8][3] = {{-0.5, -0.5, -0.5}, {-0.5, 0.5, -0.5},
+                            {0.5, 0.5, -0.5},   {0.5, -0.5, -0.5},
+                            {-0.5, -0.5, 0.5},  {-0.5, 0.5, 0.5},
+                            {0.5, 0.5, 0.5},    {0.5, -0.5, 0.5}};
     glPushMatrix();
     glScalef(size, size, size);
     if (wireframe) {
         glBegin(GL_LINE_LOOP);
     } else {
         glBegin(GL_POLYGON);
-	}
+    }
+    glVertex3fv(vertices[0]);
+    glVertex3fv(vertices[1]);
+    glVertex3fv(vertices[2]);
+    glVertex3fv(vertices[3]);
+    glEnd();
 
-	glEnd();
+    if (wireframe) {
+        glBegin(GL_LINE_LOOP);
+    } else {
+        glBegin(GL_POLYGON);
+    }
+
+    glVertex3fv(vertices[7]);
+    glVertex3fv(vertices[6]);
+    glVertex3fv(vertices[5]);
+    glVertex3fv(vertices[4]);
+
+    glEnd();
+
+    if (wireframe) {
+        glBegin(GL_LINE_LOOP);
+    } else {
+        glBegin(GL_POLYGON);
+    }
+
+    glVertex3fv(vertices[7]);
+    glVertex3fv(vertices[6]);
+    glVertex3fv(vertices[2]);
+    glVertex3fv(vertices[3]);
+
+    glEnd();
+
+    if (wireframe) {
+        glBegin(GL_LINE_LOOP);
+    } else {
+        glBegin(GL_POLYGON);
+    }
+
+    glVertex3fv(vertices[0]);
+    glVertex3fv(vertices[1]);
+    glVertex3fv(vertices[5]);
+    glVertex3fv(vertices[4]);
+
+    glEnd();
+
+    if (wireframe) { //Top
+        glBegin(GL_LINE_LOOP);
+    } else {
+        glBegin(GL_POLYGON);
+    }
+    glVertex3fv(vertices[5]);
+    glVertex3fv(vertices[6]);
+    glVertex3fv(vertices[2]);
+    glVertex3fv(vertices[1]);
+    glEnd();
+
+
     glPopMatrix();
 }
