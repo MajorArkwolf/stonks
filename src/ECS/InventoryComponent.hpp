@@ -75,7 +75,6 @@ class InventoryComponent : public Component {
         for (auto i = index; index < uniqueItemAmount; i++) {
             inventory[index] = inventory[index + 1];
         }
-		///I do not know if this works. :shrug: sandro problem.
         uniqueItemAmount -= 1;
     }
 
