@@ -46,8 +46,8 @@ set (SOURCES
 	src/ECS/ECS.hpp
 	src/ECS/InventoryComponent.hpp
 	src/ECS/PlayerComponent.hpp
-	src/ECS/SpriteComponent.hpp
 	src/ECS/PositionComponent.hpp
+	src/ECS/ScaleComponent.hpp
 
     src/Shay/AABBList.cpp
     src/Shay/PlainNode.cpp
