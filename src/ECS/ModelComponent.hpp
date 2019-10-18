@@ -9,11 +9,14 @@ public:
     void init() {
         this->modelId = 0;
         this->hasModel = false;
-        this->offsetVec = {0,0,0};
         this->hasScale = this->entity->hasComponent<ScaleComponent>();
         if (hasScale) {
             this->scale = &this->entity->getComponent<ScaleComponent>();
         }
+        this->hasPosition = this->entity->hasComponent<PositionComponent>();
+        if (hasPosition) {
+            this->pos = &this->entity->getComponent<PositionComponent>();
+		}
     }
     void setModel(std::string filename) {
         hasModel = true;
@@ -23,19 +26,18 @@ public:
     void draw() {
         if (hasModel) {
             if (hasScale) {
-                ModelManager::DrawModel(this->modelId, this->scale->getScale(), this->offsetVec);
+                ModelManager::DrawModel(this->modelId, this->scale->getScale(), this->pos->getPos());
             } else {
-                ModelManager::DrawModel(this->modelId, this->offsetVec);
+                ModelManager::DrawModel(this->modelId, this->pos->getPos());
             }
         }
     }
-    auto offset() -> glm::vec3& {
-        return this->offsetVec;
-    }
+
 private:
     size_t modelId;
     bool hasModel;
-    glm::vec3 offsetVec;
     bool hasScale;
     ScaleComponent * scale;
+    bool hasPosition;
+    PositionComponent * pos;
 };
