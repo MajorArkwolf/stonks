@@ -5,5 +5,5 @@
 #include "PlayerComponent.hpp"
 #include "ScaleComponent.hpp"
 #include "ModelComponent.hpp"
+#include "StatComponent.hpp"
 // Include all the components that will be used in the game.
-
