@@ -9,7 +9,7 @@ public:
     void init() {
         this->modelId = 0;
         this->hasModel = false;
-        this->offset = {0,0,0};
+        this->offsetVec = {0,0,0};
         this->hasScale = this->entity->hasComponent<ScaleComponent>();
         if (hasScale) {
             this->scale = this->entity->getComponent<ScaleComponent>();
@@ -23,9 +23,9 @@ public:
     void draw() {
         if (hasModel) {
             if (hasScale) {
-                ModelManager::DrawModel(this->modelId, this->scale.getScale(), this->offset);
+                ModelManager::DrawModel(this->modelId, this->scale.getScale(), this->offsetVec);
             } else {
-                ModelManager::DrawModel(this->modelId, this->offset);
+                ModelManager::DrawModel(this->modelId, this->offsetVec);
             }
         }
     }
