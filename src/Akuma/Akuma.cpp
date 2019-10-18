@@ -55,6 +55,8 @@ auto Akuma::Akuma::display() -> void {
     // OBJ::displayModel(modelList[0], 5, 1);
     glPopMatrix();
 
+	manager.draw();
+
     glDisable(GL_CULL_FACE);
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_DEPTH_TEST);
@@ -66,7 +68,7 @@ auto Akuma::Akuma::display() -> void {
     * 1.01f); drawAxis(origin.x, origin.y, origin.z, 0.5f);
     }*/
 
-	manager.draw();
+	
 
     ImGui::Render();
     ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
@@ -101,7 +103,7 @@ auto Akuma::Akuma::softInit() -> void {
 
     player = &manager.addEntity();
     player->addComponentID<ScaleComponent>();
-    player->getComponent<ScaleComponent>().setScale(glm::vec3{10, 10, 10});
+    player->getComponent<ScaleComponent>().setScale(glm::vec3{1, 1, 1});
     player->addComponentID<ModelComponent>();
     player->getComponent<ModelComponent>().setModel("player_female.obj");
     player->addComponentID<PositionComponent>();
