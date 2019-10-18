@@ -12,6 +12,7 @@
 #include "imgui.h"
 #include "imgui_impl_opengl2.h"
 #include "imgui_impl_sdl.h"
+#include "ObjLoader/ObjDisplay.hpp"
 
 using glm::vec3;
 using Shay::Camera;
@@ -26,19 +27,6 @@ using Image = Shay::TexturedPolygons::Image;
  * @brief Shays world default constructor, initialises all required variables, objects and textures
  */
 ShaysWorld::ShaysWorld() {
-    auto &engine = Stonk::Engine::get();
-    SDL_GL_GetDrawableSize(engine.window.get(), &width, &height);
-    ShaysWorld::ratio = static_cast<double>(width) / static_cast<double>(height);
-
-    modelList.push_back(OBJ::Load("tav7.obj"));
-    modelList.push_back(OBJ::Load("orb.obj"));
-    modelList.push_back(OBJ::Load("penta.obj"));
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glViewport(0, 0, width, height);
-    gluPerspective(60, ShaysWorld::ratio, 1, 50000);
-    glMatrixMode(GL_MODELVIEW);
 
     // set light position
     light_position[0] = 7000;
@@ -50,12 +38,12 @@ ShaysWorld::ShaysWorld() {
     light_position1[1] = 11000;
     light_position1[2] = 15000;
     light_position1[3] = 1;
+}
 
-    // set background (sky colour)
-    glClearColor(97.0f / 255.0f, 140.0f / 255.0f, 185.0f / 255.0f, 1.0f);
-
-    // set perpsective
-    gluLookAt(0.0, 1.75, 0.0, 0.0, 1.75, -1.0, 0.0, 1.0, 0.0);
+auto Shay::ShaysWorld::hardInit() -> void {
+    modelList.push_back(OBJ::Load("tav7.obj"));
+    modelList.push_back(OBJ::Load("orb.obj"));
+    modelList.push_back(OBJ::Load("penta.obj"));
 
     // settings for glut cylinders
     glu_cylinder = gluNewQuadric();
@@ -74,54 +62,50 @@ ShaysWorld::ShaysWorld() {
     // load texture images and create display lists
     CreateTextureList();
     CreateTextures();
+
+    softInit();
 }
 
-void ShaysWorld::displayModel(const Model &model, float scale, bool colourFaces) {
-    glPushMatrix();
-    glScalef(scale, scale, scale);
-    for (const auto &face : model.Faces) {
-        const auto hasMaterial = !model.Materials.empty();
-        if (hasMaterial &&
-            model.Materials[static_cast<size_t>(face.Material)].hasDiffuseTex) {
-            glBindTexture(
-                GL_TEXTURE_2D,
-                model.Materials[static_cast<size_t>(face.Material)].diffuseTextureId);
-        }
+auto Shay::ShaysWorld::softInit() -> void {
 
-        glBegin(GL_POLYGON);
-        if (colourFaces) {
-            const auto &material =
-                model.Materials[static_cast<size_t>(face.Material)];
-            glColor3fv(glm::value_ptr(material.diffuse));
-            glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,
-                         glm::value_ptr(material.ambient));
-            glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,
-                         glm::value_ptr(material.specular));
-            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,
-                         glm::value_ptr(material.diffuse));
-            glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, material.shininess);
-        }
-        for (size_t i = 0; i < face.Vertices.size(); i++) {
-            auto vertind     = face.Vertices[i];
-            auto uvind       = face.VertTexts[i];
-            const auto &vert = model.Vertices[static_cast<size_t>(vertind)];
-            if (hasMaterial &&
-                model.Materials[static_cast<size_t>(face.Material)].hasDiffuseTex) {
-                const auto &uv = model.UVs[static_cast<size_t>(uvind)];
-                glTexCoord2fv(glm::value_ptr(uv));
-            }
-            glVertex3f(vert.x, vert.y, vert.z);
-        }
-        glEnd();
+    auto &engine = Stonk::Engine::get();
+    SDL_GL_GetDrawableSize(engine.window.get(), &width, &height);
+    ShaysWorld::ratio = static_cast<double>(width) / static_cast<double>(height);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glViewport(0, 0, width, height);
+    gluPerspective(60, ShaysWorld::ratio, 1, 50000);
+    glMatrixMode(GL_MODELVIEW);
+
+    // set background (sky colour)
+    glClearColor(97.0f / 255.0f, 140.0f / 255.0f, 185.0f / 255.0f, 1.0f);
+
+    // set perpsective
+    gluLookAt(0.0, 1.75, 0.0, 0.0, 1.75, -1.0, 0.0, 1.0, 0.0);
+}
+
+auto Shay::ShaysWorld::handleInput(SDL_Event &event) -> void {
+    switch (event.type) {
+        case SDL_KEYDOWN:
+        case SDL_KEYUP: {
+            this->handleKeyEvents(event);
+        } break;
+        case SDL_MOUSEBUTTONDOWN:
+        case SDL_MOUSEBUTTONUP:
+        case SDL_MOUSEMOTION: {
+            this->handleMouseEvents(event);
+        } break;
+        default: break;
     }
-    glPopMatrix();
-    glColor3f(1, 1, 1);
 }
+
+auto Shay::ShaysWorld::unInit() -> void {}
 
 /**
  * @brief Calls all other display functions to display Shay's world
  */
-void ShaysWorld::Display() {
+void ShaysWorld::display() {
     auto &stonk = Stonk::Engine::get();
 
     ImGui_ImplOpenGL2_NewFrame();
@@ -162,7 +146,7 @@ void ShaysWorld::Display() {
 
     glTranslatef(20000, 10100, 15000);
     glRotatef(static_cast<float>(portalSpinAngle), 0.f, 1.f, 0.f);
-    displayModel(modelList[1], 5000, 0);
+    OBJ::displayModel(modelList[1], 5000, 0);
     // drawSolidCube(1000);
 
     glColor3f(1, 1, 1);
@@ -174,7 +158,7 @@ void ShaysWorld::Display() {
     glStencilMask(0x00);
     glPushMatrix();
     glTranslatef(0, -20, 0);
-    displayModel(modelList[1], 5100, 0);
+    OBJ::displayModel(modelList[1], 5100, 0);
     glPopMatrix();
     // drawSolidCube(1050);
     glPopMatrix();
@@ -220,10 +204,13 @@ void ShaysWorld::Display() {
     SDL_GL_SwapWindow(stonk.window.get());
 }
 
-void ShaysWorld::displayPentagram() {
+void ShaysWorld::displayPentagram(void) {
     glPushMatrix();
     glTranslatef(20000, 10000, 15000);
-    displayModel(modelList[2], 300, 1);
+    //glRotatef(90.f, 0, 0, 1);
+    glEnable(GL_CULL_FACE);
+    OBJ::depDisplayModel(modelList[2], 300, 1);
+    glDisable(GL_CULL_FACE);
     glPopMatrix();
 }
 
@@ -262,7 +249,7 @@ void ShaysWorld::DisplayDebugMenu() {
 /**
  * @brief Updates camera variables based on the delta time between frames
  */
-void ShaysWorld::Update(double dt) {
+void ShaysWorld::update(double dt) {
     cam.Update(dt);
 }
 
@@ -592,7 +579,7 @@ void ShaysWorld::displayTavern() {
 
     glPushMatrix();
     glTranslatef(7000, 9100, -5000);
-    displayModel(modelList[0], 3.f, 1);
+    OBJ::depDisplayModel(modelList[0], 3.f, 1);
     glPopMatrix();
 
     glDisable(GL_LIGHTING);

@@ -8,6 +8,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#include "Stonk/Engine.hpp"
+
 using std::string;
 
 auto MTL::GetImages() -> std::vector<Image>& {
@@ -24,7 +26,8 @@ auto MTL::GetImagePaths() -> std::map<std::string, size_t>& {
 };
 
 auto MTL::Load(const std::string &filepath) -> std::map<std::string, Material> {
-    auto path          = string{SDL_GetBasePath()} + "res/model/" + filepath;
+    auto &engine = Stonk::Engine::get();
+    auto path              = engine.basepath + "res/model/" + filepath;
     auto is            = std::ifstream(path);
     string currentLine = "";
     string currentMaterial = "";
@@ -70,7 +73,7 @@ auto MTL::Load(const std::string &filepath) -> std::map<std::string, Material> {
             string filename = "";
             line >> filename;
             //  TODO: This leaks memory (just like almost every use of SDL_GetBasePath in this codebase)
-            auto texturePath  = string{SDL_GetBasePath()} + "res/tex/" + filename;
+            auto texturePath = engine.basepath + "res/tex/" + filename;
             size_t index = 0;
             if (MTL::GetImagePaths().try_emplace(texturePath, index = MTL::GetImagePaths().size()).second) {
                 //generate an openGL texture for this image
@@ -82,7 +85,8 @@ auto MTL::Load(const std::string &filepath) -> std::map<std::string, Material> {
                 const auto& image = MTL::GetImages()[index];
                 glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
                 glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-                gluBuild2DMipmaps(GL_TEXTURE_2D, 3, image->w, image->h, GL_RGB,
+                gluBuild2DMipmaps(GL_TEXTURE_2D, 3, image->w, image->h, 
+                                image->format->BytesPerPixel == 3 ? GL_RGB : GL_RGBA,
                                 GL_UNSIGNED_BYTE, image->pixels);
                 MTL::GetTextures().push_back(boundTex);
             } else {

@@ -6,6 +6,7 @@
 
 #include "Camera.hpp"
 #include "ObjLoader/ObjLoader.hpp"
+#include "Stonk/BaseState.hpp"
 #include "TexturedPolygons.hpp"
 
 /**
@@ -251,17 +252,13 @@ namespace Shay {
      * @class ShaysWorld
      * @brief The ultimate Shay class used to handle all others
      */
-    class ShaysWorld {
+    class ShaysWorld : public BaseState {
       public:
         GLfloat stepIncrement  = 0.0f;
         GLfloat angleIncrement = 0.0f;
 
         int frameCount    = 0;
         clock_t lastClock = {};
-
-        int width    = 0;
-        int height   = 0;
-        double ratio = 0.0;
 
         /// Toggle for displaying on screen map
         bool DisplayMap = false;
@@ -308,7 +305,13 @@ namespace Shay {
 
         static auto get() -> ShaysWorld &;
 
-        auto displayModel(const Model &model, float scale,bool colourFaces) -> void;
+        auto hardInit() -> void;
+
+        auto softInit() -> void;
+
+        auto handleInput(SDL_Event &event) -> void;
+
+        auto unInit() -> void;
 
         auto handleKeyEvents(SDL_Event &event) -> void;
 
@@ -320,15 +323,15 @@ namespace Shay {
 
         void drawSolidCube(float scale);
 
-		void displayPentagram();
+        void displayPentagram(void);
 
         void displayTavern();
 
         void DisplayDebugMenu();
 
-        void Display();
+        void display();
 
-        void Update(double dt);
+        void update(double dt);
 
         void DrawBackdrop();
 

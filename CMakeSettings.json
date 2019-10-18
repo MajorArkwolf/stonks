@@ -23,30 +23,6 @@
       "ctestCommandArgs": "",
       "inheritEnvironments": [ "msvc_x64_x64" ],
       "variables": []
-    },
-    {
-      "name": "x64-Clang-Debug",
-      "generator": "Ninja",
-      "configurationType": "Debug",
-      "buildRoot": "${projectDir}\\out\\build\\${name}",
-      "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeCommandArgs": "",
-      "buildCommandArgs": "-v",
-      "ctestCommandArgs": "",
-      "inheritEnvironments": [ "clang_cl_x64" ],
-      "variables": [
-        {
-          "name": "SDL2_INCLUDE_DIR",
-          "value": "D:/Programming/vcpkg/installed/x64-windows/include/SDL2",
-          "type": "PATH"
-        },
-        {
-          "name": "SDL2main_LIBRARIES",
-          "value": "D:/Programming/vcpkg/installed/x64-windows/lib/manual-link/SDL2main.lib",
-          "type": "FILEPATH"
-        }
-      ],
-      "intelliSenseMode": "windows-msvc-x64"
     }
   ]
 }

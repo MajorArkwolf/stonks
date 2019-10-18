@@ -32,16 +32,18 @@ set (SOURCES
     src/Stonk/Collision.cpp
     src/Stonk/Physics.cpp
     src/Stonk/Viewport.cpp
-	src/Akuma/ProceduralGen/BSP/BSP.cpp
-	src/Akuma/ProceduralGen/BSP/Node.cpp
-	src/Akuma/Pathing/Grid.cpp
-	src/Akuma/Pathing/Node.cpp
-	src/Akuma/Pathing/Pathfinding.cpp
-	src/Akuma/GridDisplay/GLDisplay.cpp
-	src/Akuma/GridDisplay/GridDisplay.cpp
+    src/Stonk/BaseState.hpp
+    src/Akuma/ProceduralGen/BSP/BSP.cpp
+    src/Akuma/ProceduralGen/BSP/Node.cpp
+    src/Akuma/Pathing/Grid.cpp
+    src/Akuma/Pathing/Node.cpp
+    src/Akuma/Pathing/Pathfinding.cpp
+    src/Akuma/Floor.cpp
+    src/Akuma/Akuma.cpp
     
     src/ObjLoader/MtlLoader.cpp
     src/ObjLoader/ObjLoader.cpp
+    src/ObjLoader/ObjDisplay.cpp
 
 	src/ECS/ECS.hpp
 	src/ECS/InventoryComponent.hpp
@@ -81,8 +83,9 @@ target_compile_options(${PROJECT_NAME} PUBLIC
     $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:
     -Weverything -fcolor-diagnostics
     # These warnings are not useful.
-    -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded
-    -Wno-deprecated-declarations -Wno-exit-time-destructors -Wno-switch-enum>)
+    -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded 
+    -Wno-deprecated-declarations -Wno-exit-time-destructors -Wno-switch-enum
+	-Wno-weak-vtables>)
 # Set GCC compile flags.
 target_compile_options(${PROJECT_NAME} PUBLIC $<$<CXX_COMPILER_ID:GNU>:
     -Wall -Wextra -Wpedantic -fdiagnostics-color=always>)

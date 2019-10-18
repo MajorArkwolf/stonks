@@ -7,6 +7,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include "Stonk/Engine.hpp"
 
 using Shay::TexturedPolygons;
 
@@ -31,7 +32,8 @@ GLuint TexturedPolygons::GetTexture(GLuint tempIndex) {
  * @return The SDL2 image that was generated
  */
 Image TexturedPolygons::LoadTexture(const string &filename) {
-    auto path  = string{SDL_GetBasePath()} + "res/" + filename;
+    auto &engine = Stonk::Engine::get();
+    auto path  = engine.basepath + "res/" + filename;
     auto image = Image{IMG_Load(path.c_str()), &SDL_FreeSurface};
 
     if (image == nullptr) {

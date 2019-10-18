@@ -7,7 +7,6 @@
 
 #include <SDL2/SDL.h>
 
-#include "Akuma/GridDisplay/GLDisplay.hpp"
 #include "Shay/Shay.hpp"
 #include "Stonk/Camera.hpp"
 #include "Stonk/Collision.hpp"
@@ -15,6 +14,8 @@
 #include "imgui.h"
 #include "imgui_impl_opengl2.h"
 #include "imgui_impl_sdl.h"
+
+using Stonk::GameMode;
 
 using Shay::ShaysWorld;
 using std::runtime_error;
@@ -26,10 +27,10 @@ using Stonk::State;
  * @brief The game engine main loop
  */
 auto Engine::run() -> void {
-    //auto &grid       = View::GLDisplay::get();
-    auto &engine     = Engine::get();
-    auto &shaysWorld = ShaysWorld::get();
-    
+    auto &engine = Engine::get();
+    auto &stack  = engine.daGameStateStack;
+
+    engine.checkStack();
 
     auto frameCount    = 0l;
     auto lastFpsUpdate = 0.0;
@@ -51,8 +52,8 @@ auto Engine::run() -> void {
         }
 
         engine.processInput();
-        shaysWorld.Update(deltaTime);
-        shaysWorld.Display();
+        stack.top()->update(deltaTime);
+        stack.top()->display();
     }
 }
 
@@ -92,8 +93,7 @@ Engine::Engine() {
     // Create window.
     this->window = Engine::Window{
         SDL_CreateWindow("Shay's World", 0, 0, display.w, display.h,
-                         SDL_WINDOW_BORDERLESS | SDL_WINDOW_OPENGL |
-                             SDL_WINDOW_ALLOW_HIGHDPI),
+                         SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI),
         &SDL_DestroyWindow};
 
     if (this->window.get() == nullptr) {
@@ -124,6 +124,8 @@ Engine::Engine() {
     ImGui::StyleColorsDark();
     ImGui_ImplSDL2_InitForOpenGL(this->window.get(), this->context.get());
     ImGui_ImplOpenGL2_Init();
+
+	getBasePath();
 }
 
 /**
@@ -162,46 +164,74 @@ auto Engine::getIsRunning() const -> bool {
  * @param event The SDL2 event being read from
  */
 auto Engine::handleKeyPress(SDL_Event &event) -> void {
-    auto &shaysWorld = ShaysWorld::get();
-
-    switch (gameMode) {
-        case GameMode::SHAY: {
-            shaysWorld.handleKeyEvents(event);
-        } break;
-        case GameMode::STONK: {
-            // Send event to stonk input handler
-        } break;
-        case GameMode::MENU: {
-            // Send event to menu handler
-        } break;
-    }
-
+    auto &engine = Engine::get();
     switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_P: {
             this->showDebugMenu = !this->showDebugMenu;
         } break;
+        case SDL_SCANCODE_G: {
+            engine.popStack();
+            engine.loadState(GameMode::AKUMA);
+        } break;
+        case SDL_SCANCODE_H: {
+            engine.popStack();
+            engine.loadState(GameMode::SHAY);
+        } break;
+
         default: break;
     }
 }
 
+auto Stonk::Engine::loadState(GameMode mode) -> void {
+    auto &stack   = Stonk::Engine::get().daGameStateStack;
+    BaseState *bp = nullptr;
+    switch (mode) {
+        case GameMode::MENU: {
+            bp = new Akuma();
+        } break;
+        case GameMode::SHAY: {
+            bp = new ShaysWorld();
+        } break;
+        case GameMode::AKUMA: {
+            bp = new Akuma();
+        } break;
+    }
+    if (bp != nullptr) {
+        stack.push(bp);
+        stack.top()->hardInit();
+    }
+}
+auto Stonk::Engine::purgeStack() -> void {
+    auto &stack = Engine::get().daGameStateStack;
+
+    while (!stack.empty()) {
+        stack.top()->unInit();
+        delete (stack.top());
+        stack.pop();
+    }
+}
+auto Stonk::Engine::checkStack() -> void {
+    auto &stack = Engine::get().daGameStateStack;
+    if (stack.empty()) {
+        BaseState *bp = new Akuma();
+        stack.push(bp);
+        stack.top()->hardInit();
+    }
+}
+auto Stonk::Engine::popStack() -> void {
+    auto &stack = Engine::get().daGameStateStack;
+    if (!stack.empty()) {
+        stack.top()->unInit();
+        delete (stack.top());
+        stack.pop();
+    }
+}
 /**
  * @brief Handles SDL2 events regarding keyboard key releases, works by sending
  * the events to the currently set game state
  * @param event The SDL2 event being read from
  */
 auto Engine::handleKeyRelease(SDL_Event &event) -> void {
-    auto &shaysWorld = ShaysWorld::get();
-    switch (gameMode) {
-        case GameMode::SHAY: {
-            shaysWorld.handleKeyEvents(event);
-        } break;
-        case GameMode::STONK: {
-            // Send event to stonk input handler
-        } break;
-        case GameMode::MENU: {
-            // Send event to menu handler
-        } break;
-    }
     switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_P: {
         } break;
@@ -230,18 +260,6 @@ auto Engine::handleMouseButtonPress(SDL_Event &event) -> void {
     //                          // single click, 2 = double click
     // int releaseXPos = event.button.x; // X-position of mouse when pressed
     // int releaseYPos = event.button.y; // Y-position of mouse when pressed
-    auto &shaysWorld = ShaysWorld::get();
-    switch (gameMode) {
-        case GameMode::SHAY: {
-            shaysWorld.handleMouseEvents(event);
-        } break;
-        case GameMode::STONK: {
-            // Send event to stonk input handler
-        } break;
-        case GameMode::MENU: {
-            // Send event to menu handler
-        } break;
-    }
     switch (event.button.button) {
         case SDL_BUTTON_LEFT: break;
         case SDL_BUTTON_RIGHT: break;
@@ -287,35 +305,22 @@ auto Engine::handleMouseWheelMotion([[maybe_unused]] SDL_Event &event) -> void {
 auto Engine::processInput() -> void {
     auto event        = SDL_Event{};
     auto handledMouse = false;
+    auto &engine      = Engine::get();
+    auto &stack       = engine.daGameStateStack;
 
     while (SDL_PollEvent(&event)) {
         ImGui_ImplSDL2_ProcessEvent(&event);
         SDL_SetRelativeMouseMode(this->showDebugMenu ? SDL_FALSE : SDL_TRUE);
 
-        switch (event.type) {
-            case SDL_KEYDOWN: {
-                this->handleKeyPress(event);
-            } break;
-            case SDL_KEYUP: {
-                this->handleKeyRelease(event);
-            } break;
-            case SDL_MOUSEBUTTONDOWN: {
-                this->handleMouseButtonPress(event);
-            } break;
-            case SDL_MOUSEBUTTONUP: {
-                this->handleMouseButtonRelease(event);
-            } break;
-            case SDL_MOUSEMOTION: {
-                this->handleMouseMovement(event);
-                handledMouse = true;
-            } break;
-            case SDL_MOUSEWHEEL: {
-                this->handleMouseWheelMotion(event);
-            } break;
-            case SDL_QUIT: {
-                this->isRunning = false;
-            } break;
-            default: break;
+        if (!stack.empty()) {
+            stack.top()->handleInput(event);
+        }
+
+        if (event.type == SDL_MOUSEMOTION) {
+            this->handleMouseMovement(event);
+            handledMouse = true;
+        } else if (event.type == SDL_KEYDOWN) {
+            this->handleKeyPress(event);
         }
     }
 
@@ -346,4 +351,10 @@ auto Engine::render([[maybe_unused]] const State &newState) const -> void {}
 auto Engine::getTime() const -> double {
     return static_cast<double>(SDL_GetPerformanceCounter()) /
            static_cast<double>(SDL_GetPerformanceFrequency());
+}
+
+auto Engine::getBasePath() -> void {
+    char *base_path  = SDL_GetBasePath();
+    basepath = std::string(base_path);
+	SDL_free(base_path);
 }

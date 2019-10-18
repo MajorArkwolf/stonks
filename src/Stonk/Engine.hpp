@@ -1,10 +1,13 @@
 #pragma once
 
 #include <memory>
+#include <stack>
+#include <string>
 
 #include <SDL2/SDL.h>
 #include <glm/vec3.hpp>
 
+#include "Akuma/Akuma.hpp"
 #include "Stonk/Camera.hpp"
 #include "Stonk/Collision.hpp"
 #include "Stonk/Physics.hpp"
@@ -15,8 +18,9 @@
  * @brief The global Stonk namespace
  */
 namespace Stonk {
-    enum class GameMode { SHAY, STONK, MENU };
+    enum class GameMode { SHAY, AKUMA, MENU };
     /**
+     * @class Engine
      * @brief Stonk game engine.
      *
      * At least it's not Shay's World.
@@ -58,13 +62,16 @@ namespace Stonk {
          */
         bool showDebugMenu = false;
 
-      private:
         /**
          * @brief A boolean signifying whether the game engine is running or not
          */
         bool isRunning = true;
 
+		std::string basepath = "";
+
+      private:
         auto getTime() const -> double;
+        auto getBasePath() -> void;
 
         Engine();
 
@@ -76,6 +83,13 @@ namespace Stonk {
         static auto get() -> Engine &;
         static auto run() -> void;
 
+        auto loadState(GameMode) -> void;
+
+        std::stack<BaseState *> daGameStateStack;
+
+        auto purgeStack() -> void;
+        auto checkStack() -> void;
+        auto popStack() -> void;
         /**
          * @brief Overloaded assignment operator, set to default overload
          */
