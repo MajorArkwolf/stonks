@@ -19,19 +19,25 @@ Akuma::Akuma::Akuma() {}
  */
 auto Akuma::Akuma::display() -> void {
     glLoadIdentity();
-    gluLookAt(camera.position.x, camera.position.y, camera.position.z,
-              camera.look.x, camera.look.y, camera.look.z, camera.up.x,
-              camera.up.y, camera.up.z);
+
     auto &stonk = Stonk::Engine::get();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    gluLookAt(camera.position.x, camera.position.y, camera.position.z,
+              camera.look.x, camera.look.y, camera.look.z, camera.up.x,
+              camera.up.y, camera.up.z);
+
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.051);
+    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.01);
+    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 359);
 
     ImGui_ImplOpenGL2_NewFrame();
     ImGui_ImplSDL2_NewFrame(stonk.window.get());
     ImGui::NewFrame();
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
 
 
     glPushMatrix();
@@ -39,6 +45,7 @@ auto Akuma::Akuma::display() -> void {
     displayGrid();
     glPopMatrix();
 
+	glDisable(GL_LIGHT0);
     glDisable(GL_LIGHTING);
     glEnable(GL_TEXTURE_2D);
 
@@ -49,7 +56,6 @@ auto Akuma::Akuma::display() -> void {
 
     glDisable(GL_CULL_FACE);
     glDisable(GL_TEXTURE_2D);
-
     glDisable(GL_DEPTH_TEST);
 
     displayDebugMenu();
@@ -85,17 +91,11 @@ auto Akuma::Akuma::softInit() -> void {
     glClearColor(0.f, 0.f, 0.f, 1.f);
     glColor3f(1.f, 1.f, 1.f);
 
-    gluLookAt(camera.position.x, camera.position.y, camera.position.z,
-              camera.look.x, camera.look.y, camera.look.z, camera.up.x,
-              camera.up.y, camera.up.z);
-
-    light_position[0] = 5;
-    light_position[1] = 2;
-    light_position[2] = 5;
+    light_position[0] = 10;
+    light_position[1] = 4;
+    light_position[2] = 10;
     light_position[3] = 1;
-    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-    //glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.1);
-    //glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 120);
+
 }
 
 /**
@@ -104,6 +104,7 @@ auto Akuma::Akuma::softInit() -> void {
 auto Akuma::Akuma::hardInit() -> void {
     // Load models textures etc here
     modelList.push_back(OBJ::Load("flattile.obj"));
+    modelList.push_back(OBJ::Load("flatwall.obj"));
     softInit();
 }
 
@@ -263,9 +264,9 @@ auto Akuma::Akuma::displayGrid() -> void {
                 glColor3f(0.7f, 0.7f, 0.7f);
                 glTranslatef(0.f, 0.f, -0.01f);
                 glPushMatrix();
-                glTranslatef(0, 0.5, 0);
+                glTranslatef(-0.5, 0, 0.5);
 
-                drawCube(1, 0);
+                drawCube(0.2, 0);
 
                 glPopMatrix();
                 drawSquare(1.f, 0.f);
@@ -333,72 +334,74 @@ auto Akuma::Akuma::drawRectangle(float _width, float _height, bool wireframe)
 }
 
 auto Akuma::Akuma::drawCube(float size, bool wireframe) -> void {
+    glEnable(GL_TEXTURE_2D);
+    OBJ::displayModel(modelList[1], size);
+    glDisable(GL_TEXTURE_2D);
+    //float vertices[8][3] = {{-0.5, -0.5, -0.5}, {-0.5, 1.5, -0.5},
+    //                        {0.5, 1.5, -0.5},   {0.5, -0.5, -0.5},
+    //                        {-0.5, -0.5, 0.5},  {-0.5, 1.5, 0.5},
+    //                        {0.5, 1.5, 0.5},    {0.5, -0.5, 0.5}};
+    //glPushMatrix();
+    //glScalef(size, size, size);
+    //if (wireframe) { // FRONT?
+    //    glBegin(GL_LINE_LOOP);
+    //} else {
+    //    glBegin(GL_POLYGON);
+    //}
+    //glVertex3fv(vertices[0]);
+    //glVertex3fv(vertices[1]);
+    //glVertex3fv(vertices[2]);
+    //glVertex3fv(vertices[3]);
+    //glEnd();
 
-    float vertices[8][3] = {{-0.5, -0.5, -0.5}, {-0.5, 1.5, -0.5},
-                            {0.5, 1.5, -0.5},   {0.5, -0.5, -0.5},
-                            {-0.5, -0.5, 0.5},  {-0.5, 1.5, 0.5},
-                            {0.5, 1.5, 0.5},    {0.5, -0.5, 0.5}};
-    glPushMatrix();
-    glScalef(size, size, size);
-    if (wireframe) { // FRONT?
-        glBegin(GL_LINE_LOOP);
-    } else {
-        glBegin(GL_POLYGON);
-    }
-    glVertex3fv(vertices[0]);
-    glVertex3fv(vertices[1]);
-    glVertex3fv(vertices[2]);
-    glVertex3fv(vertices[3]);
-    glEnd();
+    //if (wireframe) {
+    //    glBegin(GL_LINE_LOOP);
+    //} else {
+    //    glBegin(GL_POLYGON);
+    //}
 
-    if (wireframe) {
-        glBegin(GL_LINE_LOOP);
-    } else {
-        glBegin(GL_POLYGON);
-    }
+    //glVertex3fv(vertices[7]);
+    //glVertex3fv(vertices[6]);
+    //glVertex3fv(vertices[5]);
+    //glVertex3fv(vertices[4]);
 
-    glVertex3fv(vertices[7]);
-    glVertex3fv(vertices[6]);
-    glVertex3fv(vertices[5]);
-    glVertex3fv(vertices[4]);
+    //glEnd();
 
-    glEnd();
+    //if (wireframe) {
+    //    glBegin(GL_LINE_LOOP);
+    //} else {
+    //    glBegin(GL_POLYGON);
+    //}
+    //glVertex3fv(vertices[3]);
+    //glVertex3fv(vertices[2]);
+    //glVertex3fv(vertices[6]);
+    //glVertex3fv(vertices[7]);
 
-    if (wireframe) {
-        glBegin(GL_LINE_LOOP);
-    } else {
-        glBegin(GL_POLYGON);
-    }
-    glVertex3fv(vertices[3]);
-    glVertex3fv(vertices[2]);
-    glVertex3fv(vertices[6]);
-    glVertex3fv(vertices[7]);
+    //glEnd();
 
-    glEnd();
+    //if (wireframe) {
+    //    glBegin(GL_LINE_LOOP);
+    //} else {
+    //    glBegin(GL_POLYGON);
+    //}
 
-    if (wireframe) {
-        glBegin(GL_LINE_LOOP);
-    } else {
-        glBegin(GL_POLYGON);
-    }
+    //glVertex3fv(vertices[4]);
+    //glVertex3fv(vertices[5]);
+    //glVertex3fv(vertices[1]);
+    //glVertex3fv(vertices[0]);
 
-    glVertex3fv(vertices[4]);
-    glVertex3fv(vertices[5]);
-    glVertex3fv(vertices[1]);
-    glVertex3fv(vertices[0]);
+    //glEnd();
 
-    glEnd();
+    //if (wireframe) { // Top
+    //    glBegin(GL_LINE_LOOP);
+    //} else {
+    //    glBegin(GL_POLYGON);
+    //}
+    //glVertex3fv(vertices[5]);
+    //glVertex3fv(vertices[6]);
+    //glVertex3fv(vertices[2]);
+    //glVertex3fv(vertices[1]);
+    //glEnd();
 
-    if (wireframe) { // Top
-        glBegin(GL_LINE_LOOP);
-    } else {
-        glBegin(GL_POLYGON);
-    }
-    glVertex3fv(vertices[5]);
-    glVertex3fv(vertices[6]);
-    glVertex3fv(vertices[2]);
-    glVertex3fv(vertices[1]);
-    glEnd();
-
-    glPopMatrix();
+    //glPopMatrix();
 }
