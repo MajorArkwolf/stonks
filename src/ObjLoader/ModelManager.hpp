@@ -7,7 +7,7 @@
 
 class ModelManager {
 public:
-    static auto GetModelID(std::string filename) -> int {
+    static auto GetModelID(std::string filename) -> size_t {
         static std::map<std::string, size_t> nameToId = {};
         auto id = nameToId.find(filename);
         if (id != nameToId.end()) { // file not loaded yet
@@ -16,7 +16,7 @@ public:
             return id->second;
         }
     }
-    static auto DrawModel(size_t id, const glm::vec3& scale, const glm::vec3& offset) -> void {
+    static void DrawModel(size_t id, const glm::vec3& scale, const glm::vec3& offset) {
         glPushMatrix();
         glTranslatef(offset.x, offset.y, offset.z);
         // ModelDisplay::displayModel(ModelRepo()[id], scale, 1);
