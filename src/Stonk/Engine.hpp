@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <stack>
+#include <string>
 
 #include <SDL2/SDL.h>
 #include <glm/vec3.hpp>
@@ -66,8 +67,11 @@ namespace Stonk {
          */
         bool isRunning = true;
 
+		std::string basepath = "";
+
       private:
         auto getTime() const -> double;
+        auto getBasePath() -> void;
 
         Engine();
 

@@ -12,6 +12,7 @@
 #include "imgui.h"
 #include "imgui_impl_opengl2.h"
 #include "imgui_impl_sdl.h"
+#include "ObjLoader/ObjDisplay.hpp"
 
 using glm::vec3;
 using Shay::Camera;
@@ -101,47 +102,6 @@ auto Shay::ShaysWorld::handleInput(SDL_Event &event) -> void {
 
 auto Shay::ShaysWorld::unInit() -> void {}
 
-void ShaysWorld::displayModel(const Model &model, float scale, bool colourFaces) {
-    glPushMatrix();
-    glScalef(scale, scale, scale);
-    for (const auto &face : model.Faces) {
-        const auto hasMaterial = !model.Materials.empty();
-        if (hasMaterial &&
-            model.Materials[static_cast<size_t>(face.Material)].hasDiffuseTex) {
-            glBindTexture(
-                GL_TEXTURE_2D,
-                model.Materials[static_cast<size_t>(face.Material)].diffuseTextureId);
-        }
-
-        glBegin(GL_POLYGON);
-        if (colourFaces) {
-            const auto &material =
-                model.Materials[static_cast<size_t>(face.Material)];
-            glColor3fv(glm::value_ptr(material.diffuse));
-            glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,
-                         glm::value_ptr(material.ambient));
-            glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,
-                         glm::value_ptr(material.specular));
-            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,
-                         glm::value_ptr(material.diffuse));
-            glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, material.shininess);
-        }
-        for (size_t i = 0; i < face.Vertices.size(); i++) {
-            auto vertind     = face.Vertices[i];
-            auto uvind       = face.VertTexts[i];
-            const auto &vert = model.Vertices[static_cast<size_t>(vertind)];
-            if (hasMaterial &&
-                model.Materials[static_cast<size_t>(face.Material)].hasDiffuseTex) {
-                const auto &uv = model.UVs[static_cast<size_t>(uvind)];
-                glTexCoord2fv(glm::value_ptr(uv));
-            }
-            glVertex3f(vert.x, vert.y, vert.z);
-        }
-        glEnd();
-    }
-    glPopMatrix();
-}
-
 /**
  * @brief Calls all other display functions to display Shay's world
  */
@@ -186,7 +146,7 @@ void ShaysWorld::display() {
 
     glTranslatef(20000, 10100, 15000);
     glRotatef(static_cast<float>(portalSpinAngle), 0.f, 1.f, 0.f);
-    displayModel(modelList[1], 5000, 0);
+    OBJ::displayModel(modelList[1], 5000, 0);
     // drawSolidCube(1000);
 
     glColor3f(1, 1, 1);
@@ -198,7 +158,7 @@ void ShaysWorld::display() {
     glStencilMask(0x00);
     glPushMatrix();
     glTranslatef(0, -20, 0);
-    displayModel(modelList[1], 5100, 0);
+    OBJ::displayModel(modelList[1], 5100, 0);
     glPopMatrix();
     // drawSolidCube(1050);
     glPopMatrix();
@@ -247,7 +207,10 @@ void ShaysWorld::display() {
 void ShaysWorld::displayPentagram(void) {
     glPushMatrix();
     glTranslatef(20000, 10000, 15000);
-    displayModel(modelList[2], 300, 1);
+    //glRotatef(90.f, 0, 0, 1);
+    glEnable(GL_CULL_FACE);
+    OBJ::depDisplayModel(modelList[2], 300, 1);
+    glDisable(GL_CULL_FACE);
     glPopMatrix();
 }
 
@@ -616,7 +579,7 @@ void ShaysWorld::displayTavern() {
 
     glPushMatrix();
     glTranslatef(7000, 9100, -5000);
-    displayModel(modelList[0], 3.f, 1);
+    OBJ::depDisplayModel(modelList[0], 3.f, 1);
     glPopMatrix();
 
     glDisable(GL_LIGHTING);

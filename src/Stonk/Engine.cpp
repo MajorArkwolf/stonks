@@ -93,8 +93,7 @@ Engine::Engine() {
     // Create window.
     this->window = Engine::Window{
         SDL_CreateWindow("Shay's World", 0, 0, display.w, display.h,
-                         SDL_WINDOW_BORDERLESS | SDL_WINDOW_OPENGL |
-                             SDL_WINDOW_ALLOW_HIGHDPI),
+                         SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI),
         &SDL_DestroyWindow};
 
     if (this->window.get() == nullptr) {
@@ -125,6 +124,8 @@ Engine::Engine() {
     ImGui::StyleColorsDark();
     ImGui_ImplSDL2_InitForOpenGL(this->window.get(), this->context.get());
     ImGui_ImplOpenGL2_Init();
+
+	getBasePath();
 }
 
 /**
@@ -212,7 +213,7 @@ auto Stonk::Engine::purgeStack() -> void {
 auto Stonk::Engine::checkStack() -> void {
     auto &stack = Engine::get().daGameStateStack;
     if (stack.empty()) {
-        BaseState *bp = new ShaysWorld();
+        BaseState *bp = new Akuma();
         stack.push(bp);
         stack.top()->hardInit();
     }
@@ -350,4 +351,10 @@ auto Engine::render([[maybe_unused]] const State &newState) const -> void {}
 auto Engine::getTime() const -> double {
     return static_cast<double>(SDL_GetPerformanceCounter()) /
            static_cast<double>(SDL_GetPerformanceFrequency());
+}
+
+auto Engine::getBasePath() -> void {
+    char *base_path  = SDL_GetBasePath();
+    basepath = std::string(base_path);
+	SDL_free(base_path);
 }

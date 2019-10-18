@@ -313,8 +313,6 @@ namespace Shay {
 
         auto unInit() -> void;
 
-        auto displayModel(const Model &model, float scale, bool colourFaces) -> void;
-
         auto handleKeyEvents(SDL_Event &event) -> void;
 
         auto handleMouseEvents(SDL_Event &event) -> void;
