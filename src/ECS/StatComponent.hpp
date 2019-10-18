@@ -18,7 +18,7 @@ struct CharacterSheet {
 class StatComponent : public Component {
   public:
     StatComponent() = default;
-    StatComponent(Stat stat) {}
+    StatComponent(CharacterSheet stat) {}
     ~StatComponent() = default;
     void init() {}
     void update() {}

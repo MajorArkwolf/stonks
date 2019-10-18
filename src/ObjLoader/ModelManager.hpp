@@ -16,7 +16,9 @@ public:
             return id->second;
         }
     }
-    static void DrawModel(size_t id, const glm::vec3& scale, const glm::vec3& offset) {
+    static void DrawModel([[maybe_unused]] size_t id,
+                          [[maybe_unused]] const glm::vec3 &scale,
+                          const glm::vec3 &offset) {
         glPushMatrix();
         glTranslatef(offset.x, offset.y, offset.z);
         // ModelDisplay::displayModel(ModelRepo()[id], scale, 1);
