@@ -16,7 +16,7 @@ public:
             return id->second;
         }
     }
-    static auto DrawModel(size_t id, float scale, const glm::vec3& offset) {
+    static auto DrawModel(size_t id, float scale, const glm::vec3& offset) -> void {
         glPushMatrix();
         glTranslatef(offset.x, offset.y, offset.z);
         // ModelDisplay::displayModel(ModelRepo()[id], scale, 1);
