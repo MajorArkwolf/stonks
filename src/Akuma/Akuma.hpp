@@ -37,7 +37,7 @@ class Akuma : public BaseState {
         glm::dvec3 look     = {0.f, 0.f, -1.f};
         glm::dvec3 up       = {0.f, 1.f, 0.f};
     } camera;
-
+    GLfloat light_position[4];
 
   private:
     /// The floor

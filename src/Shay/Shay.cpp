@@ -206,7 +206,7 @@ void ShaysWorld::display() {
 
 void ShaysWorld::displayPentagram(void) {
     glPushMatrix();
-    glTranslatef(20000, 10100, 15000);
+    glTranslatef(20000, 10000, 15000);
     //glRotatef(90.f, 0, 0, 1);
     glEnable(GL_CULL_FACE);
     OBJ::depDisplayModel(modelList[2], 300, 1);

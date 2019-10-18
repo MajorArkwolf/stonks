@@ -30,10 +30,16 @@ auto Akuma::Akuma::display() -> void {
     ImGui_ImplSDL2_NewFrame(stonk.window.get());
     ImGui::NewFrame();
     glEnable(GL_CULL_FACE);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+
+
     glPushMatrix();
     // glTranslatef(gridTranslation.x, gridTranslation.y, gridTranslation.z);
     displayGrid();
     glPopMatrix();
+
+    glDisable(GL_LIGHTING);
     glEnable(GL_TEXTURE_2D);
 
     glPushMatrix();
@@ -82,6 +88,14 @@ auto Akuma::Akuma::softInit() -> void {
     gluLookAt(camera.position.x, camera.position.y, camera.position.z,
               camera.look.x, camera.look.y, camera.look.z, camera.up.x,
               camera.up.y, camera.up.z);
+
+    light_position[0] = 5;
+    light_position[1] = 2;
+    light_position[2] = 5;
+    light_position[3] = 1;
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    //glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.1);
+    //glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 120);
 }
 
 /**
@@ -89,7 +103,7 @@ auto Akuma::Akuma::softInit() -> void {
  */
 auto Akuma::Akuma::hardInit() -> void {
     // Load models textures etc here
-    // modelList.push_back(OBJ::Load("flattile.obj"));
+    modelList.push_back(OBJ::Load("flattile.obj"));
     softInit();
 }
 
@@ -174,6 +188,12 @@ void Akuma::handleKeyPress(SDL_Event &event) {
         case SDL_SCANCODE_D: {
             camera.position.x++;
         } break;
+        case SDL_SCANCODE_I: {
+            camera.position.y++;
+        } break;
+        case SDL_SCANCODE_K: {
+            camera.position.y--;
+        } break;
 
         default: break;
     }
@@ -244,7 +264,9 @@ auto Akuma::Akuma::displayGrid() -> void {
                 glTranslatef(0.f, 0.f, -0.01f);
                 glPushMatrix();
                 glTranslatef(0, 0.5, 0);
+
                 drawCube(1, 0);
+
                 glPopMatrix();
                 drawSquare(1.f, 0.f);
                 glColor3f(1.f, 1.f, 1.f);
@@ -256,7 +278,7 @@ auto Akuma::Akuma::displayGrid() -> void {
                 glEnable(GL_TEXTURE_2D);
                 glTranslatef(-0.5f, 0.0f, -0.5);
                 // drawSquare(1.f, 0.f);
-                // OBJ::displayModel(modelList[0], 0.2);
+               OBJ::displayModel(modelList[0], 0.2);
                 glDisable(GL_TEXTURE_2D);
                 glColor3f(1.f, 1.f, 1.f);
                 glPopMatrix();
@@ -312,13 +334,13 @@ auto Akuma::Akuma::drawRectangle(float _width, float _height, bool wireframe)
 
 auto Akuma::Akuma::drawCube(float size, bool wireframe) -> void {
 
-    float vertices[8][3] = {{-0.5, -0.5, -0.5}, {-0.5, 0.5, -0.5},
-                            {0.5, 0.5, -0.5},   {0.5, -0.5, -0.5},
-                            {-0.5, -0.5, 0.5},  {-0.5, 0.5, 0.5},
-                            {0.5, 0.5, 0.5},    {0.5, -0.5, 0.5}};
+    float vertices[8][3] = {{-0.5, -0.5, -0.5}, {-0.5, 1.5, -0.5},
+                            {0.5, 1.5, -0.5},   {0.5, -0.5, -0.5},
+                            {-0.5, -0.5, 0.5},  {-0.5, 1.5, 0.5},
+                            {0.5, 1.5, 0.5},    {0.5, -0.5, 0.5}};
     glPushMatrix();
     glScalef(size, size, size);
-    if (wireframe) {
+    if (wireframe) { // FRONT?
         glBegin(GL_LINE_LOOP);
     } else {
         glBegin(GL_POLYGON);
@@ -347,11 +369,10 @@ auto Akuma::Akuma::drawCube(float size, bool wireframe) -> void {
     } else {
         glBegin(GL_POLYGON);
     }
-
-    glVertex3fv(vertices[7]);
-    glVertex3fv(vertices[6]);
-    glVertex3fv(vertices[2]);
     glVertex3fv(vertices[3]);
+    glVertex3fv(vertices[2]);
+    glVertex3fv(vertices[6]);
+    glVertex3fv(vertices[7]);
 
     glEnd();
 
@@ -361,14 +382,14 @@ auto Akuma::Akuma::drawCube(float size, bool wireframe) -> void {
         glBegin(GL_POLYGON);
     }
 
-    glVertex3fv(vertices[0]);
-    glVertex3fv(vertices[1]);
-    glVertex3fv(vertices[5]);
     glVertex3fv(vertices[4]);
+    glVertex3fv(vertices[5]);
+    glVertex3fv(vertices[1]);
+    glVertex3fv(vertices[0]);
 
     glEnd();
 
-    if (wireframe) { //Top
+    if (wireframe) { // Top
         glBegin(GL_LINE_LOOP);
     } else {
         glBegin(GL_POLYGON);
@@ -378,7 +399,6 @@ auto Akuma::Akuma::drawCube(float size, bool wireframe) -> void {
     glVertex3fv(vertices[2]);
     glVertex3fv(vertices[1]);
     glEnd();
-
 
     glPopMatrix();
 }
