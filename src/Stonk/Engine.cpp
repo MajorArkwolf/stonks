@@ -355,6 +355,6 @@ auto Engine::getTime() const -> double {
 
 auto Engine::getBasePath() -> void {
     char *base_path  = SDL_GetBasePath();
-    std::string basepath = std::string(base_path);
+    basepath = std::string(base_path);
 	SDL_free(base_path);
 }

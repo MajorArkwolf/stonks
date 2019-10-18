@@ -33,7 +33,9 @@ auto Akuma::Akuma::display() -> void {
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
     glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.051f);
     glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.01f);
-    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 359.f);
+    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180.f);
+    glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 1);
+    glLightf(GL_LIGHT0, GL_SPOT_DIRECTION, 1);
 
     ImGui_ImplOpenGL2_NewFrame();
     ImGui_ImplSDL2_NewFrame(stonk.window.get());
