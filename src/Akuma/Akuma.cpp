@@ -269,12 +269,15 @@ auto Akuma::Akuma::drawAxis(float x, float y, float z, float length) -> void {
  */
 auto Akuma::Akuma::displayGrid() -> void {
     auto gridSize = floor.getGridSize();
+
+	glPushMatrix();
+    glTranslatef(gridSize.x / 2, 0, (gridSize.y / 2));
     for (unsigned x = 0; x < gridSize.x; x++) {
         for (unsigned y = 0; y < gridSize.y; y++) {
             glPushMatrix();
-            glTranslatef(x - 0.5f * gridSize.x, 0, y - 0.5f * gridSize.y);
+            glTranslatef(x - 0.5f * gridSize.x, 0, (y - 0.5f * gridSize.y));
             glPushMatrix();
-            // glTranslatef(0, 0.01, 0);
+             glTranslatef(0.f, 0.03f, 0.f);
             drawSquare(1, 1);
             glPopMatrix();
             if (!floor.getGridNode(x, y)->walkable) {
@@ -320,6 +323,7 @@ auto Akuma::Akuma::displayGrid() -> void {
             glPopMatrix();
         }
     }
+    glPopMatrix();
 }
 
 /**
