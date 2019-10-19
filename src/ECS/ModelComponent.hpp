@@ -24,12 +24,19 @@ public:
     }
     void update() {}
     void draw() {
+        glm::vec3 scale{1, 1, 1};
+        glm::vec3 pos{0, 0, 0};
+        GLfloat rotation = 0;
         if (hasModel) {
             if (hasScale) {
-                ModelManager::DrawModel(this->modelId, this->scale->getScale(), this->pos->getPos());
-            } else {
-                ModelManager::DrawModel(this->modelId, this->pos->getPos());
+                scale = this->scale->getScale();
             }
+            if (this->entity->hasComponent<PositionComponent>()) {
+               pos = this->entity->getComponent<PositionComponent>().getPos();
+                rotation =
+                    this->entity->getComponent<PositionComponent>().getRotation();
+			}
+            ModelManager::DrawModel(this->modelId, rotation, scale, this->pos->getPos());
         }
     }
 
