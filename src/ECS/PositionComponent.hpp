@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Components.hpp"
-#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
 
 /* This will need to handle all positions of entities. */
 class PositionComponent : public Component {
