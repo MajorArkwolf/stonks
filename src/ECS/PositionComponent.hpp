@@ -48,18 +48,18 @@ class PositionComponent : public Component {
         this->position.z = z;
     }
 
-    glm::vec3 getPos() {
+    glm::vec3 getPos() const {
         return this->position;
     }
 
-    GLfloat getXPos() {
+    GLfloat getXPos() const {
         return this->position.x;
     }
 
-    GLfloat getYPos() {
+    GLfloat getYPos() const {
         return this->position.y;
     }
-	GLfloat getZPos() {
+    GLfloat getZPos() const {
         return this->position.z;
 	}
 
