@@ -111,6 +111,7 @@ auto Akuma::Akuma::softInit() -> void {
     player->getComponent<PositionComponent>().setPos(glm::vec3{2, 0, 1});
     player->addComponentID<ModelComponent>();
     player->getComponent<ModelComponent>().setModel("player_female.obj");
+    player->addComponentID<MoveComponent>();
     enemies.push_back(&manager.addEntity());
     enemies.at(0)->addComponentID<ScaleComponent>();
     enemies.at(0)->addComponentID<ScaleComponent>();
