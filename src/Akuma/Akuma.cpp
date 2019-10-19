@@ -16,10 +16,16 @@ using std::stringstream;
  */
 Akuma::Akuma::Akuma() {
 
-    light_position[0] = 0;
-    light_position[1] = 0;
-    light_position[2] = 0;
+    light_position[0] = 1;
+    light_position[1] = 4;
+    light_position[2] = 1;
     light_position[3] = 1;
+    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.1f);
+    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.05f);
+    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180.f);
+    glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 1);
+    glLightf(GL_LIGHT0, GL_SPOT_DIRECTION, 1);
+
 }
 
 /**
@@ -47,11 +53,7 @@ auto Akuma::Akuma::display() -> void {
         static_cast<double>(camera.tilt.y), static_cast<double>(camera.tilt.z));
     
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.051f);
-    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.01f);
-    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180.f);
-    glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 1);
-    glLightf(GL_LIGHT0, GL_SPOT_DIRECTION, 1);
+    
 
     ImGui_ImplOpenGL2_NewFrame();
     ImGui_ImplSDL2_NewFrame(stonk.window.get());
@@ -61,10 +63,8 @@ auto Akuma::Akuma::display() -> void {
     // glTranslatef(gridTranslation.x, gridTranslation.y, gridTranslation.z);
     displayGrid();
     glPopMatrix();
-	   
 
-    glDisable(GL_LIGHT0);
-    glDisable(GL_LIGHTING);
+
     glEnable(GL_TEXTURE_2D);
     manager.draw();
     glPushMatrix();
@@ -72,6 +72,10 @@ auto Akuma::Akuma::display() -> void {
     // OBJ::displayModel(modelList[0], 5, 1);
     glPopMatrix();	
 
+	manager.draw();
+
+    glDisable(GL_LIGHT0);
+    glDisable(GL_LIGHTING);
     glDisable(GL_CULL_FACE);
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_DEPTH_TEST);
@@ -311,6 +315,7 @@ auto Akuma::Akuma::displayGrid() -> void {
                 glEnable(GL_TEXTURE_2D);
                 glTranslatef(-0.5f, 0.0f, -0.5);
                 // drawSquare(1.f, 0.f);
+                glNormal3f(0, 1, 0);
                 OBJ::displayModel(modelList[0], 0.2f);
                 glDisable(GL_TEXTURE_2D);
                 glColor3f(1.f, 1.f, 1.f);
@@ -437,4 +442,9 @@ auto Akuma::Akuma::drawCube(float size, [[maybe_unused]] bool wireframe) -> void
     // glEnd();
 
     // glPopMatrix();
+}
+
+void Akuma::descendLevel() {
+    floor.regen();
+    floorLevel++;
 }
