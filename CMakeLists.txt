@@ -40,16 +40,24 @@ set (SOURCES
     src/Akuma/Pathing/Pathfinding.cpp
     src/Akuma/Floor.cpp
     src/Akuma/Akuma.cpp
+	src/Akuma/Camera.hpp
     
     src/ObjLoader/MtlLoader.cpp
     src/ObjLoader/ObjLoader.cpp
     src/ObjLoader/ObjDisplay.cpp
 
+	src/ECS/CameraComponent.hpp
+	src/ECS/CombatComponent.hpp
+	src/ECS/Components.hpp
 	src/ECS/ECS.hpp
+	src/ECS/EquipmentComponent.hpp
 	src/ECS/InventoryComponent.hpp
+	src/ECS/ModelComponent.hpp
 	src/ECS/PlayerComponent.hpp
 	src/ECS/PositionComponent.hpp
 	src/ECS/ScaleComponent.hpp
+	src/ECS/StatComponent.hpp
+	src/ECS/TurnComponent.hpp
 
     src/Shay/AABBList.cpp
     src/Shay/PlainNode.cpp

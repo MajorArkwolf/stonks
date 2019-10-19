@@ -1,15 +1,21 @@
 #pragma once
 
 #include "Components.hpp"
-#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
 
 /* This will need to handle all positions of entities. */
 class PositionComponent : public Component {
   public:
     PositionComponent() = default;
-    PositionComponent(float x, float y) {
+    PositionComponent(float x, float y, float z) {
         this->position.x = x;
         this->position.y = y;
+        this->position.y = z;
+    }
+    PositionComponent(float x, float z) {
+        this->position.x = x;
+        this->position.y = 1;
+        this->position.y = z;
     }
     PositionComponent(glm::vec3 newPos) {
         this->position.x = newPos.x;
@@ -17,7 +23,9 @@ class PositionComponent : public Component {
         this->position.z = newPos.z;
     }
     void init() {}
-    void update() {}
+    void update() {
+        this->position.x += 0.01;
+	}
     void draw() {}
 
     void setPos(glm::vec3 newPos) {
@@ -38,6 +46,9 @@ class PositionComponent : public Component {
     void setYPos(float y) {
         this->position.y = y;
     }
+    void setZPos(float z) {
+        this->position.z = z;
+    }
 
     glm::vec3 getPos() {
         return this->position;
@@ -50,12 +61,12 @@ class PositionComponent : public Component {
     GLfloat getYPos() {
         return this->position.y;
     }
-	GLfloat getZPos() {
+    GLfloat getZPos() {
         return this->position.z;
 	}
 
     ~PositionComponent() = default;
 
   private:
-    glm::vec3 position = {1, 1, 1};
+    glm::vec3 position = {0.5, 0, 0.5};
 };
