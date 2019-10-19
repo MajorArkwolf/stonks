@@ -20,6 +20,11 @@ Akuma::Akuma::Akuma() {
     light_position[1] = 4;
     light_position[2] = 1;
     light_position[3] = 1;
+    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.1f);
+    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.05f);
+    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180.f);
+    glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 1);
+    glLightf(GL_LIGHT0, GL_SPOT_DIRECTION, 1);
 
 }
 
@@ -48,11 +53,7 @@ auto Akuma::Akuma::display() -> void {
         static_cast<double>(camera.tilt.y), static_cast<double>(camera.tilt.z));
     
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.1f);
-    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.05f);
-    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180.f);
-    glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 1);
-    glLightf(GL_LIGHT0, GL_SPOT_DIRECTION, 1);
+    
 
     ImGui_ImplOpenGL2_NewFrame();
     ImGui_ImplSDL2_NewFrame(stonk.window.get());
@@ -63,8 +64,7 @@ auto Akuma::Akuma::display() -> void {
     displayGrid();
     glPopMatrix();
 
-    glDisable(GL_LIGHT0);
-    glDisable(GL_LIGHTING);
+
     glEnable(GL_TEXTURE_2D);
     manager.draw();
     glPushMatrix();
