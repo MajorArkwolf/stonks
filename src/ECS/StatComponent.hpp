@@ -18,14 +18,16 @@ struct CharacterSheet {
 class StatComponent : public Component {
   public:
     StatComponent() = default;
-    StatComponent([[maybe_unused]] CharacterSheet newStat) {}
+    StatComponent(CharacterSheet newStat) {
+        this->stat = newStat;
+	}
     ~StatComponent() = default;
     void init() {}
     void update() {}
     void draw() {}
 
     auto setStat(CharacterSheet newStat) -> void {
-        stat = newStat;
+        this->stat = newStat;
     }
 
     CharacterSheet stat;
