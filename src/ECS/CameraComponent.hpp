@@ -35,7 +35,7 @@ class CameraComponent : public Component {
             glm::vec3 entityPosition =
                 this->entity->getComponent<PositionComponent>().getPos();
             camera.position.x +=
-                static_cast<double>(entityPosition.x - lastPosition.z);
+                static_cast<double>(entityPosition.x - lastPosition.x);
             camera.position.z +=
                 static_cast<double>(entityPosition.z - lastPosition.z);
             lastPosition = entityPosition;
