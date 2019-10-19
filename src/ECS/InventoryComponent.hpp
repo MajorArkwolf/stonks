@@ -47,6 +47,7 @@ class InventoryComponent : public Component {
         if (uniqueItemAmount < inventory.max_size()) {
             inventory[uniqueItemAmount + 1] = item;
             uniqueItemAmount++;
+            return true;
         } else {
             /// If the player has 99 unique items then they wont be able to pick up.
             return false;

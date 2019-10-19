@@ -43,7 +43,7 @@ class Akuma : public BaseState {
 
   private:
     Manager manager;
-    Entity *player;
+    Entity *player = nullptr;
     std::vector<Entity *> enemies;
     /// The floor
     Floor floor;

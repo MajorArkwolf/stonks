@@ -12,7 +12,13 @@ using std::stringstream;
 /**
  * @brief Default constructor for the Akuma game state
  */
-Akuma::Akuma::Akuma() {}
+Akuma::Akuma::Akuma() {
+
+    light_position[0] = 10;
+    light_position[1] = 4;
+    light_position[2] = 10;
+    light_position[3] = 1;
+}
 
 /**
  * @brief Akuma display function
@@ -96,10 +102,7 @@ auto Akuma::Akuma::softInit() -> void {
     glClearColor(0.f, 0.f, 0.f, 1.f);
     glColor3f(1.f, 1.f, 1.f);
 
-    light_position[0] = 10;
-    light_position[1] = 4;
-    light_position[2] = 10;
-    light_position[3] = 1;
+
 
     player = &manager.addEntity();
     player->addComponentID<ScaleComponent>();
