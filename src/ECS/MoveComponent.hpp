@@ -2,7 +2,7 @@
 
 #include "Components.hpp"
 #include <glm/vec3.hpp>
-#include "Pathing/Node.hpp"
+#include "Akuma/Pathing/Node.hpp"
 
 /* This will need to handle input to the player */
 class MoveComponent : public Component {
@@ -31,8 +31,8 @@ class MoveComponent : public Component {
 
 	void moveEntityToNode(const Pathing::Node &newNode) {
         isMoving = true;
-        moveTo.x = newNode.x + 0.5;
-        moveTo.z = newNode.y + 0.5;
+        moveTo.x = float(newNode.x) + 0.5f;
+        moveTo.z = float(newNode.y) + 0.5f;
 	}
 
 
