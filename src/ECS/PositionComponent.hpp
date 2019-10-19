@@ -23,7 +23,9 @@ class PositionComponent : public Component {
         this->position.z = newPos.z;
     }
     void init() {}
-    void update() {}
+    void update() {
+        this->position.x += 0.01;
+	}
     void draw() {}
 
     void setPos(glm::vec3 newPos) {
@@ -48,18 +50,18 @@ class PositionComponent : public Component {
         this->position.z = z;
     }
 
-    glm::vec3 getPos() const {
+    glm::vec3 getPos() {
         return this->position;
     }
 
-    GLfloat getXPos() const {
+    GLfloat getXPos() {
         return this->position.x;
     }
 
-    GLfloat getYPos() const {
+    GLfloat getYPos() {
         return this->position.y;
     }
-    GLfloat getZPos() const {
+    GLfloat getZPos() {
         return this->position.z;
 	}
 

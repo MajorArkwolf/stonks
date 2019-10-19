@@ -6,6 +6,8 @@
 #include "imgui.h"
 #include "imgui_impl_opengl2.h"
 #include "imgui_impl_sdl.h"
+#include "Camera.hpp"
+#include <glm/vec3.hpp>
 
 using std::stringstream;
 
@@ -14,9 +16,9 @@ using std::stringstream;
  */
 Akuma::Akuma::Akuma() {
 
-    light_position[0] = 10;
-    light_position[1] = 4;
-    light_position[2] = 10;
+    light_position[0] = 0;
+    light_position[1] = 0;
+    light_position[2] = 0;
     light_position[3] = 1;
 }
 
@@ -33,8 +35,17 @@ auto Akuma::Akuma::display() -> void {
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 
-	manager.draw();
+	Player::Camera &camera = player->getComponent<CameraComponent>().camera;
 
+    gluLookAt(static_cast<double>(camera.position.x),
+              static_cast<double> (camera.position.y),
+              static_cast<double>(camera.position.z),
+              static_cast<double>(camera.look.x),
+              static_cast<double>(camera.look.y),
+              static_cast<double>(camera.look.z),
+              static_cast<double>(camera.tilt.x),
+        static_cast<double>(camera.tilt.y), static_cast<double>(camera.tilt.z));
+    
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
     glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.051f);
     glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.01f);
@@ -50,11 +61,12 @@ auto Akuma::Akuma::display() -> void {
     // glTranslatef(gridTranslation.x, gridTranslation.y, gridTranslation.z);
     displayGrid();
     glPopMatrix();
+	   
 
     glDisable(GL_LIGHT0);
     glDisable(GL_LIGHTING);
     glEnable(GL_TEXTURE_2D);
-
+    manager.draw();
     glPushMatrix();
     glTranslatef(0, 0, -20);
     // OBJ::displayModel(modelList[0], 5, 1);
@@ -130,9 +142,9 @@ void Akuma::Akuma::displayDebugMenu() {
     auto buffer = stringstream{};
 
     if (stonk.showDebugMenu) {
-        auto &pos    = this->camera.position;
-        auto &look   = this->camera.look;
-        auto &angles = this->camera.up;
+        auto &pos = player->getComponent<CameraComponent>().camera.position;
+        auto &look = player->getComponent<CameraComponent>().camera.look;
+        auto &angles = player->getComponent<CameraComponent>().camera.tilt;
 
         ImGui::Begin("Debug Menu");
         ImGui::Text("Camera: %.2f, %.2f, %.2f", static_cast<double>(pos.x),
@@ -185,6 +197,10 @@ auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {
  */
 void Akuma::update([[maybe_unused]] double dt) {
     manager.update();
+    light_position[0] = player->getComponent<PositionComponent>().getXPos();
+    // light_position[1] = 2;
+    light_position[2] = player->getComponent<PositionComponent>().getZPos();
+    light_position[3] = 1;
 }
 
 /**
@@ -192,32 +208,29 @@ void Akuma::update([[maybe_unused]] double dt) {
  * @param event The SDL event containing the key press event
  */
 void Akuma::handleKeyPress(SDL_Event &event) {
-    switch (event.key.keysym.scancode) {
-        case SDL_SCANCODE_W: {
+    auto &camera = player->getComponent<CameraComponent>().camera;
+    switch (event.key.keysym.scancode) {        
+        case SDL_SCANCODE_A: {
             camera.position.z++;
         } break;
-        case SDL_SCANCODE_A: {
+        case SDL_SCANCODE_Q: {
             camera.position.x--;
         } break;
-        case SDL_SCANCODE_S: {
+        case SDL_SCANCODE_D: {
             camera.position.z--;
         } break;
-        case SDL_SCANCODE_D: {
+        case SDL_SCANCODE_E: {
             camera.position.x++;
         } break;
-        case SDL_SCANCODE_I: {
+        case SDL_SCANCODE_W: {
             camera.position.y++;
         } break;
-        case SDL_SCANCODE_K: {
+        case SDL_SCANCODE_S: {
             camera.position.y--;
         } break;
 
         default: break;
     }
-
-    gluLookAt(camera.position.x, camera.position.y, camera.position.z,
-              camera.look.x, camera.look.y, camera.look.z, camera.up.x,
-              camera.up.y, camera.up.z);
 }
 
 /**

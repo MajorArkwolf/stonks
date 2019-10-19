@@ -12,16 +12,16 @@ class CameraComponent : public Component {
     ~CameraComponent() = default;
     void init() {
         UpdateCameraLook();
+        if (this->entity->hasComponent<PositionComponent>()) {
+            lastPosition =
+                this->entity->getComponent<PositionComponent>().getPos();
+        }
     }
     void update() {
         UpdateCameraLook();
+        UpdateCameraPosition();
     }
-    void draw() {
-        camera.position = glm::vec3{0.0f, 50.0f, 0.0f};
-        gluLookAt(camera.position.x, camera.position.y, camera.position.z,
-                  camera.look.x, camera.look.y, camera.look.z, 1,
-                  0, 1);
-    }
+    void draw() {}
 
     auto UpdateCameraLook() -> void {
         if (this->entity->hasComponent<PositionComponent>()) {
@@ -29,6 +29,16 @@ class CameraComponent : public Component {
         }
     }
 
-  private:
+    auto UpdateCameraPosition() -> void {
+        if (this->entity->hasComponent<PositionComponent>()) {
+            glm::vec3 entityPosition =
+                this->entity->getComponent<PositionComponent>().getPos();
+            camera.position.x += static_cast<double>(entityPosition.x) - lastPosition.x;
+            camera.position.z +=
+                static_cast<double>(entityPosition.z) - lastPosition.z;
+            lastPosition = entityPosition;
+        }
+    }
+    glm::vec3 lastPosition{};
     Player::Camera camera;
 };

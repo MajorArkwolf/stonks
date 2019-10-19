@@ -10,15 +10,15 @@ namespace Player {
      */
     struct Camera {
         /// The current position of the camera
-        glm::vec3 position = {0.0f, 0.0f, 0.0f};
+        glm::dvec3 position = {0.0, 0.0, 0.0};
 
         /// The current look position of the camera
-        glm::vec3 look = {0.0f, 0.0f, 0.0f};
+        glm::dvec3 look = {0.0, 0.0, 0.0};
 
         /// The current tilt values of the camera
-        glm::vec3 tilt = {0.0f, 1.0f, 0.0f};
+        glm::dvec3 tilt = {0.0, 1.0, 0.0};
 
         /// The current angle values of the camera
-        glm::vec2 angles = {glm::pi<double>(), 0};
+        glm::dvec2 angles = {glm::pi<double>(), 0};
     };
 }
