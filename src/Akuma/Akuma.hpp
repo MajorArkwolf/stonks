@@ -34,11 +34,6 @@ class Akuma : public BaseState {
 
     glm::vec3 gridTranslation = {0, 0, -50.f};
 
-    struct Camera {
-        glm::dvec3 position = {0.f, 50.f, 0};
-        glm::dvec3 look     = {0.f, 0.f, -1.f};
-        glm::dvec3 up       = {0.f, 1.f, 0.f};
-    } camera;
     GLfloat light_position[4];
 
   private:
