@@ -19,7 +19,7 @@ public:
 
     // Stolen from TexturedPolygons.hpp
     using Image = std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)>;
-
+private:
     /**
      * Stores images.
      */
