@@ -18,17 +18,18 @@ public:
             return id->second;
         }
     }
-    static void DrawModel([[maybe_unused]] size_t id,
+    static void DrawModel([[maybe_unused]] size_t id, GLfloat rotation,
                           [[maybe_unused]] const glm::vec3 &scale,
                           const glm::vec3 &offset) {
         glPushMatrix();
         glTranslatef(offset.x, offset.y, offset.z);
+        glRotatef(rotation, 0, 1, 0);
         OBJ::displayModel(ModelRepo().at(id), scale, 1);
         //throw "DrawModel( ... ) not implemented";
         glPopMatrix();
     }
     static auto DrawModel(size_t id, const glm::vec3& offset) -> void {
-        DrawModel(id, {1,1,1}, offset);
+        DrawModel(id, 0.0f ,{1,1,1}, offset);
         
     }
 private:
