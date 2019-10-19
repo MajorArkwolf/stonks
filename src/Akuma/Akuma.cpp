@@ -200,7 +200,7 @@ void Akuma::update([[maybe_unused]] double dt) {
     light_position[0] = player->getComponent<PositionComponent>().getXPos();
     // light_position[1] = 2;
     light_position[2] = player->getComponent<PositionComponent>().getZPos();
-    light_position[3] = 1;
+    //light_position[3] = 1;
 }
 
 /**
