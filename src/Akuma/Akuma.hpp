@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include "Akuma/Floor.hpp"
+
 #include "ObjLoader/ObjDisplay.hpp"
 #include "Stonk/BaseState.hpp"
 #include "Stonk/Engine.hpp"
@@ -10,7 +11,6 @@
 #include "glm/vec3.hpp"
 
 #include "ECS/Components.hpp"
-
 /**
  * @class Akuma
  * @brief The Akuma game state object
@@ -31,6 +31,9 @@ class Akuma : public BaseState {
     void update(double dt);
     void handleKeyPress(SDL_Event &event);
     void drawCube(float size, bool wireframe);
+
+    unsigned floorLevel = 1;
+    void descendLevel();
 
     glm::vec3 gridTranslation = {0, 0, -50.f};
 

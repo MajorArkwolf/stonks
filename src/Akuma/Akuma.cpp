@@ -18,6 +18,7 @@ Akuma::Akuma::Akuma() {
     light_position[1] = 4;
     light_position[2] = 10;
     light_position[3] = 1;
+
 }
 
 /**
@@ -111,6 +112,7 @@ auto Akuma::Akuma::softInit() -> void {
     player->getComponent<PositionComponent>().setPos(glm::vec3{2, 0, 1});
     player->addComponentID<ModelComponent>();
     player->getComponent<ModelComponent>().setModel("player_female.obj");
+
     enemies.push_back(&manager.addEntity());
     enemies.at(0)->addComponentID<ScaleComponent>();
     enemies.at(0)->addComponentID<ScaleComponent>();
@@ -305,6 +307,7 @@ auto Akuma::Akuma::displayGrid() -> void {
                 glEnable(GL_TEXTURE_2D);
                 glTranslatef(-0.5f, 0.0f, -0.5);
                 // drawSquare(1.f, 0.f);
+                glNormal3f(0, 1, 0);
                 OBJ::displayModel(modelList[0], 0.2f);
                 glDisable(GL_TEXTURE_2D);
                 glColor3f(1.f, 1.f, 1.f);
@@ -430,4 +433,9 @@ auto Akuma::Akuma::drawCube(float size, [[maybe_unused]] bool wireframe) -> void
     // glEnd();
 
     // glPopMatrix();
+}
+
+void Akuma::descendLevel() {
+    floor.regen();
+    floorLevel++;
 }

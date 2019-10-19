@@ -155,3 +155,19 @@ auto Floor::setGridSquare(glm::uvec2 bottomLeft, glm::uvec2 topRight,
         }
     }
 }
+
+auto Floor::getNeighbours(Pathing::Node &_node) -> vector<Pathing::Node *> {
+    return grid.getNeighbours(_node);
+}
+
+auto Floor::findPath(Pathing::Node &startNode, Pathing::Node &endNode)
+    -> std::vector<Pathing::Node *> {
+    return Pathing::Pathfinding::findPath(grid, startNode, endNode, 1);
+}
+
+auto Floor::regen() -> void {
+    this->tree = BSPTree(defaultGridSize, defaultSubdivisions);
+    grid.resetGrid();
+    loadGrid();
+}
+
