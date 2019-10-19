@@ -11,7 +11,8 @@ class CombatComponent : public Component {
     void update() {}
     void draw() {}
 
-	auto Attack(Item item, Stat Attack, Stat Defender) -> void {
+	auto Attack(Item item, CharacterSheet Attack, CharacterSheet Defender)
+        -> void {
 		
 	}
 };
