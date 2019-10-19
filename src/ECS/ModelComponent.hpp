@@ -34,10 +34,10 @@ public:
     }
 
 private:
-    size_t modelId;
-    bool hasModel;
-    bool hasScale;
+    size_t modelId = 0;
+    bool hasModel = false;
+    bool hasScale = false;
     ScaleComponent * scale;
-    bool hasPosition;
+    bool hasPosition = false;
     PositionComponent * pos;
 };
