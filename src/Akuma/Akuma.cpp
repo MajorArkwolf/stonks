@@ -32,9 +32,8 @@ auto Akuma::Akuma::display() -> void {
     glEnable(GL_CULL_FACE);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-    gluLookAt(camera.position.x, camera.position.y, camera.position.z,
-              camera.look.x, camera.look.y, camera.look.z, camera.up.x,
-              camera.up.y, camera.up.z);
+
+	manager.draw();
 
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
     glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.051f);
@@ -59,9 +58,7 @@ auto Akuma::Akuma::display() -> void {
     glPushMatrix();
     glTranslatef(0, 0, -20);
     // OBJ::displayModel(modelList[0], 5, 1);
-    glPopMatrix();
-
-	manager.draw();
+    glPopMatrix();	
 
     glDisable(GL_CULL_FACE);
     glDisable(GL_TEXTURE_2D);
@@ -112,6 +109,7 @@ auto Akuma::Akuma::softInit() -> void {
     player->addComponentID<ModelComponent>();
     player->getComponent<ModelComponent>().setModel("player_female.obj");
     player->addComponentID<MoveComponent>();
+    player->addComponentID<CameraComponent>();
 }
 
 /**
