@@ -24,7 +24,6 @@ class PositionComponent : public Component {
     }
     void init() {}
     void update() {
-        this->position.x += 0.01;
 	}
     void draw() {}
 
