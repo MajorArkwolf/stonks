@@ -6,6 +6,7 @@
 #include "ScaleComponent.hpp"
 #include "ModelComponent.hpp"
 #include "StatComponent.hpp"
+#include "TurnComponent.hpp"
 // Include all the components that will be used in the game.
 /*  Stat component incomplete, needs a lot of work.
 	Player Component isn not finished, just a stub.
