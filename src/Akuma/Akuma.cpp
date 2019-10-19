@@ -285,7 +285,7 @@ auto Akuma::Akuma::displayGrid() -> void {
             glPushMatrix();
             glTranslatef(x - 0.5f * gridSize.x, 0, (y - 0.5f * gridSize.y));
             glPushMatrix();
-             glTranslatef(0, 0.03, 0);
+             glTranslatef(0.f, 0.03f, 0.f);
             drawSquare(1, 1);
             glPopMatrix();
             if (!floor.getGridNode(x, y)->walkable) {
