@@ -7,9 +7,15 @@
 class PositionComponent : public Component {
   public:
     PositionComponent() = default;
-    PositionComponent(float x, float y) {
+    PositionComponent(float x, float y, float z) {
         this->position.x = x;
         this->position.y = y;
+        this->position.y = z;
+    }
+    PositionComponent(float x, float z) {
+        this->position.x = x;
+        this->position.y = 1;
+        this->position.y = z;
     }
     PositionComponent(glm::vec3 newPos) {
         this->position.x = newPos.x;
@@ -38,6 +44,9 @@ class PositionComponent : public Component {
     void setYPos(float y) {
         this->position.y = y;
     }
+    void setZPos(float z) {
+        this->position.z = z;
+    }
 
     glm::vec3 getPos() {
         return this->position;
@@ -57,5 +66,5 @@ class PositionComponent : public Component {
     ~PositionComponent() = default;
 
   private:
-    glm::vec3 position = {1, 1, 1};
+    glm::vec3 position = {0, 0, 0};
 };
