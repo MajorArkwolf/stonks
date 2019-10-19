@@ -8,17 +8,6 @@ class PlayerComponent : public Component {
     PlayerComponent()  = default;
     ~PlayerComponent() = default;
     void init() {}
-    void update() {
-	}
+    void update() {}
     void draw() {}
-	void isYourTurn() {
-        isTurn = true;
-	}
-	bool endYourTurn() {
-        isTurn = false;
-        return true;
-	}
-
-private:
-    bool isTurn = false;
 };
