@@ -2,6 +2,7 @@
 
 #include "Components.hpp"
 #include <glm/vec3.hpp>
+#include "Pathing/Node.hpp"
 
 /* This will need to handle input to the player */
 class MoveComponent : public Component {
@@ -19,12 +20,19 @@ class MoveComponent : public Component {
         //}
         //isMoving = true;
         this->entity->getComponent<PositionComponent>().setPos(moveTo);
+        isMoving = false;
 	}
     void draw() {}
 
-	void moveEntity(glm::vec3 movingTo) {
+	void moveEntity(const glm::vec3& movingTo) {
         isMoving = true;
         moveTo = movingTo;
+	}
+
+	void moveEntityToNode(const Pathing::Node &newNode) {
+        isMoving = true;
+        moveTo.x = newNode.x + 0.5;
+        moveTo.z = newNode.y + 0.5;
 	}
 
 
