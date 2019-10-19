@@ -45,6 +45,12 @@ set (SOURCES
     src/ObjLoader/ObjLoader.cpp
     src/ObjLoader/ObjDisplay.cpp
 
+	src/ECS/ECS.hpp
+	src/ECS/InventoryComponent.hpp
+	src/ECS/PlayerComponent.hpp
+	src/ECS/PositionComponent.hpp
+	src/ECS/ScaleComponent.hpp
+
     src/Shay/AABBList.cpp
     src/Shay/PlainNode.cpp
     src/Shay/CameraMap.cpp

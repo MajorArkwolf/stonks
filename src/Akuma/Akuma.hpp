@@ -9,6 +9,8 @@
 #include "Stonk/OpenGl.hpp"
 #include "glm/vec3.hpp"
 
+#include "ECS/Components.hpp"
+
 /**
  * @class Akuma
  * @brief The Akuma game state object
@@ -40,6 +42,9 @@ class Akuma : public BaseState {
     GLfloat light_position[4];
 
   private:
+    Manager manager;
+    Entity *player = nullptr;
+    std::vector<Entity *> enemies;
     /// The floor
     Floor floor;
     // Toggle for drawing 3d axis

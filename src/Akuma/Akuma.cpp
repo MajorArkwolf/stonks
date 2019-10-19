@@ -12,7 +12,13 @@ using std::stringstream;
 /**
  * @brief Default constructor for the Akuma game state
  */
-Akuma::Akuma::Akuma() {}
+Akuma::Akuma::Akuma() {
+
+    light_position[0] = 10;
+    light_position[1] = 4;
+    light_position[2] = 10;
+    light_position[3] = 1;
+}
 
 /**
  * @brief Akuma display function
@@ -41,13 +47,12 @@ auto Akuma::Akuma::display() -> void {
     ImGui_ImplSDL2_NewFrame(stonk.window.get());
     ImGui::NewFrame();
 
-
     glPushMatrix();
     // glTranslatef(gridTranslation.x, gridTranslation.y, gridTranslation.z);
     displayGrid();
     glPopMatrix();
 
-	glDisable(GL_LIGHT0);
+    glDisable(GL_LIGHT0);
     glDisable(GL_LIGHTING);
     glEnable(GL_TEXTURE_2D);
 
@@ -55,6 +60,8 @@ auto Akuma::Akuma::display() -> void {
     glTranslatef(0, 0, -20);
     // OBJ::displayModel(modelList[0], 5, 1);
     glPopMatrix();
+
+	manager.draw();
 
     glDisable(GL_CULL_FACE);
     glDisable(GL_TEXTURE_2D);
@@ -66,6 +73,8 @@ auto Akuma::Akuma::display() -> void {
         auto origin = this->camera.look + (this->camera.getForwardDir()
     * 1.01f); drawAxis(origin.x, origin.y, origin.z, 0.5f);
     }*/
+
+	
 
     ImGui::Render();
     ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
@@ -93,10 +102,23 @@ auto Akuma::Akuma::softInit() -> void {
     glClearColor(0.f, 0.f, 0.f, 1.f);
     glColor3f(1.f, 1.f, 1.f);
 
-    light_position[0] = 10;
-    light_position[1] = 4;
-    light_position[2] = 10;
-    light_position[3] = 1;
+
+
+    player = &manager.addEntity();
+    player->addComponentID<ScaleComponent>();
+    player->getComponent<ScaleComponent>().setScale(glm::vec3{0.5, 0.5, 0.5});
+    player->addComponentID<PositionComponent>();
+    player->getComponent<PositionComponent>().setPos(glm::vec3{2, 0, 1});
+    player->addComponentID<ModelComponent>();
+    player->getComponent<ModelComponent>().setModel("player_female.obj");
+    enemies.push_back(&manager.addEntity());
+    enemies.at(0)->addComponentID<ScaleComponent>();
+    enemies.at(0)->addComponentID<ScaleComponent>();
+    enemies.at(0)->getComponent<ScaleComponent>().setScale(glm::vec3{0.5, 0.5, 0.5});
+    enemies.at(0)->addComponentID<PositionComponent>();
+    enemies.at(0)->getComponent<PositionComponent>().setPos(glm::vec3{1, 0, 1});
+    enemies.at(0)->addComponentID<ModelComponent>();
+    enemies.at(0)->getComponent<ModelComponent>().setModel("player_male.obj");
 
 }
 
@@ -171,7 +193,9 @@ auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {
  * @brief Physics update function for the Akuma gamestate
  * @param dt Delta time since last frame
  */
-void Akuma::update([[maybe_unused]] double dt) {}
+void Akuma::update([[maybe_unused]] double dt) {
+    manager.update();
+}
 
 /**
  * @brief Handles key presses for the Akuma game state
@@ -281,7 +305,7 @@ auto Akuma::Akuma::displayGrid() -> void {
                 glEnable(GL_TEXTURE_2D);
                 glTranslatef(-0.5f, 0.0f, -0.5);
                 // drawSquare(1.f, 0.f);
-               OBJ::displayModel(modelList[0], 0.2f);
+                OBJ::displayModel(modelList[0], 0.2f);
                 glDisable(GL_TEXTURE_2D);
                 glColor3f(1.f, 1.f, 1.f);
                 glPopMatrix();
@@ -335,75 +359,75 @@ auto Akuma::Akuma::drawRectangle(float _width, float _height, bool wireframe)
     glEnd();
 }
 
-auto Akuma::Akuma::drawCube(float size, [[maybe_unused]]bool wireframe) -> void {
+auto Akuma::Akuma::drawCube(float size, [[maybe_unused]] bool wireframe) -> void {
     glEnable(GL_TEXTURE_2D);
     OBJ::displayModel(modelList[1], size);
     glDisable(GL_TEXTURE_2D);
-    //float vertices[8][3] = {{-0.5, -0.5, -0.5}, {-0.5, 1.5, -0.5},
+    // float vertices[8][3] = {{-0.5, -0.5, -0.5}, {-0.5, 1.5, -0.5},
     //                        {0.5, 1.5, -0.5},   {0.5, -0.5, -0.5},
     //                        {-0.5, -0.5, 0.5},  {-0.5, 1.5, 0.5},
     //                        {0.5, 1.5, 0.5},    {0.5, -0.5, 0.5}};
-    //glPushMatrix();
-    //glScalef(size, size, size);
-    //if (wireframe) { // FRONT?
+    // glPushMatrix();
+    // glScalef(size, size, size);
+    // if (wireframe) { // FRONT?
     //    glBegin(GL_LINE_LOOP);
     //} else {
     //    glBegin(GL_POLYGON);
     //}
-    //glVertex3fv(vertices[0]);
-    //glVertex3fv(vertices[1]);
-    //glVertex3fv(vertices[2]);
-    //glVertex3fv(vertices[3]);
-    //glEnd();
+    // glVertex3fv(vertices[0]);
+    // glVertex3fv(vertices[1]);
+    // glVertex3fv(vertices[2]);
+    // glVertex3fv(vertices[3]);
+    // glEnd();
 
-    //if (wireframe) {
-    //    glBegin(GL_LINE_LOOP);
-    //} else {
-    //    glBegin(GL_POLYGON);
-    //}
-
-    //glVertex3fv(vertices[7]);
-    //glVertex3fv(vertices[6]);
-    //glVertex3fv(vertices[5]);
-    //glVertex3fv(vertices[4]);
-
-    //glEnd();
-
-    //if (wireframe) {
-    //    glBegin(GL_LINE_LOOP);
-    //} else {
-    //    glBegin(GL_POLYGON);
-    //}
-    //glVertex3fv(vertices[3]);
-    //glVertex3fv(vertices[2]);
-    //glVertex3fv(vertices[6]);
-    //glVertex3fv(vertices[7]);
-
-    //glEnd();
-
-    //if (wireframe) {
+    // if (wireframe) {
     //    glBegin(GL_LINE_LOOP);
     //} else {
     //    glBegin(GL_POLYGON);
     //}
 
-    //glVertex3fv(vertices[4]);
-    //glVertex3fv(vertices[5]);
-    //glVertex3fv(vertices[1]);
-    //glVertex3fv(vertices[0]);
+    // glVertex3fv(vertices[7]);
+    // glVertex3fv(vertices[6]);
+    // glVertex3fv(vertices[5]);
+    // glVertex3fv(vertices[4]);
 
-    //glEnd();
+    // glEnd();
 
-    //if (wireframe) { // Top
+    // if (wireframe) {
     //    glBegin(GL_LINE_LOOP);
     //} else {
     //    glBegin(GL_POLYGON);
     //}
-    //glVertex3fv(vertices[5]);
-    //glVertex3fv(vertices[6]);
-    //glVertex3fv(vertices[2]);
-    //glVertex3fv(vertices[1]);
-    //glEnd();
+    // glVertex3fv(vertices[3]);
+    // glVertex3fv(vertices[2]);
+    // glVertex3fv(vertices[6]);
+    // glVertex3fv(vertices[7]);
 
-    //glPopMatrix();
+    // glEnd();
+
+    // if (wireframe) {
+    //    glBegin(GL_LINE_LOOP);
+    //} else {
+    //    glBegin(GL_POLYGON);
+    //}
+
+    // glVertex3fv(vertices[4]);
+    // glVertex3fv(vertices[5]);
+    // glVertex3fv(vertices[1]);
+    // glVertex3fv(vertices[0]);
+
+    // glEnd();
+
+    // if (wireframe) { // Top
+    //    glBegin(GL_LINE_LOOP);
+    //} else {
+    //    glBegin(GL_POLYGON);
+    //}
+    // glVertex3fv(vertices[5]);
+    // glVertex3fv(vertices[6]);
+    // glVertex3fv(vertices[2]);
+    // glVertex3fv(vertices[1]);
+    // glEnd();
+
+    // glPopMatrix();
 }

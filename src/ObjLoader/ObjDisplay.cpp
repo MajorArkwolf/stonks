@@ -4,11 +4,16 @@
 
 using glm::vec3;
 auto OBJ::displayModel(const Model &model, float scale, bool colourFaces) -> void {
+    displayModel(model, glm::vec3{scale, scale, scale}, colourFaces);
+}
+
+auto OBJ::displayModel(const Model &model, glm::vec3 scale, bool colourFaces)
+    -> void {
     const auto hasMaterial = !model.Materials.empty();
     auto hasDiffuse        = false;
     const glm::vec3 *vert  = nullptr;
     glPushMatrix();
-    glScalef(scale, scale, scale);
+    glScalef(scale.x, scale.y, scale.z);
     for (const auto &face : model.Faces) {
         if (hasMaterial &&
             model.Materials[static_cast<size_t>(face.Material)].hasDiffuseTex) {
@@ -55,9 +60,8 @@ auto OBJ::displayModel(const Model &model, float scale, bool colourFaces) -> voi
 }
 
 auto OBJ::displayModel(const Model &model, float scale) -> void {
-    displayModel(model, scale, 1);
+    displayModel(model, glm::vec3{scale, scale, scale}, 1);
 }
-
 
 void OBJ::depDisplayModel(const Model &model, float scale, bool colourFaces) {
     glPushMatrix();
