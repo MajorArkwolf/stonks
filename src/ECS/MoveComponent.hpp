@@ -19,20 +19,24 @@ class MoveComponent : public Component {
         //    this->entity->getComponent<PositionComponent>().setPos(moveTo);
         //}
         //isMoving = true;
-        this->entity->getComponent<PositionComponent>().setPos(moveTo);
-        isMoving = false;
+        if (this->isMoving == true) {
+            this->entity->getComponent<PositionComponent>().setPos(moveTo);
+            this->isMoving = false;
+        }
+        
+        
 	}
     void draw() {}
 
 	void moveEntity(const glm::vec3& movingTo) {
-        isMoving = true;
-        moveTo = movingTo;
+        this->isMoving = true;
+        this->moveTo = movingTo;
 	}
 
 	void moveEntityToNode(const Pathing::Node &newNode) {
-        isMoving = true;
-        moveTo.x = float(newNode.x) + 0.5f;
-        moveTo.z = float(newNode.y) + 0.5f;
+        this->isMoving = true;
+        this->moveTo.x = float(newNode.x) + 0.5f;
+        this->moveTo.z = float(newNode.y) + 0.5f;
 	}
 
 
