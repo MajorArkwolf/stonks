@@ -14,9 +14,9 @@ using std::stringstream;
  */
 Akuma::Akuma::Akuma() {
 
-    light_position[0] = 10;
+    light_position[0] = 1;
     light_position[1] = 4;
-    light_position[2] = 10;
+    light_position[2] = 1;
     light_position[3] = 1;
 
 }
@@ -38,8 +38,8 @@ auto Akuma::Akuma::display() -> void {
               camera.up.y, camera.up.z);
 
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.051f);
-    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.01f);
+    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.1f);
+    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.05f);
     glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180.f);
     glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 1);
     glLightf(GL_LIGHT0, GL_SPOT_DIRECTION, 1);
@@ -53,8 +53,6 @@ auto Akuma::Akuma::display() -> void {
     displayGrid();
     glPopMatrix();
 
-    glDisable(GL_LIGHT0);
-    glDisable(GL_LIGHTING);
     glEnable(GL_TEXTURE_2D);
 
     glPushMatrix();
@@ -64,6 +62,8 @@ auto Akuma::Akuma::display() -> void {
 
 	manager.draw();
 
+    glDisable(GL_LIGHT0);
+    glDisable(GL_LIGHTING);
     glDisable(GL_CULL_FACE);
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_DEPTH_TEST);
