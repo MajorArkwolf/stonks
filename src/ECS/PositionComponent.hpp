@@ -24,9 +24,7 @@ class PositionComponent : public Component {
         this->position.z = newPos.z;
     }
     void init() {}
-    void update() {
-        rotation++;
-	}
+    void update() {}
     void draw() {}
 
     void setPos(glm::vec3 newPos) {
