@@ -426,13 +426,14 @@ auto Akuma::Akuma::displayGrid() -> void {
     glPopMatrix();
 }
 
+
 /**
  * @brief Draws a square on screen matching the given parameters
  * @param size The size of the square to create
  * @param wireframe Whether to draw a wireframe square or a polygon
  */
-void Akuma::Akuma::drawSquare(float size, bool wireframe) {
-    drawRectangle(size, size, wireframe);
+auto Akuma::drawSquare(float size, bool wireframe) -> void {
+    Akuma::drawRectangle(size, size, wireframe);
 }
 
 /**
@@ -441,7 +442,7 @@ void Akuma::Akuma::drawSquare(float size, bool wireframe) {
  * @param _width The width of the rectangle to create
  * @param wireframe Whether to draw a wireframe or polygon
  */
-auto Akuma::Akuma::drawRectangle(float _width, float _height, bool wireframe)
+auto Akuma::drawRectangle(float _width, float _height, bool wireframe)
     -> void {
     if (wireframe) {
         glBegin(GL_LINE_LOOP);
@@ -479,6 +480,7 @@ void Akuma::generateLevel() {
     unsigned int enemyCount = diceRoller.Roll(floorLevel, 3u);
     for (unsigned i = 0; i <= enemyCount; ++i) {
         enemies.push_back(&manager.addEntity());
+        enemies.at(i)->addComponentID<TurnComponent>();
         enemies.at(i)->addComponentID<ScaleComponent>(glm::vec3{0.5, 0.5, 0.5});
         enemies.at(i)->addComponentID<PositionComponent>();
         bool walkable    = false;

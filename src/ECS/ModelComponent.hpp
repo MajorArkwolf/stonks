@@ -27,20 +27,22 @@ class ModelComponent : public Component {
     }
     void update() {}
     void draw() {
-        glm::vec3 scale{1, 1, 1};
-        glm::vec3 pos{0, 0, 0};
-        GLfloat rotation = 0;
+        glm::vec3 entityScale{1, 1, 1};
+        glm::vec3 entityPos{0, 0, 0};
+        GLfloat entityRotation = 0;
         if (hasModel) {
             if (hasScale) {
-                scale = this->scale->getScale();
+                entityScale =
+                    this->entity->getComponent<ScaleComponent>().getScale();
             }
             if (this->entity->hasComponent<PositionComponent>()) {
-                pos = this->entity->getComponent<PositionComponent>().getPos();
-                rotation =
+                entityPos =
+                    this->entity->getComponent<PositionComponent>().getPos();
+                entityRotation =
                     this->entity->getComponent<PositionComponent>().getRotation();
             }
-            ModelManager::DrawModel(this->modelId, rotation, scale,
-                                    this->pos->getPos());
+            ModelManager::DrawModel(this->modelId, entityRotation, entityScale,
+                                    entityPos);
         }
     }
 

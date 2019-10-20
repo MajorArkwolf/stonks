@@ -26,6 +26,7 @@ class Floor {
     auto findPath(Pathing::Node &startNode, Pathing::Node &endNode)
         -> std::vector<Pathing::Node *>;
     auto regen() -> void;
+    auto regen(glm::uvec2 size, int subdivisions) -> void;
 
   private:
     /// The grid representation of the room

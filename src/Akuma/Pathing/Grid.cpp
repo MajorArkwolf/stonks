@@ -53,6 +53,9 @@ void Pathing::Grid::resetGrid() {
  * @return Pointer to node at given coordinate
  */
 Node *Pathing::Grid::getNode(glm::uvec2 pos) {
+    if (pos.x > gridSizeX || pos.y > gridSizeY) {
+        return nullptr;
+    }
     return &nodeGrid[pos.x][pos.y];
 }
 
