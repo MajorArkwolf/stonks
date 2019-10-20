@@ -5,9 +5,12 @@
 #include "Components.hpp"
 /* Models */
 class ModelComponent : public Component {
-public:
+  public:
+    ModelComponent()  = default;
+    ~ModelComponent() = default;
+
     void init() {
-        this->modelId = 0;
+        this->modelId  = 0;
         this->hasModel = false;
         this->hasScale = this->entity->hasComponent<ScaleComponent>();
         if (hasScale) {
@@ -16,35 +19,38 @@ public:
         this->hasPosition = this->entity->hasComponent<PositionComponent>();
         if (hasPosition) {
             this->pos = &this->entity->getComponent<PositionComponent>();
-		}
+        }
     }
     void setModel(std::string filename) {
         hasModel = true;
-        modelId = ModelManager::GetModelID(filename);
+        modelId  = ModelManager::GetModelID(filename);
     }
     void update() {}
     void draw() {
-        glm::vec3 scale{1, 1, 1};
-        glm::vec3 pos{0, 0, 0};
-        GLfloat rotation = 0;
+        glm::vec3 entityScale{1, 1, 1};
+        glm::vec3 entityPos{0, 0, 0};
+        GLfloat entityRotation = 0;
         if (hasModel) {
             if (hasScale) {
-                scale = this->scale->getScale();
+                entityScale =
+                    this->entity->getComponent<ScaleComponent>().getScale();
             }
             if (this->entity->hasComponent<PositionComponent>()) {
-               pos = this->entity->getComponent<PositionComponent>().getPos();
-                rotation =
+                entityPos =
+                    this->entity->getComponent<PositionComponent>().getPos();
+                entityRotation =
                     this->entity->getComponent<PositionComponent>().getRotation();
-			}
-            ModelManager::DrawModel(this->modelId, rotation, scale, this->pos->getPos());
+            }
+            ModelManager::DrawModel(this->modelId, entityRotation, entityScale,
+                                    entityPos);
         }
     }
 
-private:
+  private:
     size_t modelId = 0;
-    bool hasModel = false;
-    bool hasScale = false;
-    ScaleComponent * scale;
+    bool hasModel  = false;
+    bool hasScale  = false;
+    ScaleComponent *scale = nullptr;
     bool hasPosition = false;
-    PositionComponent * pos;
+    PositionComponent *pos = nullptr;
 };
