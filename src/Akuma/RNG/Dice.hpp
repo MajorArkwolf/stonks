@@ -16,4 +16,6 @@ class Dice {
     ~Dice() = default;
     auto Roll(const int diceNumber, const int diceSided) -> int;
     auto Roll(const int diceSided) -> int;
+    auto Roll(const unsigned int diceNumber, const unsigned int diceSided) -> unsigned int;
+    auto Roll(const unsigned int diceSided) -> unsigned int;
 };
