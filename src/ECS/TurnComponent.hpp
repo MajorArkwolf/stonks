@@ -13,7 +13,10 @@ class TurnComponent : public Component {
 	const bool getIsTurn() {
         return isTurn;
 	}
-    void isYourTurn() {
+	const bool CheckTurn() {
+        return isTurn;
+	}
+    void startYourTurn() {
         isTurn = true;
     }
     bool endYourTurn() {

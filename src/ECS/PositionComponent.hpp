@@ -1,7 +1,7 @@
 #pragma once
 
 #include <glm/vec3.hpp>
-
+#include "Akuma/Floor.hpp"
 #include "Components.hpp"
 
 /* This will need to handle all positions of entities. */
@@ -32,6 +32,16 @@ class PositionComponent : public Component {
         this->position.y = newPos.y;
         this->position.z = newPos.z;
     }
+
+	void setPos(Pathing::Node* newTile) {
+        position.x = newTile->x + 0.5f;
+        position.y = newTile->y + 0.5f;
+        currentTile = newTile;
+	}
+
+	void setNode(Pathing::Node* newTile) {
+        currentTile = newTile;
+	}
 
     void setPos(float x, float y) {
         this->position.x = x;
@@ -96,5 +106,6 @@ class PositionComponent : public Component {
 
   private:
     GLfloat rotation   = 0;
-    glm::vec3 position = {0.5, 0, 0.5};
+    glm::vec3 position = {0.0, 0, 0.0};
+    Pathing::Node *currentTile = nullptr;
 };
