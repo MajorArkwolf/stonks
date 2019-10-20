@@ -10,6 +10,9 @@ class TurnComponent : public Component {
     void init() {}
     void update() {}
     void draw() {}
+	const bool getIsTurn() {
+        return isTurn;
+	}
     void isYourTurn() {
         isTurn = true;
     }

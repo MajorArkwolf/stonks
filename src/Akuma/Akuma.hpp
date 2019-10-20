@@ -35,6 +35,7 @@ class Akuma : public BaseState {
     void drawCube(float size, bool wireframe);
     void generateLevel();
     void ClearEnemies();
+    auto displayGameStats() -> void;
 
     unsigned floorLevel = 1;
     void descendLevel();

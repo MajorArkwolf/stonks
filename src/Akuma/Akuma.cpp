@@ -78,6 +78,7 @@ auto Akuma::Akuma::display() -> void {
     glDisable(GL_DEPTH_TEST);
 
     displayDebugMenu();
+    displayGameStats();
 
     /*if (this->shouldDrawAxis) {
         auto origin = this->camera.look + (this->camera.getForwardDir()
@@ -124,11 +125,17 @@ auto Akuma::Akuma::hardInit() -> void {
     player->addComponentID<ScaleComponent>();
     player->getComponent<ScaleComponent>().setScale(glm::vec3{0.5, 0.5, 0.5});
     player->addComponentID<PositionComponent>();
-    player->getComponent<PositionComponent>().setPos(glm::vec3{2, 0, 1});
+    auto roomList = floor.getRoomList();
+    auto pos      = roomList[0]->getCentrePoint();
+    player->getComponent<PositionComponent>().setPos(glm::vec3{pos.x, 0, pos.y});
     player->addComponentID<ModelComponent>();
     player->getComponent<ModelComponent>().setModel("player_female.obj");
     player->addComponentID<MoveComponent>();
+    player->addComponentID<StatComponent>();
+    player->getComponent<StatComponent>().stat.name = "Waman";
     player->addComponentID<CameraComponent>();
+    player->addComponentID<TurnComponent>();
+    player->getComponent<TurnComponent>().isYourTurn();
 
     softInit();
 }
@@ -144,6 +151,9 @@ void Akuma::Akuma::displayDebugMenu() {
         auto &pos    = player->getComponent<CameraComponent>().camera.position;
         auto &look   = player->getComponent<CameraComponent>().camera.look;
         auto &angles = player->getComponent<CameraComponent>().camera.tilt;
+        auto &playerStats = player->getComponent<StatComponent>().stat;
+
+        auto playerpos = player->getComponent<PositionComponent>().getPos();
 
         ImGui::Begin("Debug Menu");
         ImGui::Text("Camera: %.2f, %.2f, %.2f", static_cast<double>(pos.x),
@@ -152,6 +162,10 @@ void Akuma::Akuma::displayDebugMenu() {
                     static_cast<double>(look.y), static_cast<double>(look.z));
         ImGui::Text("Angles: %.2f, %.2f", static_cast<double>(angles.x),
                     static_cast<double>(angles.y));
+        ImGui::Separator();
+        ImGui::Text(
+            "Player Position: %.2f, %.2f %.2f", static_cast<double>(playerpos.x),
+            static_cast<double>(playerpos.y), static_cast<double>(playerpos.z));
         ImGui::Separator();
         ImGui::Checkbox("Quit", &stonk.isRunning);
         ImGui::End();
@@ -162,7 +176,39 @@ void Akuma::Akuma::displayDebugMenu() {
         ImGui::Text("%.0f", std::ceil(stonk.fps));
 
         ImGui::End();
+        
     }
+}
+
+/**
+ * @brief Displays the IMGUI debug menu
+ */
+void Akuma::Akuma::displayGameStats() {
+
+    auto &playerStats = player->getComponent<StatComponent>().stat;
+
+    ImGui::SetNextWindowSize(ImVec2(500, 500), ImGuiCond_Once);
+    ImGui::Begin("Game Info");
+    ImGui::Separator();
+    ImGui::Text("Player Stats");
+    ImGui::Separator();
+    std::string name       = "Name        : ";
+    std::string playerName = playerStats.name;
+    name                   = name + playerName;
+    ImGui::Text(name.c_str());
+    ImGui::Text("Level       :  %.0d", playerStats.level);
+    ImGui::Text("HP          :  %.0d", playerStats.HP);
+    ImGui::Text("Strength    :  %.0d", playerStats.strength);
+    ImGui::Text("Dexterity   :  %.0d", playerStats.dexterity);
+    ImGui::Text("Luck        :  %.0d", playerStats.luck);
+    ImGui::Text("Vitality    :  %.0d", playerStats.vitality);
+    ImGui::Text("Intelligence:  %.0d", playerStats.intelligence);
+
+    ImGui::Separator();
+    ImGui::Text("Selected Enemy Stats");
+    ImGui::Separator();
+
+    ImGui::End();
 }
 
 /**
@@ -194,7 +240,7 @@ auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {
  * @brief Physics update function for the Akuma gamestate
  * @param dt Delta time since last frame
  */
-void Akuma::update([[maybe_unused]] double dt) {    
+void Akuma::update([[maybe_unused]] double dt) {
     manager.update();
     // player->getComponent<PositionComponent>().setXPos(
     //    player->getComponent<PositionComponent>().getXPos() + 0.01f);
@@ -244,7 +290,7 @@ void Akuma::handleKeyPress(SDL_Event &event) {
 }
 
 void Akuma::handleMouseWheel(SDL_Event &event) {
-    auto &cameraComp    = player->getComponent<CameraComponent>();
+    auto &cameraComp = player->getComponent<CameraComponent>();
 
     int amountScrolledY = event.wheel.y; // Amount scrolled up or down
     cameraComp.zoomCamera(amountScrolledY);
@@ -296,7 +342,14 @@ auto Akuma::Akuma::drawAxis(float x, float y, float z, float length) -> void {
  * @brief Displays the current grid within the room object
  */
 auto Akuma::Akuma::displayGrid() -> void {
-    auto gridSize = floor.getGridSize();
+    auto gridSize   = floor.getGridSize();
+    auto playerComp = player->getComponent<PositionComponent>();
+    Pathing::Node *playerNode =
+        floor.getGridNode(static_cast<unsigned>(playerComp.getXPos()),
+                          static_cast<unsigned>(playerComp.getZPos()));
+
+    std::vector<Pathing::Node *> playerSurroundings =
+        floor.getNeighbours(*playerNode);
 
     glPushMatrix();
     glTranslatef(gridSize.x / 2, 0, (gridSize.y / 2));
@@ -334,24 +387,36 @@ auto Akuma::Akuma::displayGrid() -> void {
                 glColor3f(1.f, 1.f, 1.f);
                 glPopMatrix();
             }
-            /*if (x == grid.selected[0] && y == grid.selected[1]) {
-                glColor3f(1.f, 0.f, 0.f);
-                drawSquare(0.8f, 0.f);
-                glColor3f(1.f, 1.f, 1.f);
-            }
-            if (x == grid.pathStart[0] && y == grid.pathStart[1]) {
-                glColor3f(0.f, 1.f, 0.f);
-                drawSquare(0.8f, 0.f);
-                glColor3f(1.f, 1.f, 1.f);
-            }
-            if (x == grid.pathEnd[0] && y == grid.pathEnd[1]) {
-                glColor3f(0.f, 0.f, 1.f);
-                drawSquare(0.8f, 0.f);
-                glColor3f(1.f, 1.f, 1.f);
-            }*/
             glPopMatrix();
         }
     }
+
+    if (player->getComponent<TurnComponent>().getIsTurn()) {
+
+        glLineWidth(3);
+        for (auto n : playerSurroundings) {
+            if (n->walkable) {
+
+                glPushMatrix();
+                glTranslatef(n->x - 0.5f * gridSize.x, 0,
+                             (n->y - 0.5f * gridSize.y));
+                glPushMatrix();
+                glTranslatef(0.f, 0.04f, 0.f);
+                glEnable(GL_COLOR_MATERIAL);
+                glColor3f(1, 1, 0);
+
+                drawSquare(1, 1);
+                glColor3f(1, 1, 1);
+                glDisable(GL_COLOR_MATERIAL);
+                glPopMatrix();
+
+                glPopMatrix();
+            }
+        }
+
+        glLineWidth(1);
+    }
+
     glPopMatrix();
 }
 
