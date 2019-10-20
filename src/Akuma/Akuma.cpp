@@ -117,6 +117,20 @@ auto Akuma::Akuma::softInit() -> void {
 
 
 
+
+
+
+}
+
+/**
+ * @brief Hard initialiser for the Akuma gamestate
+ */
+auto Akuma::Akuma::hardInit() -> void {
+    generateLevel();
+    // Load models textures etc here
+    modelList.push_back(OBJ::Load("flattile.obj"));
+    modelList.push_back(OBJ::Load("flatwall.obj"));
+
     player = &manager.addEntity();
     player->addComponentID<ScaleComponent>();
     player->getComponent<ScaleComponent>().setScale(glm::vec3{0.5, 0.5, 0.5});
@@ -127,16 +141,6 @@ auto Akuma::Akuma::softInit() -> void {
     player->addComponentID<MoveComponent>();
     player->addComponentID<CameraComponent>();
 
-	generateLevel();
-}
-
-/**
- * @brief Hard initialiser for the Akuma gamestate
- */
-auto Akuma::Akuma::hardInit() -> void {
-    // Load models textures etc here
-    modelList.push_back(OBJ::Load("flattile.obj"));
-    modelList.push_back(OBJ::Load("flatwall.obj"));
     softInit();
 }
 
@@ -381,73 +385,6 @@ auto Akuma::Akuma::drawCube(float size, [[maybe_unused]] bool wireframe) -> void
     glEnable(GL_TEXTURE_2D);
     OBJ::displayModel(modelList[1], size);
     glDisable(GL_TEXTURE_2D);
-    // float vertices[8][3] = {{-0.5, -0.5, -0.5}, {-0.5, 1.5, -0.5},
-    //                        {0.5, 1.5, -0.5},   {0.5, -0.5, -0.5},
-    //                        {-0.5, -0.5, 0.5},  {-0.5, 1.5, 0.5},
-    //                        {0.5, 1.5, 0.5},    {0.5, -0.5, 0.5}};
-    // glPushMatrix();
-    // glScalef(size, size, size);
-    // if (wireframe) { // FRONT?
-    //    glBegin(GL_LINE_LOOP);
-    //} else {
-    //    glBegin(GL_POLYGON);
-    //}
-    // glVertex3fv(vertices[0]);
-    // glVertex3fv(vertices[1]);
-    // glVertex3fv(vertices[2]);
-    // glVertex3fv(vertices[3]);
-    // glEnd();
-
-    // if (wireframe) {
-    //    glBegin(GL_LINE_LOOP);
-    //} else {
-    //    glBegin(GL_POLYGON);
-    //}
-
-    // glVertex3fv(vertices[7]);
-    // glVertex3fv(vertices[6]);
-    // glVertex3fv(vertices[5]);
-    // glVertex3fv(vertices[4]);
-
-    // glEnd();
-
-    // if (wireframe) {
-    //    glBegin(GL_LINE_LOOP);
-    //} else {
-    //    glBegin(GL_POLYGON);
-    //}
-    // glVertex3fv(vertices[3]);
-    // glVertex3fv(vertices[2]);
-    // glVertex3fv(vertices[6]);
-    // glVertex3fv(vertices[7]);
-
-    // glEnd();
-
-    // if (wireframe) {
-    //    glBegin(GL_LINE_LOOP);
-    //} else {
-    //    glBegin(GL_POLYGON);
-    //}
-
-    // glVertex3fv(vertices[4]);
-    // glVertex3fv(vertices[5]);
-    // glVertex3fv(vertices[1]);
-    // glVertex3fv(vertices[0]);
-
-    // glEnd();
-
-    // if (wireframe) { // Top
-    //    glBegin(GL_LINE_LOOP);
-    //} else {
-    //    glBegin(GL_POLYGON);
-    //}
-    // glVertex3fv(vertices[5]);
-    // glVertex3fv(vertices[6]);
-    // glVertex3fv(vertices[2]);
-    // glVertex3fv(vertices[1]);
-    // glEnd();
-
-    // glPopMatrix();
 }
 
 void Akuma::descendLevel() {
@@ -474,8 +411,8 @@ void Akuma::generateLevel() {
         auto maxDistance = floor.getGridSize();
         glm::vec2 temp   = {0, 0};
         do {
-            temp.x = diceRoller.Roll(static_cast<int>(maxDistance.x));
-            temp.y = diceRoller.Roll(static_cast<int>(maxDistance.y));            
+            temp.x = diceRoller.Roll(static_cast<int>(maxDistance.x - 1));
+            temp.y = diceRoller.Roll(static_cast<int>(maxDistance.y - 1));            
             if (floor.getGridNode(temp)->walkable) {
                 enemies.at(i)->getComponent<PositionComponent>().setPos(
                     glm::vec3{temp.x, 0, temp.y});
