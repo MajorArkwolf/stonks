@@ -15,6 +15,7 @@ class Menu : public BaseState {
     void update(double dt);
     void displayMenuWindow();
     void displayGrid();
+    void drawCube(float size, bool wireframe);
 
   private:
     Floor floor;

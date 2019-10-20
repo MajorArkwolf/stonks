@@ -88,9 +88,10 @@ auto Menu::displayGrid() -> void {
                 glColor3f(0.7f, 0.7f, 0.7f);
                 glTranslatef(0.f, 0.f, -0.01f);
                 glPushMatrix();
-                glTranslatef(-0.5, 0, 0.5);
+                glTranslatef(0, 0.5, 0);
+
+                drawCube(1.f, 0.f);
                 glPopMatrix();
-                Akuma::drawSquare(1.f, 0.f);
                 glColor3f(1.f, 1.f, 1.f);
                 glPopMatrix();
             }
@@ -127,12 +128,83 @@ auto Menu::displayGrid() -> void {
     glPopMatrix();
 }
 
+void Menu::drawCube(float size, bool wireframe) {
+
+    float vertices[8][3] = {{-0.5, -0.5, -0.5}, {-0.5, 0.5, -0.5},
+                            {0.5, 0.5, -0.5},   {0.5, -0.5, -0.5},
+                            {-0.5, -0.5, 0.5},  {-0.5, 0.5, 0.5},
+                            {0.5, 0.5, 0.5},    {0.5, -0.5, 0.5}};
+    glPushMatrix();
+    glScalef(size, size, size);
+    if (wireframe) { // FRONT?
+        glBegin(GL_LINE_LOOP);
+    } else {
+        glBegin(GL_POLYGON);
+    }
+    glVertex3fv(vertices[0]);
+    glVertex3fv(vertices[1]);
+    glVertex3fv(vertices[2]);
+    glVertex3fv(vertices[3]);
+    glEnd();
+
+    if (wireframe) {
+        glBegin(GL_LINE_LOOP);
+    } else {
+        glBegin(GL_POLYGON);
+    }
+
+    glVertex3fv(vertices[7]);
+    glVertex3fv(vertices[6]);
+    glVertex3fv(vertices[5]);
+    glVertex3fv(vertices[4]);
+
+    glEnd();
+
+    if (wireframe) {
+        glBegin(GL_LINE_LOOP);
+    } else {
+        glBegin(GL_POLYGON);
+    }
+    glVertex3fv(vertices[3]);
+    glVertex3fv(vertices[2]);
+    glVertex3fv(vertices[6]);
+    glVertex3fv(vertices[7]);
+
+    glEnd();
+
+    if (wireframe) {
+        glBegin(GL_LINE_LOOP);
+    } else {
+        glBegin(GL_POLYGON);
+    }
+
+    glVertex3fv(vertices[4]);
+    glVertex3fv(vertices[5]);
+    glVertex3fv(vertices[1]);
+    glVertex3fv(vertices[0]);
+
+    glEnd();
+
+    if (wireframe) { // Top
+        glBegin(GL_LINE_LOOP);
+    } else {
+        glBegin(GL_POLYGON);
+    }
+    glVertex3fv(vertices[5]);
+    glVertex3fv(vertices[6]);
+    glVertex3fv(vertices[2]);
+    glVertex3fv(vertices[1]);
+    glEnd();
+
+    glPopMatrix();
+}
+
 auto Menu::updatePath() -> void {
     auto roomList     = floor.getRoomList();
     auto startNode    = (*roomList.begin())->getCentrePoint();
     auto endNode      = (*(roomList.end() - 1))->getCentrePoint();
-    auto startingNode = floor.getGridNode(startNode.x, startNode.y);
-    auto endingNode   = floor.getGridNode(endNode.x, endNode.y);
+    auto startingNode = floor.getGridNode(static_cast<unsigned>(startNode.x), static_cast<unsigned>(startNode.y));
+    auto endingNode   = floor.getGridNode(static_cast<unsigned>(endNode.x), static_cast<unsigned>(endNode.y));
 
     currentPath = Pathing::Pathfinding::findPath(floor.getGrid(), *startingNode,
                                                  *endingNode, 1);
@@ -173,7 +245,7 @@ void Menu::update(double dt) {
     gridRotation = gridRotation + static_cast<float>(dt) * 40;
     if (gridRotation > 359) {
         gridRotation = 0;
-        floor.regen(glm::ivec2(60, 60), 4);
+        floor.regen(glm::ivec2(30, 30), 3 );
         updatePath();
     }
 }
