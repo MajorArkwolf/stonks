@@ -130,7 +130,7 @@ auto Akuma::Akuma::hardInit() -> void {
     player->getComponent<PositionComponent>().setPos(glm::vec3{pos.x, 0, pos.y});
     player->addComponentID<ModelComponent>();
     player->getComponent<ModelComponent>().setModel("player_female.obj");
-//    player->addComponentID<PlayerComponent>();
+    player->addComponentID<PlayerComponent>();
     player->addComponentID<MoveComponent>();
     player->addComponentID<StatComponent>();
     player->getComponent<StatComponent>().stat.name = "Waman";
