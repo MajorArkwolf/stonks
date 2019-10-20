@@ -19,6 +19,7 @@ class Floor {
     auto getGrid() -> Pathing::Grid &;
     auto getBSP() -> BSP::BSPTree &;
     auto getGridNode(unsigned x, unsigned y) -> Pathing::Node *;
+    auto getGridNode(glm::uvec2 nodeCords) -> Pathing::Node *;
     auto setGridSquare(glm::uvec2 bottomLeft, glm::uvec2 topRight, bool walkable)
         -> void;
     auto getNeighbours(Pathing::Node &_node) -> vector<Pathing::Node *>;

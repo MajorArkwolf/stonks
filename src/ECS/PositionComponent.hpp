@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Components.hpp"
 #include <glm/vec3.hpp>
+
+#include "Components.hpp"
 
 /* This will need to handle all positions of entities. */
 class PositionComponent : public Component {
@@ -23,8 +24,7 @@ class PositionComponent : public Component {
         this->position.z = newPos.z;
     }
     void init() {}
-    void update() {
-	}
+    void update() {}
     void draw() {}
 
     void setPos(glm::vec3 newPos) {
@@ -48,6 +48,30 @@ class PositionComponent : public Component {
     void setZPos(float z) {
         this->position.z = z;
     }
+    void setRotationN() {
+        rotation = 0;
+    }
+    void setRotationNE() {
+        rotation = 45;
+    }
+    void setRotationE() {
+        rotation = 90;
+    }
+    void setRotationSE() {
+        rotation = 135;
+    }
+    void setRotationS() {
+        rotation = 180;
+    }
+    void setRotationSW() {
+        rotation = 225;
+    }
+    void setRotationW() {
+        rotation = 270;
+    }
+    void setRotationNW() {
+        rotation = 315;
+    }
 
     glm::vec3 getPos() {
         return this->position;
@@ -62,10 +86,15 @@ class PositionComponent : public Component {
     }
     GLfloat getZPos() {
         return this->position.z;
+    }
+
+	GLfloat getRotation() {
+        return rotation;
 	}
 
     ~PositionComponent() = default;
 
   private:
+    GLfloat rotation   = 0;
     glm::vec3 position = {0.5, 0, 0.5};
 };

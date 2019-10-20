@@ -12,6 +12,10 @@ class ScaleComponent : public Component {
      * @brief Default Destructor for Scale Component
      */
     ~ScaleComponent() = default;
+
+	ScaleComponent(glm::vec3 temp) {
+        scale = temp;
+	}
     /**
      * @brief Init function inheritred from component
      */

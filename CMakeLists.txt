@@ -41,6 +41,8 @@ set (SOURCES
     src/Akuma/Floor.cpp
     src/Akuma/Akuma.cpp
 	src/Akuma/Camera.hpp
+	src/Akuma/RNG/Dice.cpp
+    
 
     src/Menu/Menu.cpp
     
