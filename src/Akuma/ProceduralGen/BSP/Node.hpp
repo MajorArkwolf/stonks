@@ -21,7 +21,7 @@ namespace BSP {
         Node(glm::uvec2 bottomLeft, glm::uvec2 topRight);
         ~Node();
 
-        glm::vec2 getCentrePoint();
+        glm::ivec2 getCentrePoint();
 
         /// Pointer to parent node, root has parent == nullptr
         Node *parent = nullptr;
