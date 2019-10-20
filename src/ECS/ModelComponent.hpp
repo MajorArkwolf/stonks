@@ -48,7 +48,7 @@ class ModelComponent : public Component {
     size_t modelId = 0;
     bool hasModel  = false;
     bool hasScale  = false;
-    ScaleComponent *scale;
+    ScaleComponent *scale = nullptr;
     bool hasPosition = false;
     PositionComponent *pos = nullptr;
 };
