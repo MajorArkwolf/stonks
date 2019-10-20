@@ -7,6 +7,7 @@
 
 #include <SDL2/SDL.h>
 
+#include "Menu/Menu.hpp"
 #include "Shay/Shay.hpp"
 #include "Stonk/Camera.hpp"
 #include "Stonk/Collision.hpp"
@@ -125,7 +126,7 @@ Engine::Engine() {
     ImGui_ImplSDL2_InitForOpenGL(this->window.get(), this->context.get());
     ImGui_ImplOpenGL2_Init();
 
-	getBasePath();
+    getBasePath();
 }
 
 /**
@@ -187,7 +188,7 @@ auto Stonk::Engine::loadState(GameMode mode) -> void {
     BaseState *bp = nullptr;
     switch (mode) {
         case GameMode::MENU: {
-            bp = new Akuma();
+            bp = new Menu();
         } break;
         case GameMode::SHAY: {
             bp = new ShaysWorld();
@@ -213,9 +214,7 @@ auto Stonk::Engine::purgeStack() -> void {
 auto Stonk::Engine::checkStack() -> void {
     auto &stack = Engine::get().daGameStateStack;
     if (stack.empty()) {
-        BaseState *bp = new Akuma();
-        stack.push(bp);
-        stack.top()->hardInit();
+        loadState(GameMode::MENU);
     }
 }
 auto Stonk::Engine::popStack() -> void {
@@ -307,10 +306,15 @@ auto Engine::processInput() -> void {
     auto handledMouse = false;
     auto &engine      = Engine::get();
     auto &stack       = engine.daGameStateStack;
+    Menu *menu        = dynamic_cast<Menu *>(stack.top());
 
     while (SDL_PollEvent(&event)) {
         ImGui_ImplSDL2_ProcessEvent(&event);
-        SDL_SetRelativeMouseMode(this->showDebugMenu ? SDL_FALSE : SDL_TRUE);
+        if (menu != nullptr) {
+            SDL_SetRelativeMouseMode(SDL_FALSE);
+        } else {
+            SDL_SetRelativeMouseMode(this->showDebugMenu ? SDL_FALSE : SDL_TRUE);
+        }
 
         if (!stack.empty()) {
             stack.top()->handleInput(event);
@@ -324,8 +328,10 @@ auto Engine::processInput() -> void {
         }
     }
 
-    if (!handledMouse) {
-        this->mouse = {0.0f, 0.0f};
+    if (menu == nullptr) {
+        if (!handledMouse) {
+            this->mouse = {0.0f, 0.0f};
+        }
     }
 }
 
@@ -354,7 +360,7 @@ auto Engine::getTime() const -> double {
 }
 
 auto Engine::getBasePath() -> void {
-    char *base_path  = SDL_GetBasePath();
-    basepath = std::string(base_path);
-	SDL_free(base_path);
+    char *base_path = SDL_GetBasePath();
+    basepath        = std::string(base_path);
+    SDL_free(base_path);
 }
