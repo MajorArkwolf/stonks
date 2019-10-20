@@ -126,6 +126,8 @@ auto Akuma::Akuma::softInit() -> void {
     player->getComponent<ModelComponent>().setModel("player_female.obj");
     player->addComponentID<MoveComponent>();
     player->addComponentID<CameraComponent>();
+
+	generateLevel();
 }
 
 /**
@@ -201,6 +203,10 @@ auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {
  */
 void Akuma::update([[maybe_unused]] double dt) {
     manager.update();
+    //player->getComponent<PositionComponent>().setXPos(
+    //    player->getComponent<PositionComponent>().getXPos() + 0.01f);
+    //player->getComponent<PositionComponent>().setZPos(
+    //    player->getComponent<PositionComponent>().getZPos() + 0.01f);
     light_position[0] = player->getComponent<PositionComponent>().getXPos();
     // light_position[1] = 2;
     light_position[2] = player->getComponent<PositionComponent>().getZPos();
@@ -447,4 +453,37 @@ auto Akuma::Akuma::drawCube(float size, [[maybe_unused]] bool wireframe) -> void
 void Akuma::descendLevel() {
     floor.regen();
     floorLevel++;
+    generateLevel();
+}
+
+void Akuma::ClearEnemies() {
+    for (auto &i : enemies) {
+        i->destroy();
+	}
+    enemies.clear();
+}
+
+void Akuma::generateLevel() {
+    ClearEnemies();
+    unsigned enemyCount = diceRoller.Roll(floorLevel, 3);
+    for (unsigned i = 0; i <= enemyCount; ++i) {
+        enemies.push_back(&manager.addEntity());
+        enemies.at(i)->addComponentID<ScaleComponent>(glm::vec3{0.5, 0.5, 0.5});
+        enemies.at(i)->addComponentID<PositionComponent>();
+        bool walkable = false;
+        auto maxDistance = floor.getGridSize();
+        glm::vec2 temp   = {0, 0};
+        do {
+            temp.x = diceRoller.Roll(static_cast<int>(maxDistance.x));
+            temp.y = diceRoller.Roll(static_cast<int>(maxDistance.y));            
+            if (floor.getGridNode(temp)->walkable) {
+                enemies.at(i)->getComponent<PositionComponent>().setPos(
+                    glm::vec3{temp.x, 0, temp.y});
+                walkable = true;
+			}
+		} while (!walkable);
+        enemies.at(i)->addComponentID<ModelComponent>();
+        enemies.at(i)->getComponent<ModelComponent>().setModel("goblin_warrior_spear.obj");
+        //enemies.at(i)->addComponentID<MoveComponent>();
+	}
 }

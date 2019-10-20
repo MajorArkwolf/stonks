@@ -11,6 +11,7 @@
 #include "glm/vec3.hpp"
 
 #include "ECS/Components.hpp"
+#include "RNG/Dice.hpp"
 /**
  * @class Akuma
  * @brief The Akuma game state object
@@ -31,6 +32,8 @@ class Akuma : public BaseState {
     void update(double dt);
     void handleKeyPress(SDL_Event &event);
     void drawCube(float size, bool wireframe);
+    void generateLevel();
+    void ClearEnemies();
 
     unsigned floorLevel = 1;
     void descendLevel();
@@ -43,6 +46,7 @@ class Akuma : public BaseState {
     Manager manager;
     Entity *player = nullptr;
     std::vector<Entity *> enemies;
+    Dice diceRoller;
     /// The floor
     Floor floor;
     // Toggle for drawing 3d axis
