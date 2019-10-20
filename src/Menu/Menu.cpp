@@ -110,7 +110,19 @@ auto Menu::displayGrid() -> void {
         }
     }
     for (auto n : currentPath) {
-		
+        glPushMatrix();
+        glTranslatef(n->x - 0.5f * gridSize.x, 0, (n->y - 0.5f * gridSize.y));
+        glPushMatrix();
+        glTranslatef(0.f, 0.04f, 0.f);
+        glEnable(GL_COLOR_MATERIAL);
+        glColor3f(1, 1, 0);
+
+        Akuma::drawSquare(1, 0);
+        glColor3f(1, 1, 1);
+        glDisable(GL_COLOR_MATERIAL);
+        glPopMatrix();
+
+        glPopMatrix();
 	}
     glPopMatrix();
 }
