@@ -465,7 +465,7 @@ void Akuma::ClearEnemies() {
 
 void Akuma::generateLevel() {
     ClearEnemies();
-    unsigned enemyCount = diceRoller.Roll(floorLevel, 3);
+    unsigned enemyCount = diceRoller.Roll(static_cast<int>(floorLevel), 3);
     for (unsigned i = 0; i <= enemyCount; ++i) {
         enemies.push_back(&manager.addEntity());
         enemies.at(i)->addComponentID<ScaleComponent>(glm::vec3{0.5, 0.5, 0.5});
