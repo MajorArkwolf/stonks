@@ -27,11 +27,11 @@ BSP::Node::~Node() {
  * @return Returns the centre point in glm vec2 format
  */
 
-glm::vec2 BSP::Node::getCentrePoint() {
-    glm::vec2 centre;
-    centre = (gridTopRight - gridBottomLeft);
-    centre.x *= static_cast<float>(0.5);
-    centre.y *= static_cast<float>(0.5);
+glm::ivec2 BSP::Node::getCentrePoint() {
+    glm::ivec2 centre;
+    centre = static_cast<glm::ivec2>(gridTopRight - gridBottomLeft);
+    centre.x /= 2;
+    centre.y /= 2;
     centre += gridBottomLeft;
     return centre;
 }

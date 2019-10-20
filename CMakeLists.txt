@@ -43,14 +43,17 @@ set (SOURCES
 	src/Akuma/Camera.hpp
 	src/Akuma/RNG/Dice.cpp
     
+
+    src/Menu/Menu.cpp
+    
     src/ObjLoader/MtlLoader.cpp
     src/ObjLoader/ObjLoader.cpp
     src/ObjLoader/ObjDisplay.cpp
 
-	src/ECS/CameraComponent.hpp
-	src/ECS/CombatComponent.hpp
-	src/ECS/Components.hpp
-	src/ECS/ECS.hpp
+    src/ECS/CameraComponent.hpp
+    src/ECS/CombatComponent.hpp
+    src/ECS/Components.hpp
+    src/ECS/ECS.hpp
 	src/ECS/EquipmentComponent.hpp
 	src/ECS/InventoryComponent.hpp
 	src/ECS/ModelComponent.hpp

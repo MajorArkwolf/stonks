@@ -352,13 +352,14 @@ auto Akuma::Akuma::displayGrid() -> void {
     glPopMatrix();
 }
 
+
 /**
  * @brief Draws a square on screen matching the given parameters
  * @param size The size of the square to create
  * @param wireframe Whether to draw a wireframe square or a polygon
  */
-void Akuma::Akuma::drawSquare(float size, bool wireframe) {
-    drawRectangle(size, size, wireframe);
+auto Akuma::drawSquare(float size, bool wireframe) -> void {
+    Akuma::drawRectangle(size, size, wireframe);
 }
 
 /**
@@ -367,7 +368,7 @@ void Akuma::Akuma::drawSquare(float size, bool wireframe) {
  * @param _width The width of the rectangle to create
  * @param wireframe Whether to draw a wireframe or polygon
  */
-auto Akuma::Akuma::drawRectangle(float _width, float _height, bool wireframe)
+auto Akuma::drawRectangle(float _width, float _height, bool wireframe)
     -> void {
     if (wireframe) {
         glBegin(GL_LINE_LOOP);
