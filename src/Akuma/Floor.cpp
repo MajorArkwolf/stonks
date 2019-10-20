@@ -90,6 +90,16 @@ auto Floor::getGridNode(unsigned x, unsigned y) -> Pathing::Node * {
     return &grid.nodeGrid[x][y];
 }
 
+auto Floor::getGridNode(glm::uvec2 nodeCords) -> Pathing::Node * {
+    auto x    = nodeCords.x;
+    auto y    = nodeCords.y;
+    auto size = getGridSize();
+    if (x > size.x || y > size.y) {
+        return &grid.nodeGrid[0][0];
+    }
+    return &grid.nodeGrid[x][y];
+}
+
 /**
  * @brief Reads from the BSP tree and sets grid values accordingly
  */
