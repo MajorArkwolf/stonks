@@ -151,7 +151,6 @@ void Akuma::Akuma::displayDebugMenu() {
         auto &pos    = player->getComponent<CameraComponent>().camera.position;
         auto &look   = player->getComponent<CameraComponent>().camera.look;
         auto &angles = player->getComponent<CameraComponent>().camera.tilt;
-        auto &playerStats = player->getComponent<StatComponent>().stat;
 
         auto playerpos = player->getComponent<PositionComponent>().getPos();
 
@@ -167,7 +166,9 @@ void Akuma::Akuma::displayDebugMenu() {
             "Player Position: %.2f, %.2f %.2f", static_cast<double>(playerpos.x),
             static_cast<double>(playerpos.y), static_cast<double>(playerpos.z));
         ImGui::Separator();
-        ImGui::Checkbox("Quit", &stonk.isRunning);
+        if (ImGui::Button("Quit")) {
+            stonk.isRunning = false;
+		}
         ImGui::End();
 
         ImGui::Begin("FPS", nullptr,
@@ -184,11 +185,16 @@ void Akuma::Akuma::displayDebugMenu() {
  * @brief Displays the IMGUI debug menu
  */
 void Akuma::Akuma::displayGameStats() {
-
     auto &playerStats = player->getComponent<StatComponent>().stat;
 
-    ImGui::SetNextWindowSize(ImVec2(500, 500), ImGuiCond_Once);
-    ImGui::Begin("Game Info");
+    auto display      = SDL_DisplayMode{};
+    SDL_GetCurrentDisplayMode(0, &display);
+
+    ImGui::SetNextWindowSize(ImVec2(300, 500), ImGuiCond_Once);
+    ImGui::SetNextWindowPos(ImVec2(display.w-300, 0), ImGuiCond_Once);
+
+    ImGui::Begin("Game Info", nullptr,
+                 ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
     ImGui::Separator();
     ImGui::Text("Player Stats");
     ImGui::Separator();
