@@ -36,7 +36,7 @@ auto Dice::Roll(const int diceSided) -> int {
  * @return Returns running total of dice rolled
  */
 auto Dice::Roll(const unsigned int diceNumber, const unsigned int diceSided) -> unsigned int {
-    auto runningTotal = unsigned int();
+    auto runningTotal = 0u;
     std::random_device rd;
     std::mt19937 mt(rd());
     std::uniform_int_distribution<unsigned int> dist(1u, diceSided);
