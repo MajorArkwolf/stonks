@@ -124,7 +124,7 @@ auto Menu::displayGrid() -> void {
         glPopMatrix();
 
         glPopMatrix();
-	}
+    }
     glPopMatrix();
 }
 
@@ -203,11 +203,13 @@ auto Menu::updatePath() -> void {
     auto roomList     = floor.getRoomList();
     auto startNode    = (*roomList.begin())->getCentrePoint();
     auto endNode      = (*(roomList.end() - 1))->getCentrePoint();
-    auto startingNode = floor.getGridNode(static_cast<unsigned>(startNode.x), static_cast<unsigned>(startNode.y));
-    auto endingNode   = floor.getGridNode(static_cast<unsigned>(endNode.x), static_cast<unsigned>(endNode.y));
+    auto startingNode = floor.getGridNode(static_cast<unsigned>(startNode.x),
+                                          static_cast<unsigned>(startNode.y));
+    auto endingNode   = floor.getGridNode(static_cast<unsigned>(endNode.x),
+                                        static_cast<unsigned>(endNode.y));
 
     currentPath = Pathing::Pathfinding::findPath(floor.getGrid(), *startingNode,
-                                                 *endingNode, 1);
+                                                 *endingNode, 0);
 }
 
 void Menu::softInit() {
@@ -245,7 +247,7 @@ void Menu::update(double dt) {
     gridRotation = gridRotation + static_cast<float>(dt) * 40;
     if (gridRotation > 359) {
         gridRotation = 0;
-        floor.regen(glm::ivec2(30, 30), 3 );
+        floor.regen(glm::ivec2(30, 30), 3);
         updatePath();
     }
 }
