@@ -405,6 +405,7 @@ void Akuma::generateLevel() {
     unsigned int enemyCount = diceRoller.Roll(floorLevel, 3u);
     for (unsigned i = 0; i <= enemyCount; ++i) {
         enemies.push_back(&manager.addEntity());
+        enemies.at(i)->addComponentID<TurnComponent>();
         enemies.at(i)->addComponentID<ScaleComponent>(glm::vec3{0.5, 0.5, 0.5});
         enemies.at(i)->addComponentID<PositionComponent>();
         bool walkable = false;
@@ -421,6 +422,8 @@ void Akuma::generateLevel() {
 		} while (!walkable);
         enemies.at(i)->addComponentID<ModelComponent>();
         enemies.at(i)->getComponent<ModelComponent>().setModel("goblin_warrior_spear.obj");
-        //enemies.at(i)->addComponentID<MoveComponent>();
+        enemies.at(i)->addComponentID<MoveComponent>();
+        
+
 	}
 }
