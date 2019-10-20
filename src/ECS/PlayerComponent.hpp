@@ -67,17 +67,19 @@ class PlayerComponent : public Component {
 	}
 
 	void turnEntity(int i) {
-        turn += i;
-        if (turn > 9) {
-            turn -= 9;
-        } else if (turn < 0) {
-            turn += 9;
-		}
-        setFacing(turn);
+        if (this->entity->getComponent<TurnComponent>().CheckTurn()) {
+            turn += i;
+            if (turn > 9) {
+                turn -= 9;
+            } else if (turn < 0) {
+                turn += 9;
+            }
+            setFacing(turn);
+        }
 	}
 
 private:
     int turn = 0;
-    Facing facingBuffer;
-    Facing facing;
+    Facing facingBuffer = N;
+    Facing facing = N;
 };

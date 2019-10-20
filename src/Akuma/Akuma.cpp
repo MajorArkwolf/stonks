@@ -268,13 +268,13 @@ void Akuma::handleKeyPress(SDL_Event &event) {
     auto &cameraComp = player->getComponent<CameraComponent>();
     switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_A: {
-            camera.position.z++;
+            player->getComponent<PlayerComponent>().turnEntity(1);
         } break;
         case SDL_SCANCODE_Q: {
             camera.position.x--;
         } break;
         case SDL_SCANCODE_D: {
-            camera.position.z--;
+            player->getComponent<PlayerComponent>().turnEntity(-1);
         } break;
         case SDL_SCANCODE_E: {
             camera.position.x++;
@@ -291,6 +291,16 @@ void Akuma::handleKeyPress(SDL_Event &event) {
         case SDL_SCANCODE_K: {
             cameraComp.rotateCamera(-1);
         } break;
+        case SDL_SCANCODE_Z: {
+            camera.position.z++;
+            break;
+		}
+        case SDL_SCANCODE_X: {
+            camera.position.z--;
+			break;
+		}
+							
+
 
         default: break;
     }
