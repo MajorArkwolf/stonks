@@ -189,12 +189,15 @@ auto Stonk::Engine::loadState(GameMode mode) -> void {
     switch (mode) {
         case GameMode::MENU: {
             bp = new Menu();
+            SDL_SetWindowTitle(this->window.get(), "Main Menu");
         } break;
         case GameMode::SHAY: {
             bp = new ShaysWorld();
+            SDL_SetWindowTitle(this->window.get(), "Shays World");
         } break;
         case GameMode::AKUMA: {
             bp = new Akuma();
+            SDL_SetWindowTitle(this->window.get(), "Akuma Shei");
         } break;
     }
     if (bp != nullptr) {
