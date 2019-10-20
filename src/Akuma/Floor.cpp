@@ -166,8 +166,20 @@ auto Floor::findPath(Pathing::Node &startNode, Pathing::Node &endNode)
 }
 
 auto Floor::regen() -> void {
-    this->tree = BSPTree(defaultGridSize, defaultSubdivisions);
+    auto size = defaultGridSize;
+    size.x -= 1;
+    size.y -= 1;
+    this->tree = BSPTree(size, defaultSubdivisions);
     grid.resetGrid();
     loadGrid();
 }
 
+auto Floor::regen(glm::uvec2 size, int subdivisions) -> void {
+    this->grid = Grid(size.x, size.y);
+    size.x -= 1;
+    size.y -= 1;
+    this->tree = BSPTree(size, subdivisions);
+    grid.resetGrid();
+    loadGrid();
+
+}
