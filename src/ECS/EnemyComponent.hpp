@@ -20,7 +20,7 @@ class EnemyComponent : public Component {
     void update() {
         if (this->entity->hasComponent<TurnComponent>()) {
             if (this->entity->getComponent<TurnComponent>().CheckTurn()) {
-				//combatCheck
+                // combatCheck
                 moveAction();
 
 
@@ -36,6 +36,10 @@ class EnemyComponent : public Component {
     void setFacing(Facing newFace) {
         facingBuffer = newFace;
     }
+
+	void updateFacing() {
+        facing = facingBuffer;
+	}
 
     void setFacing(int i) {
         switch (i) {
@@ -103,40 +107,46 @@ class EnemyComponent : public Component {
     bool lockedToPlayer = false;
     Entity *player      = nullptr;
 
+	//This function is scuffed and wont face the player all the time, cant debug
+	//as I dont have enough data to see what the entities are actually doing.
     void determineFacingDirection(Pathing::Node* nextNode) {
         auto *currentNode =
             this->entity->getComponent<PositionComponent>().getNode();
         int x = nextNode->x - currentNode->x;
         int y = nextNode->y - currentNode->y;
+        //int x = currentNode->x - nextNode->x;
+        //int y = currentNode->y - nextNode->y;
 
-        if (x = -1) {
-            if (y = -1) {
+        if (x == -1) {
+            if (y == -1) {
                 facingBuffer = SW;
-            } else if (y = 0) {
+            } else if (y == 0) {
                 facingBuffer = W;
-            } else if (y = 1) {
-                facingBuffer = NW;
+            } else if (y == 1) {
+                facingBuffer = N;
             }
-        } else if (x = 0) {
-            if (y = -1) {
+        } else if (x == 0) {
+            if (y == -1) {
                 facingBuffer = S;
-            } else if (y = 0) {
-                facingBuffer = N; // default always face north
-            } else if (y = 1) {
-                facingBuffer = W;
-            }
-        } else if (x = 1) {
-            if (y = -1) {
-                facingBuffer = SW;
-            } else if (y = 0) {
+            } else if (y == 0) {
+                facingBuffer = NW; // default always face north
+            } else if (y == 1) {
                 facingBuffer = E;
-            } else if (y = 1) {
+            }
+        } else if (x == 1) {
+            if (y == -1) {
+                facingBuffer = SW;
+            } else if (y == 0) {
+                facingBuffer = E;
+            } else if (y == 1) {
                 facingBuffer = NE;
             }
         } else {
             std::cout << "Values were out! X= " << x << "Y= " << y
                       << '\n'; // Debug code, remove later
         }
+        std::cout << "x= " << x << " y= " << y << " direction= " << facingBuffer
+                  << '\n';
     }
 
 	auto setTurnAngle() -> void {
@@ -185,35 +195,36 @@ class EnemyComponent : public Component {
 		}
 	}
 
-	auto DistanceBetween() -> unsigned int {
-        Grid grid =
-            this->entity->getComponent<FloorComponent>().getFloor()->getGrid();
-        auto *myNode = this->entity->getComponent<PositionComponent>().getNode();
-        auto *playerNode = player->getComponent<PositionComponent>().getNode();
-        auto pathToPlayer =
-            Pathing::Pathfinding::findPath(grid, *myNode, *playerNode, true);
-        return pathToPlayer.size();
+	auto DistanceBetween() -> unsigned int {            
+        return Pathing::Pathfinding::findPath(
+                   this->entity->getComponent<FloorComponent>().getFloor()->getGrid(),
+                   *this->entity->getComponent<PositionComponent>().getNode(),
+                   *player->getComponent<PositionComponent>().getNode(), true).size();
 	}
 
 	auto goToPlayer() -> void {
+        auto *playerNode = player->getComponent<PositionComponent>().getNode();
         if (this->entity->hasComponent<MoveComponent>()) {
-            Grid grid =
-                this->entity->getComponent<FloorComponent>().getFloor()->getGrid();
-            auto *myNode =
-                this->entity->getComponent<PositionComponent>().getNode();
-            auto *playerNode = player->getComponent<PositionComponent>().getNode();
-            //Pathing::Pathfinding::findPath(grid, *myNode, *playerNode, true).at(1);
-            if (true) {
-                this->entity->getComponent<MoveComponent>().moveEntityToNode(
-                    Pathing::Pathfinding::findPath(grid, *myNode, *playerNode, true)
-                        .at(1));
+            auto e = Pathing::Pathfinding::findPath(
+                this->entity->getComponent<FloorComponent>().getFloor()->getGrid(),
+                *this->entity->getComponent<PositionComponent>().getNode(),
+                *playerNode, true);
+            if (e.size() > 1) {
+                if (e.at(0) != playerNode) {
+                    determineFacingDirection(e.at(0));
+                    updateFacing();
+                    setTurnAngle();
+                    if (!e.at(0)->occupied) {
+                        this->entity->getComponent<MoveComponent>().moveEntityToNode(
+                            e.at(0));
+                    }
+                }                
 			}
 		}
 	}
-
 	auto moveAction() -> void {
         if (lockedToPlayer) {
-            //goToPlayer();
+            goToPlayer();
 		} else {
             detectPlayer();            
 		}

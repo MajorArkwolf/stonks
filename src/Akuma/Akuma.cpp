@@ -482,8 +482,7 @@ void Akuma::ClearEnemies() {
 
 void Akuma::generateLevel() {
     ClearEnemies();
-    unsigned int enemyCount = 1;
-	//unsigned int enemyCount = diceRoller.Roll(floorLevel, 3u);
+	unsigned int enemyCount = diceRoller.Roll(floorLevel, 3u);
     for (unsigned i = 0; i <= enemyCount; ++i) {
         enemies.push_back(&manager.addEntity());
         enemies.at(i)->addComponentID<TurnComponent>();
