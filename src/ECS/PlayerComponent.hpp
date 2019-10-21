@@ -96,12 +96,13 @@ class PlayerComponent : public Component {
 
     void turnEntity(int i) {
         if (this->entity->getComponent<TurnComponent>().CheckTurn()) {
-            turn += i;
-            if (turn > 8) {
-                turn -= 8;
-            } else if (turn < 0) {
-                turn += 8;
-            }
+            if (turn + i > 8) {
+                turn = 0;
+            } else if (turn + i < 0) {
+                turn = 8;
+            } else {
+                turn += i;
+			}
             setFacing(turn);
         }
     }
@@ -174,6 +175,7 @@ class PlayerComponent : public Component {
                 break;
             }
             default: {
+                newNode.y++;
                 break;
             }
         }
