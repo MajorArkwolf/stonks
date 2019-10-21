@@ -278,6 +278,7 @@ void Akuma::handleKeyPress(SDL_Event &event) {
         case SDL_SCANCODE_E: {
             cameraComp.rotateCamera(-2);
         } break;
+        default: break;
     }
 }
 
