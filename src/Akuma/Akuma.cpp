@@ -402,7 +402,7 @@ auto Akuma::Akuma::displayGrid() -> void {
         }
     }
 
-    if (player->getComponent<TurnComponent>().getIsTurn()) {
+    if (player->getComponent<TurnComponent>().CheckTurn()) {
 
         glLineWidth(3);
         for (auto n : playerSurroundings) {

@@ -40,9 +40,6 @@ class PlayerComponent : public Component {
                     case NW:
                         this->entity->getComponent<PositionComponent>().setRotationNW();
                         break;
-                    default:
-                        this->entity->getComponent<PositionComponent>().setRotationN();
-                        break;
                 }
             }
             issueMovementToEntity();
