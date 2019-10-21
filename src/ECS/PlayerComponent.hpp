@@ -96,10 +96,10 @@ class PlayerComponent : public Component {
 
     void turnEntity(int i) {
         if (this->entity->getComponent<TurnComponent>().CheckTurn()) {
-            if (turn + i > 8) {
+            if (turn + i > 7) {
                 turn = 0;
             } else if (turn + i < 0) {
-                turn = 8;
+                turn = 7;
             } else {
                 turn += i;
 			}
