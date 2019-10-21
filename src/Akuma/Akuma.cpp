@@ -122,6 +122,8 @@ auto Akuma::Akuma::hardInit() -> void {
     modelList.push_back(OBJ::Load("flatwall.obj"));
 
     player = &manager.addEntity();
+    player->addComponentID<FloorComponent>();
+    player->getComponent<FloorComponent>().setFloor(floor);
     player->addComponentID<ScaleComponent>();
     player->getComponent<ScaleComponent>().setScale(glm::vec3{0.5, 0.5, 0.5});
     player->addComponentID<PositionComponent>();
