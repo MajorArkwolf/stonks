@@ -185,17 +185,35 @@ class EnemyComponent : public Component {
 		}
 	}
 
-	auto DistanceBetween() -> int {
+	auto DistanceBetween() -> unsigned int {
         Grid grid =
             this->entity->getComponent<FloorComponent>().getFloor()->getGrid();
         auto *myNode = this->entity->getComponent<PositionComponent>().getNode();
         auto *playerNode = player->getComponent<PositionComponent>().getNode();
-        return Pathing::Pathfinding::findPath(grid, *myNode, *playerNode, true).size();
+        auto pathToPlayer =
+            Pathing::Pathfinding::findPath(grid, *myNode, *playerNode, true);
+        return pathToPlayer.size();
+	}
+
+	auto goToPlayer() -> void {
+        if (this->entity->hasComponent<MoveComponent>()) {
+            Grid grid =
+                this->entity->getComponent<FloorComponent>().getFloor()->getGrid();
+            auto *myNode =
+                this->entity->getComponent<PositionComponent>().getNode();
+            auto *playerNode = player->getComponent<PositionComponent>().getNode();
+            //Pathing::Pathfinding::findPath(grid, *myNode, *playerNode, true).at(1);
+            if (true) {
+                this->entity->getComponent<MoveComponent>().moveEntityToNode(
+                    Pathing::Pathfinding::findPath(grid, *myNode, *playerNode, true)
+                        .at(1));
+			}
+		}
 	}
 
 	auto moveAction() -> void {
         if (lockedToPlayer) {
-			//Move to Player
+            //goToPlayer();
 		} else {
             detectPlayer();            
 		}
