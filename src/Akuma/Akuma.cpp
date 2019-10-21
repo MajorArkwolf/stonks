@@ -122,20 +122,24 @@ auto Akuma::Akuma::hardInit() -> void {
     modelList.push_back(OBJ::Load("flatwall.obj"));
 
     player = &manager.addEntity();
+    player->addComponentID<FloorComponent>();
+    player->getComponent<FloorComponent>().setFloor(floor);
     player->addComponentID<ScaleComponent>();
     player->getComponent<ScaleComponent>().setScale(glm::vec3{0.5, 0.5, 0.5});
     player->addComponentID<PositionComponent>();
     auto roomList = floor.getRoomList();
-    auto pos      = roomList[0]->getCentrePoint();
-    player->getComponent<PositionComponent>().setPos(glm::vec3{pos.x, 0, pos.y});
+    glm::uvec2 pos      = roomList[0]->getCentrePoint();
+    auto roomNode = floor.getGridNode(pos);
+    player->getComponent<PositionComponent>().setPos(roomNode);
     player->addComponentID<ModelComponent>();
     player->getComponent<ModelComponent>().setModel("player_female.obj");
+    player->addComponentID<PlayerComponent>();
     player->addComponentID<MoveComponent>();
     player->addComponentID<StatComponent>();
     player->getComponent<StatComponent>().stat.name = "Waman";
     player->addComponentID<CameraComponent>();
     player->addComponentID<TurnComponent>();
-    player->getComponent<TurnComponent>().isYourTurn();
+    player->getComponent<TurnComponent>().startYourTurn();
 
     softInit();
 }
@@ -229,9 +233,12 @@ auto Akuma::Akuma::unInit() -> void {}
 auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {
 
     switch (event.type) {
-        case SDL_KEYDOWN:
-        case SDL_KEYUP: {
+        case SDL_KEYDOWN: {
             this->handleKeyPress(event);
+            break;
+        }
+        case SDL_KEYUP: {
+            this->handleKeyRelease(event);            
         } break;
         case SDL_MOUSEBUTTONDOWN: break;
         case SDL_MOUSEBUTTONUP: break;
@@ -271,7 +278,24 @@ void Akuma::handleKeyPress(SDL_Event &event) {
         case SDL_SCANCODE_E: {
             cameraComp.rotateCamera(-2);
         } break;
+        default: break;
+    }
+}
 
+void Akuma::handleKeyRelease(SDL_Event &event) {
+    switch (event.key.keysym.scancode) {
+        case SDL_SCANCODE_A: {
+            player->getComponent<PlayerComponent>().turnEntity(1);
+            break;
+        }
+        case SDL_SCANCODE_D: {
+            player->getComponent<PlayerComponent>().turnEntity(-1);
+            break;
+        }
+        case SDL_SCANCODE_SPACE: {
+            player->getComponent<PlayerComponent>().moveEntity();
+            break;
+        }
         default: break;
     }
 }
@@ -378,7 +402,7 @@ auto Akuma::Akuma::displayGrid() -> void {
         }
     }
 
-    if (player->getComponent<TurnComponent>().getIsTurn()) {
+    if (player->getComponent<TurnComponent>().CheckTurn()) {
 
         glLineWidth(3);
         for (auto n : playerSurroundings) {
