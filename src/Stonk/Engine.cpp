@@ -353,6 +353,51 @@ auto Engine::update(State &newState, double dt) -> void {
  */
 auto Engine::render([[maybe_unused]] const State &newState) const -> void {}
 
+auto Stonk::Engine::settingsMenu() -> void {
+
+    ImVec2 buttonSize(150, 30);
+
+    ImGui::SetNextWindowPosCenter();
+    ImGui::SetNextWindowSize(ImVec2(500, 500), 1);
+    ImGui::Begin("Settings", &showSettingsMenu,
+                 ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+
+    ImGui::Text("Window Settings");
+    if (ImGui::Button("Borderless Windowed", buttonSize)) {
+        SDL_SetWindowBordered(this->window.get(), SDL_FALSE);
+        SDL_SetWindowFullscreen(this->window.get(), SDL_FALSE);
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Windowed", buttonSize)) {
+        SDL_SetWindowBordered(this->window.get(), SDL_TRUE);
+        SDL_SetWindowFullscreen(this->window.get(), SDL_FALSE);
+        auto display = SDL_DisplayMode{};
+        SDL_GetCurrentDisplayMode(0, &display);
+        SDL_SetWindowSize(this->window.get(), display.w / 2, display.h / 2);
+
+        SDL_SetWindowPosition(this->window.get(), display.w / 4, display.h / 4);
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Fullscreen", buttonSize)) {
+        auto display = SDL_DisplayMode{};
+        SDL_GetCurrentDisplayMode(0, &display);
+        SDL_SetWindowSize(this->window.get(), display.w, display.h);
+        SDL_SetWindowFullscreen(this->window.get(), SDL_TRUE);
+    }
+
+    ImGui::Separator();
+    ImGui::Text("Volume Settings");
+    ImGui::SliderFloat("Master Volume", &Volume, 0.0f, 100.0f, "Volume = %.1f");
+    ImGui::Separator();
+    ImGui::Text("Brightness");
+    if (ImGui::SliderFloat("Gamma Correction", &gammaCorrection, 0.1f, 2.f,
+                           "Gamma = %.1f")) {
+        SDL_SetWindowBrightness(this->window.get(), gammaCorrection);
+    }
+    ImGui::ShowDemoWindow();
+    ImGui::End();
+}
+
 /**
  * @brief I DONT KNOW WHAT THIS DOES
  * @return What is this

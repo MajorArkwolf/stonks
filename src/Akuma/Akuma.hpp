@@ -23,6 +23,7 @@ class Akuma : public BaseState {
     auto display() -> void;
     auto softInit() -> void;
     auto hardInit() -> void;
+    void handleWindowEvent(SDL_Event &event);
     auto displayGrid() -> void;
     static auto drawRectangle(float width, float height, bool wireframe) -> void;
     static auto drawSquare(float size, bool wireframe) -> void;

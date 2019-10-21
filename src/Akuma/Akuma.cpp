@@ -3,11 +3,12 @@
 #include <iostream>
 #include <sstream>
 
+#include <glm/vec3.hpp>
+
+#include "Camera.hpp"
 #include "imgui.h"
 #include "imgui_impl_opengl2.h"
 #include "imgui_impl_sdl.h"
-#include "Camera.hpp"
-#include <glm/vec3.hpp>
 
 using std::stringstream;
 
@@ -25,7 +26,6 @@ Akuma::Akuma::Akuma() {
     glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180.f);
     glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 1);
     glLightf(GL_LIGHT0, GL_SPOT_DIRECTION, 1);
-
 }
 
 /**
@@ -41,19 +41,17 @@ auto Akuma::Akuma::display() -> void {
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 
-	Player::Camera &camera = player->getComponent<CameraComponent>().camera;
+    Player::Camera &camera = player->getComponent<CameraComponent>().camera;
 
-    gluLookAt(static_cast<double>(camera.position.x),
-              static_cast<double> (camera.position.y),
-              static_cast<double>(camera.position.z),
-              static_cast<double>(camera.look.x),
-              static_cast<double>(camera.look.y),
-              static_cast<double>(camera.look.z),
-              static_cast<double>(camera.tilt.x),
+    gluLookAt(
+        static_cast<double>(camera.position.x),
+        static_cast<double>(camera.position.y),
+        static_cast<double>(camera.position.z),
+        static_cast<double>(camera.look.x), static_cast<double>(camera.look.y),
+        static_cast<double>(camera.look.z), static_cast<double>(camera.tilt.x),
         static_cast<double>(camera.tilt.y), static_cast<double>(camera.tilt.z));
-    
+
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-    
 
     ImGui_ImplOpenGL2_NewFrame();
     ImGui_ImplSDL2_NewFrame(stonk.window.get());
@@ -64,15 +62,14 @@ auto Akuma::Akuma::display() -> void {
     displayGrid();
     glPopMatrix();
 
-
     glEnable(GL_TEXTURE_2D);
     manager.draw();
     glPushMatrix();
     glTranslatef(0, 0, -20);
     // OBJ::displayModel(modelList[0], 5, 1);
-    glPopMatrix();	
+    glPopMatrix();
 
-	manager.draw();
+    manager.draw();
 
     glDisable(GL_LIGHT0);
     glDisable(GL_LIGHTING);
@@ -81,13 +78,14 @@ auto Akuma::Akuma::display() -> void {
     glDisable(GL_DEPTH_TEST);
 
     displayDebugMenu();
+    if (stonk.showSettingsMenu) {
+        stonk.settingsMenu();
+    }
 
     /*if (this->shouldDrawAxis) {
         auto origin = this->camera.look + (this->camera.getForwardDir()
     * 1.01f); drawAxis(origin.x, origin.y, origin.z, 0.5f);
     }*/
-
-	
 
     ImGui::Render();
     ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
@@ -114,12 +112,6 @@ auto Akuma::Akuma::softInit() -> void {
 
     glClearColor(0.f, 0.f, 0.f, 1.f);
     glColor3f(1.f, 1.f, 1.f);
-
-
-
-
-
-
 }
 
 /**
@@ -144,6 +136,24 @@ auto Akuma::Akuma::hardInit() -> void {
     softInit();
 }
 
+void Akuma::handleWindowEvent(SDL_Event &event) {
+    switch (event.window.event) {
+        case SDL_WINDOWEVENT_RESIZED: {
+            auto &engine = Stonk::Engine::get();
+
+            SDL_GL_GetDrawableSize(engine.window.get(), &width, &height);
+            ratio = static_cast<double>(width) / static_cast<double>(height);
+
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
+            glViewport(0, 0, width, height);
+            gluPerspective(60, ratio, 1, 150);
+            glMatrixMode(GL_MODELVIEW);
+        } break;
+        default: break;
+    }
+}
+
 /**
  * @brief Displays the IMGUI debug menu
  */
@@ -152,8 +162,8 @@ void Akuma::Akuma::displayDebugMenu() {
     auto buffer = stringstream{};
 
     if (stonk.showDebugMenu) {
-        auto &pos = player->getComponent<CameraComponent>().camera.position;
-        auto &look = player->getComponent<CameraComponent>().camera.look;
+        auto &pos    = player->getComponent<CameraComponent>().camera.position;
+        auto &look   = player->getComponent<CameraComponent>().camera.look;
         auto &angles = player->getComponent<CameraComponent>().camera.tilt;
 
         ImGui::Begin("Debug Menu");
@@ -188,6 +198,9 @@ auto Akuma::Akuma::unInit() -> void {}
 auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {
 
     switch (event.type) {
+        case SDL_WINDOWEVENT: {
+            this->handleWindowEvent(event);
+        } break;
         case SDL_KEYDOWN:
         case SDL_KEYUP: {
             this->handleKeyPress(event);
@@ -207,14 +220,14 @@ auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {
  */
 void Akuma::update([[maybe_unused]] double dt) {
     manager.update();
-    //player->getComponent<PositionComponent>().setXPos(
+    // player->getComponent<PositionComponent>().setXPos(
     //    player->getComponent<PositionComponent>().getXPos() + 0.01f);
-    //player->getComponent<PositionComponent>().setZPos(
+    // player->getComponent<PositionComponent>().setZPos(
     //    player->getComponent<PositionComponent>().getZPos() + 0.01f);
     light_position[0] = player->getComponent<PositionComponent>().getXPos();
     // light_position[1] = 2;
     light_position[2] = player->getComponent<PositionComponent>().getZPos();
-    //light_position[3] = 1;
+    // light_position[3] = 1;
 }
 
 /**
@@ -223,7 +236,7 @@ void Akuma::update([[maybe_unused]] double dt) {
  */
 void Akuma::handleKeyPress(SDL_Event &event) {
     auto &camera = player->getComponent<CameraComponent>().camera;
-    switch (event.key.keysym.scancode) {        
+    switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_A: {
             camera.position.z++;
         } break;
@@ -295,14 +308,14 @@ auto Akuma::Akuma::drawAxis(float x, float y, float z, float length) -> void {
 auto Akuma::Akuma::displayGrid() -> void {
     auto gridSize = floor.getGridSize();
 
-	glPushMatrix();
+    glPushMatrix();
     glTranslatef(gridSize.x / 2, 0, (gridSize.y / 2));
     for (unsigned x = 0; x < gridSize.x; x++) {
         for (unsigned y = 0; y < gridSize.y; y++) {
             glPushMatrix();
             glTranslatef(x - 0.5f * gridSize.x, 0, (y - 0.5f * gridSize.y));
             glPushMatrix();
-             glTranslatef(0.f, 0.03f, 0.f);
+            glTranslatef(0.f, 0.03f, 0.f);
             drawSquare(1, 1);
             glPopMatrix();
             if (!floor.getGridNode(x, y)->walkable) {
@@ -352,7 +365,6 @@ auto Akuma::Akuma::displayGrid() -> void {
     glPopMatrix();
 }
 
-
 /**
  * @brief Draws a square on screen matching the given parameters
  * @param size The size of the square to create
@@ -368,8 +380,7 @@ auto Akuma::drawSquare(float size, bool wireframe) -> void {
  * @param _width The width of the rectangle to create
  * @param wireframe Whether to draw a wireframe or polygon
  */
-auto Akuma::drawRectangle(float _width, float _height, bool wireframe)
-    -> void {
+auto Akuma::drawRectangle(float _width, float _height, bool wireframe) -> void {
     if (wireframe) {
         glBegin(GL_LINE_LOOP);
     } else {
@@ -397,7 +408,7 @@ void Akuma::descendLevel() {
 void Akuma::ClearEnemies() {
     for (auto &i : enemies) {
         i->destroy();
-	}
+    }
     enemies.clear();
 }
 
@@ -409,22 +420,21 @@ void Akuma::generateLevel() {
         enemies.at(i)->addComponentID<TurnComponent>();
         enemies.at(i)->addComponentID<ScaleComponent>(glm::vec3{0.5, 0.5, 0.5});
         enemies.at(i)->addComponentID<PositionComponent>();
-        bool walkable = false;
+        bool walkable    = false;
         auto maxDistance = floor.getGridSize();
         glm::vec2 temp   = {0, 0};
         do {
             temp.x = diceRoller.Roll(static_cast<int>(maxDistance.x - 1));
-            temp.y = diceRoller.Roll(static_cast<int>(maxDistance.y - 1));            
+            temp.y = diceRoller.Roll(static_cast<int>(maxDistance.y - 1));
             if (floor.getGridNode(temp)->walkable) {
                 enemies.at(i)->getComponent<PositionComponent>().setPos(
                     glm::vec3{temp.x, 0, temp.y});
                 walkable = true;
-			}
-		} while (!walkable);
+            }
+        } while (!walkable);
         enemies.at(i)->addComponentID<ModelComponent>();
-        enemies.at(i)->getComponent<ModelComponent>().setModel("goblin_warrior_spear.obj");
+        enemies.at(i)->getComponent<ModelComponent>().setModel(
+            "goblin_warrior_spear.obj");
         enemies.at(i)->addComponentID<MoveComponent>();
-        
-
-	}
+    }
 }

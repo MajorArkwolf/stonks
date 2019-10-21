@@ -10,8 +10,8 @@ void Menu::displayMenuWindow() {
     auto display = SDL_DisplayMode{};
     SDL_GetCurrentDisplayMode(0, &display);
 
-    ImGui::SetNextWindowSize(ImVec2(300, 500), ImGuiCond_Once);
-    ImGui::SetNextWindowPosCenter(ImGuiCond_Once);
+    ImGui::SetNextWindowSize(ImVec2(300, 500), 1);
+    ImGui::SetNextWindowPosCenter(1);
 
     ImGui::Begin("Menu", nullptr,
                  ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
@@ -27,7 +27,9 @@ void Menu::displayMenuWindow() {
     }
 
     ImGui::Separator();
-
+    if (ImGui::Button("Settings")) {
+        stonk.showSettingsMenu = stonk.showSettingsMenu ? false : true;
+    }
     if (ImGui::Button("Quit")) {
         stonk.isRunning = false;
     }
@@ -62,6 +64,9 @@ void Menu::display() {
     glPopMatrix();
 
     displayMenuWindow();
+    if (stonk.showSettingsMenu) {
+        stonk.settingsMenu();
+    }
 
     ImGui::Render();
     ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
@@ -199,6 +204,27 @@ void Menu::drawCube(float size, bool wireframe) {
     glPopMatrix();
 }
 
+void Menu::handleWindowEvent(SDL_Event &event) {
+
+    switch (event.window.event) {
+        case SDL_WINDOWEVENT_SIZE_CHANGED:
+        case SDL_WINDOWEVENT_RESIZED: {
+            auto &engine = Stonk::Engine::get();
+
+            SDL_GL_GetDrawableSize(engine.window.get(), &width, &height);
+            ratio = static_cast<double>(width) / static_cast<double>(height);
+
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
+            glViewport(0, 0, width, height);
+            gluPerspective(60, ratio, 1, 150);
+            glMatrixMode(GL_MODELVIEW);
+
+        } break;
+        default: break;
+    }
+}
+
 auto Menu::updatePath() -> void {
     auto roomList     = floor.getRoomList();
     auto startNode    = (*roomList.begin())->getCentrePoint();
@@ -241,7 +267,14 @@ void Menu::hardInit() {
 
 void Menu::unInit() {}
 
-void Menu::handleInput([[maybe_unused]] SDL_Event &event) {}
+void Menu::handleInput(SDL_Event &event) {
+    switch (event.type) {
+        case SDL_WINDOWEVENT: {
+            this->handleWindowEvent(event);
+        } break;
+        default: break;
+    }
+}
 
 void Menu::update(double dt) {
     gridRotation = gridRotation + static_cast<float>(dt) * 40;

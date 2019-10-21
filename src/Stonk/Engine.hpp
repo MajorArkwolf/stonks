@@ -63,11 +63,17 @@ namespace Stonk {
         bool showDebugMenu = false;
 
         /**
+         * @brief Boolean to tell whether to display the settings Menu
+         */
+        bool showSettingsMenu = false;
+        float Volume          = 25.f;
+        float gammaCorrection = 1.f;
+        /**
          * @brief A boolean signifying whether the game engine is running or not
          */
         bool isRunning = true;
 
-		std::string basepath = "";
+        std::string basepath = "";
 
       private:
         auto getTime() const -> double;
@@ -119,5 +125,7 @@ namespace Stonk {
         auto update(State &newState, double dt) -> void;
 
         auto render(const State &newState) const -> void;
+
+        auto settingsMenu() -> void;
     };
 }
