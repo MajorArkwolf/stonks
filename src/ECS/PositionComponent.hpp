@@ -8,6 +8,7 @@
 class PositionComponent : public Component {
   public:
     PositionComponent() = default;
+    ~PositionComponent() = default;
     PositionComponent(float x, float y, float z) {
         this->position.x = x;
         this->position.y = y;

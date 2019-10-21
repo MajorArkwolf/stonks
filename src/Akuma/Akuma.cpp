@@ -116,7 +116,7 @@ auto Akuma::Akuma::softInit() -> void {
  * @brief Hard initialiser for the Akuma gamestate
  */
 auto Akuma::Akuma::hardInit() -> void {
-    generateLevel();
+    
     // Load models textures etc here
     modelList.push_back(OBJ::Load("flattile.obj"));
     modelList.push_back(OBJ::Load("flatwall.obj"));
@@ -140,7 +140,7 @@ auto Akuma::Akuma::hardInit() -> void {
     player->addComponentID<CameraComponent>();
     player->addComponentID<TurnComponent>();
     player->getComponent<TurnComponent>().startYourTurn();
-
+    generateLevel();
     softInit();
 }
 
@@ -482,10 +482,11 @@ void Akuma::ClearEnemies() {
 
 void Akuma::generateLevel() {
     ClearEnemies();
-    unsigned int enemyCount = diceRoller.Roll(floorLevel, 3u);
+	unsigned int enemyCount = diceRoller.Roll(floorLevel, 3u);
     for (unsigned i = 0; i <= enemyCount; ++i) {
         enemies.push_back(&manager.addEntity());
         enemies.at(i)->addComponentID<TurnComponent>();
+        enemies.at(i)->getComponent<TurnComponent>().startYourTurn();
         enemies.at(i)->addComponentID<ScaleComponent>(glm::vec3{0.5, 0.5, 0.5});
         enemies.at(i)->addComponentID<PositionComponent>();
         bool walkable    = false;
@@ -496,13 +497,18 @@ void Akuma::generateLevel() {
             temp.y = diceRoller.Roll(static_cast<int>(maxDistance.y - 1));
             if (floor.getGridNode(temp)->walkable) {
                 enemies.at(i)->getComponent<PositionComponent>().setPos(
-                    glm::vec3{temp.x, 0, temp.y});
+                    floor.getGridNode(temp));
                 walkable = true;
             }
         } while (!walkable);
         enemies.at(i)->addComponentID<ModelComponent>();
         enemies.at(i)->getComponent<ModelComponent>().setModel(
             "goblin_warrior_spear.obj");
-        // enemies.at(i)->addComponentID<MoveComponent>();
+        enemies.at(i)->addComponentID<MoveComponent>();
+        enemies.at(i)->addComponentID<FloorComponent>();
+        enemies.at(i)->getComponent<FloorComponent>().setFloor(floor);
+        enemies.at(i)->addComponentID<EnemyComponent>();
+        enemies.at(i)->addComponentID<StatComponent>();
+        enemies.at(i)->getComponent<EnemyComponent>().SetPlayerTarget(player);
     }
 }

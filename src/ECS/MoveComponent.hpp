@@ -20,10 +20,12 @@ class MoveComponent : public Component {
         //}
         //isMoving = true;
         if (this->isMoving == true) {
-            //this->entity->getComponent<PositionComponent>().setPos(moveTo);
-            this->isMoving = false;
+            //this->entity->getComponent<PositionComponent>().setPos(moveTo);  
+			this->entity->getComponent<PositionComponent>().getNode()->occupied =
+                false;
             this->entity->getComponent<PositionComponent>().setPos(goingToNode);
             this->goingToNode = nullptr;
+            this->isMoving    = false;
         }
         
         
@@ -40,6 +42,7 @@ class MoveComponent : public Component {
         this->moveTo.x = float(newNode->x) + 0.5f;
         this->moveTo.z = float(newNode->y) + 0.5f;
         goingToNode    = newNode;
+        goingToNode->occupied = true;
 	}
 
 

@@ -29,6 +29,8 @@ namespace Pathing {
         unsigned y = 0;
         /// If node is traversable then walkable == 1
         bool walkable = 1;
+		/// Entities use this variable to ensure they are not stepping on each others squares.
+		bool occupied = false;
 
         auto toggleWalkable() -> void;
         auto setWalkable(bool _walkable) -> void;
