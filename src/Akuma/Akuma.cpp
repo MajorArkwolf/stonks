@@ -201,7 +201,7 @@ void Akuma::Akuma::displayGameStats() {
     std::string name       = "Name        : ";
     std::string playerName = playerStats.name;
     name                   = name + playerName;
-    ImGui::Text(name.c_str());
+    ImGui::Text("%s", name.c_str());
     ImGui::Text("Level       :  %.0d", playerStats.level);
     ImGui::Text("HP          :  %.0d", playerStats.HP);
     ImGui::Text("Strength    :  %.0d", playerStats.strength);
@@ -263,32 +263,13 @@ void Akuma::update([[maybe_unused]] double dt) {
  * @param event The SDL event containing the key press event
  */
 void Akuma::handleKeyPress(SDL_Event &event) {
-    auto &camera     = player->getComponent<CameraComponent>().camera;
     auto &cameraComp = player->getComponent<CameraComponent>();
     switch (event.key.keysym.scancode) {
-        case SDL_SCANCODE_A: {
-            camera.position.z++;
-        } break;
         case SDL_SCANCODE_Q: {
-            camera.position.x--;
-        } break;
-        case SDL_SCANCODE_D: {
-            camera.position.z--;
+            cameraComp.rotateCamera(2);
         } break;
         case SDL_SCANCODE_E: {
-            camera.position.x++;
-        } break;
-        case SDL_SCANCODE_W: {
-            camera.position.y++;
-        } break;
-        case SDL_SCANCODE_S: {
-            camera.position.y--;
-        } break;
-        case SDL_SCANCODE_I: {
-            cameraComp.rotateCamera(1);
-        } break;
-        case SDL_SCANCODE_K: {
-            cameraComp.rotateCamera(-1);
+            cameraComp.rotateCamera(-2);
         } break;
 
         default: break;
