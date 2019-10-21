@@ -130,8 +130,9 @@ class PlayerComponent : public Component {
             auto newNode = floor->getGridNode(facingNode);
             if (newNode->walkable) {
                 this->entity->getComponent<MoveComponent>().moveEntityToNode(newNode);
-                issueMovement = false;
-			}                
+
+			}
+            issueMovement = false;
         }
     }
 
