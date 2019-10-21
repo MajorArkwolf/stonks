@@ -97,10 +97,10 @@ class PlayerComponent : public Component {
     void turnEntity(int i) {
         if (this->entity->getComponent<TurnComponent>().CheckTurn()) {
             turn += i;
-            if (turn > 9) {
-                turn -= 9;
+            if (turn > 8) {
+                turn -= 8;
             } else if (turn < 0) {
-                turn += 9;
+                turn += 8;
             }
             setFacing(turn);
         }
