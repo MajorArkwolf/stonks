@@ -106,8 +106,6 @@ class PositionComponent : public Component {
         return rotation;
 	}
 
-    ~PositionComponent() = default;
-
   private:
     GLfloat rotation   = 0;
     glm::vec3 position = {0.0, 0, 0.0};

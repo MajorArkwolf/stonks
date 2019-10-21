@@ -315,6 +315,7 @@ void Akuma::handleKeyRelease(SDL_Event &event) {
         }
         case SDL_SCANCODE_SPACE: {
             player->getComponent<PlayerComponent>().moveEntity();
+            break;
         }
         default: break;
     }
