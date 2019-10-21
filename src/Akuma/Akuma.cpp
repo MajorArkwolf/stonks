@@ -267,10 +267,10 @@ void Akuma::handleKeyPress(SDL_Event &event) {
     auto &cameraComp = player->getComponent<CameraComponent>();
     switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_Q: {
-            cameraComp.rotateCamera(1);
+            cameraComp.rotateCamera(2);
         } break;
         case SDL_SCANCODE_E: {
-            cameraComp.rotateCamera(-1);
+            cameraComp.rotateCamera(-2);
         } break;
 
         default: break;
