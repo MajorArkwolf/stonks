@@ -205,7 +205,7 @@ void Akuma::Akuma::displayGameStats() {
     std::string name       = "Name        : ";
     std::string playerName = playerStats.name;
     name                   = name + playerName;
-    ImGui::Text(name.c_str());
+    ImGui::Text("%s", name.c_str());
     ImGui::Text("Level       :  %.0d", playerStats.level);
     ImGui::Text("HP          :  %.0d", playerStats.HP);
     ImGui::Text("Strength    :  %.0d", playerStats.strength);
@@ -423,7 +423,7 @@ auto Akuma::Akuma::displayGrid() -> void {
         }
     }
 
-    if (player->getComponent<TurnComponent>().getIsTurn()) {
+    if (player->getComponent<TurnComponent>().CheckTurn()) {
 
         glLineWidth(3);
         for (auto n : playerSurroundings) {
