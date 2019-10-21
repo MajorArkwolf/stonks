@@ -6,6 +6,7 @@
 #include "FloorComponent.hpp"
 #include "InventoryComponent.hpp"
 #include "PlayerComponent.hpp"
+#include "EnemyComponent.hpp"
 #include "ScaleComponent.hpp"
 #include "ModelComponent.hpp"
 #include "StatComponent.hpp"
