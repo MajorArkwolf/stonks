@@ -233,7 +233,10 @@ auto Akuma::Akuma::unInit() -> void {}
 auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {
 
     switch (event.type) {
-        case SDL_KEYDOWN:
+        case SDL_KEYDOWN: {
+            this->handleKeyRelease(event);
+            break;
+        }
         case SDL_KEYUP: {
             this->handleKeyPress(event);
         } break;
@@ -270,14 +273,8 @@ void Akuma::handleKeyPress(SDL_Event &event) {
     auto &camera     = player->getComponent<CameraComponent>().camera;
     auto &cameraComp = player->getComponent<CameraComponent>();
     switch (event.key.keysym.scancode) {
-        case SDL_SCANCODE_A: {
-            player->getComponent<PlayerComponent>().turnEntity(1);
-        } break;
         case SDL_SCANCODE_Q: {
             camera.position.x--;
-        } break;
-        case SDL_SCANCODE_D: {
-            player->getComponent<PlayerComponent>().turnEntity(-1);
         } break;
         case SDL_SCANCODE_E: {
             camera.position.x++;
@@ -302,12 +299,23 @@ void Akuma::handleKeyPress(SDL_Event &event) {
             camera.position.z--;
 			break;
 		}
+		default: break;
+    }
+}
+
+void Akuma::handleKeyRelease(SDL_Event &event) {
+    switch (event.key.keysym.scancode) {
+        case SDL_SCANCODE_A: {
+            player->getComponent<PlayerComponent>().turnEntity(1);
+            break;
+        }
+        case SDL_SCANCODE_D: {
+            player->getComponent<PlayerComponent>().turnEntity(-1);
+            break;
+        }
         case SDL_SCANCODE_SPACE: {
             player->getComponent<PlayerComponent>().moveEntity();
-		}
-							
-
-
+        }
         default: break;
     }
 }
