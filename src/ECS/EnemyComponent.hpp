@@ -112,8 +112,8 @@ class EnemyComponent : public Component {
     void determineFacingDirection(Pathing::Node* nextNode) {
         auto *currentNode =
             this->entity->getComponent<PositionComponent>().getNode();
-        int x = nextNode->x - currentNode->x;
-        int y = nextNode->y - currentNode->y;
+        int x = static_cast<int>(nextNode->x - currentNode->x);
+        int y = static_cast<int>(nextNode->y - currentNode->y);
         //int x = currentNode->x - nextNode->x;
         //int y = currentNode->y - nextNode->y;
 
@@ -141,12 +141,7 @@ class EnemyComponent : public Component {
             } else if (y == 1) {
                 facingBuffer = NE;
             }
-        } else {
-            std::cout << "Values were out! X= " << x << "Y= " << y
-                      << '\n'; // Debug code, remove later
         }
-        std::cout << "x= " << x << " y= " << y << " direction= " << facingBuffer
-                  << '\n';
     }
 
 	auto setTurnAngle() -> void {
@@ -188,18 +183,17 @@ class EnemyComponent : public Component {
             auto playerStealth =
                 player->getComponent<StatComponent>().getDexterityMod();
             if (diceroller.Roll(1, 20) + myIntel >
-                diceroller.Roll(1, 20) + playerStealth + distance) {
+                diceroller.Roll(1, 20) + playerStealth + static_cast<int>(distance)) {
                 lockedToPlayer = true;
-                std::cout << "Player Detected" << '\n';
 			}
 		}
 	}
 
 	auto DistanceBetween() -> unsigned int {            
-        return Pathing::Pathfinding::findPath(
+        return static_cast<unsigned int>(Pathing::Pathfinding::findPath(
                    this->entity->getComponent<FloorComponent>().getFloor()->getGrid(),
                    *this->entity->getComponent<PositionComponent>().getNode(),
-                   *player->getComponent<PositionComponent>().getNode(), true).size();
+                   *player->getComponent<PositionComponent>().getNode(), true).size());
 	}
 
 	auto goToPlayer() -> void {
