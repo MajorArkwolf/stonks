@@ -32,36 +32,38 @@ class CameraComponent : public Component {
 
     auto UpdateCameraPosition() -> void {
         if (this->entity->hasComponent<PositionComponent>()) {
-            glm::vec3 entityPosition =
+            glm::dvec3 entityPosition =
                 this->entity->getComponent<PositionComponent>().getPos();
-            camera.position.x +=
-                static_cast<double>(entityPosition.x - lastPosition.x);
-            camera.position.z +=
-                static_cast<double>(entityPosition.z - lastPosition.z);
-            lastPosition = entityPosition;
+
+            auto radians      = currentRotation * ((atan(1) * 4) / 180);
+            camera.position.x = std::cos(radians) * distanceFromEntity;
+            camera.position.z = std::sin(radians) * distanceFromEntity;
+            camera.position.y = distanceFromEntity;
+
+            camera.position.x += entityPosition.x;
+            camera.position.z += entityPosition.z;
+
         }
     }
 
-    auto rotateCamera(float amount) -> void{
-       auto rightVec = glm::cross(glm::normalize(camera.look - camera.position),
-                   camera.tilt);
-        camera.position += rightVec *= amount;
-        
-	}
+    auto rotateCamera(double amount) -> void {
+        currentRotation += amount;
+    }
 
-    auto zoomCamera(float amount) -> void {
-        double minY     = 3;
-        double maxY     = 25;
-        auto currentPos = camera.position;
+    auto zoomCamera(double amount) -> void {
+        double minDist  = 3;
+        double maxDist  = 25;
 
-        camera.position += (glm::normalize(camera.look - camera.position)) *= amount;
+        distanceFromEntity -= amount;
 
-        if (camera.position.y < minY) {
-            camera.position = currentPos;
-        } else if (camera.position.y > maxY) {
-            camera.position = currentPos;
+        if (distanceFromEntity > maxDist) {
+            distanceFromEntity = maxDist;
+        } else if (distanceFromEntity < minDist) {
+            distanceFromEntity = minDist;
         }
     }
+    double distanceFromEntity = 10;
+    double currentRotation    = 0;
     glm::vec3 lastPosition{};
     Player::Camera camera;
 };
