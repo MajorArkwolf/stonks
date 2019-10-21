@@ -2,13 +2,13 @@
 #include "ECS.hpp"
 #include "TurnComponent.hpp"
 #include "PositionComponent.hpp"
+#include "MoveComponent.hpp"
 #include "FloorComponent.hpp"
 #include "InventoryComponent.hpp"
 #include "PlayerComponent.hpp"
 #include "ScaleComponent.hpp"
 #include "ModelComponent.hpp"
 #include "StatComponent.hpp"
-#include "MoveComponent.hpp"
 #include "CameraComponent.hpp"
 
 // Include all the components that will be used in the game.

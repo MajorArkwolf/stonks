@@ -128,8 +128,9 @@ auto Akuma::Akuma::hardInit() -> void {
     player->getComponent<ScaleComponent>().setScale(glm::vec3{0.5, 0.5, 0.5});
     player->addComponentID<PositionComponent>();
     auto roomList = floor.getRoomList();
-    auto pos      = roomList[0]->getCentrePoint();
-    player->getComponent<PositionComponent>().setPos(glm::vec3{pos.x, 0, pos.y});
+    glm::uvec2 pos      = roomList[0]->getCentrePoint();
+    auto roomNode = floor.getGridNode(pos);
+    player->getComponent<PositionComponent>().setPos(roomNode);
     player->addComponentID<ModelComponent>();
     player->getComponent<ModelComponent>().setModel("player_female.obj");
     player->addComponentID<PlayerComponent>();
@@ -300,6 +301,9 @@ void Akuma::handleKeyPress(SDL_Event &event) {
         case SDL_SCANCODE_X: {
             camera.position.z--;
 			break;
+		}
+        case SDL_SCANCODE_SPACE: {
+            player->getComponent<PlayerComponent>().moveEntity();
 		}
 							
 

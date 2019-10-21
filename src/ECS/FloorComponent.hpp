@@ -17,9 +17,9 @@ class FloorComponent : public Component {
         this->floor = &newFloor;
         floorSet    = true;
 	}
-	Floor getFloor() {
+	Floor* getFloor() {
         if (floorSet = true) {
-            return *floor;
+            return floor;
         }
         
 	}

@@ -62,6 +62,7 @@ set (SOURCES
 	src/ECS/ScaleComponent.hpp
 	src/ECS/StatComponent.hpp
 	src/ECS/TurnComponent.hpp
+	src/ECS/FloorComponent.hpp
 
     src/Shay/AABBList.cpp
     src/Shay/PlainNode.cpp

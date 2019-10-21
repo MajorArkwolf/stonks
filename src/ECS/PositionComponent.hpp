@@ -34,8 +34,8 @@ class PositionComponent : public Component {
     }
 
 	void setPos(Pathing::Node* newTile) {
-        position.x = newTile->x + 0.5f;
-        position.y = newTile->y + 0.5f;
+        position.x = newTile->x ;
+        position.z = newTile->y;
         currentTile = newTile;
 	}
 
@@ -82,6 +82,10 @@ class PositionComponent : public Component {
     void setRotationNW() {
         rotation = 315;
     }
+
+	Pathing::Node* getNode() {
+        return currentTile;
+	}
 
     glm::vec3 getPos() {
         return this->position;
