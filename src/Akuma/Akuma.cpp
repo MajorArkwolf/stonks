@@ -234,11 +234,11 @@ auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {
 
     switch (event.type) {
         case SDL_KEYDOWN: {
-            this->handleKeyRelease(event);
+            this->handleKeyPress(event);
             break;
         }
         case SDL_KEYUP: {
-            this->handleKeyPress(event);
+            this->handleKeyRelease(event);            
         } break;
         case SDL_MOUSEBUTTONDOWN: break;
         case SDL_MOUSEBUTTONUP: break;
