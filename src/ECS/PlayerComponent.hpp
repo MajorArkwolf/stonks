@@ -116,6 +116,11 @@ class PlayerComponent : public Component {
             }
         }
     }
+    void skipTurn() {
+        if (this->entity->getComponent<TurnComponent>().checkTurn()) {
+            this->entity->getComponent<TurnComponent>().endYourTurn();
+        }
+    }
 
   private:
     bool issuedAction  = false;
