@@ -2,7 +2,9 @@
 #include <glm/vec3.hpp>
 
 #include "../ObjLoader/ModelManager.hpp"
-#include "Components.hpp"
+#include "ECS.hpp"
+#include "PositionComponent.hpp"
+#include "ScaleComponent.hpp"
 /* Models */
 class ModelComponent : public Component {
   public:
@@ -29,7 +31,7 @@ class ModelComponent : public Component {
     void draw() {
         glm::vec3 entityScale{1, 1, 1};
         glm::vec3 entityPos{0, 0, 0};
-        GLfloat entityRotation = 0;
+        float entityRotation = 0;
         if (hasModel) {
             if (hasScale) {
                 entityScale =

@@ -1,29 +1,16 @@
 #pragma once
 
 #include <glm/vec3.hpp>
+#include "ECS.hpp"
 #include "Akuma/Floor.hpp"
-#include "Components.hpp"
+
 
 /* This will need to handle all positions of entities. */
 class PositionComponent : public Component {
   public:
     PositionComponent() = default;
     ~PositionComponent() = default;
-    PositionComponent(float x, float y, float z) {
-        this->position.x = x;
-        this->position.y = y;
-        this->position.y = z;
-    }
-    PositionComponent(float x, float z) {
-        this->position.x = x;
-        this->position.y = 1;
-        this->position.y = z;
-    }
-    PositionComponent(glm::vec3 newPos) {
-        this->position.x = newPos.x;
-        this->position.y = newPos.y;
-        this->position.z = newPos.z;
-    }
+
     void init() {}
     void update() {}
     void draw() {}
@@ -35,18 +22,23 @@ class PositionComponent : public Component {
     }
 
 	void setPos(Pathing::Node* newTile) {
-        position.x = newTile->x ;
-        position.z = newTile->y;
-        currentTile = newTile;
+        this->position.x  = static_cast<float>(newTile->x);
+        this->position.z  = static_cast<float>(newTile->y);
+        this->currentTile = newTile;
 	}
 
 	void setNode(Pathing::Node* newTile) {
-        currentTile = newTile;
+        this->currentTile = newTile;
 	}
 
-    void setPos(float x, float y) {
+    void setPos(float x, float y, float z) {
         this->position.x = x;
         this->position.y = y;
+        this->position.z = z;
+    }
+    void setPos(float x, float z) {
+        this->position.x = x;
+        this->position.z = z;
     }
 
     void setXPos(float x) {
@@ -60,55 +52,55 @@ class PositionComponent : public Component {
         this->position.z = z;
     }
     void setRotationN() {
-        rotation = 0;
+        this->rotation = 0;
     }
     void setRotationNE() {
-        rotation = 45;
+        this->rotation = 45;
     }
     void setRotationE() {
-        rotation = 90;
+        this->rotation = 90;
     }
     void setRotationSE() {
-        rotation = 135;
+        this->rotation = 135;
     }
     void setRotationS() {
-        rotation = 180;
+        this->rotation = 180;
     }
     void setRotationSW() {
-        rotation = 225;
+        this->rotation = 225;
     }
     void setRotationW() {
-        rotation = 270;
+        this->rotation = 270;
     }
     void setRotationNW() {
-        rotation = 315;
+        this->rotation = 315;
     }
 
 	Pathing::Node* getNode() {
-        return currentTile;
+        return this->currentTile;
 	}
 
     glm::vec3 getPos() {
         return this->position;
     }
 
-    GLfloat getXPos() {
+    float getXPos() {
         return this->position.x;
     }
 
-    GLfloat getYPos() {
+    float getYPos() {
         return this->position.y;
     }
-    GLfloat getZPos() {
+    float getZPos() {
         return this->position.z;
     }
 
-	GLfloat getRotation() {
-        return rotation;
+	float getRotation() {
+        return this->rotation;
 	}
 
   private:
-    GLfloat rotation   = 0;
-    glm::vec3 position = {0.0, 0, 0.0};
+    float rotation             = 0.0f;
+    glm::vec3 position = {0.0f, 0.0f, 0.0f};
     Pathing::Node *currentTile = nullptr;
 };

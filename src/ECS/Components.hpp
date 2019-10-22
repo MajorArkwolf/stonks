@@ -4,7 +4,6 @@
 #include "PositionComponent.hpp"
 #include "MoveComponent.hpp"
 #include "FloorComponent.hpp"
-#include "InventoryComponent.hpp"
 #include "PlayerComponent.hpp"
 #include "EnemyComponent.hpp"
 #include "ScaleComponent.hpp"

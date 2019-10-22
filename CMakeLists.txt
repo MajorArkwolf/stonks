@@ -50,12 +50,9 @@ set (SOURCES
     src/ObjLoader/ObjLoader.cpp
     src/ObjLoader/ObjDisplay.cpp
 
+	src/ECS/Components.hpp
+	src/ECS/ECS.hpp
     src/ECS/CameraComponent.hpp
-    src/ECS/CombatComponent.hpp
-    src/ECS/Components.hpp
-    src/ECS/ECS.hpp
-	src/ECS/EquipmentComponent.hpp
-	src/ECS/InventoryComponent.hpp
 	src/ECS/ModelComponent.hpp
 	src/ECS/PlayerComponent.hpp
 	src/ECS/PositionComponent.hpp

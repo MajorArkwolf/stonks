@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Components.hpp"
+#include "ECS.hpp"
+#include "PositionComponent.hpp"
 #include <glm/vec3.hpp>
 #include "Akuma/Pathing/Node.hpp"
 
