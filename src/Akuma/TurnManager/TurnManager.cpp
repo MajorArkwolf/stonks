@@ -2,8 +2,12 @@
 #include "../RNG/Dice.hpp"
 #include "../../ECS/TurnComponent.hpp"
 #include "../../ECS/StatComponent.hpp"
+#include "Akuma/CombatLog.hpp"
 #include <algorithm>
 #include <functional>
+#include <string>
+
+using std::string;
 
 void TurnManager::update() {
     if (turnManagerSwitch) {
@@ -14,6 +18,8 @@ void TurnManager::update() {
             } else {
                 actorTurnID = 0;
                 roundCounter++;
+                CombatLog::log().push_back(
+                    "-----" + std::to_string(roundCounter) + "-----");
             }
         } else {
             if (!actors.at(actorTurnID).entity->getComponent<TurnComponent>().checkTurn()) {
@@ -57,6 +63,9 @@ void TurnManager::checkEntityTurnState(Entity *entity) {
 
 void TurnManager::turnOnManager() {
     turnManagerSwitch = true;
+    if (roundCounter == 1) {
+        CombatLog::log().push_back("-----" + std::to_string(roundCounter) + "-----");		
+	}
 }
 
 void TurnManager::turnOffManager() {

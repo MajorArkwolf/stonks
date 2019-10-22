@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ECS/ECS.hpp"
+
 /**
  * @namespace Pathing
  * @brief A namespace for the A* pathfinding algorithm
@@ -31,6 +33,8 @@ namespace Pathing {
         bool walkable = 1;
 		/// Entities use this variable to ensure they are not stepping on each others squares.
 		bool occupied = false;
+		/// Entities use this variable to see if there is an entitie they can interact with
+        Entity *occupant = nullptr;
 
         auto toggleWalkable() -> void;
         auto setWalkable(bool _walkable) -> void;

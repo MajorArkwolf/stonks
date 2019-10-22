@@ -23,7 +23,7 @@ class EnemyComponent : public Component {
         if (this->entity->hasComponent<TurnComponent>()) {
             if (this->entity->getComponent<TurnComponent>().checkTurn()) {
                 this->entity->getComponent<TurnComponent>().assignAction();
-                // combatCheck
+                combatCheck();
                 moveAction();
                 //facing = facingBuffer;
                 //setTurnAngle();
@@ -182,6 +182,7 @@ class EnemyComponent : public Component {
             if (diceroller.Roll(1, 20) + myIntel >
                 diceroller.Roll(1, 20) + playerStealth + static_cast<int>(distance)) {
                 lockedToPlayer = true;
+				//Play Sound here
 			}
 		}
         this->entity->getComponent<TurnComponent>().endYourTurn();
@@ -226,6 +227,21 @@ class EnemyComponent : public Component {
             goToPlayer();
 		} else {
             detectPlayer();            
+		}
+	}
+	auto combatCheck() -> void {
+        if (lockedToPlayer) {
+            auto *currentNode =
+                this->entity->getComponent<PositionComponent>().getNode();
+            auto *floor = this->entity->getComponent<FloorComponent>().getFloor();
+            auto neighbours = floor->getNeighbours(*currentNode);
+            for (auto &x : neighbours) {
+                if (x->occupant == player) {
+                    this->entity->getComponent<CombatComponent>().attackEntity(
+                        x->occupant);
+					break;
+				}
+			}
 		}
 	}
 };
