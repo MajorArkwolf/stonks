@@ -3,15 +3,19 @@
 #include "Engine.hpp"
 using Stonk::Audio;
 
-void Audio::PlaySound(Audio::Sound audio, int playcount) {
-    auto avail_channel = Mix_GroupAvailable(-1);
-    Mix_PlayChannel(avail_channel, this->audioChunks.at(audio).get(), playcount);
+auto Audio::PlaySound(Audio::Sound audio, int playcount) -> int {
+    auto result =
+        Mix_PlayChannel(-1, this->audioChunks.at(audio).get(), playcount - 1);
+    return result;
 }
 void Audio::PlayMusic(Audio::Music music, int playcount) {
-    Mix_PlayMusic(this->musicChunks.at(music).get(), playcount);
+    Mix_PlayMusic(this->musicChunks.at(music).get(), playcount - 1);
 }
 void Audio::StopMusic() {
     Mix_HaltMusic();
+}
+void Audio::StopSound(int channel) {
+    Mix_HaltChannel(channel);
 }
 auto Audio::LoadSound(std::string filename) -> Audio::Sound {
     auto find = loadedSounds.find(filename);
@@ -40,24 +44,23 @@ auto Audio::LoadMusic(std::string filename) -> Audio::Music {
 
 #include <iostream>
 void Audio::Init() {
-    const auto device          = SDL_GetAudioDeviceName(0, 0);
-    const auto deviceName      = std::string{device};
-    const auto channelCount    = 24;
-    SDL_AudioSpec desiredSpecs = {};
-    desiredSpecs.freq          = 48000;     // 48kHz
-    desiredSpecs.format        = AUDIO_F32; // arbitrary choice
-    desiredSpecs.channels      = 2;         // stereo
-    desiredSpecs.samples       = 2048;      // arbitrary choice
-    // see https://wiki.libsdl.org/SDL_AudioSpec#Remarks
-    SDL_AudioSpec receivedSpecs = {};
-    SDL_OpenAudioDevice(device, 0, &desiredSpecs, &receivedSpecs, 0);
+    const auto channelCount = 8;
+    auto freq               = 22050;     // recommended by below link
+    ushort format           = AUDIO_F32; // arbitrary choice
+    auto channels           = 2;         // stereo
+    auto chunksize          = 1024;      // arbitrary choice
+    // see https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_frame.html
+    Mix_Init(MIX_INIT_OGG | MIX_INIT_MP3);
+    Mix_OpenAudio(freq, format, channels, chunksize);
+    Mix_VolumeMusic(MIX_MAX_VOLUME);
+    Mix_Volume(-1, MIX_MAX_VOLUME);
     Mix_AllocateChannels(channelCount);
-    std::cout << "Audio device: " << deviceName << std::endl
-              << "Frequency: " << receivedSpecs.freq << std::endl
-              << "Channels: " << receivedSpecs.channels << std::endl
-              << "Samples: " << receivedSpecs.samples << std::endl;
 }
 Audio::Audio() {}
 Audio::~Audio() {
-    SDL_CloseAudioDevice(this->deviceId);
+    Mix_CloseAudio();
+    while (Mix_Init(0)) {
+        // see https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_frame.html
+        Mix_Quit();
+    }
 }

@@ -11,9 +11,10 @@ namespace Stonk {
       public:
         typedef size_t Sound;
         typedef size_t Music;
-        void PlaySound(Sound audio, int playcount = 1);
+        auto PlaySound(Sound audio, int playcount = 1) -> int;
         void PlayMusic(Music music, int playcount = -1);
         void StopMusic();
+        void StopSound(int channel);
         auto LoadSound(std::string filename) -> Sound;
         auto LoadMusic(std::string filename) -> Music;
 
@@ -31,6 +32,5 @@ namespace Stonk {
 
         std::vector<Chunk> audioChunks      = {};
         std::vector<MusicChunk> musicChunks = {};
-        SDL_AudioDeviceID deviceId;
     };
 }
