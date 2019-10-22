@@ -5,6 +5,7 @@
 #include "TurnComponent.hpp"
 #include "PositionComponent.hpp"
 #include "MoveComponent.hpp"
+#include "CombatComponent.hpp"
 
 /* This will need to handle input to the player */
 class PlayerComponent : public Component {
@@ -16,7 +17,7 @@ class PlayerComponent : public Component {
     void update() {
         if (this->entity->hasComponent<TurnComponent>()) {
             if (this->entity->getComponent<TurnComponent>().checkTurn()) {
-                facing = facingBuffer;
+                facing = facingBuffer;                
             }
             if (this->entity->hasComponent<PositionComponent>()) {
                 switch (facing) {
@@ -46,7 +47,7 @@ class PlayerComponent : public Component {
                         break;
                 }
             }
-            issueMovementToEntity();
+            commandExecution();
         }
     }
     void draw() {}
@@ -108,36 +109,24 @@ class PlayerComponent : public Component {
         }
     }
 
-    void moveEntity() {
+    void issueAction() {
         if (this->entity->getComponent<TurnComponent>().checkTurn()) {
-            if (!issueMovement) {
-                issueMovement = true;
+            if (!issuedAction) {
+                issuedAction = true;
             }
+        }
+    }
+    void skipTurn() {
+        if (this->entity->getComponent<TurnComponent>().checkTurn()) {
+            this->entity->getComponent<TurnComponent>().endYourTurn();
         }
     }
 
   private:
-    bool issueMovement  = false;
+    bool issuedAction  = false;
     int turn            = 0;
     Facing facingBuffer = Facing::N;
     Facing facing       = Facing::N;
-
-    void issueMovementToEntity() {
-        if (issueMovement) {
-            Floor *floor = this->entity->getComponent<FloorComponent>().getFloor();
-            Pathing::Node *currentNode =
-                this->entity->getComponent<PositionComponent>().getNode();
-            auto facingNode = getNodeFacing(currentNode->x, currentNode->y);
-            auto newNode = floor->getGridNode(facingNode);
-            if (newNode->walkable) {
-                if (!newNode->occupied) {
-                    this->entity->getComponent<MoveComponent>().moveEntityToNode(
-                        newNode);
-                }
-			}
-            issueMovement = false;
-        }
-    }
 
     glm::uvec2 getNodeFacing(unsigned int x, unsigned int y) {
         glm::uvec2 newNode = {x, y};
@@ -185,4 +174,25 @@ class PlayerComponent : public Component {
         }
         return newNode;
     }
+
+	void commandExecution() {
+        if (issuedAction) {
+            Floor *floor = this->entity->getComponent<FloorComponent>().getFloor();
+            Pathing::Node *currentNode =
+                this->entity->getComponent<PositionComponent>().getNode();
+            auto facingNode = getNodeFacing(currentNode->x, currentNode->y);
+            auto newNode    = floor->getGridNode(facingNode);
+            if (newNode->occupied) {
+                if (true /*check hostile enemy*/) {
+                    issuedAction = false;
+                    this->entity->getComponent<CombatComponent>().attackEntity(newNode->occupant);
+				}
+            } else if (newNode->walkable) {
+                    this->entity->getComponent<MoveComponent>().moveEntityToNode(
+                        newNode);
+                issuedAction = false;
+            }
+            
+        }
+	}
 };
