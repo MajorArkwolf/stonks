@@ -118,7 +118,7 @@ Engine::Engine() {
 
     // Capture the mouse.
     SDL_SetRelativeMouseMode(SDL_TRUE);
-
+    this->Audio().Init();
     // Setup ImGui.
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -139,6 +139,10 @@ Engine::~Engine() {
     ImGui::DestroyContext();
 
     SDL_Quit();
+}
+
+auto Engine::Audio() -> Stonk::Audio & {
+    return this->audio;
 }
 
 /**

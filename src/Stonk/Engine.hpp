@@ -8,6 +8,7 @@
 #include <glm/vec3.hpp>
 
 #include "Akuma/Akuma.hpp"
+#include "Stonk/Audio.hpp"
 #include "Stonk/Camera.hpp"
 #include "Stonk/Collision.hpp"
 #include "Stonk/Physics.hpp"
@@ -51,6 +52,7 @@ namespace Stonk {
         // Camera camera       = {};
         // Collision collision = {};
         Physics physics = {};
+        Audio audio     = {};
 
         /**
          * @brief The current FPS
@@ -67,7 +69,7 @@ namespace Stonk {
          */
         bool isRunning = true;
 
-		std::string basepath = "";
+        std::string basepath = "";
 
       private:
         auto getTime() const -> double;
@@ -81,6 +83,7 @@ namespace Stonk {
         ~Engine();
 
         static auto get() -> Engine &;
+        auto Audio() -> Stonk::Audio &;
         static auto run() -> void;
 
         auto loadState(GameMode) -> void;
