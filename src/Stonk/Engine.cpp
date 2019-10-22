@@ -165,20 +165,10 @@ auto Engine::getIsRunning() const -> bool {
  * @param event The SDL2 event being read from
  */
 auto Engine::handleKeyPress(SDL_Event &event) -> void {
-    auto &engine = Engine::get();
     switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_P: {
             this->showDebugMenu = !this->showDebugMenu;
         } break;
-        case SDL_SCANCODE_G: {
-            engine.popStack();
-            engine.loadState(GameMode::AKUMA);
-        } break;
-        case SDL_SCANCODE_H: {
-            engine.popStack();
-            engine.loadState(GameMode::SHAY);
-        } break;
-
         default: break;
     }
 }
