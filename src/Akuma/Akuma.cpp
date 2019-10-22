@@ -139,6 +139,7 @@ auto Akuma::Akuma::hardInit() -> void {
     player->getComponent<StatComponent>().stat.name = "Waman";
     player->addComponentID<CameraComponent>();
     player->addComponentID<TurnComponent>();
+    player->addComponentID<CombatComponent>();
     turnManager.addEntity(player);
     generateLevel();
     softInit();
@@ -295,7 +296,7 @@ void Akuma::handleKeyRelease(SDL_Event &event) {
             break;
         }
         case SDL_SCANCODE_SPACE: {
-            player->getComponent<PlayerComponent>().moveEntity();
+            player->getComponent<PlayerComponent>().issueAction();
             break;
         }
         default: break;
