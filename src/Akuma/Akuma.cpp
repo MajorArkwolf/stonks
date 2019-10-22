@@ -393,7 +393,7 @@ auto Akuma::Akuma::drawAxis(float x, float y, float z, float length) -> void {
  */
 auto Akuma::Akuma::displayGrid() -> void {
 	auto gridSize = floor.getGridSize();
-	auto playerComp = player->getComponent<PositionComponent>();
+	auto &playerComp = player->getComponent<PositionComponent>();
 	Pathing::Node* playerNode =
 		floor.getGridNode(static_cast<unsigned>(playerComp.getXPos()),
 			static_cast<unsigned>(playerComp.getZPos()));
