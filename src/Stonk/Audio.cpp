@@ -56,7 +56,6 @@ void Audio::Init() {
     Mix_Volume(-1, MIX_MAX_VOLUME);
     Mix_AllocateChannels(channelCount);
 }
-Audio::Audio() {}
 Audio::~Audio() {
     Mix_CloseAudio();
     while (Mix_Init(0)) {
