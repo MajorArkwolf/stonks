@@ -83,7 +83,6 @@ namespace Stonk {
         ~Engine();
 
         static auto get() -> Engine &;
-        auto Audio() -> Stonk::Audio &;
         static auto run() -> void;
 
         auto loadState(GameMode) -> void;
