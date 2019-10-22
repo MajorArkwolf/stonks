@@ -49,6 +49,7 @@ set (SOURCES
     src/ObjLoader/MtlLoader.cpp
     src/ObjLoader/ObjLoader.cpp
     src/ObjLoader/ObjDisplay.cpp
+    src/ObjLoader/ModelManager.cpp
 
 	src/ECS/Components.hpp
 	src/ECS/ECS.hpp
