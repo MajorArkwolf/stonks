@@ -139,9 +139,10 @@ auto Akuma::Akuma::hardInit() -> void {
     player->getComponent<StatComponent>().stat.name = "Waman";
     player->addComponentID<CameraComponent>();
     player->addComponentID<TurnComponent>();
-    player->getComponent<TurnComponent>().startYourTurn();
+    turnManager.addEntity(player);
     generateLevel();
     softInit();
+    turnManager.turnOnManager();
 }
 
 /**
@@ -254,6 +255,7 @@ auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {
  * @param dt Delta time since last frame
  */
 void Akuma::update([[maybe_unused]] double dt) {
+    turnManager.update();
     manager.update();
     // player->getComponent<PositionComponent>().setXPos(
     //    player->getComponent<PositionComponent>().getXPos() + 0.01f);
@@ -402,7 +404,7 @@ auto Akuma::Akuma::displayGrid() -> void {
         }
     }
 
-    if (player->getComponent<TurnComponent>().CheckTurn()) {
+    if (player->getComponent<TurnComponent>().checkTurn()) {
 
         glLineWidth(3);
         for (auto n : playerSurroundings) {
@@ -486,7 +488,6 @@ void Akuma::generateLevel() {
     for (unsigned i = 0; i <= enemyCount; ++i) {
         enemies.push_back(&manager.addEntity());
         enemies.at(i)->addComponentID<TurnComponent>();
-        enemies.at(i)->getComponent<TurnComponent>().startYourTurn();
         enemies.at(i)->addComponentID<ScaleComponent>(glm::vec3{0.5, 0.5, 0.5});
         enemies.at(i)->addComponentID<PositionComponent>();
         bool walkable    = false;
@@ -510,5 +511,6 @@ void Akuma::generateLevel() {
         enemies.at(i)->addComponentID<EnemyComponent>();
         enemies.at(i)->addComponentID<StatComponent>();
         enemies.at(i)->getComponent<EnemyComponent>().SetPlayerTarget(player);
+        turnManager.addEntity(enemies.at(i));
     }
 }

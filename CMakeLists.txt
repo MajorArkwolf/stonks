@@ -32,7 +32,6 @@ set (SOURCES
     src/Stonk/Collision.cpp
     src/Stonk/Physics.cpp
     src/Stonk/Viewport.cpp
-    src/Stonk/BaseState.hpp
     src/Akuma/ProceduralGen/BSP/BSP.cpp
     src/Akuma/ProceduralGen/BSP/Node.cpp
     src/Akuma/Pathing/Grid.cpp
@@ -40,8 +39,8 @@ set (SOURCES
     src/Akuma/Pathing/Pathfinding.cpp
     src/Akuma/Floor.cpp
     src/Akuma/Akuma.cpp
-	src/Akuma/Camera.hpp
 	src/Akuma/RNG/Dice.cpp
+	src/Akuma/TurnManager/TurnManager.cpp
     
 
     src/Menu/Menu.cpp
@@ -50,21 +49,6 @@ set (SOURCES
     src/ObjLoader/ObjLoader.cpp
     src/ObjLoader/ObjDisplay.cpp
     src/ObjLoader/ModelManager.cpp
-
-    src/ECS/CameraComponent.hpp
-    src/ECS/CombatComponent.hpp
-    src/ECS/Components.hpp
-    src/ECS/ECS.hpp
-	src/ECS/EquipmentComponent.hpp
-	src/ECS/InventoryComponent.hpp
-	src/ECS/ModelComponent.hpp
-	src/ECS/PlayerComponent.hpp
-	src/ECS/PositionComponent.hpp
-	src/ECS/ScaleComponent.hpp
-	src/ECS/StatComponent.hpp
-	src/ECS/TurnComponent.hpp
-	src/ECS/FloorComponent.hpp
-	src/ECS/EnemyComponent.hpp
 
     src/Shay/AABBList.cpp
     src/Shay/PlainNode.cpp

@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Components.hpp"
+#include "ECS.hpp"
+#include "PositionComponent.hpp"
+#include "TurnComponent.hpp"
 #include <glm/vec3.hpp>
 #include "Akuma/Pathing/Node.hpp"
 
@@ -26,6 +28,7 @@ class MoveComponent : public Component {
             this->entity->getComponent<PositionComponent>().setPos(goingToNode);
             this->goingToNode = nullptr;
             this->isMoving    = false;
+            this->entity->getComponent<TurnComponent>().endYourTurn();
         }
         
         

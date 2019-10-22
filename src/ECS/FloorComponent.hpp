@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Akuma/Floor.hpp"
-#include "Components.hpp"
+#include "ECS.hpp"
 
 /* This will allow entites access to the floor component.
     This may be slow and need to be reworked.
