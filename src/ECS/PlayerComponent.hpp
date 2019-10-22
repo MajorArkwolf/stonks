@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Akuma/Floor.hpp"
-#include "Akuma\Akuma.hpp"
+#include "Akuma/Akuma.hpp"
 #include "CombatComponent.hpp"
 #include "ECS.hpp"
 #include "EnemyComponent.hpp"
