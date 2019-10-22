@@ -1,13 +1,14 @@
 #pragma once
 
 #include <glm/vec3.hpp>
-
+#include "Akuma/Floor.hpp"
 #include "Components.hpp"
 
 /* This will need to handle all positions of entities. */
 class PositionComponent : public Component {
   public:
     PositionComponent() = default;
+    ~PositionComponent() = default;
     PositionComponent(float x, float y, float z) {
         this->position.x = x;
         this->position.y = y;
@@ -32,6 +33,16 @@ class PositionComponent : public Component {
         this->position.y = newPos.y;
         this->position.z = newPos.z;
     }
+
+	void setPos(Pathing::Node* newTile) {
+        position.x = newTile->x ;
+        position.z = newTile->y;
+        currentTile = newTile;
+	}
+
+	void setNode(Pathing::Node* newTile) {
+        currentTile = newTile;
+	}
 
     void setPos(float x, float y) {
         this->position.x = x;
@@ -73,6 +84,10 @@ class PositionComponent : public Component {
         rotation = 315;
     }
 
+	Pathing::Node* getNode() {
+        return currentTile;
+	}
+
     glm::vec3 getPos() {
         return this->position;
     }
@@ -92,9 +107,8 @@ class PositionComponent : public Component {
         return rotation;
 	}
 
-    ~PositionComponent() = default;
-
   private:
     GLfloat rotation   = 0;
-    glm::vec3 position = {0.5, 0, 0.5};
+    glm::vec3 position = {0.0, 0, 0.0};
+    Pathing::Node *currentTile = nullptr;
 };

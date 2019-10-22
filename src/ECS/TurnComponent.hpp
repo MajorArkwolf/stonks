@@ -5,12 +5,16 @@
 /* This will need to handle input to the player */
 class TurnComponent : public Component {
   public:
-    TurnComponent()    = default;
+    TurnComponent()  = default;
     ~TurnComponent() = default;
     void init() {}
     void update() {}
     void draw() {}
-    void isYourTurn() {
+
+    bool CheckTurn() {
+        return isTurn;
+    }
+    void startYourTurn() {
         isTurn = true;
     }
     bool endYourTurn() {

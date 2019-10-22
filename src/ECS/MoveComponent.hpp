@@ -20,8 +20,12 @@ class MoveComponent : public Component {
         //}
         //isMoving = true;
         if (this->isMoving == true) {
-            this->entity->getComponent<PositionComponent>().setPos(moveTo);
-            this->isMoving = false;
+            //this->entity->getComponent<PositionComponent>().setPos(moveTo);  
+			this->entity->getComponent<PositionComponent>().getNode()->occupied =
+                false;
+            this->entity->getComponent<PositionComponent>().setPos(goingToNode);
+            this->goingToNode = nullptr;
+            this->isMoving    = false;
         }
         
         
@@ -33,14 +37,17 @@ class MoveComponent : public Component {
         this->moveTo = movingTo;
 	}
 
-	void moveEntityToNode(const Pathing::Node &newNode) {
+	void moveEntityToNode(Pathing::Node *newNode) {
         this->isMoving = true;
-        this->moveTo.x = float(newNode.x) + 0.5f;
-        this->moveTo.z = float(newNode.y) + 0.5f;
+        this->moveTo.x = float(newNode->x) + 0.5f;
+        this->moveTo.z = float(newNode->y) + 0.5f;
+        goingToNode    = newNode;
+        goingToNode->occupied = true;
 	}
 
 
   private:
+    Pathing::Node *goingToNode = nullptr;
     bool isMoving = false;
     glm::vec3 moveTo = {0, 0, 0};
 };

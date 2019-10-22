@@ -19,9 +19,9 @@ namespace Pathing {
         static std::vector<Node *> findPath(Grid &nodeGrid, Node &startNode,
                                             Node &endNode, bool oct);
         static bool containsNode(std::vector<Node *> &set, Node *node);
-
       private:
         static std::vector<Node *> traceRoute(Node *endNode);
         Pathfinding();
+        
     };
 };

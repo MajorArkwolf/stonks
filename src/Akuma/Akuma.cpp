@@ -78,6 +78,7 @@ auto Akuma::Akuma::display() -> void {
     glDisable(GL_DEPTH_TEST);
 
     displayDebugMenu();
+    displayGameStats();
     if (showEscapeMenu) {
         displayEscapeMenu();
     }
@@ -122,21 +123,31 @@ auto Akuma::Akuma::softInit() -> void {
  * @brief Hard initialiser for the Akuma gamestate
  */
 auto Akuma::Akuma::hardInit() -> void {
-    generateLevel();
+    
     // Load models textures etc here
     modelList.push_back(OBJ::Load("flattile.obj"));
     modelList.push_back(OBJ::Load("flatwall.obj"));
 
     player = &manager.addEntity();
+    player->addComponentID<FloorComponent>();
+    player->getComponent<FloorComponent>().setFloor(floor);
     player->addComponentID<ScaleComponent>();
     player->getComponent<ScaleComponent>().setScale(glm::vec3{0.5, 0.5, 0.5});
     player->addComponentID<PositionComponent>();
-    player->getComponent<PositionComponent>().setPos(glm::vec3{2, 0, 1});
+    auto roomList = floor.getRoomList();
+    glm::uvec2 pos      = roomList[0]->getCentrePoint();
+    auto roomNode = floor.getGridNode(pos);
+    player->getComponent<PositionComponent>().setPos(roomNode);
     player->addComponentID<ModelComponent>();
     player->getComponent<ModelComponent>().setModel("player_female.obj");
+    player->addComponentID<PlayerComponent>();
     player->addComponentID<MoveComponent>();
+    player->addComponentID<StatComponent>();
+    player->getComponent<StatComponent>().stat.name = "Waman";
     player->addComponentID<CameraComponent>();
-
+    player->addComponentID<TurnComponent>();
+    player->getComponent<TurnComponent>().startYourTurn();
+    generateLevel();
     softInit();
 }
 
@@ -170,6 +181,8 @@ void Akuma::Akuma::displayDebugMenu() {
         auto &look   = player->getComponent<CameraComponent>().camera.look;
         auto &angles = player->getComponent<CameraComponent>().camera.tilt;
 
+        auto playerpos = player->getComponent<PositionComponent>().getPos();
+
         ImGui::Begin("Debug Menu");
         ImGui::Text("Camera: %.2f, %.2f, %.2f", static_cast<double>(pos.x),
                     static_cast<double>(pos.y), static_cast<double>(pos.z));
@@ -178,7 +191,13 @@ void Akuma::Akuma::displayDebugMenu() {
         ImGui::Text("Angles: %.2f, %.2f", static_cast<double>(angles.x),
                     static_cast<double>(angles.y));
         ImGui::Separator();
-        ImGui::Checkbox("Quit", &stonk.isRunning);
+        ImGui::Text(
+            "Player Position: %.2f, %.2f %.2f", static_cast<double>(playerpos.x),
+            static_cast<double>(playerpos.y), static_cast<double>(playerpos.z));
+        ImGui::Separator();
+        if (ImGui::Button("Quit")) {
+            stonk.isRunning = false;
+		}
         ImGui::End();
 
         ImGui::Begin("FPS", nullptr,
@@ -187,7 +206,44 @@ void Akuma::Akuma::displayDebugMenu() {
         ImGui::Text("%.0f", std::ceil(stonk.fps));
 
         ImGui::End();
+        
     }
+}
+
+/**
+ * @brief Displays the IMGUI debug menu
+ */
+void Akuma::Akuma::displayGameStats() {
+    auto &playerStats = player->getComponent<StatComponent>().stat;
+
+    auto display      = SDL_DisplayMode{};
+    SDL_GetCurrentDisplayMode(0, &display);
+
+    ImGui::SetNextWindowSize(ImVec2(300, 500), ImGuiCond_Once);
+    ImGui::SetNextWindowPos(ImVec2(display.w-300, 0), ImGuiCond_Once);
+
+    ImGui::Begin("Game Info", nullptr,
+                 ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+    ImGui::Separator();
+    ImGui::Text("Player Stats");
+    ImGui::Separator();
+    std::string name       = "Name        : ";
+    std::string playerName = playerStats.name;
+    name                   = name + playerName;
+    ImGui::Text("%s", name.c_str());
+    ImGui::Text("Level       :  %.0d", playerStats.level);
+    ImGui::Text("HP          :  %.0d", playerStats.HP);
+    ImGui::Text("Strength    :  %.0d", playerStats.strength);
+    ImGui::Text("Dexterity   :  %.0d", playerStats.dexterity);
+    ImGui::Text("Luck        :  %.0d", playerStats.luck);
+    ImGui::Text("Vitality    :  %.0d", playerStats.vitality);
+    ImGui::Text("Intelligence:  %.0d", playerStats.intelligence);
+
+    ImGui::Separator();
+    ImGui::Text("Selected Enemy Stats");
+    ImGui::Separator();
+
+    ImGui::End();
 }
 
 /**
@@ -205,14 +261,16 @@ auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {
         case SDL_WINDOWEVENT: {
             this->handleWindowEvent(event);
         } break;
-        case SDL_KEYDOWN:
+        case SDL_KEYDOWN: {
+			this->handleKeyPress(event);
+		} break;
         case SDL_KEYUP: {
-            this->handleKeyPress(event);
+            this->handleKeyRelease(event);            
         } break;
-        case SDL_MOUSEBUTTONDOWN:
-        case SDL_MOUSEBUTTONUP:
-        case SDL_MOUSEMOTION: {
-            // this->handleMouseEvents(event);
+        case SDL_MOUSEBUTTONDOWN: break;
+        case SDL_MOUSEBUTTONUP: break;
+        case SDL_MOUSEWHEEL: {
+            this->handleMouseWheel(event);
         } break;
         default: break;
     }
@@ -239,32 +297,41 @@ void Akuma::update([[maybe_unused]] double dt) {
  * @param event The SDL event containing the key press event
  */
 void Akuma::handleKeyPress(SDL_Event &event) {
-    auto &camera = player->getComponent<CameraComponent>().camera;
+    auto &cameraComp = player->getComponent<CameraComponent>();
     switch (event.key.keysym.scancode) {
-        case SDL_SCANCODE_A: {
-            camera.position.z++;
-        } break;
         case SDL_SCANCODE_Q: {
-            camera.position.x--;
-        } break;
-        case SDL_SCANCODE_D: {
-            camera.position.z--;
+            cameraComp.rotateCamera(2);
         } break;
         case SDL_SCANCODE_E: {
-            camera.position.x++;
+            cameraComp.rotateCamera(-2);
         } break;
-        case SDL_SCANCODE_W: {
-            camera.position.y++;
-        } break;
-        case SDL_SCANCODE_S: {
-            camera.position.y--;
-        } break;
-        case (SDL_SCANCODE_ESCAPE): {
-            showEscapeMenu = showEscapeMenu ? false : true;
-        } break;
-
         default: break;
     }
+}
+
+void Akuma::handleKeyRelease(SDL_Event &event) {
+    switch (event.key.keysym.scancode) {
+        case SDL_SCANCODE_A: {
+            player->getComponent<PlayerComponent>().turnEntity(1);
+            break;
+        }
+        case SDL_SCANCODE_D: {
+            player->getComponent<PlayerComponent>().turnEntity(-1);
+            break;
+        }
+        case SDL_SCANCODE_SPACE: {
+            player->getComponent<PlayerComponent>().moveEntity();
+            break;
+        }
+        default: break;
+    }
+}
+
+void Akuma::handleMouseWheel(SDL_Event &event) {
+    auto &cameraComp = player->getComponent<CameraComponent>();
+
+    int amountScrolledY = event.wheel.y; // Amount scrolled up or down
+    cameraComp.zoomCamera(amountScrolledY);
 }
 
 /**
@@ -313,7 +380,14 @@ auto Akuma::Akuma::drawAxis(float x, float y, float z, float length) -> void {
  * @brief Displays the current grid within the room object
  */
 auto Akuma::Akuma::displayGrid() -> void {
-    auto gridSize = floor.getGridSize();
+    auto gridSize   = floor.getGridSize();
+    auto playerComp = player->getComponent<PositionComponent>();
+    Pathing::Node *playerNode =
+        floor.getGridNode(static_cast<unsigned>(playerComp.getXPos()),
+                          static_cast<unsigned>(playerComp.getZPos()));
+
+    std::vector<Pathing::Node *> playerSurroundings =
+        floor.getNeighbours(*playerNode);
 
     glPushMatrix();
     glTranslatef(gridSize.x / 2, 0, (gridSize.y / 2));
@@ -351,24 +425,36 @@ auto Akuma::Akuma::displayGrid() -> void {
                 glColor3f(1.f, 1.f, 1.f);
                 glPopMatrix();
             }
-            /*if (x == grid.selected[0] && y == grid.selected[1]) {
-                glColor3f(1.f, 0.f, 0.f);
-                drawSquare(0.8f, 0.f);
-                glColor3f(1.f, 1.f, 1.f);
-            }
-            if (x == grid.pathStart[0] && y == grid.pathStart[1]) {
-                glColor3f(0.f, 1.f, 0.f);
-                drawSquare(0.8f, 0.f);
-                glColor3f(1.f, 1.f, 1.f);
-            }
-            if (x == grid.pathEnd[0] && y == grid.pathEnd[1]) {
-                glColor3f(0.f, 0.f, 1.f);
-                drawSquare(0.8f, 0.f);
-                glColor3f(1.f, 1.f, 1.f);
-            }*/
             glPopMatrix();
         }
     }
+
+    if (player->getComponent<TurnComponent>().CheckTurn()) {
+
+        glLineWidth(3);
+        for (auto n : playerSurroundings) {
+            if (n->walkable) {
+
+                glPushMatrix();
+                glTranslatef(n->x - 0.5f * gridSize.x, 0,
+                             (n->y - 0.5f * gridSize.y));
+                glPushMatrix();
+                glTranslatef(0.f, 0.04f, 0.f);
+                glEnable(GL_COLOR_MATERIAL);
+                glColor3f(1, 1, 0);
+
+                drawSquare(1, 1);
+                glColor3f(1, 1, 1);
+                glDisable(GL_COLOR_MATERIAL);
+                glPopMatrix();
+
+                glPopMatrix();
+            }
+        }
+
+        glLineWidth(1);
+    }
+
     glPopMatrix();
 }
 
@@ -444,10 +530,11 @@ void Akuma::displayEscapeMenu() {
 
 void Akuma::generateLevel() {
     ClearEnemies();
-    unsigned int enemyCount = diceRoller.Roll(floorLevel, 3u);
+	unsigned int enemyCount = diceRoller.Roll(floorLevel, 3u);
     for (unsigned i = 0; i <= enemyCount; ++i) {
         enemies.push_back(&manager.addEntity());
         enemies.at(i)->addComponentID<TurnComponent>();
+        enemies.at(i)->getComponent<TurnComponent>().startYourTurn();
         enemies.at(i)->addComponentID<ScaleComponent>(glm::vec3{0.5, 0.5, 0.5});
         enemies.at(i)->addComponentID<PositionComponent>();
         bool walkable    = false;
@@ -458,7 +545,7 @@ void Akuma::generateLevel() {
             temp.y = diceRoller.Roll(static_cast<int>(maxDistance.y - 1));
             if (floor.getGridNode(temp)->walkable) {
                 enemies.at(i)->getComponent<PositionComponent>().setPos(
-                    glm::vec3{temp.x, 0, temp.y});
+                    floor.getGridNode(temp));
                 walkable = true;
             }
         } while (!walkable);
@@ -466,5 +553,10 @@ void Akuma::generateLevel() {
         enemies.at(i)->getComponent<ModelComponent>().setModel(
             "goblin_warrior_spear.obj");
         enemies.at(i)->addComponentID<MoveComponent>();
+        enemies.at(i)->addComponentID<FloorComponent>();
+        enemies.at(i)->getComponent<FloorComponent>().setFloor(floor);
+        enemies.at(i)->addComponentID<EnemyComponent>();
+        enemies.at(i)->addComponentID<StatComponent>();
+        enemies.at(i)->getComponent<EnemyComponent>().SetPlayerTarget(player);
     }
 }
