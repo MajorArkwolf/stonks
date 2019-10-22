@@ -5,11 +5,11 @@
 #include "Akuma/Floor.hpp"
 
 #include "ObjLoader/ObjDisplay.hpp"
+#include "RNG/Dice.hpp"
 #include "Stonk/BaseState.hpp"
 #include "Stonk/Engine.hpp"
 #include "Stonk/OpenGl.hpp"
 #include "glm/vec3.hpp"
-
 #include "ECS/Components.hpp"
 #include "RNG/Dice.hpp"
 #include "TurnManager/TurnManager.hpp"
@@ -24,6 +24,7 @@ class Akuma : public BaseState {
     auto display() -> void;
     auto softInit() -> void;
     auto hardInit() -> void;
+    void handleWindowEvent(SDL_Event &event);
     auto displayGrid() -> void;
     static auto drawRectangle(float width, float height, bool wireframe) -> void;
     static auto drawSquare(float size, bool wireframe) -> void;
@@ -38,6 +39,7 @@ class Akuma : public BaseState {
     void generateLevel();
     void ClearEnemies();
     auto displayGameStats() -> void;
+    void displayEscapeMenu();
 
     unsigned floorLevel = 1;
     void descendLevel();
@@ -47,6 +49,7 @@ class Akuma : public BaseState {
     GLfloat light_position[4];
 
   private:
+    bool showEscapeMenu = 0;
     Manager manager;
     Entity *player = nullptr;
     std::vector<Entity *> enemies;

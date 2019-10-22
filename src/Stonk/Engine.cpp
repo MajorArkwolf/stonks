@@ -189,12 +189,15 @@ auto Stonk::Engine::loadState(GameMode mode) -> void {
     switch (mode) {
         case GameMode::MENU: {
             bp = new Menu();
+            SDL_SetWindowTitle(this->window.get(), "Main Menu");
         } break;
         case GameMode::SHAY: {
             bp = new ShaysWorld();
+            SDL_SetWindowTitle(this->window.get(), "Shays World");
         } break;
         case GameMode::AKUMA: {
             bp = new Akuma();
+            SDL_SetWindowTitle(this->window.get(), "Akuma Shei");
         } break;
     }
     if (bp != nullptr) {
@@ -306,16 +309,15 @@ auto Engine::processInput() -> void {
     auto handledMouse = false;
     auto &engine      = Engine::get();
     auto &stack       = engine.daGameStateStack;
-    Menu *menu        = dynamic_cast<Menu *>(stack.top());
 
     while (SDL_PollEvent(&event)) {
         ImGui_ImplSDL2_ProcessEvent(&event);
-        if (menu != nullptr) {
-            SDL_SetRelativeMouseMode(SDL_FALSE);
+        if (stack.top()->relativeMouse && !showDebugMenu) {
+            SDL_SetRelativeMouseMode(SDL_TRUE);
         } else {
-            SDL_SetRelativeMouseMode(this->showDebugMenu ? SDL_FALSE : SDL_TRUE);
-        }
-
+            SDL_SetRelativeMouseMode(SDL_FALSE);
+		}
+        
         if (!stack.empty()) {
             stack.top()->handleInput(event);
         }
@@ -328,10 +330,8 @@ auto Engine::processInput() -> void {
         }
     }
 
-    if (menu == nullptr) {
-        if (!handledMouse) {
-            this->mouse = {0.0f, 0.0f};
-        }
+    if (!handledMouse) {
+        this->mouse = {0.0f, 0.0f};
     }
 }
 
@@ -349,6 +349,68 @@ auto Engine::update(State &newState, double dt) -> void {
  * @param newState what do
  */
 auto Engine::render([[maybe_unused]] const State &newState) const -> void {}
+
+auto Stonk::Engine::settingsMenu() -> void {
+
+    ImVec2 buttonSize(150, 30);
+
+    ImGui::SetNextWindowPosCenter();
+    ImGui::SetNextWindowSize(ImVec2(500, 500), 1);
+    ImGui::Begin("Settings", &showSettingsMenu,
+                 ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+
+    ImGui::Text("Window Settings");
+    if (ImGui::Button("Borderless Windowed", buttonSize)) {
+        auto display = SDL_DisplayMode{};
+        SDL_GetCurrentDisplayMode(0, &display);
+        SDL_SetWindowSize(this->window.get(), display.w / 2, display.h / 2);
+        SDL_SetWindowPosition(this->window.get(), display.w / 4, display.h / 4);
+        SDL_SetWindowBordered(this->window.get(), SDL_FALSE);
+        SDL_SetWindowFullscreen(this->window.get(), SDL_FALSE);
+        SDL_SetWindowResizable(this->window.get(), SDL_TRUE);
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Windowed", buttonSize)) {
+        SDL_SetWindowBordered(this->window.get(), SDL_TRUE);
+        SDL_SetWindowFullscreen(this->window.get(), SDL_FALSE);
+        auto display = SDL_DisplayMode{};
+        SDL_GetCurrentDisplayMode(0, &display);
+        SDL_SetWindowSize(this->window.get(), display.w / 2, display.h / 2);
+        SDL_SetWindowPosition(this->window.get(), display.w / 4, display.h / 4);
+        SDL_SetWindowResizable(this->window.get(), SDL_TRUE);
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Borderless Fullscreen", buttonSize)) {
+        auto display = SDL_DisplayMode{};
+        SDL_GetCurrentDisplayMode(0, &display);
+        SDL_SetWindowSize(this->window.get(), display.w, display.h);
+        SDL_SetWindowPosition(this->window.get(), 0, 0);
+        SDL_SetWindowBordered(this->window.get(), SDL_FALSE);
+        SDL_SetWindowFullscreen(this->window.get(), SDL_FALSE);
+        SDL_SetWindowResizable(this->window.get(), SDL_FALSE);
+    }
+
+    if (ImGui::Button("Fullscreen", buttonSize)) {
+        auto display = SDL_DisplayMode{};
+        SDL_GetCurrentDisplayMode(0, &display);
+        SDL_SetWindowSize(this->window.get(), display.w, display.h);
+        SDL_SetWindowPosition(this->window.get(), 0, 0);
+        SDL_SetWindowFullscreen(this->window.get(), SDL_TRUE);
+        SDL_SetWindowResizable(this->window.get(), SDL_FALSE);
+    }
+
+    ImGui::Separator();
+    ImGui::Text("Volume Settings");
+    ImGui::SliderFloat("Master Volume", &Volume, 0.0f, 100.0f, "Volume = %.1f");
+    ImGui::Separator();
+    ImGui::Text("Brightness");
+    if (ImGui::SliderFloat("Gamma Correction", &gammaCorrection, 0.1f, 2.f,
+                           "Gamma = %.1f")) {
+        SDL_SetWindowBrightness(this->window.get(), gammaCorrection);
+    }
+    ImGui::End();
+
+}
 
 /**
  * @brief I DONT KNOW WHAT THIS DOES
