@@ -46,7 +46,7 @@ auto Audio::LoadMusic(std::string filename) -> Audio::Music {
 void Audio::Init() {
     const auto channelCount = 16;
     auto freq               = 22050;     // recommended by below link
-    ushort format           = AUDIO_F32; // arbitrary choice
+    unsigned short format   = AUDIO_F32; // arbitrary choice
     auto channels           = 2;         // stereo
     auto chunksize          = 1024;      // arbitrary choice
     // see https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_frame.html
