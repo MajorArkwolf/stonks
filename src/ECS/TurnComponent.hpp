@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Components.hpp"
+#include "ECS.hpp"
 
 /* This will need to handle input to the player */
 class TurnComponent : public Component {
@@ -11,17 +11,22 @@ class TurnComponent : public Component {
     void update() {}
     void draw() {}
 
-    bool CheckTurn() {
-        return isTurn;
+    bool checkTurn() {
+        return this->turnPhase2;
     }
     void startYourTurn() {
-        isTurn = true;
+        this->isTurn     = true;
+        this->turnPhase2 = true;
     }
-    bool endYourTurn() {
-        isTurn = false;
-        return true;
+	void assignAction() {
+        this->isTurn = false;
+	}
+    void endYourTurn() {
+        this->isTurn = false;
+        this->turnPhase2 = false;
     }
 
   private:
+    bool turnPhase2 = false;
     bool isTurn = false;
 };

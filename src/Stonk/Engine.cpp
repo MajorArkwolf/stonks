@@ -118,7 +118,7 @@ Engine::Engine() {
 
     // Capture the mouse.
     SDL_SetRelativeMouseMode(SDL_TRUE);
-
+    this->audio.Init();
     // Setup ImGui.
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();

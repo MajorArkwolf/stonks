@@ -1,6 +1,7 @@
-#include "Components.hpp"
-#include "Stonk/OpenGl.hpp"
+#pragma once
 #include <glm/vec3.hpp>
+#include "ECS.hpp"
+
 
 class ScaleComponent : public Component {
   public:
@@ -30,13 +31,13 @@ class ScaleComponent : public Component {
     void draw() {}
 
 
-    auto getXScale() -> GLfloat {
+    auto getXScale() -> float {
         return scale.x;
     }
-    auto getYScale() -> GLfloat {
+    auto getYScale() -> float {
         return scale.y;
     }
-    auto getZScale() -> GLfloat {
+    auto getZScale() -> float {
         return scale.z;
     }
 	auto getScale() -> glm::vec3{
@@ -53,23 +54,23 @@ class ScaleComponent : public Component {
 	}
     /**
      * @brief Sets X scale of the object
-     * @param temp GLfloat object
+     * @param temp float object
      */
-	auto setXScale(GLfloat temp) -> void {
+	auto setXScale(float temp) -> void {
         scale.x = temp;
 	}
     /**
      * @brief Sets the Y scale of the object
-     * @param temp GLfloat object
+     * @param temp float object
      */
-    auto setYScale(GLfloat temp) -> void {
+    auto setYScale(float temp) -> void {
         scale.y = temp;
     }
     /**
      * @brief Sets the Z scale of the object
-     * @param temp GLfloat object
+     * @param temp float object
      */
-    auto setZScale(GLfloat temp) -> void {
+    auto setZScale(float temp) -> void {
         scale.z = temp;
     }
 
