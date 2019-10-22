@@ -21,13 +21,14 @@ class MoveComponent : public Component {
         //    this->entity->getComponent<PositionComponent>().setPos(moveTo);
         //}
         //isMoving = true;
-        if (this->isMoving == true) {
-            //this->entity->getComponent<PositionComponent>().setPos(moveTo);  
+        if (this->turnToken == true) {
 			this->entity->getComponent<PositionComponent>().getNode()->occupied =
                 false;
+            this->entity->getComponent<PositionComponent>().getNode()->occupant =
+                nullptr;
             this->entity->getComponent<PositionComponent>().setPos(goingToNode);
             this->goingToNode = nullptr;
-            this->isMoving    = false;
+            this->turnToken   = false;
             this->entity->getComponent<TurnComponent>().endYourTurn();
         }
         
@@ -36,21 +37,22 @@ class MoveComponent : public Component {
     void draw() {}
 
 	void moveEntity(const glm::vec3& movingTo) {
-        this->isMoving = true;
+        this->turnToken = true;
         this->moveTo = movingTo;
 	}
 
 	void moveEntityToNode(Pathing::Node *newNode) {
-        this->isMoving = true;
+        this->turnToken       = true;
         this->moveTo.x = float(newNode->x) + 0.5f;
         this->moveTo.z = float(newNode->y) + 0.5f;
         goingToNode    = newNode;
         goingToNode->occupied = true;
+        goingToNode->occupant = this->entity;
 	}
 
 
   private:
     Pathing::Node *goingToNode = nullptr;
-    bool isMoving = false;
+    bool turnToken = false;
     glm::vec3 moveTo = {0, 0, 0};
 };
