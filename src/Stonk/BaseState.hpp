@@ -19,6 +19,8 @@ class BaseState {
     int height = 0;
     /// Window aspect ratio
     double ratio = 0;
+	/// Whether mouse is set to relative mode (reset to center of window each frame)
+    bool relativeMouse = 1;
 
     /**
      * @brief Virtual hard initialisation function for a gamestate
