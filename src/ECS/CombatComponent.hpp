@@ -5,6 +5,7 @@
 #include "ECS.hpp"
 #include "StatComponent.hpp"
 #include "TurnComponent.hpp"
+#include "../Akuma/CombatLog.hpp"
 
 class CombatComponent : public Component {
   public:
@@ -27,6 +28,7 @@ class CombatComponent : public Component {
         int enemyDodgePenalty    = 0;
         int critrange            = 20 - weaponCritRange -
                         this->entity->getComponent<StatComponent>().getLuckMod();
+        int damage = 0;
         if (opponent->hasComponent<StatComponent>()) {
             if (false /*opponent->hasComponent<EquipmentComponent>()*/) {
                 // enemyAC =
@@ -37,32 +39,28 @@ class CombatComponent : public Component {
             } else if (diceRoll == 20) {
                 diceRoll = diceroller.Roll(1, 20);
                 if (diceRoll >= ((enemyAC + enemyDodge) - enemyDodgePenalty)) {
-                    std::cout << weaponDamage(weaponPreHitDie, weaponHitDie,
-                                              weaponCritMultiplier)
-                              << " ";
-                    std::cout << "natural crit hit \n";
+					//natural 20 crit damage
+                    damage = weaponDamage(weaponPreHitDie, weaponHitDie,
+                                          weaponCritMultiplier);
                 } else {
-                    std::cout << weaponDamage(weaponPreHitDie, weaponHitDie)
-                              << " ";
-                    std::cout << "natural crit miss \n";
+                    damage = weaponDamage(weaponPreHitDie, weaponHitDie);
                     // regular damage
                 }
             } else if (diceRoll >= ((enemyAC + enemyDodge) - enemyDodgePenalty)) {
                 if (diceRoll >= critrange) {
-                    std::cout << weaponDamage(weaponPreHitDie, weaponHitDie,
-                                              weaponCritMultiplier)
-                              << " ";
-                    std::cout << "normal hit crit \n";
+                    damage = weaponDamage(weaponPreHitDie, weaponHitDie,
+                                        weaponCritMultiplier);
                     // damage multiplier
                 } else {
-                    std::cout << weaponDamage(weaponPreHitDie, weaponHitDie) << " ";
-                    std::cout << "normal hit \n";
+                    damage = weaponDamage(weaponPreHitDie, weaponHitDie);
                     // regular damage
                 }
             } else {
+				//miss
                 std::cout << "miss \n";
             }
         }
+        logInformation(damage, opponent);
         this->entity->getComponent<TurnComponent>().endYourTurn();
     }
     int weaponDamage(int weaponPreHitDie, int weaponHitDie) {
@@ -84,4 +82,13 @@ class CombatComponent : public Component {
 
   private:
     Dice diceroller;
+
+	void logInformation(int damage, Entity *opponent) {
+        string eventLog =
+            "Combat: Name: " + this->entity->getComponent<StatComponent>().stat.name +
+            "hit " + opponent->getComponent<StatComponent>().stat.name +
+            " for " +
+            std::to_string(damage) + " points of damage.";
+        CombatLog::log().push_back(eventLog);
+	}
 };
