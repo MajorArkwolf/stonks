@@ -218,13 +218,17 @@ class PlayerComponent : public Component {
         return newNode;
     }
 
+	Pathing::Node* getLookingAtNode() {
+        Floor *floor = this->entity->getComponent<FloorComponent>().getFloor();
+        Pathing::Node *currentNode =
+            this->entity->getComponent<PositionComponent>().getNode();
+        auto facingNode = getNodeFacing(currentNode->x, currentNode->y);
+        return floor->getGridNode(facingNode);
+	}
+
     void commandExecution() {
         if (issuedAction) {
-            Floor *floor = this->entity->getComponent<FloorComponent>().getFloor();
-            Pathing::Node *currentNode =
-                this->entity->getComponent<PositionComponent>().getNode();
-            auto facingNode = getNodeFacing(currentNode->x, currentNode->y);
-            auto newNode    = floor->getGridNode(facingNode);
+            auto newNode = getLookingAtNode();
             if (newNode->occupied) {
                 if (true /*check hostile enemy*/) {
                     issuedAction = false;
