@@ -156,6 +156,8 @@ auto Akuma::Akuma::hardInit() -> void {
 	generateLevel();
 	softInit();
 	turnManager.turnOnManager();
+    ItemLoader item;
+    item.init();
 }
 
 void Akuma::handleWindowEvent(SDL_Event& event) {

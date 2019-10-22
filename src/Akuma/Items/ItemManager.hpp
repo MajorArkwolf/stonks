@@ -14,6 +14,7 @@ using std::vector;
 
 enum itemType { consumable, armor, weapon, empty };
 enum rarityItem { common, uncommon, rare, mythic };
+enum mainStat {strength, agility, intelligence};
 
 struct ItemID {
     size_t itemID = 0;
@@ -70,6 +71,7 @@ struct Weapon {
     int critRange       = 0;
     int critMultiplier  = 2;
     int range           = 1;
+    mainStat mainStatType     = strength;
     friend istream &operator>>(std::istream &input, Weapon &item) {
         string inputString              = "";
         static constexpr char SEPARATOR = ',';
@@ -104,7 +106,16 @@ struct Weapon {
 		std::getline(input, inputString, SEPARATOR);
         item.range = std::stoi(inputString);
 
-
+		std::getline(input, inputString, SEPARATOR);
+        if (inputString == "strengh" || inputString == "1") {
+            item.mainStatType = strength;
+        } else if (inputString == "agility" || inputString == "2") {
+            item.mainStatType = agility;
+        } else if (inputString == "intelligence" || inputString == "3") {
+            item.mainStatType = intelligence;
+        } else {
+            item.mainStatType = strength;
+        }
         return input;
     }
 };
@@ -122,7 +133,7 @@ struct Consumable {
     int intelligence  = 0;
     int vitality      = 0;
     int duration      = 0; //in seconds
-    friend istream &operator>>(std::istream &input, Consumable &consumable1) {
+    friend istream &operator>>(std::istream &input, Consumable &item) {
         string inputString              = "";
         static constexpr char SEPARATOR = ',';
         std::getline(input, inputString, SEPARATOR);
@@ -195,7 +206,10 @@ class ItemLoader {
     ItemLoader()  = default;
     ~ItemLoader() = default;
     void init();
+
+  private:
     void constructWeapon(string item);
     void constructArmor(string item);
     void constructConsumable(string item);
+    void constructGenerics();
 };

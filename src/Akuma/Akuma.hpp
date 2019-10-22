@@ -13,6 +13,7 @@
 #include "ECS/Components.hpp"
 #include "RNG/Dice.hpp"
 #include "TurnManager/TurnManager.hpp"
+#include "Akuma/Items/ItemManager.hpp"
 /**
  * @class Akuma
  * @brief The Akuma game state object
