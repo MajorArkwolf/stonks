@@ -16,6 +16,7 @@ class Menu : public BaseState {
     void displayMenuWindow();
     void displayGrid();
     void drawCube(float size, bool wireframe);
+    void handleWindowEvent(SDL_Event &event);
 
   private:
     Floor floor;
