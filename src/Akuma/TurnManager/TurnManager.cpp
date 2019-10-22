@@ -3,7 +3,25 @@
 #include "../../ECS/TurnComponent.hpp"
 #include "../../ECS/StatComponent.hpp"
 
-void TurnManager::update() {}
+void TurnManager::update() {
+    if (turnManagerSwitch) {
+        if (turnToken) {
+            if (actors.size() > actorTurnID) {
+                actors.at(actorTurnID).entity->getComponent<TurnComponent>().startYourTurn();
+                turnToken = false;
+            } else {
+                actorTurnID = 0;
+                roundCounter++;
+            }
+        } else {
+            if (!actors.at(actorTurnID).entity->getComponent<TurnComponent>().checkTurn()) {
+                turnToken = true;
+                actorTurnID++;
+            }
+		}
+    }
+
+}
 
 void TurnManager::addEntity(Entity * newEntity) {
     EntityInfo newActor;
@@ -24,10 +42,19 @@ void TurnManager::giveTokenToEntity(Entity *entity) {
         turnToken = false;
 	}
 }
+
 void TurnManager::checkEntityTurnState(Entity *entity) {
     if (entity->hasComponent<TurnComponent>()) {
         if (!entity->getComponent<TurnComponent>().checkTurn()) {
             turnToken = true;
         }
     }
+}
+
+void TurnManager::turnOnManager() {
+    turnManagerSwitch = true;
+}
+
+void TurnManager::turnOffManager() {
+    turnManagerSwitch = false;
 }

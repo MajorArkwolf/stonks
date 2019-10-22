@@ -17,8 +17,11 @@ class TurnManager {
     void sortActors();
     void giveTokenToEntity(Entity *entity);
     void checkEntityTurnState(Entity *entity);
+    void turnOnManager();
+    void turnOffManager();
 
   private:
+    int roundCounter       = 1;
     bool turnManagerSwitch = false;
     bool turnToken         = true;
     std::vector<EntityInfo> actors;

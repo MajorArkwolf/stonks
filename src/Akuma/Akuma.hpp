@@ -12,6 +12,7 @@
 
 #include "ECS/Components.hpp"
 #include "RNG/Dice.hpp"
+#include "TurnManager/TurnManager.hpp"
 /**
  * @class Akuma
  * @brief The Akuma game state object
@@ -50,6 +51,7 @@ class Akuma : public BaseState {
     Entity *player = nullptr;
     std::vector<Entity *> enemies;
     Dice diceRoller;
+    TurnManager turnManager;
     /// The floor
     Floor floor;
     // Toggle for drawing 3d axis

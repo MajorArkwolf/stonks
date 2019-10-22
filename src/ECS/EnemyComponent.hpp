@@ -22,12 +22,9 @@ class EnemyComponent : public Component {
     void update() {
         if (this->entity->hasComponent<TurnComponent>()) {
             if (this->entity->getComponent<TurnComponent>().checkTurn()) {
+                this->entity->getComponent<TurnComponent>().assignAction();
                 // combatCheck
                 moveAction();
-
-
-
-
                 //facing = facingBuffer;
                 //setTurnAngle();
             }
@@ -175,7 +172,7 @@ class EnemyComponent : public Component {
         }
 	}
 
-	void detectPlayer() {
+	void detectPlayer() {		
         if (this->entity->hasComponent<StatComponent>()) {
             auto distance = DistanceBetween();                
             auto myIntel =
@@ -187,6 +184,7 @@ class EnemyComponent : public Component {
                 lockedToPlayer = true;
 			}
 		}
+        this->entity->getComponent<TurnComponent>().endYourTurn();
 	}
 
 	auto DistanceBetween() -> unsigned int {            
@@ -211,11 +209,18 @@ class EnemyComponent : public Component {
                     if (!e.at(0)->occupied) {
                         this->entity->getComponent<MoveComponent>().moveEntityToNode(
                             e.at(0));
-                    }
-                }                
+                    } else {
+                        this->entity->getComponent<TurnComponent>().endYourTurn();
+					}
+                } else {
+                    this->entity->getComponent<TurnComponent>().endYourTurn();
+				}              
+			} else {
+                this->entity->getComponent<TurnComponent>().endYourTurn();
 			}
 		}
 	}
+    
 	auto moveAction() -> void {
         if (lockedToPlayer) {
             goToPlayer();
