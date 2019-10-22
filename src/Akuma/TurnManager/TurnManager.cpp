@@ -2,6 +2,8 @@
 #include "../RNG/Dice.hpp"
 #include "../../ECS/TurnComponent.hpp"
 #include "../../ECS/StatComponent.hpp"
+#include <algorithm>
+#include <functional>
 
 void TurnManager::update() {
     if (turnManagerSwitch) {
@@ -27,14 +29,16 @@ void TurnManager::addEntity(Entity * newEntity) {
     EntityInfo newActor;
     Dice diceroller;
     newActor.entity = newEntity;
-    newActor.inititive =
-        diceroller.Roll(1, 20) +
+    newActor.currentDexMod =
         newEntity->getComponent<StatComponent>().getDexterityMod();
+    newActor.inititive = diceroller.Roll(1, 20) + newActor.currentDexMod;
     actors.push_back(newActor);
     sortActors();
 }
 
-void TurnManager::sortActors() {}
+void TurnManager::sortActors() {
+    std::sort(actors.begin(), actors.end());
+}
 
 void TurnManager::giveTokenToEntity(Entity *entity) {
     if (entity->hasComponent<TurnComponent>()) {
@@ -57,4 +61,21 @@ void TurnManager::turnOnManager() {
 
 void TurnManager::turnOffManager() {
     turnManagerSwitch = false;
+}
+
+void TurnManager::checkDexChange() {
+    bool sortArray = false;
+    for (auto &e : actors) {
+        if (e.currentDexMod !=
+            e.entity->getComponent<StatComponent>().getDexterityMod()) {
+            Dice diceroller;
+            sortArray = true;
+			e.currentDexMod =
+                e.entity->getComponent<StatComponent>().getDexterityMod();
+            e.inititive = diceroller.Roll(1, 20) + e.currentDexMod;
+		}
+	}
+    if (sortArray) {
+        sortActors();
+	}    
 }

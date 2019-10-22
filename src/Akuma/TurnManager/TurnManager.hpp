@@ -4,7 +4,11 @@
 #include "../../ECS/ECS.hpp"
 
 struct EntityInfo {
+	bool operator<(const EntityInfo &actor2) const {
+        return this->inititive > actor2.inititive;
+	}
     Entity *entity = nullptr;
+    int currentDexMod = 0;
     int inititive = 0;
 };
 
@@ -14,9 +18,6 @@ class TurnManager {
     ~TurnManager() = default;
     void update();
     void addEntity(Entity *newEntity);
-    void sortActors();
-    void giveTokenToEntity(Entity *entity);
-    void checkEntityTurnState(Entity *entity);
     void turnOnManager();
     void turnOffManager();
 
@@ -26,4 +27,10 @@ class TurnManager {
     bool turnToken         = true;
     std::vector<EntityInfo> actors;
     size_t actorTurnID = 0;
+
+	
+    void checkDexChange();
+    void sortActors();
+    void giveTokenToEntity(Entity *entity);
+    void checkEntityTurnState(Entity *entity);
 };
