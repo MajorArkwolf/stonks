@@ -361,8 +361,13 @@ auto Stonk::Engine::settingsMenu() -> void {
 
     ImGui::Text("Window Settings");
     if (ImGui::Button("Borderless Windowed", buttonSize)) {
+        auto display = SDL_DisplayMode{};
+        SDL_GetCurrentDisplayMode(0, &display);
+        SDL_SetWindowSize(this->window.get(), display.w / 2, display.h / 2);
+        SDL_SetWindowPosition(this->window.get(), display.w / 4, display.h / 4);
         SDL_SetWindowBordered(this->window.get(), SDL_FALSE);
         SDL_SetWindowFullscreen(this->window.get(), SDL_FALSE);
+        SDL_SetWindowResizable(this->window.get(), SDL_TRUE);
     }
     ImGui::SameLine();
     if (ImGui::Button("Windowed", buttonSize)) {
@@ -371,15 +376,25 @@ auto Stonk::Engine::settingsMenu() -> void {
         auto display = SDL_DisplayMode{};
         SDL_GetCurrentDisplayMode(0, &display);
         SDL_SetWindowSize(this->window.get(), display.w / 2, display.h / 2);
-
         SDL_SetWindowPosition(this->window.get(), display.w / 4, display.h / 4);
         SDL_SetWindowResizable(this->window.get(), SDL_TRUE);
     }
     ImGui::SameLine();
+    if (ImGui::Button("Borderless Fullscreen", buttonSize)) {
+        auto display = SDL_DisplayMode{};
+        SDL_GetCurrentDisplayMode(0, &display);
+        SDL_SetWindowSize(this->window.get(), display.w, display.h);
+        SDL_SetWindowPosition(this->window.get(), 0, 0);
+        SDL_SetWindowBordered(this->window.get(), SDL_FALSE);
+        SDL_SetWindowFullscreen(this->window.get(), SDL_FALSE);
+        SDL_SetWindowResizable(this->window.get(), SDL_FALSE);
+    }
+
     if (ImGui::Button("Fullscreen", buttonSize)) {
         auto display = SDL_DisplayMode{};
         SDL_GetCurrentDisplayMode(0, &display);
         SDL_SetWindowSize(this->window.get(), display.w, display.h);
+        SDL_SetWindowPosition(this->window.get(), 0, 0);
         SDL_SetWindowFullscreen(this->window.get(), SDL_TRUE);
         SDL_SetWindowResizable(this->window.get(), SDL_FALSE);
     }
@@ -394,6 +409,7 @@ auto Stonk::Engine::settingsMenu() -> void {
         SDL_SetWindowBrightness(this->window.get(), gammaCorrection);
     }
     ImGui::End();
+
 }
 
 /**

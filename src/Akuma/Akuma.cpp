@@ -33,13 +33,12 @@ Akuma::Akuma::Akuma() {
  */
 auto Akuma::Akuma::display() -> void {
     auto &stonk = Stonk::Engine::get();
-    if (showEscapeMenu ) {
+    if (showEscapeMenu) {
         relativeMouse = 0;
     } else {
         relativeMouse = 1;
     }
     glLoadIdentity();
-   
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
@@ -222,11 +221,8 @@ void Akuma::Akuma::displayDebugMenu() {
 void Akuma::Akuma::displayGameStats() {
     auto &playerStats = player->getComponent<StatComponent>().stat;
 
-    auto display = SDL_DisplayMode{};
-    SDL_GetCurrentDisplayMode(0, &display);
-
-    ImGui::SetNextWindowSize(ImVec2(300, 500), ImGuiCond_Once);
-    ImGui::SetNextWindowPos(ImVec2(display.w - 300, 0), ImGuiCond_Once);
+    ImGui::SetNextWindowSize(ImVec2(300, 500), 1);
+    ImGui::SetNextWindowPos(ImVec2(width - 300, 0), 1);
 
     ImGui::Begin("Game Info", nullptr,
                  ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
