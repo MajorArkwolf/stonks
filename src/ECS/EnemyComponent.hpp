@@ -182,6 +182,7 @@ class EnemyComponent : public Component {
             if (diceroller.Roll(1, 20) + myIntel >
                 diceroller.Roll(1, 20) + playerStealth + static_cast<int>(distance)) {
                 lockedToPlayer = true;
+				//Play Sound here
 			}
 		}
         this->entity->getComponent<TurnComponent>().endYourTurn();

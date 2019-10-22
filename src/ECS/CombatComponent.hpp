@@ -1,5 +1,5 @@
 #pragma once
-
+#include <iostream>
 #include "../Akuma/Pathing/Node.hpp"
 #include "../Akuma/RNG/Dice.hpp"
 #include "ECS.hpp"
@@ -33,32 +33,48 @@ class CombatComponent : public Component {
                 // enemyDodgePenalty
             }
             if (diceRoll == 1) {
-				//You fumbled
-            }else if (diceRoll == 20) {
+                std::cout << "fumble \n";
+            } else if (diceRoll == 20) {
                 diceRoll = diceroller.Roll(1, 20);
                 if (diceRoll >= ((enemyAC + enemyDodge) - enemyDodgePenalty)) {
-                    // crit damage
+                    std::cout << weaponDamage(weaponPreHitDie, weaponHitDie,
+                                              weaponCritMultiplier)
+                              << " ";
+                    std::cout << "natural crit hit \n";
                 } else {
+                    std::cout << weaponDamage(weaponPreHitDie, weaponHitDie)
+                              << " ";
+                    std::cout << "natural crit miss \n";
                     // regular damage
                 }
             } else if (diceRoll >= ((enemyAC + enemyDodge) - enemyDodgePenalty)) {
                 if (diceRoll >= critrange) {
+                    std::cout << weaponDamage(weaponPreHitDie, weaponHitDie,
+                                              weaponCritMultiplier)
+                              << " ";
+                    std::cout << "normal hit crit \n";
                     // damage multiplier
                 } else {
+                    std::cout << weaponDamage(weaponPreHitDie, weaponHitDie) << " ";
+                    std::cout << "normal hit \n";
                     // regular damage
                 }
+            } else {
+                std::cout << "miss \n";
             }
         }
         this->entity->getComponent<TurnComponent>().endYourTurn();
     }
+    int weaponDamage(int weaponPreHitDie, int weaponHitDie) {
+        return weaponDamage(weaponPreHitDie, weaponHitDie, 1);
+    }
 
-    int weaponDamage(int weaponHitDie, int weaponPreHitDie,
+    int weaponDamage(int weaponPreHitDie, int weaponHitDie,
                      int weaponCritMultiplier) {
         int totalDamage = 0;
-        for (int i = 0; i < weaponPreHitDie; i++) {
-			
-		}
-
+        for (int x = 0; x < weaponCritMultiplier; x++) {
+            totalDamage += diceroller.Roll(weaponPreHitDie, weaponHitDie);
+        }
         return totalDamage;
     }
 
@@ -68,6 +84,4 @@ class CombatComponent : public Component {
 
   private:
     Dice diceroller;
-    Entity *opponent = nullptr;
-    bool turnToken   = false;
 };
