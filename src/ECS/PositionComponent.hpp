@@ -1,14 +1,14 @@
 #pragma once
 
 #include <glm/vec3.hpp>
-#include "ECS.hpp"
-#include "Akuma/Floor.hpp"
 
+#include "Akuma/Floor.hpp"
+#include "ECS.hpp"
 
 /* This will need to handle all positions of entities. */
 class PositionComponent : public Component {
   public:
-    PositionComponent() = default;
+    PositionComponent()  = default;
     ~PositionComponent() = default;
 
     void init() {}
@@ -21,17 +21,19 @@ class PositionComponent : public Component {
         this->position.z = newPos.z;
     }
 
-	void setPos(Pathing::Node* newTile) {
+    void setPos(Pathing::Node *newTile) {
         this->position.x  = static_cast<float>(newTile->x);
         this->position.z  = static_cast<float>(newTile->y);
         this->currentTile = newTile;
-	}
+    }
 
-	void setNode(Pathing::Node* newTile) {
-        this->currentTile = newTile;
+    void setNode(Pathing::Node *newTile) {
+        this->position.x            = static_cast<float>(newTile->x);
+        this->position.z            = static_cast<float>(newTile->y);
+        this->currentTile           = newTile;
         this->currentTile->occupant = this->entity;
         this->currentTile->occupied = true;
-	}
+    }
 
     void setPos(float x, float y, float z) {
         this->position.x = x;
@@ -78,9 +80,9 @@ class PositionComponent : public Component {
         this->rotation = 315;
     }
 
-	Pathing::Node* getNode() {
+    Pathing::Node *getNode() {
         return this->currentTile;
-	}
+    }
 
     glm::vec3 getPos() {
         return this->position;
@@ -97,12 +99,12 @@ class PositionComponent : public Component {
         return this->position.z;
     }
 
-	float getRotation() {
+    float getRotation() {
         return this->rotation;
-	}
+    }
 
   private:
     float rotation             = 0.0f;
-    glm::vec3 position = {0.0f, 0.0f, 0.0f};
+    glm::vec3 position         = {0.0f, 0.0f, 0.0f};
     Pathing::Node *currentTile = nullptr;
 };

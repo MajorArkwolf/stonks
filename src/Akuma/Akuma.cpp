@@ -130,7 +130,7 @@ auto Akuma::Akuma::hardInit() -> void {
     auto roomList = floor.getRoomList();
     glm::uvec2 pos      = roomList[0]->getCentrePoint();
     auto roomNode = floor.getGridNode(pos);
-    player->getComponent<PositionComponent>().setPos(roomNode);
+    player->getComponent<PositionComponent>().setNode(roomNode);
     player->addComponentID<ModelComponent>();
     player->getComponent<ModelComponent>().setModel("player_female.obj");
     player->addComponentID<PlayerComponent>();
@@ -301,6 +301,7 @@ void Akuma::handleKeyRelease(SDL_Event &event) {
         }
         case SDL_SCANCODE_X: {
             player->getComponent<PlayerComponent>().skipTurn();
+            break;
 		}
         default: break;
     }
@@ -515,6 +516,7 @@ void Akuma::generateLevel() {
         enemies.at(i)->addComponentID<EnemyComponent>();
         enemies.at(i)->addComponentID<StatComponent>();
         enemies.at(i)->getComponent<EnemyComponent>().SetPlayerTarget(player);
+        enemies.at(i)->addComponentID<CombatComponent>();
         turnManager.addEntity(enemies.at(i));
     }
 }
