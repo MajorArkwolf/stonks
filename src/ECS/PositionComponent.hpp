@@ -29,6 +29,8 @@ class PositionComponent : public Component {
 
 	void setNode(Pathing::Node* newTile) {
         this->currentTile = newTile;
+        this->currentTile->occupant = this->entity;
+        this->currentTile->occupied = true;
 	}
 
     void setPos(float x, float y, float z) {
