@@ -239,6 +239,7 @@ auto Menu::updatePath() -> void {
 }
 
 void Menu::softInit() {
+    relativeMouse = 0;
     updatePath();
     glDisable(GL_LIGHTING);
 

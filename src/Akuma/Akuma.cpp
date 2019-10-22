@@ -32,9 +32,15 @@ Akuma::Akuma::Akuma() {
  * @brief Akuma display function
  */
 auto Akuma::Akuma::display() -> void {
-    glLoadIdentity();
-
     auto &stonk = Stonk::Engine::get();
+    if (showEscapeMenu ) {
+        relativeMouse = 0;
+    } else {
+        relativeMouse = 1;
+    }
+    glLoadIdentity();
+   
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);

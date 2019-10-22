@@ -309,16 +309,16 @@ auto Engine::processInput() -> void {
     auto handledMouse = false;
     auto &engine      = Engine::get();
     auto &stack       = engine.daGameStateStack;
-    Menu *menu        = dynamic_cast<Menu *>(stack.top());
-    Akuma *akuma      = dynamic_cast<Akuma *>(stack.top());
 
     while (SDL_PollEvent(&event)) {
         ImGui_ImplSDL2_ProcessEvent(&event);
-        if (menu != nullptr || (akuma != nullptr)) {
-            SDL_SetRelativeMouseMode(SDL_FALSE);
+        if (stack.top()->relativeMouse && !showDebugMenu) {
+            SDL_SetRelativeMouseMode(SDL_TRUE);
         } else {
-            SDL_SetRelativeMouseMode(this->showDebugMenu ? SDL_FALSE : SDL_TRUE);
-        }
+            SDL_SetRelativeMouseMode(SDL_FALSE);
+		}
+        
+
 
         if (!stack.empty()) {
             stack.top()->handleInput(event);
@@ -332,10 +332,8 @@ auto Engine::processInput() -> void {
         }
     }
 
-    if (menu == nullptr || (akuma == nullptr)) {
-        if (!handledMouse) {
-            this->mouse = {0.0f, 0.0f};
-        }
+    if (!handledMouse) {
+        this->mouse = {0.0f, 0.0f};
     }
 }
 
