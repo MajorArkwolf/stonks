@@ -31,3 +31,4 @@ auto ModelManager::ModelRepo() -> std::vector<Model>& {
     static std::vector<Model> m = {};
     return m;
 }
+

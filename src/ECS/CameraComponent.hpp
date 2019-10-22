@@ -1,9 +1,10 @@
 #pragma once
 
 #include <glm/vec3.hpp>
-
+#include "ECS.hpp"
+#include "PositionComponent.hpp"
 #include "../Akuma/Camera.hpp"
-#include "Components.hpp"
+
 
 /* This will need to handle input to the player */
 class CameraComponent : public Component {

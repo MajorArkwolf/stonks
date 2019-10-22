@@ -1,31 +1,30 @@
 #pragma once
 
+#include "ECS.hpp"
+#include "TurnComponent.hpp"
+#include "PositionComponent.hpp"
+#include "StatComponent.hpp"
+
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
 #include "../Akuma/Floor.hpp"
 #include "../Akuma/Pathing/Pathfinding.hpp"
-#include "Components.hpp"
 #include "../Akuma/RNG/Dice.hpp"
-#include "StatComponent.hpp"
-#include "PositionComponent.hpp"
 
 /* This will need to handle input to the player */
 class EnemyComponent : public Component {
   public:
-    enum Facing { N, NE, E, SE, S, SW, W, NW };
+    enum class Facing { N, NE, E, SE, S, SW, W, NW };
     EnemyComponent()  = default;
     ~EnemyComponent() = default;
     void init() {}
     void update() {
         if (this->entity->hasComponent<TurnComponent>()) {
-            if (this->entity->getComponent<TurnComponent>().CheckTurn()) {
+            if (this->entity->getComponent<TurnComponent>().checkTurn()) {
+                this->entity->getComponent<TurnComponent>().assignAction();
                 // combatCheck
                 moveAction();
-
-
-
-
                 //facing = facingBuffer;
                 //setTurnAngle();
             }
@@ -44,39 +43,39 @@ class EnemyComponent : public Component {
     void setFacing(int i) {
         switch (i) {
             case 0: {
-                facingBuffer = N;
+                facingBuffer = Facing::N;
                 break;
             }
             case 1: {
-                facingBuffer = NE;
+                facingBuffer = Facing::NE;
                 break;
             }
             case 2: {
-                facingBuffer = E;
+                facingBuffer = Facing::E;
                 break;
             }
             case 3: {
-                facingBuffer = SE;
+                facingBuffer = Facing::SE;
                 break;
             }
             case 4: {
-                facingBuffer = S;
+                facingBuffer = Facing::S;
                 break;
             }
             case 5: {
-                facingBuffer = SW;
+                facingBuffer = Facing::SW;
                 break;
             }
             case 6: {
-                facingBuffer = W;
+                facingBuffer = Facing::W;
                 break;
             }
             case 7: {
-                facingBuffer = NW;
+                facingBuffer = Facing::NW;
                 break;
             }
             default: {
-                facingBuffer = N;
+                facingBuffer = Facing::N;
                 break;
             }
         }
@@ -87,7 +86,7 @@ class EnemyComponent : public Component {
 	}
 
     void turnEntity(int i) {
-        if (this->entity->getComponent<TurnComponent>().CheckTurn()) {
+        if (this->entity->getComponent<TurnComponent>().checkTurn()) {
             if (turn + i > 7) {
                 turn = 0;
             } else if (turn + i < 0) {
@@ -102,8 +101,8 @@ class EnemyComponent : public Component {
   private:
     Dice diceroller;
     int turn            = 0;
-    Facing facingBuffer = N;
-    Facing facing       = N;
+    Facing facingBuffer = Facing::N;
+    Facing facing       = Facing::N;
     bool lockedToPlayer = false;
     Entity *player      = nullptr;
 
@@ -114,32 +113,30 @@ class EnemyComponent : public Component {
             this->entity->getComponent<PositionComponent>().getNode();
         int x = static_cast<int>(nextNode->x - currentNode->x);
         int y = static_cast<int>(nextNode->y - currentNode->y);
-        //int x = currentNode->x - nextNode->x;
-        //int y = currentNode->y - nextNode->y;
 
         if (x == -1) {
             if (y == -1) {
-                facingBuffer = SW;
+                facingBuffer = Facing::SW;
             } else if (y == 0) {
-                facingBuffer = W;
+                facingBuffer = Facing::W;
             } else if (y == 1) {
-                facingBuffer = N;
+                facingBuffer = Facing::N;
             }
         } else if (x == 0) {
             if (y == -1) {
-                facingBuffer = S;
+                facingBuffer = Facing::S;
             } else if (y == 0) {
-                facingBuffer = NW; // default always face north
+                facingBuffer = Facing::NW; // default always face north
             } else if (y == 1) {
-                facingBuffer = E;
+                facingBuffer = Facing::E;
             }
         } else if (x == 1) {
             if (y == -1) {
-                facingBuffer = SW;
+                facingBuffer = Facing::SW;
             } else if (y == 0) {
-                facingBuffer = E;
+                facingBuffer = Facing::E;
             } else if (y == 1) {
-                facingBuffer = NE;
+                facingBuffer = Facing::NE;
             }
         }
     }
@@ -147,35 +144,35 @@ class EnemyComponent : public Component {
 	auto setTurnAngle() -> void {
         if (this->entity->hasComponent<PositionComponent>()) {
             switch (facing) {
-                case N:
+                case Facing::N:
                     this->entity->getComponent<PositionComponent>().setRotationN();
                     break;
-                case NE:
+                case Facing::NE:
                     this->entity->getComponent<PositionComponent>().setRotationNE();
                     break;
-                case E:
+                case Facing::E:
                     this->entity->getComponent<PositionComponent>().setRotationE();
                     break;
-                case SE:
+                case Facing::SE:
                     this->entity->getComponent<PositionComponent>().setRotationSE();
                     break;
-                case S:
+                case Facing::S:
                     this->entity->getComponent<PositionComponent>().setRotationS();
                     break;
-                case SW:
+                case Facing::SW:
                     this->entity->getComponent<PositionComponent>().setRotationSW();
                     break;
-                case W:
+                case Facing::W:
                     this->entity->getComponent<PositionComponent>().setRotationW();
                     break;
-                case NW:
+                case Facing::NW:
                     this->entity->getComponent<PositionComponent>().setRotationNW();
                     break;
             }
         }
 	}
 
-	void detectPlayer() {
+	void detectPlayer() {		
         if (this->entity->hasComponent<StatComponent>()) {
             auto distance = DistanceBetween();                
             auto myIntel =
@@ -187,6 +184,7 @@ class EnemyComponent : public Component {
                 lockedToPlayer = true;
 			}
 		}
+        this->entity->getComponent<TurnComponent>().endYourTurn();
 	}
 
 	auto DistanceBetween() -> unsigned int {            
@@ -211,11 +209,18 @@ class EnemyComponent : public Component {
                     if (!e.at(0)->occupied) {
                         this->entity->getComponent<MoveComponent>().moveEntityToNode(
                             e.at(0));
-                    }
-                }                
+                    } else {
+                        this->entity->getComponent<TurnComponent>().endYourTurn();
+					}
+                } else {
+                    this->entity->getComponent<TurnComponent>().endYourTurn();
+				}              
+			} else {
+                this->entity->getComponent<TurnComponent>().endYourTurn();
 			}
 		}
 	}
+    
 	auto moveAction() -> void {
         if (lockedToPlayer) {
             goToPlayer();

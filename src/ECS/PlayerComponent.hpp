@@ -1,43 +1,47 @@
 #pragma once
 
 #include "../Akuma/Floor.hpp"
-#include "Components.hpp"
+#include "ECS.hpp"
+#include "TurnComponent.hpp"
+#include "PositionComponent.hpp"
+#include "MoveComponent.hpp"
+
 /* This will need to handle input to the player */
 class PlayerComponent : public Component {
   public:
-    enum Facing { N, NE, E, SE, S, SW, W, NW };
+    enum class Facing { N, NE, E, SE, S, SW, W, NW };
     PlayerComponent()  = default;
     ~PlayerComponent() = default;
     void init() {}
     void update() {
         if (this->entity->hasComponent<TurnComponent>()) {
-            if (this->entity->getComponent<TurnComponent>().CheckTurn()) {
+            if (this->entity->getComponent<TurnComponent>().checkTurn()) {
                 facing = facingBuffer;
             }
             if (this->entity->hasComponent<PositionComponent>()) {
                 switch (facing) {
-                    case N:
+                    case Facing::N:
                         this->entity->getComponent<PositionComponent>().setRotationN();
                         break;
-                    case NE:
+                    case Facing::NE:
                         this->entity->getComponent<PositionComponent>().setRotationNE();
                         break;
-                    case E:
+                    case Facing::E:
                         this->entity->getComponent<PositionComponent>().setRotationE();
                         break;
-                    case SE:
+                    case Facing::SE:
                         this->entity->getComponent<PositionComponent>().setRotationSE();
                         break;
-                    case S:
+                    case Facing::S:
                         this->entity->getComponent<PositionComponent>().setRotationS();
                         break;
-                    case SW:
+                    case Facing::SW:
                         this->entity->getComponent<PositionComponent>().setRotationSW();
                         break;
-                    case W:
+                    case Facing::W:
                         this->entity->getComponent<PositionComponent>().setRotationW();
                         break;
-                    case NW:
+                    case Facing::NW:
                         this->entity->getComponent<PositionComponent>().setRotationNW();
                         break;
                 }
@@ -53,46 +57,46 @@ class PlayerComponent : public Component {
     void setFacing(int i) {
         switch (i) {
             case 0: {
-                facingBuffer = N;
+                facingBuffer = Facing::N;
                 break;
             }
             case 1: {
-                facingBuffer = NE;
+                facingBuffer = Facing::NE;
                 break;
             }
             case 2: {
-                facingBuffer = E;
+                facingBuffer = Facing::E;
                 break;
             }
             case 3: {
-                facingBuffer = SE;
+                facingBuffer = Facing::SE;
                 break;
             }
             case 4: {
-                facingBuffer = S;
+                facingBuffer = Facing::S;
                 break;
             }
             case 5: {
-                facingBuffer = SW;
+                facingBuffer = Facing::SW;
                 break;
             }
             case 6: {
-                facingBuffer = W;
+                facingBuffer = Facing::W;
                 break;
             }
             case 7: {
-                facingBuffer = NW;
+                facingBuffer = Facing::NW;
                 break;
             }
             default: {
-                facingBuffer = N;
+                facingBuffer = Facing::N;
                 break;
             }
         }
     }
 
     void turnEntity(int i) {
-        if (this->entity->getComponent<TurnComponent>().CheckTurn()) {
+        if (this->entity->getComponent<TurnComponent>().checkTurn()) {
             if (turn + i > 7) {
                 turn = 0;
             } else if (turn + i < 0) {
@@ -105,7 +109,7 @@ class PlayerComponent : public Component {
     }
 
     void moveEntity() {
-        if (this->entity->getComponent<TurnComponent>().CheckTurn()) {
+        if (this->entity->getComponent<TurnComponent>().checkTurn()) {
             if (!issueMovement) {
                 issueMovement = true;
             }
@@ -115,8 +119,8 @@ class PlayerComponent : public Component {
   private:
     bool issueMovement  = false;
     int turn            = 0;
-    Facing facingBuffer = N;
-    Facing facing       = N;
+    Facing facingBuffer = Facing::N;
+    Facing facing       = Facing::N;
 
     void issueMovementToEntity() {
         if (issueMovement) {
@@ -126,8 +130,10 @@ class PlayerComponent : public Component {
             auto facingNode = getNodeFacing(currentNode->x, currentNode->y);
             auto newNode = floor->getGridNode(facingNode);
             if (newNode->walkable) {
-                this->entity->getComponent<MoveComponent>().moveEntityToNode(newNode);
-
+                if (!newNode->occupied) {
+                    this->entity->getComponent<MoveComponent>().moveEntityToNode(
+                        newNode);
+                }
 			}
             issueMovement = false;
         }

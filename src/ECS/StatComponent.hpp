@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Components.hpp"
+#include <string>
+#include "ECS.hpp"
 
 struct CharacterSheet {
-    string name      = "";
+    std::string name      = "";
     int level        = 1;
     int HD           = 8;
     bool assignedHP  = false;
