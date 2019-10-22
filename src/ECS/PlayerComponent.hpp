@@ -1,11 +1,12 @@
 #pragma once
 
 #include "../Akuma/Floor.hpp"
-#include "ECS.hpp"
-#include "TurnComponent.hpp"
-#include "PositionComponent.hpp"
-#include "MoveComponent.hpp"
+#include "Akuma\Akuma.hpp"
 #include "CombatComponent.hpp"
+#include "ECS.hpp"
+#include "MoveComponent.hpp"
+#include "PositionComponent.hpp"
+#include "TurnComponent.hpp"
 
 /* This will need to handle input to the player */
 class PlayerComponent : public Component {
@@ -17,7 +18,7 @@ class PlayerComponent : public Component {
     void update() {
         if (this->entity->hasComponent<TurnComponent>()) {
             if (this->entity->getComponent<TurnComponent>().checkTurn()) {
-                facing = facingBuffer;                
+                facing = facingBuffer;
             }
             if (this->entity->hasComponent<PositionComponent>()) {
                 switch (facing) {
@@ -50,7 +51,49 @@ class PlayerComponent : public Component {
             commandExecution();
         }
     }
-    void draw() {}
+    void draw() {
+        if (this->entity->hasComponent<PositionComponent>()) {
+
+            if (this->entity->hasComponent<FloorComponent>()) {
+
+                if (this->entity->hasComponent<TurnComponent>()) {
+
+                    Floor *floor =
+                        this->entity->getComponent<FloorComponent>().getFloor();
+                    Pathing::Node *currentNode =
+                        this->entity->getComponent<PositionComponent>().getNode();
+                    auto gridSize = floor->getGridSize();
+                    std::vector<Pathing::Node *> playerSurroundings =
+                        floor->getNeighbours(*currentNode);
+
+                    glLineWidth(3);
+                    glPushMatrix();
+                    glTranslatef(gridSize.x / 2, 0, (gridSize.y / 2));
+                    for (auto n : playerSurroundings) {
+                        if (n->walkable) {
+
+                            glPushMatrix();
+                            glTranslatef(n->x - 0.5f * gridSize.x, 0,
+                                         (n->y - 0.5f * gridSize.y));
+                            glPushMatrix();
+                            glTranslatef(0.f, 0.04f, 0.f);
+                            glEnable(GL_COLOR_MATERIAL);
+                            glColor3f(1, 1, 0);
+
+                            drawSquare(1, 1);
+                            glColor3f(1, 1, 1);
+                            glDisable(GL_COLOR_MATERIAL);
+                            glPopMatrix();
+
+                            glPopMatrix();
+                        }
+                    }
+                    glPopMatrix();
+                    glLineWidth(1);
+                }
+            }
+        }
+    }
     void setFacing(Facing newFace) {
         facingBuffer = newFace;
     }
@@ -104,7 +147,7 @@ class PlayerComponent : public Component {
                 turn = 7;
             } else {
                 turn += i;
-			}
+            }
             setFacing(turn);
         }
     }
@@ -123,7 +166,7 @@ class PlayerComponent : public Component {
     }
 
   private:
-    bool issuedAction  = false;
+    bool issuedAction   = false;
     int turn            = 0;
     Facing facingBuffer = Facing::N;
     Facing facing       = Facing::N;
@@ -175,7 +218,7 @@ class PlayerComponent : public Component {
         return newNode;
     }
 
-	void commandExecution() {
+    void commandExecution() {
         if (issuedAction) {
             Floor *floor = this->entity->getComponent<FloorComponent>().getFloor();
             Pathing::Node *currentNode =
@@ -185,14 +228,40 @@ class PlayerComponent : public Component {
             if (newNode->occupied) {
                 if (true /*check hostile enemy*/) {
                     issuedAction = false;
-                    this->entity->getComponent<CombatComponent>().attackEntity(newNode->occupant);
-				}
+                    this->entity->getComponent<CombatComponent>().attackEntity(
+                        newNode->occupant);
+                }
             } else if (newNode->walkable) {
-                    this->entity->getComponent<MoveComponent>().moveEntityToNode(
-                        newNode);
+                this->entity->getComponent<MoveComponent>().moveEntityToNode(newNode);
                 issuedAction = false;
             }
-            
         }
-	}
+    }
+    /**
+     * @brief Draws a square on screen matching the given parameters
+     * @param size The size of the square to create
+     * @param wireframe Whether to draw a wireframe square or a polygon
+     */
+    auto drawSquare(float size, bool wireframe) -> void {
+        drawRectangle(size, size, wireframe);
+    }
+
+    /**
+     * @brief Draws a rectangle on screen matching the given parameters
+     * @param _height The height of the rectangle to create
+     * @param _width The width of the rectangle to create
+     * @param wireframe Whether to draw a wireframe or polygon
+     */
+    auto drawRectangle(float _width, float _height, bool wireframe) -> void {
+        if (wireframe) {
+            glBegin(GL_LINE_LOOP);
+        } else {
+            glBegin(GL_POLYGON);
+        }
+        glVertex3f(-0.5f * _width, 0, 0.5f * _height);
+        glVertex3f(0.5f * _width, 0, 0.5f * _height);
+        glVertex3f(0.5f * _width, 0, -0.5f * _height);
+        glVertex3f(-0.5f * _width, 0, -0.5f * _height);
+        glEnd();
+    }
 };
