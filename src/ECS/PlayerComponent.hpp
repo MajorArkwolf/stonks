@@ -242,15 +242,15 @@ class PlayerComponent : public Component {
         if (issuedAction) {
             auto newNode = getLookingAtNode();
             if (newNode->occupied) {
-                if (true /*check hostile enemy*/) {
+                if (newNode->occupant->hasComponent<EnemyComponent>())
                     issuedAction = false;
                     this->entity->getComponent<CombatComponent>().attackEntity(
                         newNode->occupant);
-                }
             } else if (newNode->walkable) {
                 this->entity->getComponent<MoveComponent>().moveEntityToNode(newNode);
                 issuedAction = false;
             }
+            issuedAction = false;
         }
     }
     /**

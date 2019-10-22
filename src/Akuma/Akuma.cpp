@@ -523,7 +523,7 @@ void Akuma::generateLevel() {
             temp.x = diceRoller.Roll(static_cast<int>(maxDistance.x - 1));
             temp.y = diceRoller.Roll(static_cast<int>(maxDistance.y - 1));
             if (floor.getGridNode(temp)->walkable) {
-                enemies.at(i)->getComponent<PositionComponent>().setPos(
+                enemies.at(i)->getComponent<PositionComponent>().setNode(
                     floor.getGridNode(temp));
                 walkable = true;
             }
