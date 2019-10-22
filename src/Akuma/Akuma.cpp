@@ -86,7 +86,6 @@ auto Akuma::Akuma::display() -> void {
         stonk.settingsMenu();
     }
 
-
     /*if (this->shouldDrawAxis) {
         auto origin = this->camera.look + (this->camera.getForwardDir()
     * 1.01f); drawAxis(origin.x, origin.y, origin.z, 0.5f);
@@ -123,7 +122,7 @@ auto Akuma::Akuma::softInit() -> void {
  * @brief Hard initialiser for the Akuma gamestate
  */
 auto Akuma::Akuma::hardInit() -> void {
-    
+
     // Load models textures etc here
     modelList.push_back(OBJ::Load("flattile.obj"));
     modelList.push_back(OBJ::Load("flatwall.obj"));
@@ -134,9 +133,9 @@ auto Akuma::Akuma::hardInit() -> void {
     player->addComponentID<ScaleComponent>();
     player->getComponent<ScaleComponent>().setScale(glm::vec3{0.5, 0.5, 0.5});
     player->addComponentID<PositionComponent>();
-    auto roomList = floor.getRoomList();
-    glm::uvec2 pos      = roomList[0]->getCentrePoint();
-    auto roomNode = floor.getGridNode(pos);
+    auto roomList  = floor.getRoomList();
+    glm::uvec2 pos = roomList[0]->getCentrePoint();
+    auto roomNode  = floor.getGridNode(pos);
     player->getComponent<PositionComponent>().setPos(roomNode);
     player->addComponentID<ModelComponent>();
     player->getComponent<ModelComponent>().setModel("player_female.obj");
@@ -153,6 +152,7 @@ auto Akuma::Akuma::hardInit() -> void {
 
 void Akuma::handleWindowEvent(SDL_Event &event) {
     switch (event.window.event) {
+        case SDL_WINDOWEVENT_SIZE_CHANGED:
         case SDL_WINDOWEVENT_RESIZED: {
             auto &engine = Stonk::Engine::get();
 
@@ -197,7 +197,7 @@ void Akuma::Akuma::displayDebugMenu() {
         ImGui::Separator();
         if (ImGui::Button("Quit")) {
             stonk.isRunning = false;
-		}
+        }
         ImGui::End();
 
         ImGui::Begin("FPS", nullptr,
@@ -206,7 +206,6 @@ void Akuma::Akuma::displayDebugMenu() {
         ImGui::Text("%.0f", std::ceil(stonk.fps));
 
         ImGui::End();
-        
     }
 }
 
@@ -216,11 +215,11 @@ void Akuma::Akuma::displayDebugMenu() {
 void Akuma::Akuma::displayGameStats() {
     auto &playerStats = player->getComponent<StatComponent>().stat;
 
-    auto display      = SDL_DisplayMode{};
+    auto display = SDL_DisplayMode{};
     SDL_GetCurrentDisplayMode(0, &display);
 
     ImGui::SetNextWindowSize(ImVec2(300, 500), ImGuiCond_Once);
-    ImGui::SetNextWindowPos(ImVec2(display.w-300, 0), ImGuiCond_Once);
+    ImGui::SetNextWindowPos(ImVec2(display.w - 300, 0), ImGuiCond_Once);
 
     ImGui::Begin("Game Info", nullptr,
                  ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
@@ -262,10 +261,10 @@ auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {
             this->handleWindowEvent(event);
         } break;
         case SDL_KEYDOWN: {
-			this->handleKeyPress(event);
-		} break;
+            this->handleKeyPress(event);
+        } break;
         case SDL_KEYUP: {
-            this->handleKeyRelease(event);            
+            this->handleKeyRelease(event);
         } break;
         case SDL_MOUSEBUTTONDOWN: break;
         case SDL_MOUSEBUTTONUP: break;
@@ -304,6 +303,9 @@ void Akuma::handleKeyPress(SDL_Event &event) {
         } break;
         case SDL_SCANCODE_E: {
             cameraComp.rotateCamera(-2);
+        } break;
+        case SDL_SCANCODE_ESCAPE: {
+            this->showEscapeMenu = showEscapeMenu ? false : true;
         } break;
         default: break;
     }
@@ -510,7 +512,7 @@ void Akuma::displayEscapeMenu() {
     ImGui::SetNextWindowSize(ImVec2(300, 500), 1);
     ImGui::SetNextWindowPosCenter(1);
 
-    ImGui::Begin("Game Menu", nullptr,
+    ImGui::Begin("Game Menu", &showEscapeMenu,
                  ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
     ImGui::Separator();
 
@@ -530,7 +532,7 @@ void Akuma::displayEscapeMenu() {
 
 void Akuma::generateLevel() {
     ClearEnemies();
-	unsigned int enemyCount = diceRoller.Roll(floorLevel, 3u);
+    unsigned int enemyCount = diceRoller.Roll(floorLevel, 3u);
     for (unsigned i = 0; i <= enemyCount; ++i) {
         enemies.push_back(&manager.addEntity());
         enemies.at(i)->addComponentID<TurnComponent>();
