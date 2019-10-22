@@ -299,6 +299,9 @@ void Akuma::handleKeyRelease(SDL_Event &event) {
             player->getComponent<PlayerComponent>().issueAction();
             break;
         }
+        case SDL_SCANCODE_X: {
+            player->getComponent<PlayerComponent>().skipTurn();
+		}
         default: break;
     }
 }
