@@ -21,7 +21,7 @@ class EnemyComponent : public Component {
     void init() {}
     void update() {
         if (this->entity->hasComponent<TurnComponent>()) {
-            if (this->entity->getComponent<TurnComponent>().CheckTurn()) {
+            if (this->entity->getComponent<TurnComponent>().checkTurn()) {
                 // combatCheck
                 moveAction();
 
@@ -89,7 +89,7 @@ class EnemyComponent : public Component {
 	}
 
     void turnEntity(int i) {
-        if (this->entity->getComponent<TurnComponent>().CheckTurn()) {
+        if (this->entity->getComponent<TurnComponent>().checkTurn()) {
             if (turn + i > 7) {
                 turn = 0;
             } else if (turn + i < 0) {

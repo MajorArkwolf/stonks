@@ -17,3 +17,17 @@ void TurnManager::addEntity(Entity * newEntity) {
 }
 
 void TurnManager::sortActors() {}
+
+void TurnManager::giveTokenToEntity(Entity *entity) {
+    if (entity->hasComponent<TurnComponent>()) {
+        entity->getComponent<TurnComponent>().startYourTurn();
+        turnToken = false;
+	}
+}
+void TurnManager::checkEntityTurnState(Entity *entity) {
+    if (entity->hasComponent<TurnComponent>()) {
+        if (!entity->getComponent<TurnComponent>().checkTurn()) {
+            turnToken = true;
+        }
+    }
+}

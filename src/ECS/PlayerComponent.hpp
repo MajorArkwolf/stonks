@@ -15,7 +15,7 @@ class PlayerComponent : public Component {
     void init() {}
     void update() {
         if (this->entity->hasComponent<TurnComponent>()) {
-            if (this->entity->getComponent<TurnComponent>().CheckTurn()) {
+            if (this->entity->getComponent<TurnComponent>().checkTurn()) {
                 facing = facingBuffer;
             }
             if (this->entity->hasComponent<PositionComponent>()) {
@@ -96,7 +96,7 @@ class PlayerComponent : public Component {
     }
 
     void turnEntity(int i) {
-        if (this->entity->getComponent<TurnComponent>().CheckTurn()) {
+        if (this->entity->getComponent<TurnComponent>().checkTurn()) {
             if (turn + i > 7) {
                 turn = 0;
             } else if (turn + i < 0) {
@@ -109,7 +109,7 @@ class PlayerComponent : public Component {
     }
 
     void moveEntity() {
-        if (this->entity->getComponent<TurnComponent>().CheckTurn()) {
+        if (this->entity->getComponent<TurnComponent>().checkTurn()) {
             if (!issueMovement) {
                 issueMovement = true;
             }

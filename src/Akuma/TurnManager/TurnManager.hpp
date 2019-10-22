@@ -14,10 +14,13 @@ class TurnManager {
     ~TurnManager() = default;
     void update();
     void addEntity(Entity *newEntity);
-    void sortActors() {}
+    void sortActors();
+    void giveTokenToEntity(Entity *entity);
+    void checkEntityTurnState(Entity *entity);
 
   private:
     bool turnManagerSwitch = false;
     bool turnToken         = true;
     std::vector<EntityInfo> actors;
+    size_t actorTurnID = 0;
 };

@@ -11,17 +11,19 @@ class TurnComponent : public Component {
     void update() {}
     void draw() {}
 
-    bool CheckTurn() {
-        return this->isTurn;
+    bool checkTurn() {
+        return this->turnPhase2;
     }
     void startYourTurn() {
         this->isTurn     = true;
         this->turnPhase2 = true;
     }
-    bool endYourTurn() {
+	void assignAction() {
+        this->isTurn = false;
+	}
+    void endYourTurn() {
         this->isTurn = false;
         this->turnPhase2 = false;
-        return true;
     }
 
   private:
