@@ -112,7 +112,7 @@ auto Akuma::Akuma::softInit() -> void {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glViewport(0, 0, width, height);
-    gluPerspective(60, ratio, 1, 150);
+    gluPerspective(60, ratio, 1, 70);
     glMatrixMode(GL_MODELVIEW);
 
     glClearColor(0.f, 0.f, 0.f, 1.f);
@@ -162,7 +162,7 @@ void Akuma::handleWindowEvent(SDL_Event &event) {
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
             glViewport(0, 0, width, height);
-            gluPerspective(60, ratio, 1, 150);
+            gluPerspective(60, ratio, 1, 70);
             glMatrixMode(GL_MODELVIEW);
         } break;
         default: break;
