@@ -318,8 +318,6 @@ auto Engine::processInput() -> void {
             SDL_SetRelativeMouseMode(SDL_FALSE);
 		}
         
-
-
         if (!stack.empty()) {
             stack.top()->handleInput(event);
         }
@@ -395,7 +393,6 @@ auto Stonk::Engine::settingsMenu() -> void {
                            "Gamma = %.1f")) {
         SDL_SetWindowBrightness(this->window.get(), gammaCorrection);
     }
-    ImGui::ShowDemoWindow();
     ImGui::End();
 }
 

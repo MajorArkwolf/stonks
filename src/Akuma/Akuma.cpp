@@ -520,15 +520,14 @@ void Akuma::displayEscapeMenu() {
 
     ImGui::Begin("Game Menu", &showEscapeMenu,
                  ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
-    ImGui::Separator();
 
-    ImGui::Separator();
     if (ImGui::Button("Settings")) {
         stonk.showSettingsMenu = stonk.showSettingsMenu ? false : true;
     }
     if (ImGui::Button("Quit to Main Menu")) {
         stonk.daGameStateStack.pop();
     }
+    ImGui::SameLine();
     if (ImGui::Button("Quit to Desktop")) {
         stonk.isRunning = false;
     }
