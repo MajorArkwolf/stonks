@@ -78,9 +78,13 @@ auto Akuma::Akuma::display() -> void {
     glDisable(GL_DEPTH_TEST);
 
     displayDebugMenu();
+    if (showEscapeMenu) {
+        displayEscapeMenu();
+    }
     if (stonk.showSettingsMenu) {
         stonk.settingsMenu();
     }
+
 
     /*if (this->shouldDrawAxis) {
         auto origin = this->camera.look + (this->camera.getForwardDir()
@@ -255,6 +259,9 @@ void Akuma::handleKeyPress(SDL_Event &event) {
         case SDL_SCANCODE_S: {
             camera.position.y--;
         } break;
+        case (SDL_SCANCODE_ESCAPE): {
+            showEscapeMenu = showEscapeMenu ? false : true;
+        } break;
 
         default: break;
     }
@@ -410,6 +417,29 @@ void Akuma::ClearEnemies() {
         i->destroy();
     }
     enemies.clear();
+}
+
+void Akuma::displayEscapeMenu() {
+    auto &stonk = Stonk::Engine::get();
+    ImGui::SetNextWindowSize(ImVec2(300, 500), 1);
+    ImGui::SetNextWindowPosCenter(1);
+
+    ImGui::Begin("Game Menu", nullptr,
+                 ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+    ImGui::Separator();
+
+    ImGui::Separator();
+    if (ImGui::Button("Settings")) {
+        stonk.showSettingsMenu = stonk.showSettingsMenu ? false : true;
+    }
+    if (ImGui::Button("Quit to Main Menu")) {
+        stonk.daGameStateStack.pop();
+    }
+    if (ImGui::Button("Quit to Desktop")) {
+        stonk.isRunning = false;
+    }
+
+    ImGui::End();
 }
 
 void Akuma::generateLevel() {

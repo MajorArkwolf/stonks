@@ -199,6 +199,10 @@ void ShaysWorld::display() {
 
     DisplayDebugMenu();
 
+    if (stonk.showSettingsMenu) {
+        stonk.settingsMenu();
+    }
+
     ImGui::Render();
     ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
     SDL_GL_SwapWindow(stonk.window.get());

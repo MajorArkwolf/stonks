@@ -376,6 +376,7 @@ auto Stonk::Engine::settingsMenu() -> void {
         SDL_SetWindowSize(this->window.get(), display.w / 2, display.h / 2);
 
         SDL_SetWindowPosition(this->window.get(), display.w / 4, display.h / 4);
+        SDL_SetWindowResizable(this->window.get(), SDL_TRUE);
     }
     ImGui::SameLine();
     if (ImGui::Button("Fullscreen", buttonSize)) {
@@ -383,6 +384,7 @@ auto Stonk::Engine::settingsMenu() -> void {
         SDL_GetCurrentDisplayMode(0, &display);
         SDL_SetWindowSize(this->window.get(), display.w, display.h);
         SDL_SetWindowFullscreen(this->window.get(), SDL_TRUE);
+        SDL_SetWindowResizable(this->window.get(), SDL_FALSE);
     }
 
     ImGui::Separator();
