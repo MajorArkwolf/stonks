@@ -4,6 +4,7 @@
 #include "Akuma\Akuma.hpp"
 #include "CombatComponent.hpp"
 #include "ECS.hpp"
+#include "EnemyComponent.hpp"
 #include "MoveComponent.hpp"
 #include "PositionComponent.hpp"
 #include "TurnComponent.hpp"
@@ -65,6 +66,7 @@ class PlayerComponent : public Component {
                     auto gridSize = floor->getGridSize();
                     std::vector<Pathing::Node *> playerSurroundings =
                         floor->getNeighbours(*currentNode);
+                    auto facingNode = getLookingAtNode();
 
                     glLineWidth(3);
                     glPushMatrix();
@@ -78,7 +80,17 @@ class PlayerComponent : public Component {
                             glPushMatrix();
                             glTranslatef(0.f, 0.04f, 0.f);
                             glEnable(GL_COLOR_MATERIAL);
-                            glColor3f(1, 1, 0);
+                            if (facingNode == n) {
+                                glTranslatef(0.f, 0.02f, 0.f);
+                                glColor3f(1.f, 1.f, 0.f);
+                            } else if (n->occupant != nullptr) {
+                                if (n->occupant->hasComponent<EnemyComponent>()) {
+                                    glTranslatef(0.f, 0.01f, 0.f);
+                                    glColor3f(1, 0, 0);
+                                }
+                            } else {
+                                glColor3f(0, 1, 0);
+                            }
 
                             drawSquare(1, 1);
                             glColor3f(1, 1, 1);
@@ -218,13 +230,13 @@ class PlayerComponent : public Component {
         return newNode;
     }
 
-	Pathing::Node* getLookingAtNode() {
+    Pathing::Node *getLookingAtNode() {
         Floor *floor = this->entity->getComponent<FloorComponent>().getFloor();
         Pathing::Node *currentNode =
             this->entity->getComponent<PositionComponent>().getNode();
         auto facingNode = getNodeFacing(currentNode->x, currentNode->y);
         return floor->getGridNode(facingNode);
-	}
+    }
 
     void commandExecution() {
         if (issuedAction) {
