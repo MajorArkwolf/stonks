@@ -32,6 +32,9 @@ set (SOURCES
     src/Stonk/Collision.cpp
     src/Stonk/Physics.cpp
     src/Stonk/Viewport.cpp
+    src/Stonk/BaseState.hpp
+    src/Stonk/Audio.cpp
+    
     src/Akuma/ProceduralGen/BSP/BSP.cpp
     src/Akuma/ProceduralGen/BSP/Node.cpp
     src/Akuma/Pathing/Grid.cpp
@@ -39,8 +42,8 @@ set (SOURCES
     src/Akuma/Pathing/Pathfinding.cpp
     src/Akuma/Floor.cpp
     src/Akuma/Akuma.cpp
-	src/Akuma/RNG/Dice.cpp
-	src/Akuma/TurnManager/TurnManager.cpp
+	  src/Akuma/RNG/Dice.cpp
+	  src/Akuma/TurnManager/TurnManager.cpp
     
 
     src/Menu/Menu.cpp
