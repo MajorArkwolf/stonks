@@ -44,7 +44,7 @@ auto Audio::LoadMusic(std::string filename) -> Audio::Music {
 
 #include <iostream>
 void Audio::Init() {
-    const auto channelCount = 8;
+    const auto channelCount = 16;
     auto freq               = 22050;     // recommended by below link
     ushort format           = AUDIO_F32; // arbitrary choice
     auto channels           = 2;         // stereo
