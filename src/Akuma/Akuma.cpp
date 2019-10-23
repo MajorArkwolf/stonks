@@ -33,7 +33,7 @@ Akuma::Akuma::Akuma() {
  */
 auto Akuma::Akuma::display() -> void {
     auto &stonk = Stonk::Engine::get();
-    if (showEscapeMenu) {
+    if (showEscapeMenu || showCharacterMenu || playerMouse) {
         relativeMouse = 0;
     } else {
         relativeMouse = 1;
@@ -315,6 +315,9 @@ void Akuma::handleKeyPress(SDL_Event &event) {
         case SDL_SCANCODE_ESCAPE: {
             this->showEscapeMenu = showEscapeMenu ? false : true;
         } break;
+        case SDL_SCANCODE_R: {
+            this->playerMouse = playerMouse ? 0 : 1;
+        } break;
         default: break;
     }
 }
@@ -349,7 +352,7 @@ void Akuma::handleMouseWheel(SDL_Event &event) {
 }
 
 void Akuma::statSelection(const char *attribName, int statMin, int &pointsLeft,
-                   int &attributePoints, std::string desc, int buttonCount) {
+                          int &attributePoints, std::string desc, int buttonCount) {
     ImGui::PushID(buttonCount);
     if (ImGui::Button("--")) {
         if (attributePoints > statMin) {
@@ -376,6 +379,7 @@ void Akuma::statSelection(const char *attribName, int statMin, int &pointsLeft,
 }
 
 void Akuma::drawCharacterMenu() {
+    const int statMin = 8;
     auto &playerStats = player->getComponent<StatComponent>().stat;
     ImGui::SetNextWindowSize(ImVec2(300, 500), 1);
     ImGui::SetNextWindowPosCenter(1);
@@ -393,9 +397,8 @@ void Akuma::drawCharacterMenu() {
     static int item_current_model = 0;
     ImGui::Combo("Player Model", &item_current_model, "Male\0Female\0");
     ImGui::Separator();
-    static StatDescription desc;
 
-    int statMin = 8;
+    static StatDescription desc;
 
     ImGui::Text("Player Stats");
     ImGui::Text("Points Left: %d", playerStats.pointsLeft);
@@ -407,7 +410,8 @@ void Akuma::drawCharacterMenu() {
                   playerStats.dexterity, desc.dexterity, 3);
     statSelection("Intelligence", statMin, playerStats.pointsLeft,
                   playerStats.intelligence, desc.intelligence, 4);
-    statSelection("Luck", statMin, playerStats.pointsLeft, playerStats.luck, desc.luck, 5);
+    statSelection("Luck", statMin, playerStats.pointsLeft, playerStats.luck,
+                  desc.luck, 5);
 
     ImGui::Separator();
     if (ImGui::Button("Start")) {

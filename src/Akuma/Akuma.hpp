@@ -49,6 +49,7 @@ class Akuma : public BaseState {
     GLfloat light_position[4];
 
   private:
+    bool playerMouse = 0;
     void statSelection(const char *attribName, int statMin, int &pointsLeft,
                        int &attributePoints, std::string desc, int buttonCount);
     bool showCharacterMenu = 1;
