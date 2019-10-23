@@ -503,7 +503,6 @@ void Akuma::displayEscapeMenu() {
     if (ImGui::Button("Quit to Desktop")) {
         stonk.isRunning = false;
     }
-    ImGui::ShowDemoWindow();
     ImGui::End();
 }
 
