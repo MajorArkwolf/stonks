@@ -35,6 +35,7 @@ set (SOURCES
     src/Stonk/BaseState.hpp
     src/Stonk/Audio.cpp
     
+	src/Akuma/CombatLog.cpp
     src/Akuma/ProceduralGen/BSP/BSP.cpp
     src/Akuma/ProceduralGen/BSP/Node.cpp
     src/Akuma/Pathing/Grid.cpp
