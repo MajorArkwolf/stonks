@@ -91,7 +91,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 
 # Remove the default warning level from MSVC.
 if (MSVC)
-    string(REGEX REPLACE "/W[0-4]" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+    #string(REGEX REPLACE "/W[0-4]" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
 endif()
 
 # Set Clang compile flags.
