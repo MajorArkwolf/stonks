@@ -42,9 +42,10 @@ set (SOURCES
     src/Akuma/Pathing/Pathfinding.cpp
     src/Akuma/Floor.cpp
     src/Akuma/Akuma.cpp
-	  src/Akuma/RNG/Dice.cpp
-	  src/Akuma/TurnManager/TurnManager.cpp
+	src/Akuma/RNG/Dice.cpp
+	src/Akuma/TurnManager/TurnManager.cpp
     
+	src/ECS/StairComponent.cpp
 
     src/Menu/Menu.cpp
     

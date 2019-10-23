@@ -154,6 +154,7 @@ auto Akuma::Akuma::hardInit() -> void {
     player->addComponentID<TurnComponent>();
     player->addComponentID<CombatComponent>();
     turnManager.addEntity(player);
+    MakeStairs();
     generateLevel();
     softInit();
     turnManager.turnOnManager();
@@ -550,4 +551,25 @@ void Akuma::generateLevel() {
         enemies.at(i)->addComponentID<CombatComponent>();
         turnManager.addEntity(enemies.at(i));
     }
+}
+
+void Akuma::MakeStairs() {
+    stairs          = &manager.addEntity();
+    auto roomList = floor.getRoomList();
+    for (auto i = roomList.size() -1 ; i > 0; i--) {
+        auto roomSize = roomList.at(i)->gridTopRight - roomList.at(i)->gridBottomLeft; 
+        if (roomSize.x >= 2 && roomSize.y >= 2) {
+            glm::uvec2 pos = roomList[i]->getCentrePoint();
+            auto roomNode  = floor.getGridNode(pos);
+            stairs->addComponentID<StairComponent>();
+            stairs->addComponentID<ScaleComponent>(glm::vec3{0.1, 0.1, 0.1});
+            stairs->addComponentID<PositionComponent>();
+            stairs->getComponent<PositionComponent>().setNode(roomNode);
+            stairs->addComponentID<ModelComponent>();
+            stairs->getComponent<ModelComponent>().setModel("stairs.obj");
+
+            break;
+			//valid room
+		}
+	}    
 }
