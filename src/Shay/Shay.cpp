@@ -106,6 +106,7 @@ auto Shay::ShaysWorld::teleportToAkuma() -> void {
     auto &pos = this->cam.position;
     if (pos.x < 20150.f && pos.x > 19800.f && pos.z > 14800 && pos.z < 15200) {
         auto &engine = Stonk::Engine::get();
+        engine.popStack();
         engine.loadState(Stonk::GameMode::AKUMA);
     }
 }
