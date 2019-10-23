@@ -3,12 +3,8 @@
 #include "Stonk/OpenGl.hpp"
 #include "../Akuma/Floor.hpp"
 #include "Akuma/Akuma.hpp"
-#include "CombatComponent.hpp"
 #include "ECS.hpp"
-#include "EnemyComponent.hpp"
-#include "MoveComponent.hpp"
-#include "PositionComponent.hpp"
-#include "TurnComponent.hpp"
+
 
 /* This will need to handle input to the player */
 class PlayerComponent : public Component {

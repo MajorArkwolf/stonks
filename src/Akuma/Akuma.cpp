@@ -140,12 +140,9 @@ auto Akuma::Akuma::hardInit() -> void {
     player->addComponentID<ScaleComponent>();
     player->getComponent<ScaleComponent>().setScale(glm::vec3{0.5, 0.5, 0.5});
     player->addComponentID<PositionComponent>();
-    auto roomList  = floor.getRoomList();
-    glm::uvec2 pos = roomList[0]->getCentrePoint();
-    auto roomNode  = floor.getGridNode(pos);
-    player->getComponent<PositionComponent>().setPos(roomNode);
+    placePlayer();
     player->addComponentID<ModelComponent>();
-    player->getComponent<ModelComponent>().setModel("player_female.obj");
+    player->getComponent<ModelComponent>().setModel("player_male.obj");
     player->addComponentID<PlayerComponent>();
     player->addComponentID<MoveComponent>();
     player->addComponentID<StatComponent>();
@@ -154,6 +151,7 @@ auto Akuma::Akuma::hardInit() -> void {
     player->addComponentID<TurnComponent>();
     player->addComponentID<CombatComponent>();
     turnManager.addEntity(player);
+    stairs = &manager.addEntity();
     MakeStairs();
     generateLevel();
     softInit();
@@ -297,6 +295,12 @@ void Akuma::update([[maybe_unused]] double dt) {
     // light_position[1] = 2;
     light_position[2] = player->getComponent<PositionComponent>().getZPos();
     // light_position[3] = 1;
+    if (stairs->hasComponent<StairComponent>()) {
+        if (stairs->getComponent<StairComponent>().checkStairActive()) {
+            stairs->getComponent<StairComponent>().resetStairCase();
+            descendLevel();
+		}
+	}
 }
 
 /**
@@ -474,15 +478,24 @@ auto Akuma::Akuma::drawCube(float size, [[maybe_unused]] bool wireframe) -> void
 }
 
 void Akuma::descendLevel() {
+    turnManager.turnOffManager();
     floor.regen();
     floorLevel++;
+    clearEnemies();
+    turnManager.clearActors();
+    turnManager.addEntity(player);
+    MakeStairs();
     generateLevel();
+    placePlayer(); // move player to new node.
+    turnManager.sortActors();
+    turnManager.turnOnManager();
 }
 
-void Akuma::ClearEnemies() {
+void Akuma::clearEnemies() {
     for (auto &i : enemies) {
         i->destroy();
     }
+    manager.refresh();
     enemies.clear();
 }
 
@@ -520,7 +533,6 @@ void Akuma::displayCombatLog() {
 }
 
 void Akuma::generateLevel() {
-    ClearEnemies();
     unsigned int enemyCount = diceRoller.Roll(floorLevel, 3u);
     for (unsigned i = 0; i <= enemyCount; ++i) {
         enemies.push_back(&manager.addEntity());
@@ -554,22 +566,46 @@ void Akuma::generateLevel() {
 }
 
 void Akuma::MakeStairs() {
-    stairs          = &manager.addEntity();
     auto roomList = floor.getRoomList();
     for (auto i = roomList.size() -1 ; i > 0; i--) {
         auto roomSize = roomList.at(i)->gridTopRight - roomList.at(i)->gridBottomLeft; 
-        if (roomSize.x >= 2 && roomSize.y >= 2) {
+        if (roomSize.x >= 3 && roomSize.y >= 3) {
             glm::uvec2 pos = roomList[i]->getCentrePoint();
-            auto roomNode  = floor.getGridNode(pos);
-            stairs->addComponentID<StairComponent>();
-            stairs->addComponentID<ScaleComponent>(glm::vec3{0.1, 0.1, 0.1});
-            stairs->addComponentID<PositionComponent>();
-            stairs->getComponent<PositionComponent>().setNode(roomNode);
-            stairs->addComponentID<ModelComponent>();
-            stairs->getComponent<ModelComponent>().setModel("stairs.obj");
-
+            auto roomNode1  = floor.getGridNode(pos);
+            pos.x -= 1;
+            auto roomNode2  = floor.getGridNode(pos);
+            pos.y += 1;
+            auto roomNode3  = floor.getGridNode(pos);
+            pos.x += 1;
+            auto roomNode4  = floor.getGridNode(pos);
+            if (!stairs->hasComponent<StairComponent>()) {
+                stairs->addComponentID<StairComponent>();
+            }
+            stairs->getComponent<StairComponent>().setNodes(roomNode1, roomNode2,
+                                                            roomNode3, roomNode4);
+            if (!stairs->hasComponent<ScaleComponent>()) {
+				stairs->addComponentID<ScaleComponent>(glm::vec3{0.3, 0.3, 0.3});
+            }
+			if (!stairs->hasComponent<PositionComponent>()) {
+				stairs->addComponentID<PositionComponent>();
+            }
+            glm::vec3 e = {0, 0, 0};
+            e.x += pos.x + 0.2;
+            e.z += pos.y + 0.2;
+            stairs->getComponent<PositionComponent>().setPos(e);
+            if (!stairs->hasComponent<ModelComponent>()) {
+				stairs->addComponentID<ModelComponent>();
+				stairs->getComponent<ModelComponent>().setModel("stairs.obj");
+            }
             break;
 			//valid room
 		}
 	}    
+}
+
+void Akuma::placePlayer() {
+    auto roomList  = floor.getRoomList();
+    glm::uvec2 pos = roomList[0]->getCentrePoint();
+    auto roomNode  = floor.getGridNode(pos);
+    player->getComponent<PositionComponent>().setPos(roomNode);
 }

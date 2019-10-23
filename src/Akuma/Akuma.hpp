@@ -35,10 +35,11 @@ class Akuma : public BaseState {
     void handleMouseWheel(SDL_Event &event);
     void drawCube(float size, bool wireframe);
     void generateLevel();
-    void ClearEnemies();
+    void clearEnemies();
     auto displayGameStats() -> void;
     void displayEscapeMenu();
     void displayCombatLog();
+    void placePlayer();
 
     unsigned floorLevel = 1;
     void descendLevel();

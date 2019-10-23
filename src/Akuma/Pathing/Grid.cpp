@@ -43,6 +43,8 @@ void Pathing::Grid::resetGrid() {
             nodeGrid[x][y].hCost    = 0;
             nodeGrid[x][y].walkable = 0;
             nodeGrid[x][y].parent   = nullptr;
+            nodeGrid[x][y].occupant = nullptr;
+            nodeGrid[x][y].occupied = false;
         }
     }
 }

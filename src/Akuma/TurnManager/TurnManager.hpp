@@ -20,6 +20,8 @@ class TurnManager {
     void addEntity(Entity *newEntity);
     void turnOnManager();
     void turnOffManager();
+    void sortActors();
+    void clearActors();
 
   private:
     int roundCounter       = 1;
@@ -27,10 +29,8 @@ class TurnManager {
     bool turnToken         = true;
     std::vector<EntityInfo> actors;
     size_t actorTurnID = 0;
-
-	
     void checkDexChange();
-    void sortActors();
+    
     void giveTokenToEntity(Entity *entity);
     void checkEntityTurnState(Entity *entity);
 };
