@@ -44,10 +44,9 @@ set (SOURCES
     src/Akuma/Akuma.cpp
 	src/Akuma/RNG/Dice.cpp
 	src/Akuma/TurnManager/TurnManager.cpp
+	src/Akuma/CombatLog.cpp
     
-	src/ECS/StairComponent.cpp
-
-    src/Menu/Menu.cpp
+	src/Menu/Menu.cpp
     
     src/ObjLoader/MtlLoader.cpp
     src/ObjLoader/ObjLoader.cpp
@@ -65,18 +64,19 @@ set (SOURCES
     src/Shay/TexturedPolygons.cpp
     src/Shay/Shay.cpp
 
-    src/ECS/CameraComponent.cpp  
-    src/ECS/EnemyComponent.cpp  
-    src/ECS/MoveComponent.cpp      
+    src/ECS/CameraComponent.cpp
+	src/ECS/CombatComponent.cpp 
+	src/ECS/ECS.cpp
+    src/ECS/EnemyComponent.cpp	 
+	src/ECS/FloorComponent.cpp 
+    src/ECS/ModelComponent.cpp
+	src/ECS/MoveComponent.cpp
+	src/ECS/PlayerComponent.cpp
+	src/ECS/PositionComponent.cpp
     src/ECS/ScaleComponent.cpp
-    src/ECS/CombatComponent.cpp  
-    src/ECS/FloorComponent.cpp  
-    src/ECS/PlayerComponent.cpp    
+	src/ECS/StairComponent.cpp
     src/ECS/StatComponent.cpp
-    src/ECS/ECS.cpp              
-    src/ECS/ModelComponent.cpp  
-    src/ECS/PositionComponent.cpp  
-    src/ECS/TurnComponent.cpp
+    src/ECS/TurnComponent.cpp	
 )
 
 # Define the executable.
