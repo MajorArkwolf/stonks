@@ -117,3 +117,28 @@ void ItemLoader::constructGenerics() {
     ItemManager::ItemManager().push_back(firstID);
     ItemManager::ArmorManager().push_back(rags);
 }
+
+auto ItemManager::getNewID() -> size_t {
+    static size_t lastID = 1;
+    return lastID++;
+}
+
+auto ItemManager::ItemManager() -> vector<ItemID> & {
+    static vector<ItemID> itemList = {};
+    return itemList;
+}
+
+auto ItemManager::WeaponManager() -> vector<Weapon> & {
+    static vector<Weapon> weaponList = {};
+    return weaponList;
+}
+
+auto ItemManager::ArmorManager() -> vector<Armor> & {
+    static vector<Armor> armorList = {};
+    return armorList;
+}
+
+auto ItemManager::ConsumableManager() -> vector<Consumable> & {
+    static vector<Consumable> consumableList = {};
+    return consumableList;
+}
