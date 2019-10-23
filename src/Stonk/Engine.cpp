@@ -319,10 +319,9 @@ auto Engine::processInput() -> void {
             this->handleKeyPress(event);
         }
     }
-    if (!stack.empty()) {
-        if (!handledMouse || stack.top()->relativeMouse) {
-            this->mouse = {0.0f, 0.0f};
-        }
+
+    if (!handledMouse) {
+        this->mouse = {0.0f, 0.0f};
     }
 }
 
