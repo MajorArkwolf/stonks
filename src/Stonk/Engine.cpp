@@ -306,8 +306,8 @@ auto Engine::processInput() -> void {
             SDL_SetRelativeMouseMode(SDL_TRUE);
         } else {
             SDL_SetRelativeMouseMode(SDL_FALSE);
-		}
-        
+        }
+
         if (!stack.empty()) {
             stack.top()->handleInput(event);
         }
@@ -399,7 +399,6 @@ auto Stonk::Engine::settingsMenu() -> void {
         SDL_SetWindowBrightness(this->window.get(), gammaCorrection);
     }
     ImGui::End();
-
 }
 
 /**
