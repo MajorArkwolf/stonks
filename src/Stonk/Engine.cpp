@@ -413,8 +413,8 @@ auto Stonk::Engine::settingsMenu() -> void {
 }
 
 /**
- * @brief I DONT KNOW WHAT THIS DOES
- * @return What is this
+ * @brief Returns the time in seconds since the engine started.
+ * @return The time in seconds since the engine started.
  */
 auto Engine::getTime() const -> double {
     return static_cast<double>(SDL_GetPerformanceCounter()) /
