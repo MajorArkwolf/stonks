@@ -1,4 +1,5 @@
 #pragma once
+
 #include "ECS.hpp"
 #include "TurnComponent.hpp"
 #include "PositionComponent.hpp"
@@ -11,6 +12,7 @@
 #include "StatComponent.hpp"
 #include "CameraComponent.hpp"
 #include "CombatComponent.hpp"
+#include "StairComponent.hpp"
 
 // Include all the components that will be used in the game.
 /*  Stat component incomplete, needs a lot of work.

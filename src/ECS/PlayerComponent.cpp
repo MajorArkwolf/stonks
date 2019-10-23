@@ -1,4 +1,10 @@
 #include "PlayerComponent.hpp"
+#include "StairComponent.hpp"
+#include "EnemyComponent.hpp"
+#include "MoveComponent.hpp"
+#include "PositionComponent.hpp"
+#include "TurnComponent.hpp"
+#include "CombatComponent.hpp"
 
 PlayerComponent::PlayerComponent()  = default;
 PlayerComponent::~PlayerComponent() = default;
@@ -223,10 +229,13 @@ void PlayerComponent::commandExecution() {
     if (issuedAction) {
         auto newNode = getLookingAtNode();
         if (newNode->occupied) {
-            if (newNode->occupant->hasComponent<EnemyComponent>())
+            if (newNode->occupant->hasComponent<EnemyComponent>()) {
                 issuedAction = false;
-            this->entity->getComponent<CombatComponent>().attackEntity(
-                newNode->occupant);
+				this->entity->getComponent<CombatComponent>().attackEntity(
+					newNode->occupant);
+            } else if (newNode->occupant->hasComponent<StairComponent>()) {
+                newNode->occupant->getComponent<StairComponent>().SetStairActive();
+			}
         } else if (newNode->walkable) {
             this->entity->getComponent<MoveComponent>().moveEntityToNode(newNode);
             issuedAction = false;
