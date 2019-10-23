@@ -8,22 +8,13 @@
 */
 class FloorComponent : public Component {
   public:
-    FloorComponent()  = default;
-    ~FloorComponent() = default;
-    void init() {}
-    void update() {}
-    void draw() {}
-    void setFloor(Floor &newFloor) {
-        this->floor = &newFloor;
-        floorSet    = true;
-    }
-    Floor *getFloor() {
-        if (floorSet == true) {
-            return floor;
-        } else {
-            return nullptr;
-        }
-    }
+    FloorComponent();
+    ~FloorComponent();
+    void init();
+    void update();
+    void draw();
+    void setFloor(Floor &newFloor);
+    Floor *getFloor();
 
   private:
     bool floorSet = false;
