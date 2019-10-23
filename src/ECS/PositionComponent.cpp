@@ -1,4 +1,4 @@
-
+#include "PositionComponent.hpp"
 void PositionComponent::init() {}
 void PositionComponent::update() {}
 void PositionComponent::draw() {}
