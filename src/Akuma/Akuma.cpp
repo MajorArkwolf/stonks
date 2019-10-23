@@ -5,12 +5,11 @@
 
 #include <glm/vec3.hpp>
 
+#include "Akuma/CombatLog.hpp"
 #include "Camera.hpp"
 #include "imgui.h"
 #include "imgui_impl_opengl2.h"
 #include "imgui_impl_sdl.h"
-
-#include "Akuma/CombatLog.hpp"
 
 using std::stringstream;
 
@@ -225,8 +224,8 @@ void Akuma::Akuma::displayDebugMenu() {
 void Akuma::Akuma::displayGameStats() {
     auto &playerStats = player->getComponent<StatComponent>().stat;
 
-    ImGui::SetNextWindowSize(ImVec2(300, 500), 1);
-    ImGui::SetNextWindowPos(ImVec2(width - 300, 0), 1);
+    ImGui::SetNextWindowSize(ImVec2(250, 500), 1);
+    ImGui::SetNextWindowPos(ImVec2(width - 250, 0), 1);
 
     ImGui::Begin("Game Info", nullptr,
                  ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
@@ -394,8 +393,7 @@ auto Akuma::Akuma::drawAxis(float x, float y, float z, float length) -> void {
  * @brief Displays the current grid within the room object
  */
 auto Akuma::Akuma::displayGrid() -> void {
-    auto gridSize    = floor.getGridSize();
-  
+    auto gridSize = floor.getGridSize();
 
     glPushMatrix();
     glTranslatef(gridSize.x / 2, 0, (gridSize.y / 2));
@@ -436,8 +434,6 @@ auto Akuma::Akuma::displayGrid() -> void {
             glPopMatrix();
         }
     }
-
-    
 
     glPopMatrix();
 }
@@ -507,16 +503,19 @@ void Akuma::displayEscapeMenu() {
     if (ImGui::Button("Quit to Desktop")) {
         stonk.isRunning = false;
     }
-
+    ImGui::ShowDemoWindow();
     ImGui::End();
 }
 
 void Akuma::displayCombatLog() {
-    ImGui::Begin("Combat Menu");
+    ImGui::SetNextWindowSize(ImVec2(400, 120), ImGuiCond_Once);
+    ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
+    ImGui::Begin("Combat Log");
     for (auto n : CombatLog::log()) {
-
         ImGui::Text("%s", n.c_str());
     }
+    if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
+        ImGui::SetScrollHereY(1.0f);
     ImGui::End();
 }
 
