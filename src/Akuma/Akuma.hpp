@@ -3,16 +3,14 @@
 #include <cmath>
 
 #include "Akuma/Floor.hpp"
-
+#include "ECS/Components.hpp"
 #include "ObjLoader/ObjDisplay.hpp"
 #include "RNG/Dice.hpp"
 #include "Stonk/BaseState.hpp"
 #include "Stonk/Engine.hpp"
 #include "Stonk/OpenGl.hpp"
-#include "glm/vec3.hpp"
-#include "ECS/Components.hpp"
-#include "RNG/Dice.hpp"
 #include "TurnManager/TurnManager.hpp"
+#include "glm/vec3.hpp"
 /**
  * @class Akuma
  * @brief The Akuma game state object
@@ -35,12 +33,14 @@ class Akuma : public BaseState {
     void handleKeyPress(SDL_Event &event);
     void handleKeyRelease(SDL_Event &event);
     void handleMouseWheel(SDL_Event &event);
+    void drawCharacterMenu();
     void drawCube(float size, bool wireframe);
     void generateLevel();
-    void ClearEnemies();
+    void clearEnemies();
     auto displayGameStats() -> void;
     void displayEscapeMenu();
     void displayCombatLog();
+    void placePlayer();
 
     unsigned floorLevel = 1;
     void descendLevel();
@@ -50,9 +50,14 @@ class Akuma : public BaseState {
     GLfloat light_position[4];
 
   private:
-    bool showEscapeMenu = 0;
+    bool playerMouse = 0;
+    void statSelection(const char *attribName, int statMin, int &pointsLeft,
+                       int &attributePoints, std::string desc, int buttonCount);
+    bool showCharacterMenu = 1;
+    bool showEscapeMenu    = 0;
     Manager manager;
     Entity *player = nullptr;
+    Entity *stairs = nullptr;
     std::vector<Entity *> enemies;
     Dice diceRoller;
     TurnManager turnManager;
@@ -62,4 +67,6 @@ class Akuma : public BaseState {
     // bool shouldDrawAxis = false;
     auto drawAxis(float x, float y, float z, float length) -> void;
     std::vector<Model> modelList;
+
+	void MakeStairs();
 };
