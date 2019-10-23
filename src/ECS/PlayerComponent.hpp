@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Stonk/OpenGl.hpp"
 #include "../Akuma/Floor.hpp"
 #include "Akuma/Akuma.hpp"
 #include "CombatComponent.hpp"
