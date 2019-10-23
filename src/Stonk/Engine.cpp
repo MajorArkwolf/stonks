@@ -196,14 +196,12 @@ auto Stonk::Engine::loadState(GameMode mode) -> void {
     }
 }
 auto Stonk::Engine::purgeStack() -> void {
-    auto &stack = Engine::get().daGameStateStack;
 
-    while (!stack.empty()) {
-        stack.top()->unInit();
-        delete (stack.top());
-        stack.pop();
+    while (!daGameStateStack.empty()) {
+        popStack();
     }
 }
+
 auto Stonk::Engine::checkStack() -> void {
     auto &stack = Engine::get().daGameStateStack;
     if (stack.empty()) {
@@ -211,7 +209,7 @@ auto Stonk::Engine::checkStack() -> void {
     }
 }
 auto Stonk::Engine::popStack() -> void {
-    auto &stack = Engine::get().daGameStateStack;
+    auto &stack = daGameStateStack;
     if (!stack.empty()) {
         stack.top()->unInit();
         delete (stack.top());
@@ -317,6 +315,9 @@ auto Engine::processInput() -> void {
             handledMouse = true;
         } else if (event.type == SDL_KEYDOWN) {
             this->handleKeyPress(event);
+        }
+        if (event.type == SDL_QUIT) {
+            this->isRunning = false;
         }
     }
 
