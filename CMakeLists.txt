@@ -125,7 +125,7 @@ endif()
 
 # Fix an MSVC linker warning.
 if (MSVC)
-    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/NODEFAULTLIB:msvcrt.lib")
+    #set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/NODEFAULTLIB:msvcrt.lib")
 endif()
 
 # Find dependencies.
