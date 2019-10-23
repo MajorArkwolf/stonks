@@ -6,10 +6,8 @@
 #include "../Akuma/Floor.hpp"
 #include "../Akuma/Pathing/Pathfinding.hpp"
 #include "../Akuma/RNG/Dice.hpp"
+#include "Components.hpp"
 #include "ECS.hpp"
-#include "PositionComponent.hpp"
-#include "StatComponent.hpp"
-#include "TurnComponent.hpp"
 
 /* This will need to handle input to the player */
 class EnemyComponent : public Component {

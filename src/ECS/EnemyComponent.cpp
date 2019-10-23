@@ -1,7 +1,5 @@
 #include "EnemyComponent.hpp"
 
-#include "Components.hpp"
-
 void EnemyComponent::init() {}
 void EnemyComponent::update() {
     if (this->entity->hasComponent<TurnComponent>()) {
