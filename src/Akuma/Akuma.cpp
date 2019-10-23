@@ -370,7 +370,7 @@ void Akuma::statSelection(const char *attribName, int statMin, int &pointsLeft,
 
     ImGui::Text("%s: ", attribName);
     if (ImGui::IsItemHovered())
-        ImGui::SetTooltip(desc.c_str());
+        ImGui::SetTooltip("%s", desc.c_str());
     ImGui::SameLine(ImGui::GetWindowWidth() - 80);
     ImGui::Text("%d", attributePoints);
     ImGui::SameLine(ImGui::GetWindowWidth() - 30);
@@ -395,8 +395,8 @@ void Akuma::drawCharacterMenu() {
     ImGui::Separator();
 
     ImGui::Text("Player Name");
-    static char playerName[128] = "Name";
-    ImGui::InputText("Player Name", playerName, IM_ARRAYSIZE(playerName));
+    static char playerName[32] = "Name";
+    ImGui::InputText("Player Name", playerName, 32);
     ImGui::Separator();
     ImGui::Text("Player Model");
 
