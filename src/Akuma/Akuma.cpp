@@ -10,6 +10,8 @@
 #include "imgui_impl_opengl2.h"
 #include "imgui_impl_sdl.h"
 
+#include "Akuma/CombatLog.hpp"
+
 using std::stringstream;
 
 /**
@@ -84,6 +86,7 @@ auto Akuma::Akuma::display() -> void {
 
     displayDebugMenu();
     displayGameStats();
+    displayCombatLog();
     if (showEscapeMenu) {
         displayEscapeMenu();
     }
@@ -505,6 +508,15 @@ void Akuma::displayEscapeMenu() {
         stonk.isRunning = false;
     }
 
+    ImGui::End();
+}
+
+void Akuma::displayCombatLog() {
+    ImGui::Begin("Combat Menu");
+    for (auto n : CombatLog::log()) {
+
+        ImGui::Text("%s", n.c_str());
+    }
     ImGui::End();
 }
 
