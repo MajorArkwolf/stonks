@@ -406,8 +406,10 @@ auto Stonk::Engine::settingsMenu() -> void {
                            "SFX Volume = %.1f") |
         ImGui::SliderFloat("Music Volume", &MusicVolume, 0.0f, 100.0f,
                            "Music Volume = %.1f")) {
-        float sfx_vol = MIX_MAX_VOLUME * (Volume / 100.0f) * (SFXVolume / 100.0f);
-        float mus_vol = MIX_MAX_VOLUME * (Volume / 100.0f) * (MusicVolume / 100.0f);
+        int sfx_vol = static_cast<int>(MIX_MAX_VOLUME * (Volume / 100.0f) *
+                                       (SFXVolume / 100.0f));
+        int mus_vol = static_cast<int>(MIX_MAX_VOLUME * (Volume / 100.0f) *
+                                       (MusicVolume / 100.0f));
         Mix_Volume(-1, sfx_vol);
         Mix_VolumeMusic(mus_vol);
     }
