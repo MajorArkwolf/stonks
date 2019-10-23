@@ -401,7 +401,16 @@ auto Stonk::Engine::settingsMenu() -> void {
 
     ImGui::Separator();
     ImGui::Text("Volume Settings");
-    ImGui::SliderFloat("Master Volume", &Volume, 0.0f, 100.0f, "Volume = %.1f");
+    if (ImGui::SliderFloat("Master Volume", &Volume, 0.0f, 100.0f, "Volume = %.1f") |
+        ImGui::SliderFloat("SFX Volume", &SFXVolume, 0.0f, 100.0f,
+                           "SFX Volume = %.1f") |
+        ImGui::SliderFloat("Music Volume", &MusicVolume, 0.0f, 100.0f,
+                           "Music Volume = %.1f")) {
+        float sfx_vol = MIX_MAX_VOLUME * Volume * SFXVolume;
+        float mus_vol = MIX_MAX_VOLUME * Volume * MusicVolume;
+        Mix_Volume(-1, sfx_vol);
+        Mix_VolumeMusic(mus_vol);
+    }
     ImGui::Separator();
     ImGui::Text("Brightness");
     if (ImGui::SliderFloat("Gamma Correction", &gammaCorrection, 0.1f, 2.f,
