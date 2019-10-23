@@ -36,7 +36,7 @@ class ScaleComponent : public Component {
      * @brief Sets the of the object
      * @param temp Vec3 object
      */
-    auto setScale(glm::vec3 temp);
+    auto setScale(glm::vec3 temp) -> void;
     /**
      * @brief Sets X scale of the object
      * @param temp float object

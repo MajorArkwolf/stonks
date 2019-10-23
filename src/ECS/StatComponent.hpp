@@ -26,11 +26,11 @@ class StatComponent : public Component {
     void update();
     void draw();
 
-    auto getStrengthMod();
-    auto getIntelligenceMod();
-    auto getDexterityMod();
-    auto getLuckMod();
-    auto getVitalityMod();
+    auto getStrengthMod() -> int;
+    auto getIntelligenceMod() -> int;
+    auto getDexterityMod() -> int;
+    auto getLuckMod() -> int;
+    auto getVitalityMod() -> int;
     auto getStatSheet() -> CharacterSheet &;
     auto setStatSheet(CharacterSheet newStat) -> void;
     CharacterSheet stat;

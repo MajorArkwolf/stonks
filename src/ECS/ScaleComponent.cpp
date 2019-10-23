@@ -18,7 +18,7 @@ auto ScaleComponent::getZScale() -> float {
 auto ScaleComponent::getScale() -> glm::vec3 {
     return scale;
 }
-auto ScaleComponent::setScale(glm::vec3 temp) {
+auto ScaleComponent::setScale(glm::vec3 temp) -> void {
     scale.x = temp.x;
     scale.y = temp.y;
     scale.z = temp.z;

@@ -7,19 +7,19 @@ void StatComponent::init() {}
 void StatComponent::update() {}
 void StatComponent::draw() {}
 
-auto StatComponent::getStrengthMod() {
+auto StatComponent::getStrengthMod() -> int {
     return getMod(this->stat.strength);
 }
-auto StatComponent::getIntelligenceMod() {
+auto StatComponent::getIntelligenceMod() -> int {
     return getMod(this->stat.intelligence);
 }
-auto StatComponent::getDexterityMod() {
+auto StatComponent::getDexterityMod() -> int {
     return getMod(this->stat.dexterity);
 }
-auto StatComponent::getLuckMod() {
+auto StatComponent::getLuckMod() -> int {
     return getMod(this->stat.luck);
 }
-auto StatComponent::getVitalityMod() {
+auto StatComponent::getVitalityMod() -> int {
     return getMod(this->stat.vitality);
 }
 
