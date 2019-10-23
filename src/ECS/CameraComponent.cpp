@@ -1,6 +1,6 @@
 #include "CameraComponent.hpp"
 
-#include <math.h>
+#include <cmath>
 
 CameraComponent::CameraComponent()  = default;
 CameraComponent::~CameraComponent() = default;
@@ -29,7 +29,7 @@ auto CameraComponent::UpdateCameraPosition() -> void {
         glm::dvec3 entityPosition =
             this->entity->getComponent<PositionComponent>().getPos();
 
-        auto radians      = currentRotation * ((atan(1) * 4) / 180);
+        auto radians      = currentRotation * ((std::atan(1) * 4) / 180);
         camera.position.x = std::cos(radians) * distanceFromEntity;
         camera.position.z = std::sin(radians) * distanceFromEntity;
         camera.position.y = distanceFromEntity;
