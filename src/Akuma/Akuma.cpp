@@ -142,7 +142,7 @@ auto Akuma::Akuma::hardInit() -> void {
     player->addComponentID<PositionComponent>();
     placePlayer();
     player->addComponentID<ModelComponent>();
-    player->getComponent<ModelComponent>().setModel("player_male.obj");
+    player->getComponent<ModelComponent>().setModel("player_female.obj");
     player->addComponentID<PlayerComponent>();
     player->addComponentID<MoveComponent>();
     player->addComponentID<StatComponent>();
@@ -153,7 +153,7 @@ auto Akuma::Akuma::hardInit() -> void {
     turnManager.addEntity(player);
     stairs = &manager.addEntity();
     MakeStairs();
-    generateLevel();
+    //generateLevel();
     softInit();
     turnManager.turnOnManager();
 }
@@ -319,6 +319,10 @@ void Akuma::handleKeyPress(SDL_Event &event) {
         case SDL_SCANCODE_ESCAPE: {
             this->showEscapeMenu = showEscapeMenu ? false : true;
         } break;
+        case SDL_SCANCODE_SPACE: {
+            player->getComponent<PlayerComponent>().issueAction();
+            break;
+        }
         default: break;
     }
 }
@@ -331,10 +335,6 @@ void Akuma::handleKeyRelease(SDL_Event &event) {
         }
         case SDL_SCANCODE_D: {
             player->getComponent<PlayerComponent>().turnEntity(-1);
-            break;
-        }
-        case SDL_SCANCODE_SPACE: {
-            player->getComponent<PlayerComponent>().issueAction();
             break;
         }
         case SDL_SCANCODE_X: {
