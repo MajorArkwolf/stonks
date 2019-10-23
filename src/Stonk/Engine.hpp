@@ -69,6 +69,8 @@ namespace Stonk {
          */
         bool showSettingsMenu = false;
         float Volume          = 25.f;
+        float SFXVolume       = 25.f;
+        float MusicVolume     = 25.f;
         float gammaCorrection = 1.f;
         /**
          * @brief A boolean signifying whether the game engine is running or not
