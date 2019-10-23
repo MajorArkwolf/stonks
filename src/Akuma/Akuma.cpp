@@ -84,6 +84,7 @@ auto Akuma::Akuma::display() -> void {
 
     displayDebugMenu();
     displayGameStats();
+    drawCharacterMenu();
     if (showEscapeMenu) {
         displayEscapeMenu();
     }
@@ -345,6 +346,63 @@ void Akuma::handleMouseWheel(SDL_Event &event) {
     cameraComp.zoomCamera(amountScrolledY);
 }
 
+void Akuma::drawCharacterMenu() {
+    auto &playerStats = player->getComponent<StatComponent>().stat;
+    ImGui::SetNextWindowSize(ImVec2(300, 500), 1);
+    ImGui::SetNextWindowPosCenter(1);
+
+    ImGui::Begin("Character Menu", nullptr,
+                 ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+    ImGui::Separator();
+
+    ImGui::Text("Player Name");
+    static char playerName[128] = "Name";
+    ImGui::InputText("Player Name", playerName, IM_ARRAYSIZE(playerName));
+    ImGui::Separator();
+    ImGui::Text("Player Model");
+
+    static int item_current_model = 0;
+    ImGui::Combo("Player Model", &item_current_model, "Male\0Female\0");
+    ImGui::Separator();
+    int statMin           = 8;
+    static int pointsLeft = 8;
+    static int vit        = 8;
+    ImGui::Text("Player Stats");
+    ImGui::Text("Points Left: %d", pointsLeft);
+    if (ImGui::Button("---")) {
+        if (vit > statMin) {
+            vit--;
+            pointsLeft++;
+        }
+    }
+    ImGui::SameLine();
+    ImGui::Text("Vitality: %d", vit);
+    ImGui::SameLine();
+    if (ImGui::Button("+++")) {
+        if (pointsLeft >= 1 && vit >= statMin) {
+            vit++;
+            pointsLeft--;
+        }
+    }
+
+    ImGui::Separator();
+    if (ImGui::Button("Start")) {
+        // Set character stats and model
+
+        std::string name(playerName);
+
+        if (item_current_model == 0) {
+            // set model to make
+        } else {
+            // set model to female
+        }
+    }
+
+    ImGui::ShowDemoWindow();
+
+    ImGui::End();
+}
+
 /**
  * @brief Draws a 3-dimensional spatial axis at the given coordinates at the given length
  * @param x The x-coordinate to start the axis
@@ -391,8 +449,7 @@ auto Akuma::Akuma::drawAxis(float x, float y, float z, float length) -> void {
  * @brief Displays the current grid within the room object
  */
 auto Akuma::Akuma::displayGrid() -> void {
-    auto gridSize    = floor.getGridSize();
-  
+    auto gridSize = floor.getGridSize();
 
     glPushMatrix();
     glTranslatef(gridSize.x / 2, 0, (gridSize.y / 2));
@@ -433,8 +490,6 @@ auto Akuma::Akuma::displayGrid() -> void {
             glPopMatrix();
         }
     }
-
-    
 
     glPopMatrix();
 }

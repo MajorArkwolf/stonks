@@ -35,6 +35,7 @@ class Akuma : public BaseState {
     void handleKeyPress(SDL_Event &event);
     void handleKeyRelease(SDL_Event &event);
     void handleMouseWheel(SDL_Event &event);
+    void drawCharacterMenu();
     void drawCube(float size, bool wireframe);
     void generateLevel();
     void ClearEnemies();
