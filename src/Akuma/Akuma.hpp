@@ -33,6 +33,7 @@ class Akuma : public BaseState {
     void handleKeyPress(SDL_Event &event);
     void handleKeyRelease(SDL_Event &event);
     void handleMouseWheel(SDL_Event &event);
+    void drawCharacterMenu();
     void drawCube(float size, bool wireframe);
     void generateLevel();
     void clearEnemies();
@@ -49,7 +50,11 @@ class Akuma : public BaseState {
     GLfloat light_position[4];
 
   private:
-    bool showEscapeMenu = 0;
+    bool playerMouse = 0;
+    void statSelection(const char *attribName, int statMin, int &pointsLeft,
+                       int &attributePoints, std::string desc, int buttonCount);
+    bool showCharacterMenu = 1;
+    bool showEscapeMenu    = 0;
     Manager manager;
     Entity *player = nullptr;
     Entity *stairs = nullptr;
