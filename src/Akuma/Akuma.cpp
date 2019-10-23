@@ -84,7 +84,9 @@ auto Akuma::Akuma::display() -> void {
 
     displayDebugMenu();
     displayGameStats();
-    drawCharacterMenu();
+    if (showCharacterMenu) {
+        drawCharacterMenu();
+    }
     if (showEscapeMenu) {
         displayEscapeMenu();
     }
@@ -148,7 +150,7 @@ auto Akuma::Akuma::hardInit() -> void {
     player->addComponentID<PlayerComponent>();
     player->addComponentID<MoveComponent>();
     player->addComponentID<StatComponent>();
-    player->getComponent<StatComponent>().stat.name = "Waman";
+    player->getComponent<StatComponent>().stat.name = "";
     player->addComponentID<CameraComponent>();
     player->addComponentID<TurnComponent>();
     player->addComponentID<CombatComponent>();
@@ -346,6 +348,33 @@ void Akuma::handleMouseWheel(SDL_Event &event) {
     cameraComp.zoomCamera(amountScrolledY);
 }
 
+void Akuma::statSelection(const char *attribName, int statMin, int &pointsLeft,
+                   int &attributePoints, std::string desc, int buttonCount) {
+    ImGui::PushID(buttonCount);
+    if (ImGui::Button("--")) {
+        if (attributePoints > statMin) {
+            attributePoints--;
+            pointsLeft++;
+        }
+    }
+    ImGui::SameLine(80);
+
+    ImGui::Text("%s: ", attribName);
+    if (ImGui::IsItemHovered())
+        ImGui::SetTooltip(desc.c_str());
+    ImGui::SameLine(ImGui::GetWindowWidth() - 80);
+    ImGui::Text("%d", attributePoints);
+    ImGui::SameLine(ImGui::GetWindowWidth() - 30);
+
+    if (ImGui::Button("++")) {
+        if (pointsLeft >= 1 && attributePoints >= statMin) {
+            attributePoints++;
+            pointsLeft--;
+        }
+    }
+    ImGui::PopID();
+}
+
 void Akuma::drawCharacterMenu() {
     auto &playerStats = player->getComponent<StatComponent>().stat;
     ImGui::SetNextWindowSize(ImVec2(300, 500), 1);
@@ -364,41 +393,34 @@ void Akuma::drawCharacterMenu() {
     static int item_current_model = 0;
     ImGui::Combo("Player Model", &item_current_model, "Male\0Female\0");
     ImGui::Separator();
-    int statMin           = 8;
-    static int pointsLeft = 8;
-    static int vit        = 8;
+    static StatDescription desc;
+
+    int statMin = 8;
+
     ImGui::Text("Player Stats");
-    ImGui::Text("Points Left: %d", pointsLeft);
-    if (ImGui::Button("---")) {
-        if (vit > statMin) {
-            vit--;
-            pointsLeft++;
-        }
-    }
-    ImGui::SameLine();
-    ImGui::Text("Vitality: %d", vit);
-    ImGui::SameLine();
-    if (ImGui::Button("+++")) {
-        if (pointsLeft >= 1 && vit >= statMin) {
-            vit++;
-            pointsLeft--;
-        }
-    }
+    ImGui::Text("Points Left: %d", playerStats.pointsLeft);
+    statSelection("Strength", statMin, playerStats.pointsLeft,
+                  playerStats.strength, desc.strength, 1);
+    statSelection("Vitality", statMin, playerStats.pointsLeft,
+                  playerStats.vitality, desc.vitality, 2);
+    statSelection("Dexterity", statMin, playerStats.pointsLeft,
+                  playerStats.dexterity, desc.dexterity, 3);
+    statSelection("Intelligence", statMin, playerStats.pointsLeft,
+                  playerStats.intelligence, desc.intelligence, 4);
+    statSelection("Luck", statMin, playerStats.pointsLeft, playerStats.luck, desc.luck, 5);
 
     ImGui::Separator();
     if (ImGui::Button("Start")) {
-        // Set character stats and model
-
-        std::string name(playerName);
+        playerStats.name = std::string(playerName);
 
         if (item_current_model == 0) {
-            // set model to make
+            player->getComponent<ModelComponent>().setModel("player_male.obj");
         } else {
-            // set model to female
+            player->getComponent<ModelComponent>().setModel(
+                "player_female.obj");
         }
+        this->showCharacterMenu = false;
     }
-
-    ImGui::ShowDemoWindow();
 
     ImGui::End();
 }

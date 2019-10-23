@@ -9,10 +9,9 @@
 #include "Stonk/BaseState.hpp"
 #include "Stonk/Engine.hpp"
 #include "Stonk/OpenGl.hpp"
+#include "TurnManager/TurnManager.hpp"
 #include "glm/vec3.hpp"
 #include "ECS/Components.hpp"
-#include "RNG/Dice.hpp"
-#include "TurnManager/TurnManager.hpp"
 /**
  * @class Akuma
  * @brief The Akuma game state object
@@ -50,7 +49,10 @@ class Akuma : public BaseState {
     GLfloat light_position[4];
 
   private:
-    bool showEscapeMenu = 0;
+    void statSelection(const char *attribName, int statMin, int &pointsLeft,
+                       int &attributePoints, std::string desc, int buttonCount);
+    bool showCharacterMenu = 1;
+    bool showEscapeMenu    = 0;
     Manager manager;
     Entity *player = nullptr;
     std::vector<Entity *> enemies;

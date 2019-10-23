@@ -1,10 +1,11 @@
 #pragma once
 
 #include <string>
+
 #include "ECS.hpp"
 
 struct CharacterSheet {
-    std::string name      = "";
+    std::string name = "";
     int level        = 1;
     int HD           = 8;
     bool assignedHP  = false;
@@ -14,6 +15,15 @@ struct CharacterSheet {
     int luck         = 10;
     int intelligence = 10;
     int vitality     = 10;
+    int pointsLeft   = 10;
+};
+
+struct StatDescription {
+    const std::string strength = "Increases damage and hit chance on strength weapons.";
+    const std::string dexterity = "Increases sneak and hit on dex weapons.";
+    const std::string luck = "Increases crit chance.";
+    const std::string intelligence = "Does absolutely nothing, it would be ironic if you picked this.";
+    const std::string vitality = "Increases health.";
 };
 
 class StatComponent : public Component {
@@ -29,7 +39,7 @@ class StatComponent : public Component {
 
     auto getStrengthMod() {
         return getMod(this->stat.strength);
-	}
+    }
     auto getIntelligenceMod() {
         return getMod(this->stat.intelligence);
     }
@@ -88,6 +98,6 @@ class StatComponent : public Component {
             return 10;
         } else {
             return 0;
-		}
+        }
     }
 };
