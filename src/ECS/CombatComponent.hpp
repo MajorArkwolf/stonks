@@ -10,8 +10,8 @@
 
 class CombatComponent : public Component {
   public:
-    CombatComponent()  = default;
-    ~CombatComponent() = default;
+    CombatComponent();
+    ~CombatComponent();
     void init();
     void update();
     void draw();

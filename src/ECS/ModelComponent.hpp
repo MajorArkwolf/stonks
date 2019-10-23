@@ -8,8 +8,8 @@
 /* Models */
 class ModelComponent : public Component {
   public:
-    ModelComponent()  = default;
-    ~ModelComponent() = default;
+    ModelComponent();
+    ~ModelComponent();
 
     void init();
     void setModel(std::string filename);

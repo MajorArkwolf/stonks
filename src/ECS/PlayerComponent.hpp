@@ -13,8 +13,8 @@
 class PlayerComponent : public Component {
   public:
     enum class Facing { N, NE, E, SE, S, SW, W, NW };
-    PlayerComponent()  = default;
-    ~PlayerComponent() = default;
+    PlayerComponent();
+    ~PlayerComponent();
     void init();
     void update();
     void draw();

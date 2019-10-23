@@ -1,5 +1,7 @@
 #include "EnemyComponent.hpp"
 
+EnemyComponent::EnemyComponent()  = default;
+EnemyComponent::~EnemyComponent() = default;
 void EnemyComponent::init() {}
 void EnemyComponent::update() {
     if (this->entity->hasComponent<TurnComponent>()) {

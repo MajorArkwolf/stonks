@@ -9,8 +9,8 @@
 /* This will need to handle input to the player */
 class CameraComponent : public Component {
   public:
-    CameraComponent()  = default;
-    ~CameraComponent() = default;
+    CameraComponent();
+    ~CameraComponent();
     void init();
     void update();
     void draw();

@@ -1,4 +1,6 @@
 #include "TurnComponent.hpp"
+TurnComponent::TurnComponent()  = default;
+TurnComponent::~TurnComponent() = default;
 void TurnComponent::init() {}
 void TurnComponent::update() {}
 void TurnComponent::draw() {}

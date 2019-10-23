@@ -19,9 +19,9 @@ struct CharacterSheet {
 
 class StatComponent : public Component {
   public:
-    StatComponent() = default;
+    StatComponent();
     StatComponent(CharacterSheet newStat);
-    ~StatComponent() = default;
+    ~StatComponent();
     void init();
     void update();
     void draw();

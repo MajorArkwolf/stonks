@@ -8,11 +8,11 @@ class ScaleComponent : public Component {
     /**
      * @brief Default Constructor for Scale Component
      */
-    ScaleComponent() = default;
+    ScaleComponent();
     /**
      * @brief Default Destructor for Scale Component
      */
-    ~ScaleComponent() = default;
+    ~ScaleComponent();
 
     ScaleComponent(glm::vec3 temp);
     /**

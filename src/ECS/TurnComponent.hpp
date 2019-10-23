@@ -5,8 +5,8 @@
 /* This will need to handle input to the player */
 class TurnComponent : public Component {
   public:
-    TurnComponent()  = default;
-    ~TurnComponent() = default;
+    TurnComponent();
+    ~TurnComponent();
     void init();
     void update();
     void draw();

@@ -1,5 +1,7 @@
 #include "ModelComponent.hpp"
 
+ModelComponent::ModelComponent()  = default;
+ModelComponent::~ModelComponent() = default;
 void ModelComponent::init() {
     this->modelId  = 0;
     this->hasModel = false;

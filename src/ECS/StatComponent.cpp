@@ -1,4 +1,7 @@
 #include "StatComponent.hpp"
+
+StatComponent::StatComponent()  = default;
+StatComponent::~StatComponent() = default;
 StatComponent::StatComponent(CharacterSheet newStat) {
     this->stat = newStat;
 }

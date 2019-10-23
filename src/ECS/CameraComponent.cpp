@@ -1,6 +1,10 @@
 #include "CameraComponent.hpp"
 
 #include <math.h>
+
+CameraComponent::CameraComponent()  = default;
+CameraComponent::~CameraComponent() = default;
+
 void CameraComponent::init() {
     UpdateCameraLook();
     if (this->entity->hasComponent<PositionComponent>()) {

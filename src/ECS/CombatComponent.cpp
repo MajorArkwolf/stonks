@@ -1,4 +1,8 @@
 #include "CombatComponent.hpp"
+
+CombatComponent::CombatComponent()  = default;
+CombatComponent::~CombatComponent() = default;
+
 void CombatComponent::init() {}
 void CombatComponent::update() {}
 void CombatComponent::draw() {}

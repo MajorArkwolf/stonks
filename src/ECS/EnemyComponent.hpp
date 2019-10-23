@@ -13,8 +13,8 @@
 class EnemyComponent : public Component {
   public:
     enum class Facing { N, NE, E, SE, S, SW, W, NW };
-    EnemyComponent()  = default;
-    ~EnemyComponent() = default;
+    EnemyComponent();
+    ~EnemyComponent();
     void init();
     void update();
     void draw();

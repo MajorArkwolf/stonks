@@ -8,8 +8,8 @@
 /* This will need to handle all positions of entities. */
 class PositionComponent : public Component {
   public:
-    PositionComponent()  = default;
-    ~PositionComponent() = default;
+    PositionComponent();
+    ~PositionComponent();
 
     void init();
     void update();

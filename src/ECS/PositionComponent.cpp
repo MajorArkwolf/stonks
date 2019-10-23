@@ -1,4 +1,7 @@
 #include "PositionComponent.hpp"
+
+PositionComponent::PositionComponent()  = default;
+PositionComponent::~PositionComponent() = default;
 void PositionComponent::init() {}
 void PositionComponent::update() {}
 void PositionComponent::draw() {}

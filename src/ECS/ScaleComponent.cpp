@@ -1,4 +1,8 @@
 #include "ScaleComponent.hpp"
+
+ScaleComponent::ScaleComponent()  = default;
+ScaleComponent::~ScaleComponent() = default;
+
 ScaleComponent::ScaleComponent(glm::vec3 temp) {
     scale = temp;
 }

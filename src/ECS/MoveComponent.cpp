@@ -1,4 +1,7 @@
 #include "MoveComponent.hpp"
+
+MoveComponent::MoveComponent()  = default;
+MoveComponent::~MoveComponent() = default;
 void MoveComponent::init() {}
 void MoveComponent::update() {
     /*if (component is facing direction)

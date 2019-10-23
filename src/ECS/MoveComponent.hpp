@@ -10,8 +10,8 @@
 /* This will need to handle input to the player */
 class MoveComponent : public Component {
   public:
-    MoveComponent()  = default;
-    ~MoveComponent() = default;
+    MoveComponent();
+    ~MoveComponent();
     void init();
     void update();
     void draw();

@@ -1,4 +1,7 @@
 #include "PlayerComponent.hpp"
+
+PlayerComponent::PlayerComponent()  = default;
+PlayerComponent::~PlayerComponent() = default;
 void PlayerComponent::init() {}
 void PlayerComponent::update() {
     if (this->entity->hasComponent<TurnComponent>()) {
