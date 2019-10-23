@@ -32,31 +32,21 @@ class Component {
   public:
     Entity *entity = nullptr;
 
-    virtual void init() {}
-    virtual void update() {}
-    virtual void draw() {}
+    virtual void init();
+    virtual void update();
+    virtual void draw();
 
-    virtual ~Component() {}
+    virtual ~Component();
 };
 
 class Entity {
   public:
-    Entity() = default;
-    ~Entity() = default;
-    void update() {
-        for (auto &c : components)
-            c->update();
-    }
-    void draw() {
-        for (auto &c : components)
-            c->draw();
-    }
-    bool isActive() const {
-        return active;
-    }
-    void destroy() {
-        active = false;
-    }
+    Entity();
+    ~Entity();
+    void update();
+    void draw();
+    bool isActive() const;
+    void destroy();
 
     template<typename T>
     bool hasComponent() const {
@@ -95,31 +85,14 @@ class Manager {
     std::vector<std::unique_ptr<Entity>> entities;
 
   public:
-    Manager() = default;
-    ~Manager() = default;
-    void update() {
-        for (auto &e : entities)
-            e->update();
-    }
-    void draw() {
-        for (auto &e : entities)
-            e->draw();
-    }
+    Manager();
+    ~Manager();
+    void update();
+    void draw();
 
-    void refresh() {
-        entities.erase(std::remove_if(std::begin(entities), std::end(entities),
-                                      [](const std::unique_ptr<Entity> &mEntity) {
-                                          return !mEntity->isActive();
-                                      }),
-                       std::end(entities));
-    }
+    void refresh();
 
-    Entity &addEntity() {
-        Entity *e = new Entity();
-        std::unique_ptr<Entity> uPtr{e};
-        entities.emplace_back(std::move(uPtr));
-        return *e;
-    }
+    Entity &addEntity();
 };
 
 // To add components

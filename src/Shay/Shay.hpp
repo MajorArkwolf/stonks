@@ -305,6 +305,8 @@ namespace Shay {
 
         static auto get() -> ShaysWorld &;
 
+        auto teleportToAkuma() -> void;
+
         auto hardInit() -> void;
 
         auto softInit() -> void;

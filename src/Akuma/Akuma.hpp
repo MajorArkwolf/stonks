@@ -41,6 +41,7 @@ class Akuma : public BaseState {
     void ClearEnemies();
     auto displayGameStats() -> void;
     void displayEscapeMenu();
+    void displayCombatLog();
 
     unsigned floorLevel = 1;
     void descendLevel();
