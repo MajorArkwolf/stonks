@@ -64,6 +64,19 @@ set (SOURCES
     src/Shay/Collision.cpp
     src/Shay/TexturedPolygons.cpp
     src/Shay/Shay.cpp
+
+    src/ECS/CameraComponent.cpp  
+    src/ECS/EnemyComponent.cpp  
+    src/ECS/MoveComponent.cpp      
+    src/ECS/ScaleComponent.cpp
+    src/ECS/CombatComponent.cpp  
+    src/ECS/FloorComponent.cpp  
+    src/ECS/PlayerComponent.cpp    
+    src/ECS/StatComponent.cpp
+    src/ECS/ECS.cpp              
+    src/ECS/ModelComponent.cpp  
+    src/ECS/PositionComponent.cpp  
+    src/ECS/TurnComponent.cpp
 )
 
 # Define the executable.

@@ -7,12 +7,12 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/vec3.hpp>
 
+#include "ObjLoader/ObjDisplay.hpp"
 #include "Shay/PlainNode.hpp"
 #include "Stonk/Engine.hpp"
 #include "imgui.h"
 #include "imgui_impl_opengl2.h"
 #include "imgui_impl_sdl.h"
-#include "ObjLoader/ObjDisplay.hpp"
 
 using glm::vec3;
 using Shay::Camera;
@@ -101,6 +101,15 @@ auto Shay::ShaysWorld::handleInput(SDL_Event &event) -> void {
 }
 
 auto Shay::ShaysWorld::unInit() -> void {}
+
+auto Shay::ShaysWorld::teleportToAkuma() -> void {
+    auto &pos = this->cam.position;
+    if (pos.x < 20150.f && pos.x > 19800.f && pos.z > 14800 && pos.z < 15200) {
+        auto &engine = Stonk::Engine::get();
+        engine.popStack();
+        engine.loadState(Stonk::GameMode::AKUMA);
+    }
+}
 
 /**
  * @brief Calls all other display functions to display Shay's world
@@ -202,6 +211,7 @@ void ShaysWorld::display() {
     if (stonk.showSettingsMenu) {
         stonk.settingsMenu();
     }
+    teleportToAkuma();
 
     ImGui::Render();
     ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
@@ -211,7 +221,7 @@ void ShaysWorld::display() {
 void ShaysWorld::displayPentagram(void) {
     glPushMatrix();
     glTranslatef(20000, 10000, 15000);
-    //glRotatef(90.f, 0, 0, 1);
+    // glRotatef(90.f, 0, 0, 1);
     glEnable(GL_CULL_FACE);
     OBJ::depDisplayModel(modelList[2], 300, 1);
     glDisable(GL_CULL_FACE);
