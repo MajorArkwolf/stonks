@@ -590,8 +590,8 @@ void Akuma::MakeStairs() {
 				stairs->addComponentID<PositionComponent>();
             }
             glm::vec3 e = {0, 0, 0};
-            e.x += pos.x + 0.2;
-            e.z += pos.y + 0.2;
+            e.x += pos.x + 0.2f;
+            e.z += pos.y + 0.2f;
             stairs->getComponent<PositionComponent>().setPos(e);
             if (!stairs->hasComponent<ModelComponent>()) {
 				stairs->addComponentID<ModelComponent>();
