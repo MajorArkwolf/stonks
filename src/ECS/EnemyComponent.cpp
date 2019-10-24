@@ -1,26 +1,20 @@
 #include "EnemyComponent.hpp"
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+#include "../Akuma/Pathing/Pathfinding.hpp"
+
+#include "PositionComponent.hpp"
+#include "MoveComponent.hpp"
+#include "TurnComponent.hpp"
 #include "StatComponent.hpp"
-#include "EquipmentComponent.hpp"
 #include "CombatComponent.hpp"
+#include "FloorComponent.hpp"
 
 EnemyComponent::EnemyComponent() {
-    init();
+    //init();
 }
 EnemyComponent::~EnemyComponent() = default;
-void EnemyComponent::init() {
-    if (!this->entity->hasComponent<StatComponent>()) {
-        this->entity->addComponentID<StatComponent>();
-	}
-    if (!this->entity->hasComponent<CombatComponent>()) {
-        this->entity->addComponentID<CombatComponent>();
-    }
-    if (!this->entity->hasComponent<TurnComponent>()) {
-        this->entity->addComponentID<TurnComponent>();
-    }
-    if (!this->entity->hasComponent<EquipmentComponent>()) {
-        this->entity->addComponentID<EquipmentComponent>();
-    }
-}
+void EnemyComponent::init() {}
 void EnemyComponent::update() {
     if (this->entity->hasComponent<TurnComponent>()) {
         if (this->entity->getComponent<TurnComponent>().checkTurn()) {

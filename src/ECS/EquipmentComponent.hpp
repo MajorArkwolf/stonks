@@ -1,10 +1,8 @@
 #pragma once
 
-#include "../Akuma/Items/ItemManager.hpp"
 #include "ECS.hpp"
+#include "../Akuma/Items/ItemManager.hpp"
 
-
-/* This will need to handle input to the player */
 class EquipmentComponent : public Component {
   public:
     EquipmentComponent();

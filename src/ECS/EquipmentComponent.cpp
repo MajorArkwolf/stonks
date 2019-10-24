@@ -1,6 +1,6 @@
 #include "EquipmentComponent.hpp"
 
-#include "Akuma/CombatLog.hpp"
+#include "../Akuma/CombatLog.hpp"
 
 EquipmentComponent::EquipmentComponent()  = default;
 EquipmentComponent::~EquipmentComponent() = default;

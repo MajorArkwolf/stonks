@@ -1,5 +1,5 @@
 #include "CameraComponent.hpp"
-
+#include "PositionComponent.hpp"
 #include <cmath>
 
 CameraComponent::CameraComponent()  = default;

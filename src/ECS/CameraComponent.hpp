@@ -4,7 +4,7 @@
 
 #include "../Akuma/Camera.hpp"
 #include "ECS.hpp"
-#include "PositionComponent.hpp"
+
 
 /* This will need to handle input to the player */
 class CameraComponent : public Component {

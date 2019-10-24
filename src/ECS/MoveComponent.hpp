@@ -4,8 +4,7 @@
 
 #include "Akuma/Pathing/Node.hpp"
 #include "ECS.hpp"
-#include "PositionComponent.hpp"
-#include "TurnComponent.hpp"
+
 
 /* This will need to handle input to the player */
 class MoveComponent : public Component {

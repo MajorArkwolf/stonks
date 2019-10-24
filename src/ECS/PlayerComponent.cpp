@@ -7,30 +7,12 @@
 #include "CombatComponent.hpp"
 #include "EquipmentComponent.hpp"
 
-PlayerComponent::PlayerComponent() {
-    init();
-};
+#include "Akuma/Akuma.hpp"
+#include "Stonk/OpenGl.hpp"
+
+PlayerComponent::PlayerComponent() {};
 PlayerComponent::~PlayerComponent() = default;
-void PlayerComponent::init() {
-    if (!this->entity->hasComponent < MoveComponent>()) {
-        this->entity->addComponentID<MoveComponent>();
-	}
-    if (!this->entity->hasComponent<StatComponent>()) {
-        this->entity->addComponentID<StatComponent>();
-    }
-    if (!this->entity->hasComponent<CameraComponent>()) {
-        this->entity->addComponentID<CameraComponent>();
-    }
-    if (!this->entity->hasComponent<TurnComponent>()) {
-        this->entity->addComponentID<TurnComponent>();
-    }
-    if (!this->entity->hasComponent<CombatComponent>()) {
-        this->entity->addComponentID<CombatComponent>();
-    }
-    if (!this->entity->hasComponent<EquipmentComponent>()) {
-        this->entity->addComponentID<EquipmentComponent>();
-    }
-}
+void PlayerComponent::init() {}
 void PlayerComponent::update() {
     if (this->entity->hasComponent<TurnComponent>()) {
         if (this->entity->getComponent<TurnComponent>().checkTurn()) {

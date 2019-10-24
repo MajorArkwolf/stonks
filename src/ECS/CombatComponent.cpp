@@ -1,6 +1,10 @@
 #include "CombatComponent.hpp"
-#include "Akuma/Items/ItemManager.hpp"
+#include "../Akuma/CombatLog.hpp"
+
+
 #include "EquipmentComponent.hpp"
+#include "StatComponent.hpp"
+#include "TurnComponent.hpp"
 
 CombatComponent::CombatComponent()  = default;
 CombatComponent::~CombatComponent() = default;
@@ -14,7 +18,8 @@ void CombatComponent::update() {}
 void CombatComponent::draw() {}
 
 void CombatComponent::attackEntity(Entity *opponent) {
-
+	//Add dual hand and single handed combat
+    singleHanded(opponent);
  
     this->entity->getComponent<TurnComponent>().endYourTurn();
 }
@@ -102,10 +107,10 @@ void CombatComponent::logInformation(int damage, Entity *opponent) {
     logInformation(eventLog);
 }
 
-void CombatComponent::logInformation(int damage, Entity *opponent, Weapon &weapon) {
+void CombatComponent::logInformation(int damage, Entity *opponent, Weapon weapon) {
     string eventLog =
         "Combat: Name: " + this->entity->getComponent<StatComponent>().stat.name +
-        "hit " + opponent->getComponent<StatComponent>().stat.name + " with " + weapon.name
+        " hit " + opponent->getComponent<StatComponent>().stat.name + " with " + weapon.name
         +" for " + std::to_string(damage) + " points of damage.";
     logInformation(eventLog);
 }
