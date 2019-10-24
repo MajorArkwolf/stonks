@@ -157,8 +157,10 @@ auto Akuma::Akuma::hardInit() -> void {
 	player->addComponentID<TurnComponent>();
 	player->addComponentID<CombatComponent>();
 	turnManager.addEntity(player);
-	ItemLoader item;
-	item.init();
+	//ItemLoader item;
+	//item.init();
+    stairs = &manager.addEntity();
+    makeStairs();
 	generateLevel();
 	softInit();
 	turnManager.turnOnManager();
@@ -301,11 +303,13 @@ void Akuma::update([[maybe_unused]] double dt) {
     // light_position[1] = 2;
     light_position[2] = player->getComponent<PositionComponent>().getZPos();
     // light_position[3] = 1;
+    if (stairs != nullptr) {
     if (stairs->hasComponent<StairComponent>()) {
         if (stairs->getComponent<StairComponent>().checkStairActive()) {
             stairs->getComponent<StairComponent>().resetStairCase();
             descendLevel();
         }
+    }
     }
 }
 
@@ -570,7 +574,7 @@ void Akuma::descendLevel() {
     clearEnemies();
     turnManager.clearActors();
     turnManager.addEntity(player);
-    MakeStairs();
+    makeStairs();
     generateLevel();
     placePlayer(); // move player to new node.
     turnManager.sortActors();
@@ -651,7 +655,7 @@ void Akuma::generateLevel() {
     }
 }
 
-void Akuma::MakeStairs() {
+void Akuma::makeStairs() {
     auto roomList = floor.getRoomList();
     for (auto i = roomList.size() - 1; i > 0; i--) {
         auto roomSize =

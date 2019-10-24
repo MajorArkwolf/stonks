@@ -72,5 +72,5 @@ class Akuma : public BaseState {
     auto drawAxis(float x, float y, float z, float length) -> void;
     std::vector<Model> modelList;
 
-	void MakeStairs();
+	void makeStairs();
 };
