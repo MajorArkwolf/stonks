@@ -231,7 +231,7 @@ namespace ItemManager {
     }
 
 	auto getConsumable(size_t ID) {
-        for (auto &i : ArmorManager()) {
+        for (auto &i : ConsumableManager()) {
             if (ID == i.itemID) {
                 return i;
                 break;

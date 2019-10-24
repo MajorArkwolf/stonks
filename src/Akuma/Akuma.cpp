@@ -150,12 +150,6 @@ auto Akuma::Akuma::hardInit() -> void {
 	player->addComponentID<ModelComponent>();
 	player->getComponent<ModelComponent>().setModel("player_female.obj");
 	player->addComponentID<PlayerComponent>();
-	player->addComponentID<MoveComponent>();
-	player->addComponentID<StatComponent>();
-	player->getComponent<StatComponent>().stat.name = "Waman";
-	player->addComponentID<CameraComponent>();
-	player->addComponentID<TurnComponent>();
-	player->addComponentID<CombatComponent>();
 	turnManager.addEntity(player);
 	//ItemLoader item;
 	//item.init();
@@ -626,7 +620,6 @@ void Akuma::generateLevel() {
     unsigned int enemyCount = diceRoller.Roll(floorLevel, 3u);
     for (unsigned i = 0; i <= enemyCount; ++i) {
         enemies.push_back(&manager.addEntity());
-        enemies.at(i)->addComponentID<TurnComponent>();
         enemies.at(i)->addComponentID<ScaleComponent>(glm::vec3{0.5, 0.5, 0.5});
         enemies.at(i)->addComponentID<PositionComponent>();
         bool walkable    = false;
@@ -648,9 +641,7 @@ void Akuma::generateLevel() {
         enemies.at(i)->addComponentID<FloorComponent>();
         enemies.at(i)->getComponent<FloorComponent>().setFloor(floor);
         enemies.at(i)->addComponentID<EnemyComponent>();
-        enemies.at(i)->addComponentID<StatComponent>();
         enemies.at(i)->getComponent<EnemyComponent>().SetPlayerTarget(player);
-        enemies.at(i)->addComponentID<CombatComponent>();
         turnManager.addEntity(enemies.at(i));
     }
 }

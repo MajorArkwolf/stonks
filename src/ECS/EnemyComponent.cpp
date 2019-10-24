@@ -1,8 +1,26 @@
 #include "EnemyComponent.hpp"
+#include "StatComponent.hpp"
+#include "EquipmentComponent.hpp"
+#include "CombatComponent.hpp"
 
-EnemyComponent::EnemyComponent()  = default;
+EnemyComponent::EnemyComponent() {
+    init();
+}
 EnemyComponent::~EnemyComponent() = default;
-void EnemyComponent::init() {}
+void EnemyComponent::init() {
+    if (!this->entity->hasComponent<StatComponent>()) {
+        this->entity->addComponentID<StatComponent>();
+	}
+    if (!this->entity->hasComponent<CombatComponent>()) {
+        this->entity->addComponentID<CombatComponent>();
+    }
+    if (!this->entity->hasComponent<TurnComponent>()) {
+        this->entity->addComponentID<TurnComponent>();
+    }
+    if (!this->entity->hasComponent<EquipmentComponent>()) {
+        this->entity->addComponentID<EquipmentComponent>();
+    }
+}
 void EnemyComponent::update() {
     if (this->entity->hasComponent<TurnComponent>()) {
         if (this->entity->getComponent<TurnComponent>().checkTurn()) {

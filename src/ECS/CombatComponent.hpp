@@ -8,6 +8,8 @@
 #include "StatComponent.hpp"
 #include "TurnComponent.hpp"
 
+struct Weapon;
+
 class CombatComponent : public Component {
   public:
     CombatComponent();
@@ -26,6 +28,8 @@ class CombatComponent : public Component {
 
   private:
     Dice diceroller;
+    void singleHanded(Entity *opponent);
     void logInformation(string info);
     void logInformation(int damage, Entity *opponent);
+    void logInformation(int damage, Entity *opponent, Weapon &weapon);
 };
