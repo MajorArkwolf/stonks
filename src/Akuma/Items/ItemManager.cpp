@@ -15,8 +15,11 @@ void ItemLoader::init() {
     if (!fileinput.is_open()) {
         std::cout << "Error Reading itemList.csv file! Make sure its in root!"
                   << std::endl;
+        return;
 	}
-    //assert(fileinput.is_open());
+    //Commented line out below for time being.
+	//assert(fileinput.is_open());
+
 	//Removes the header
     std::getline(fileinput, line, '\n');
     std::getline(fileinput, line, '\n');
@@ -84,7 +87,8 @@ void ItemLoader::constructConsumable(string item) {
 }
 
 void ItemLoader::constructGenerics() {
-    Weapon fists;
+    //Hardcoded as this is the default starting weapon
+	Weapon fists;
     fists.itemID          = ItemManager::getNewID();
     fists.name            = "Fists";
     fists.description     = "Everybody was kong-fu fighting.";
@@ -102,6 +106,7 @@ void ItemLoader::constructGenerics() {
     ItemManager::ItemManager().push_back(fistID);
     ItemManager::WeaponManager().push_back(fists);
 
+	// Hardcoded as this is the default starting weapon
 	Armor rags;
     rags.itemID           = ItemManager::getNewID();
     rags.name             = "Fists";
