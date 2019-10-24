@@ -175,70 +175,22 @@ struct Consumable {
 };
 
 namespace ItemManager {
-    auto getNewID() -> size_t {
-        static size_t lastID = 1;
-        return lastID++;
-    }
+    auto getNewID() -> size_t;
 
-    auto ItemManager() -> vector<ItemID> & {
-        static vector<ItemID> itemList = {};
-        return itemList;
-    }
+    auto ItemManager() -> vector<ItemID> &;
 
-    auto WeaponManager() -> vector<Weapon> & {
-        static vector<Weapon> weaponList = {};
-        return weaponList;
-    }
+    auto WeaponManager() -> vector<Weapon> &;
 
-    auto ArmorManager() -> vector<Armor> & {
-        static vector<Armor> armorList = {};
-        return armorList;
-    }
+    auto ArmorManager() -> vector<Armor> &;
 
-    auto ConsumableManager() -> vector<Consumable> & {
-        static vector<Consumable> consumableList = {};
-        return consumableList;
-    }
+    auto ConsumableManager() -> vector<Consumable> &;
+    auto getItem(size_t ID) -> ItemID;
 
-	auto getItem(size_t ID) {
-        for (auto &i : ItemManager()) {
-            if (ID == i.itemID) {
-                return i;
-                break;
-			}
-		}
-        return ItemID();
-	}
+	auto getWeapon(size_t ID) -> Weapon;
 
-	auto getWeapon(size_t ID) {
-        for (auto &i : WeaponManager()) {
-            if (ID == i.itemID) {
-                return i;
-                break;
-            }
-        }
-        return Weapon();
-	}
+	auto getArmor(size_t ID) -> Armor;
 
-	auto getArmor(size_t ID) {
-        for (auto &i : ArmorManager()) {
-            if (ID == i.itemID) {
-                return i;
-                break;
-            }
-        }
-        return Armor();
-    }
-
-	auto getConsumable(size_t ID) {
-        for (auto &i : ConsumableManager()) {
-            if (ID == i.itemID) {
-                return i;
-                break;
-            }
-        }
-        return Consumable();
-	}
+	auto getConsumable(size_t ID) -> Consumable;
 };
 
 class ItemLoader {

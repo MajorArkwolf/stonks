@@ -150,10 +150,27 @@ auto Akuma::Akuma::hardInit() -> void {
 	player->addComponentID<ModelComponent>();
 	player->getComponent<ModelComponent>().setModel("player_female.obj");
 	player->addComponentID<PlayerComponent>();
+    if (!player->hasComponent<MoveComponent>()) {
+        player->addComponentID<MoveComponent>();
+    }
+    if (!player->hasComponent<StatComponent>()) {
+        player->addComponentID<StatComponent>();
+    }
+    if (!player->hasComponent<CameraComponent>()) {
+        player->addComponentID<CameraComponent>();
+    }
+    if (!player->hasComponent<TurnComponent>()) {
+        player->addComponentID<TurnComponent>();
+    }
+    if (!player->hasComponent<CombatComponent>()) {
+        player->addComponentID<CombatComponent>();
+    }
+    if (!player->hasComponent<EquipmentComponent>()) {
+        player->addComponentID<EquipmentComponent>();
+    }
 	turnManager.addEntity(player);
-	//ItemLoader item;
-	//item.init();
-    stairs = &manager.addEntity();
+	ItemLoader item;
+	item.init();
     makeStairs();
 	generateLevel();
 	softInit();
@@ -642,11 +659,27 @@ void Akuma::generateLevel() {
         enemies.at(i)->getComponent<FloorComponent>().setFloor(floor);
         enemies.at(i)->addComponentID<EnemyComponent>();
         enemies.at(i)->getComponent<EnemyComponent>().SetPlayerTarget(player);
+        if (!enemies.at(i)->hasComponent<StatComponent>()) {
+            enemies.at(i)->addComponentID<StatComponent>();
+            enemies.at(i)->getComponent<StatComponent>().stat.name = "Orc";
+        }
+        if (!enemies.at(i)->hasComponent<CombatComponent>()) {
+            enemies.at(i)->addComponentID<CombatComponent>();
+        }
+        if (!enemies.at(i)->hasComponent<TurnComponent>()) {
+            enemies.at(i)->addComponentID<TurnComponent>();
+        }
+        if (!enemies.at(i)->hasComponent<EquipmentComponent>()) {
+            enemies.at(i)->addComponentID<EquipmentComponent>();
+        }
         turnManager.addEntity(enemies.at(i));
     }
 }
 
 void Akuma::makeStairs() {
+    if (stairs == nullptr) {
+        stairs = &manager.addEntity();
+	}
     auto roomList = floor.getRoomList();
     for (auto i = roomList.size() - 1; i > 0; i--) {
         auto roomSize =

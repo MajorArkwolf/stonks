@@ -122,3 +122,68 @@ void ItemLoader::constructGenerics() {
     ItemManager::ItemManager().push_back(firstID);
     ItemManager::ArmorManager().push_back(rags);
 }
+
+auto ItemManager::getNewID() -> size_t {
+    static size_t lastID = 1;
+    return lastID++;
+}
+
+auto ItemManager::ItemManager() -> vector<ItemID> & {
+    static vector<ItemID> itemList = {};
+    return itemList;
+}
+
+auto ItemManager::WeaponManager() -> vector<Weapon> & {
+    static vector<Weapon> weaponList = {};
+    return weaponList;
+}
+
+auto ItemManager::ArmorManager() -> vector<Armor> & {
+    static vector<Armor> armorList = {};
+    return armorList;
+}
+
+auto ItemManager::ConsumableManager() -> vector<Consumable> & {
+    static vector<Consumable> consumableList = {};
+    return consumableList;
+}
+
+auto ItemManager::getItem(size_t ID) ->ItemID {
+    for (auto &i : ItemManager()) {
+        if (ID == i.itemID) {
+            return i;
+            break;
+        }
+    }
+    return ItemID();
+}
+
+auto ItemManager::getWeapon(size_t ID) -> Weapon {
+    for (auto &i : WeaponManager()) {
+        if (ID == i.itemID) {
+            return i;
+            break;
+        }
+    }
+    return Weapon();
+}
+
+auto ItemManager::getArmor(size_t ID) -> Armor {
+    for (auto &i : ArmorManager()) {
+        if (ID == i.itemID) {
+            return i;
+            break;
+        }
+    }
+    return Armor();
+}
+
+auto ItemManager::getConsumable(size_t ID) -> Consumable {
+    for (auto &i : ConsumableManager()) {
+        if (ID == i.itemID) {
+            return i;
+            break;
+        }
+    }
+    return Consumable();
+}
