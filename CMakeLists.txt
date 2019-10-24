@@ -68,6 +68,7 @@ set (SOURCES
     src/ECS/CameraComponent.cpp
 	src/ECS/CombatComponent.cpp 
 	src/ECS/ECS.cpp
+	src/ECS/EquipmentComponent.cpp	
     src/ECS/EnemyComponent.cpp	 
 	src/ECS/FloorComponent.cpp 
     src/ECS/ModelComponent.cpp
