@@ -80,6 +80,9 @@ std::vector<Node *> Pathing::Pathfinding::findPath(Grid &nodeGrid, Node &startNo
     std::vector<Node *> closedSet;
     nodeGrid.resetGridCosts();
 
+	startNode.occupied = false;
+    endNode.occupied   = false;
+
     openSet.push_back(&startNode);
 
     while (!openSet.empty()) {
@@ -108,14 +111,17 @@ std::vector<Node *> Pathing::Pathfinding::findPath(Grid &nodeGrid, Node &startNo
 
         // Path find
         if (currentNode == &endNode) {
+            startNode.occupied = true;
+            endNode.occupied   = true;
             return traceRoute(&endNode);
+
         }
 
         // For each surrounding node
         for (auto neighbour : nodeGrid.getNeighbours(*currentNode, 1, oct)) {
 
             // Skip to next neighbour if current neighbour is unwalkable or in the closedSet
-            if (containsNode(closedSet, neighbour) || !neighbour->walkable) {
+            if (containsNode(closedSet, neighbour) || !neighbour->walkable || neighbour->occupied) {
                 continue;
             }
 
@@ -141,7 +147,8 @@ std::vector<Node *> Pathing::Pathfinding::findPath(Grid &nodeGrid, Node &startNo
             openSet.push_back(neighbour);
         }
     }
-
+    startNode.occupied = true;
+    endNode.occupied   = true;
     std::vector<Node *> emptyList;
     return emptyList;
 }

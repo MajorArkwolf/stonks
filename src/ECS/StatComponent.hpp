@@ -1,10 +1,11 @@
 #pragma once
 
 #include <string>
+
 #include "ECS.hpp"
 
 struct CharacterSheet {
-    std::string name      = "";
+    std::string name = "";
     int level        = 1;
     int HD           = 8;
     bool assignedHP  = false;
@@ -14,80 +15,35 @@ struct CharacterSheet {
     int luck         = 10;
     int intelligence = 10;
     int vitality     = 10;
+    int pointsLeft   = 10;
+};
+
+struct StatDescription {
+    const std::string strength = "Increases damage and hit chance on strength weapons.";
+    const std::string dexterity = "Increases sneak and hit on dex weapons.";
+    const std::string luck = "Increases crit chance.";
+    const std::string intelligence = "Does absolutely nothing, it would be ironic if you picked this.";
+    const std::string vitality = "Increases health.";
 };
 
 class StatComponent : public Component {
   public:
-    StatComponent() = default;
-    StatComponent(CharacterSheet newStat) {
-        this->stat = newStat;
-    }
-    ~StatComponent() = default;
-    void init() {}
-    void update() {}
-    void draw() {}
+    StatComponent();
+    StatComponent(CharacterSheet newStat);
+    ~StatComponent();
+    void init();
+    void update();
+    void draw();
 
-    auto getStrengthMod() {
-        return getMod(this->stat.strength);
-	}
-    auto getIntelligenceMod() {
-        return getMod(this->stat.intelligence);
-    }
-    auto getDexterityMod() {
-        return getMod(this->stat.dexterity);
-    }
-    auto getLuckMod() {
-        return getMod(this->stat.luck);
-    }
-    auto getVitalityMod() {
-        return getMod(this->stat.vitality);
-    }
-
-    auto getStatSheet() -> CharacterSheet & {
-        return stat;
-    }
-
-    auto setStatSheet(CharacterSheet newStat) -> void {
-        this->stat = newStat;
-    }
+    auto getStrengthMod() -> int;
+    auto getIntelligenceMod() -> int;
+    auto getDexterityMod() -> int;
+    auto getLuckMod() -> int;
+    auto getVitalityMod() -> int;
+    auto getStatSheet() -> CharacterSheet &;
+    auto setStatSheet(CharacterSheet newStat) -> void;
     CharacterSheet stat;
 
   private:
-    auto getMod(int checkStat) -> int {
-        if (checkStat <= 1) {
-            return -5;
-        } else if (checkStat < 4) {
-            return -4;
-        } else if (checkStat < 6) {
-            return -3;
-        } else if (checkStat < 8) {
-            return -2;
-        } else if (checkStat < 10) {
-            return -1;
-        } else if (checkStat < 12) {
-            return 0;
-        } else if (checkStat < 14) {
-            return 1;
-        } else if (checkStat < 16) {
-            return 2;
-        } else if (checkStat < 18) {
-            return 3;
-        } else if (checkStat < 20) {
-            return 4;
-        } else if (checkStat < 22) {
-            return 5;
-        } else if (checkStat < 24) {
-            return 6;
-        } else if (checkStat < 26) {
-            return 7;
-        } else if (checkStat < 28) {
-            return 8;
-        } else if (checkStat < 30) {
-            return 9;
-        } else if (checkStat > 30) {
-            return 10;
-        } else {
-            return 0;
-		}
-    }
+    auto getMod(int checkStat) -> int;
 };

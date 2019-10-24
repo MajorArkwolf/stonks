@@ -45,6 +45,7 @@ set (SOURCES
 	src/Akuma/RNG/Dice.cpp
 	src/Akuma/TurnManager/TurnManager.cpp
     src/Akuma/Items/ItemManager.cpp
+	src/Akuma/CombatLog.cpp
 
     src/Menu/Menu.cpp
     
@@ -63,6 +64,20 @@ set (SOURCES
     src/Shay/Collision.cpp
     src/Shay/TexturedPolygons.cpp
     src/Shay/Shay.cpp
+
+    src/ECS/CameraComponent.cpp
+	src/ECS/CombatComponent.cpp 
+	src/ECS/ECS.cpp
+    src/ECS/EnemyComponent.cpp	 
+	src/ECS/FloorComponent.cpp 
+    src/ECS/ModelComponent.cpp
+	src/ECS/MoveComponent.cpp
+	src/ECS/PlayerComponent.cpp
+	src/ECS/PositionComponent.cpp
+    src/ECS/ScaleComponent.cpp
+	src/ECS/StairComponent.cpp
+    src/ECS/StatComponent.cpp
+    src/ECS/TurnComponent.cpp	
 )
 
 # Define the executable.

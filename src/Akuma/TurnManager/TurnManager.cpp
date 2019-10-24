@@ -66,6 +66,11 @@ void TurnManager::turnOnManager() {
     if (roundCounter == 1) {
         CombatLog::log().push_back("-----" + std::to_string(roundCounter) + "-----");		
 	}
+    turnToken = true;
+}
+
+void TurnManager::clearActors() {
+    actors.clear();
 }
 
 void TurnManager::turnOffManager() {

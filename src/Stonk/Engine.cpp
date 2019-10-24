@@ -165,20 +165,10 @@ auto Engine::getIsRunning() const -> bool {
  * @param event The SDL2 event being read from
  */
 auto Engine::handleKeyPress(SDL_Event &event) -> void {
-    auto &engine = Engine::get();
     switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_P: {
             this->showDebugMenu = !this->showDebugMenu;
         } break;
-        case SDL_SCANCODE_G: {
-            engine.popStack();
-            engine.loadState(GameMode::AKUMA);
-        } break;
-        case SDL_SCANCODE_H: {
-            engine.popStack();
-            engine.loadState(GameMode::SHAY);
-        } break;
-
         default: break;
     }
 }
@@ -316,8 +306,8 @@ auto Engine::processInput() -> void {
             SDL_SetRelativeMouseMode(SDL_TRUE);
         } else {
             SDL_SetRelativeMouseMode(SDL_FALSE);
-		}
-        
+        }
+
         if (!stack.empty()) {
             stack.top()->handleInput(event);
         }
@@ -401,7 +391,18 @@ auto Stonk::Engine::settingsMenu() -> void {
 
     ImGui::Separator();
     ImGui::Text("Volume Settings");
-    ImGui::SliderFloat("Master Volume", &Volume, 0.0f, 100.0f, "Volume = %.1f");
+    if (ImGui::SliderFloat("Master Volume", &Volume, 0.0f, 100.0f, "Volume = %.1f") |
+        ImGui::SliderFloat("SFX Volume", &SFXVolume, 0.0f, 100.0f,
+                           "SFX Volume = %.1f") |
+        ImGui::SliderFloat("Music Volume", &MusicVolume, 0.0f, 100.0f,
+                           "Music Volume = %.1f")) {
+        int sfx_vol = static_cast<int>(MIX_MAX_VOLUME * (Volume / 100.0f) *
+                                       (SFXVolume / 100.0f));
+        int mus_vol = static_cast<int>(MIX_MAX_VOLUME * (Volume / 100.0f) *
+                                       (MusicVolume / 100.0f));
+        Mix_Volume(-1, sfx_vol);
+        Mix_VolumeMusic(mus_vol);
+    }
     ImGui::Separator();
     ImGui::Text("Brightness");
     if (ImGui::SliderFloat("Gamma Correction", &gammaCorrection, 0.1f, 2.f,
@@ -409,12 +410,11 @@ auto Stonk::Engine::settingsMenu() -> void {
         SDL_SetWindowBrightness(this->window.get(), gammaCorrection);
     }
     ImGui::End();
-
 }
 
 /**
- * @brief I DONT KNOW WHAT THIS DOES
- * @return What is this
+ * @brief Returns the time in seconds since the engine started.
+ * @return The time in seconds since the engine started.
  */
 auto Engine::getTime() const -> double {
     return static_cast<double>(SDL_GetPerformanceCounter()) /
