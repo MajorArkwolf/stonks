@@ -10,7 +10,7 @@
 #include "Akuma/Akuma.hpp"
 #include "Stonk/OpenGl.hpp"
 
-PlayerComponent::PlayerComponent() {};
+PlayerComponent::PlayerComponent() = default;
 PlayerComponent::~PlayerComponent() = default;
 void PlayerComponent::init() {}
 void PlayerComponent::update() {

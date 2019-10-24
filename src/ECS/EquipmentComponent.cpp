@@ -94,9 +94,11 @@ bool EquipmentComponent::unequipArmor() {
 ItemID EquipmentComponent::getEquippedMainHand() {
     return mainHand;
 }
+
 ItemID EquipmentComponent::getEquippedOffHand() {
     return offHand;
 }
+
 ItemID EquipmentComponent::getEquippedArmor() {
     return eArmor;
 }

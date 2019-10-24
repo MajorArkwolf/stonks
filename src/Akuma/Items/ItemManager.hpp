@@ -1,36 +1,36 @@
 #pragma once
-#include <string>
-#include <vector>
-#include <sstream>
 #include <fstream>
 #include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
 
 using std::ifstream;
-using std::stringstream;
 using std::istream;
+using std::stringstream;
 
 using std::string;
 using std::vector;
 
 enum itemType { consumable, armor, weapon, empty };
 enum rarityItem { common, uncommon, rare, mythic };
-enum mainStat {strength, agility, intelligence};
+enum mainStat { strength, agility, intelligence };
 
 struct ItemID {
-    size_t itemID = 0;
-    itemType type = empty;
-    string name   = "";
+    size_t itemID      = 0;
+    itemType type      = empty;
+    string name        = "";
     string description = "";
 };
 
 struct Armor {
-    size_t itemID     = 0;
-    itemType type     = armor;
-    string name       = "";
+    size_t itemID      = 0;
+    itemType type      = armor;
+    string name        = "";
     string description = "";
-    rarityItem rarity = common;
-    int armorBonus    = 0;
-    int dexPentalty   = 0;
+    rarityItem rarity  = common;
+    int armorBonus     = 0;
+    int dexPentalty    = 0;
     friend istream &operator>>(std::istream &input, Armor &item) {
         string inputString              = "";
         static constexpr char SEPARATOR = ',';
@@ -57,56 +57,56 @@ struct Armor {
         item.dexPentalty = std::stoi(inputString);
 
         return input;
-	}
+    }
 };
 
 struct Weapon {
-    size_t itemID     = 0;
-    itemType type     = weapon;
-    string name       = "";
-    string description  = "";
-    rarityItem rarity   = common;
-    int weaponPreHitDie = 1;
-    int weaponHitDie    = 3;
-    int critRange       = 0;
-    int critMultiplier  = 2;
-    int range           = 1;
-    mainStat mainStatType     = strength;
+    size_t itemID         = 0;
+    itemType type         = weapon;
+    string name           = "";
+    string description    = "";
+    rarityItem rarity     = common;
+    int weaponPreHitDie   = 1;
+    int weaponHitDie      = 3;
+    int critRange         = 0;
+    int critMultiplier    = 2;
+    int range             = 1;
+    mainStat mainStatType = strength;
     friend istream &operator>>(std::istream &input, Weapon &item) {
         string inputString              = "";
         static constexpr char SEPARATOR = ',';
-		std::getline(input, inputString, SEPARATOR);
+        std::getline(input, inputString, SEPARATOR);
         item.name = inputString;
 
-		std::getline(input, inputString, SEPARATOR);
+        std::getline(input, inputString, SEPARATOR);
         item.description = inputString;
 
-		std::getline(input, inputString, SEPARATOR);
+        std::getline(input, inputString, SEPARATOR);
         if (inputString == "common") {
             item.rarity = common;
         } else if (inputString == "uncommon") {
             item.rarity = uncommon;
-		} else if (inputString == "rare") {
+        } else if (inputString == "rare") {
             item.rarity = rare;
         } else if (inputString == "mythic") {
             item.rarity = mythic;
-		}
+        }
         std::getline(input, inputString, SEPARATOR);
         item.weaponPreHitDie = std::stoi(inputString);
 
-		std::getline(input, inputString, SEPARATOR);
+        std::getline(input, inputString, SEPARATOR);
         item.weaponHitDie = std::stoi(inputString);
 
-		std::getline(input, inputString, SEPARATOR);
+        std::getline(input, inputString, SEPARATOR);
         item.critRange = std::stoi(inputString);
 
-		std::getline(input, inputString, SEPARATOR);
+        std::getline(input, inputString, SEPARATOR);
         item.critMultiplier = std::stoi(inputString);
 
-		std::getline(input, inputString, SEPARATOR);
+        std::getline(input, inputString, SEPARATOR);
         item.range = std::stoi(inputString);
 
-		std::getline(input, inputString, SEPARATOR);
+        std::getline(input, inputString, SEPARATOR);
         if (inputString == "strengh" || inputString == "1") {
             item.mainStatType = strength;
         } else if (inputString == "agility" || inputString == "2") {
@@ -158,16 +158,16 @@ struct Consumable {
         std::getline(input, inputString, SEPARATOR);
         item.strength = std::stoi(inputString);
 
-		std::getline(input, inputString, SEPARATOR);
+        std::getline(input, inputString, SEPARATOR);
         item.dexterity = std::stoi(inputString);
 
-		std::getline(input, inputString, SEPARATOR);
+        std::getline(input, inputString, SEPARATOR);
         item.luck = std::stoi(inputString);
 
-		std::getline(input, inputString, SEPARATOR);
+        std::getline(input, inputString, SEPARATOR);
         item.intelligence = std::stoi(inputString);
 
-		std::getline(input, inputString, SEPARATOR);
+        std::getline(input, inputString, SEPARATOR);
         item.duration = std::stoi(inputString);
 
         return input;

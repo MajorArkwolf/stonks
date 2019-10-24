@@ -10,9 +10,7 @@
 #include "CombatComponent.hpp"
 #include "FloorComponent.hpp"
 
-EnemyComponent::EnemyComponent() {
-    //init();
-}
+EnemyComponent::EnemyComponent()  = default;
 EnemyComponent::~EnemyComponent() = default;
 void EnemyComponent::init() {}
 void EnemyComponent::update() {

@@ -152,7 +152,6 @@ auto ItemManager::getItem(size_t ID) ->ItemID {
     for (auto &i : ItemManager()) {
         if (ID == i.itemID) {
             return i;
-            break;
         }
     }
     return ItemID();
@@ -162,7 +161,6 @@ auto ItemManager::getWeapon(size_t ID) -> Weapon {
     for (auto &i : WeaponManager()) {
         if (ID == i.itemID) {
             return i;
-            break;
         }
     }
     return Weapon();
@@ -172,7 +170,6 @@ auto ItemManager::getArmor(size_t ID) -> Armor {
     for (auto &i : ArmorManager()) {
         if (ID == i.itemID) {
             return i;
-            break;
         }
     }
     return Armor();
@@ -182,7 +179,6 @@ auto ItemManager::getConsumable(size_t ID) -> Consumable {
     for (auto &i : ConsumableManager()) {
         if (ID == i.itemID) {
             return i;
-            break;
         }
     }
     return Consumable();
