@@ -1,4 +1,5 @@
 #include "CombatComponent.hpp"
+#include "Akuma/Items/ItemManager.hpp"
 
 CombatComponent::CombatComponent()  = default;
 CombatComponent::~CombatComponent() = default;
@@ -15,7 +16,7 @@ void CombatComponent::attackEntity(Entity *opponent) {
     int weaponPreHitDie      = 1;
     int weaponCritMultiplier = 3;
     int enemyAC              = 0;
-    int enemyDodge           = 0;
+    int enemyDodge = opponent->getComponent<StatComponent>().stat.dexterity;
     int weaponCritRange      = 0;
     int enemyDodgePenalty    = 0;
     int critrange            = 20 - weaponCritRange -
@@ -27,32 +28,37 @@ void CombatComponent::attackEntity(Entity *opponent) {
             // enemyDodgePenalty
         }
         if (diceRoll == 1) {
-            std::cout << "fumble \n";
+            logInformation(this->entity->getComponent<StatComponent>().stat.name + " fumbles their attack.");
         } else if (diceRoll == 20) {
             diceRoll = diceroller.Roll(1, 20);
             if (diceRoll >= ((enemyAC + enemyDodge) - enemyDodgePenalty)) {
                 // natural 20 crit damage
                 damage = weaponDamage(weaponPreHitDie, weaponHitDie,
                                       weaponCritMultiplier);
+                logInformation(damage, opponent);
             } else {
                 damage = weaponDamage(weaponPreHitDie, weaponHitDie);
+                logInformation(damage, opponent);
                 // regular damage
             }
         } else if (diceRoll >= ((enemyAC + enemyDodge) - enemyDodgePenalty)) {
             if (diceRoll >= critrange) {
                 damage = weaponDamage(weaponPreHitDie, weaponHitDie,
                                       weaponCritMultiplier);
+                logInformation(damage, opponent);
                 // damage multiplier
             } else {
                 damage = weaponDamage(weaponPreHitDie, weaponHitDie);
+                logInformation(damage, opponent);
                 // regular damage
             }
         } else {
-            // miss
-            std::cout << "miss \n";
+            logInformation(this->entity->getComponent<StatComponent>().stat.name +
+                           " misses their attack on" +
+                           opponent->getComponent<StatComponent>().stat.name +
+                           ".");
         }
-    }
-    logInformation(damage, opponent);
+    }    
     this->entity->getComponent<TurnComponent>().endYourTurn();
 }
 int CombatComponent::weaponDamage(int weaponPreHitDie, int weaponHitDie) {
@@ -77,5 +83,9 @@ void CombatComponent::logInformation(int damage, Entity *opponent) {
         "Combat: Name: " + this->entity->getComponent<StatComponent>().stat.name +
         "hit " + opponent->getComponent<StatComponent>().stat.name + " for " +
         std::to_string(damage) + " points of damage.";
-    CombatLog::log().push_back(eventLog);
+    logInformation(eventLog);
+}
+
+void CombatComponent::logInformation(string info) {
+    CombatLog::log().push_back(info);
 }

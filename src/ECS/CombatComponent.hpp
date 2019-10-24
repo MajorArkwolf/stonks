@@ -26,6 +26,6 @@ class CombatComponent : public Component {
 
   private:
     Dice diceroller;
-
+    void logInformation(string info);
     void logInformation(int damage, Entity *opponent);
 };
