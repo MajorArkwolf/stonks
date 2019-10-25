@@ -1,12 +1,11 @@
 #pragma once
-#include <iostream>
 
-#include "../Akuma/CombatLog.hpp"
 #include "../Akuma/Pathing/Node.hpp"
-#include "../Akuma/RNG/Dice.hpp"
 #include "ECS.hpp"
-#include "StatComponent.hpp"
-#include "TurnComponent.hpp"
+#include "Akuma/Items/ItemManager.hpp"
+#include "../Akuma/RNG/Dice.hpp"
+
+
 
 class CombatComponent : public Component {
   public:
@@ -26,6 +25,8 @@ class CombatComponent : public Component {
 
   private:
     Dice diceroller;
-
+    void singleHanded(Entity *opponent);
+    void logInformation(string info);
     void logInformation(int damage, Entity *opponent);
+    void logInformation(int damage, Entity *opponent, Weapon weapon);
 };

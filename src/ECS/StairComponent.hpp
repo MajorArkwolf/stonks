@@ -1,5 +1,5 @@
 #pragma once
-#include "..//Akuma/Floor.hpp"
+#include "Akuma/Floor.hpp"
 #include "ECS.hpp"
 
 /* This will need to handle input to the player */

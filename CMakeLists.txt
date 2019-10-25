@@ -35,6 +35,7 @@ set (SOURCES
     src/Stonk/BaseState.hpp
     src/Stonk/Audio.cpp
     
+	src/Akuma/CombatLog.cpp
     src/Akuma/ProceduralGen/BSP/BSP.cpp
     src/Akuma/ProceduralGen/BSP/Node.cpp
     src/Akuma/Pathing/Grid.cpp
@@ -44,9 +45,10 @@ set (SOURCES
     src/Akuma/Akuma.cpp
 	src/Akuma/RNG/Dice.cpp
 	src/Akuma/TurnManager/TurnManager.cpp
+    src/Akuma/Items/ItemManager.cpp
 	src/Akuma/CombatLog.cpp
-    
-	src/Menu/Menu.cpp
+
+    src/Menu/Menu.cpp
     
     src/ObjLoader/MtlLoader.cpp
     src/ObjLoader/ObjLoader.cpp
@@ -67,6 +69,7 @@ set (SOURCES
     src/ECS/CameraComponent.cpp
 	src/ECS/CombatComponent.cpp 
 	src/ECS/ECS.cpp
+	src/ECS/EquipmentComponent.cpp	
     src/ECS/EnemyComponent.cpp	 
 	src/ECS/FloorComponent.cpp 
 	src/ECS/InventoryComponent.cpp

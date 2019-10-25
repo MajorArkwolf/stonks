@@ -1,4 +1,6 @@
 #include "MoveComponent.hpp"
+#include "PositionComponent.hpp"
+#include "TurnComponent.hpp"
 
 MoveComponent::MoveComponent()  = default;
 MoveComponent::~MoveComponent() = default;

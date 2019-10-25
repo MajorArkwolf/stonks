@@ -9,7 +9,11 @@
 #include "Stonk/BaseState.hpp"
 #include "Stonk/Engine.hpp"
 #include "Stonk/OpenGl.hpp"
+#include "glm/vec3.hpp"
+#include "ECS/Components.hpp"
+#include "RNG/Dice.hpp"
 #include "TurnManager/TurnManager.hpp"
+#include "Akuma/Items/ItemManager.hpp"
 #include "glm/vec3.hpp"
 /**
  * @class Akuma
@@ -68,5 +72,5 @@ class Akuma : public BaseState {
     auto drawAxis(float x, float y, float z, float length) -> void;
     std::vector<Model> modelList;
 
-	void MakeStairs();
+	void makeStairs();
 };
