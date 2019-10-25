@@ -7,15 +7,18 @@ void InventoryComponent::update() {}
 void InventoryComponent::draw() {}
 
 void InventoryComponent::addItemToInventory(ItemID newItem) {
+    bool found = false;
     for (auto &i : inventoryList) {
         if (i.mItem.itemID == newItem.itemID) {
             i.quantitiy++;
-            return;
+            found = true;
 		}
 	}
-    Item temp;
-    temp.mItem = newItem;
-    temp.quantitiy = 1;
-    inventoryList.push_back(temp);
+    if (found == false) {
+		Item temp;
+		temp.mItem = newItem;
+		temp.quantitiy = 1;
+		inventoryList.push_back(temp);
+    }
 }
 //ItemID InventoryComponent::dropItem() {}

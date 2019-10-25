@@ -137,25 +137,7 @@ auto Akuma::Akuma::hardInit() -> void {
     modelList.push_back(OBJ::Load("flattile.obj"));
     modelList.push_back(OBJ::Load("flatwall.obj"));
 
-	player = &manager.addEntity();
-	player->addComponentID<FloorComponent>();
-	player->getComponent<FloorComponent>().setFloor(floor);
-	player->addComponentID<ScaleComponent>();
-	player->getComponent<ScaleComponent>().setScale(glm::vec3{ 0.5, 0.5, 0.5 });
-	player->addComponentID<PositionComponent>();
-	auto roomList = floor.getRoomList();
-	glm::uvec2 pos = roomList[0]->getCentrePoint();
-	auto roomNode = floor.getGridNode(pos);
-	player->getComponent<PositionComponent>().setPos(roomNode);
-	player->addComponentID<ModelComponent>();
-	player->getComponent<ModelComponent>().setModel("player_female.obj");
-	player->addComponentID<PlayerComponent>();
-	player->addComponentID<MoveComponent>();
-	player->addComponentID<StatComponent>();
-	player->getComponent<StatComponent>().stat.name = "Waman";
-	player->addComponentID<CameraComponent>();
-	player->addComponentID<TurnComponent>();
-	player->addComponentID<CombatComponent>();
+	createPlayer();
 	turnManager.addEntity(player);
 	ItemLoader item;
 	item.init();
@@ -695,6 +677,29 @@ void Akuma::makeStairs() {
             // valid room
         }
     }
+}
+
+void Akuma::createPlayer() {
+    player = &manager.addEntity();
+    player->addComponentID<FloorComponent>();
+    player->getComponent<FloorComponent>().setFloor(floor);
+    player->addComponentID<ScaleComponent>();
+    player->getComponent<ScaleComponent>().setScale(glm::vec3{0.5, 0.5, 0.5});
+    player->addComponentID<PositionComponent>();
+    auto roomList  = floor.getRoomList();
+    glm::uvec2 pos = roomList[0]->getCentrePoint();
+    auto roomNode  = floor.getGridNode(pos);
+    player->getComponent<PositionComponent>().setPos(roomNode);
+    player->addComponentID<ModelComponent>();
+    player->getComponent<ModelComponent>().setModel("player_female.obj");
+    player->addComponentID<PlayerComponent>();
+    player->addComponentID<MoveComponent>();
+    player->addComponentID<StatComponent>();
+    player->getComponent<StatComponent>().stat.name = "Waman";
+    player->addComponentID<CameraComponent>();
+    player->addComponentID<TurnComponent>();
+    player->addComponentID<CombatComponent>();
+    player->addComponentID<InventoryComponent>();
 }
 
 void Akuma::placePlayer() {
