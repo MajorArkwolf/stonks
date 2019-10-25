@@ -14,5 +14,6 @@
 #include "CameraComponent.hpp"
 #include "CombatComponent.hpp"
 #include "StairComponent.hpp"
+#include "InventoryComponent.hpp"
 
 

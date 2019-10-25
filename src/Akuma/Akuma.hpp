@@ -83,4 +83,5 @@ class Akuma : public BaseState {
     std::vector<Model> modelList;
 
 	void makeStairs();
+    void createPlayer();
 };
