@@ -20,7 +20,5 @@ class InventoryComponent : public Component {
 
 	void addItemToInventory(ItemID newItem);
     //ItemID dropItem();
-
-  private:
     std::vector<Item> inventoryList;
 };

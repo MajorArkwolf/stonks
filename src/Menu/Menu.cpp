@@ -16,21 +16,23 @@ void Menu::displayMenuWindow() {
     ImGui::Begin("Menu", nullptr,
                  ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
     ImGui::Separator();
-
+    ImGui::SetNextItemWidth(ImGui::GetWindowWidth());
     ImGui::Text("Choose game to load");
-    if (ImGui::Button("Shays World")) {
+    if (ImGui::Button("Shays World", ImVec2(285, 40))) {
         stonk.loadState(Stonk::GameMode::SHAY);
     }
-    ImGui::SameLine();
-    if (ImGui::Button("Akuma Shei")) {
+
+    if (ImGui::Button("Akuma Shei", ImVec2(285, 40))) {
         stonk.loadState(Stonk::GameMode::AKUMA);
     }
 
     ImGui::Separator();
-    if (ImGui::Button("Settings")) {
+
+    ImGui::Text("Other options");
+    if (ImGui::Button("Settings", ImVec2(285, 40))) {
         stonk.showSettingsMenu = stonk.showSettingsMenu ? false : true;
     }
-    if (ImGui::Button("Quit")) {
+    if (ImGui::Button("Quit", ImVec2(285, 40))) {
         stonk.isRunning = false;
     }
 

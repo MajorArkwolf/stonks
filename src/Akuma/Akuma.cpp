@@ -85,6 +85,7 @@ auto Akuma::Akuma::display() -> void {
 
     displayDebugMenu();
     displayGameStats();
+    drawInventoryWindow();
     if (showCharacterMenu) {
         drawCharacterMenu();
     }
@@ -137,14 +138,14 @@ auto Akuma::Akuma::hardInit() -> void {
     modelList.push_back(OBJ::Load("flattile.obj"));
     modelList.push_back(OBJ::Load("flatwall.obj"));
 
-	createPlayer();
-	turnManager.addEntity(player);
-	ItemLoader item;
-	item.init();
+    createPlayer();
+    turnManager.addEntity(player);
+    ItemLoader item;
+    item.init();
     makeStairs();
-	generateLevel();
-	softInit();
-	turnManager.turnOnManager();
+    generateLevel();
+    softInit();
+    turnManager.turnOnManager();
 }
 
 void Akuma::handleWindowEvent(SDL_Event &event) {
@@ -285,12 +286,12 @@ void Akuma::update([[maybe_unused]] double dt) {
     light_position[2] = player->getComponent<PositionComponent>().getZPos();
     // light_position[3] = 1;
     if (stairs != nullptr) {
-    if (stairs->hasComponent<StairComponent>()) {
-        if (stairs->getComponent<StairComponent>().checkStairActive()) {
-            stairs->getComponent<StairComponent>().resetStairCase();
-            descendLevel();
+        if (stairs->hasComponent<StairComponent>()) {
+            if (stairs->getComponent<StairComponent>().checkStairActive()) {
+                stairs->getComponent<StairComponent>().resetStairCase();
+                descendLevel();
+            }
         }
-    }
     }
 }
 
@@ -629,8 +630,8 @@ void Akuma::generateLevel() {
         enemies.at(i)->getComponent<FloorComponent>().setFloor(floor);
         enemies.at(i)->addComponentID<EnemyComponent>();
         enemies.at(i)->getComponent<EnemyComponent>().SetPlayerTarget(player);
-		enemies.at(i)->addComponentID<EquipmentComponent>();
-		enemies.at(i)->addComponentID<CombatComponent>();
+        enemies.at(i)->addComponentID<EquipmentComponent>();
+        enemies.at(i)->addComponentID<CombatComponent>();
         enemies.at(i)->addComponentID<StatComponent>();
         enemies.at(i)->addComponentID<TurnComponent>();
         turnManager.addEntity(enemies.at(i));
@@ -640,7 +641,7 @@ void Akuma::generateLevel() {
 void Akuma::makeStairs() {
     if (stairs == nullptr) {
         stairs = &manager.addEntity();
-	}
+    }
     auto roomList = floor.getRoomList();
     for (auto i = roomList.size() - 1; i > 0; i--) {
         auto roomSize =
@@ -700,6 +701,14 @@ void Akuma::createPlayer() {
     player->addComponentID<TurnComponent>();
     player->addComponentID<CombatComponent>();
     player->addComponentID<InventoryComponent>();
+    player->getComponent<InventoryComponent>().addItemToInventory(
+        ItemManager::getItem(0));
+    player->getComponent<InventoryComponent>().addItemToInventory(
+        ItemManager::getItem(0));
+    player->getComponent<InventoryComponent>().addItemToInventory(
+        ItemManager::getItem(0));
+    player->getComponent<InventoryComponent>().addItemToInventory(
+        ItemManager::getItem(1));
 }
 
 void Akuma::placePlayer() {
@@ -707,4 +716,23 @@ void Akuma::placePlayer() {
     glm::uvec2 pos = roomList[0]->getCentrePoint();
     auto roomNode  = floor.getGridNode(pos);
     player->getComponent<PositionComponent>().setPos(roomNode);
+}
+
+void Akuma::drawInventoryWindow() {
+    ImGui::SetNextWindowSize(ImVec2(400, 120), ImGuiCond_Once);
+    ImGui::SetNextWindowPos(ImVec2(200, 0), ImGuiCond_Once);
+    ImGui::Begin("Inventory");
+    if (player->hasComponent<InventoryComponent>()) {
+        auto &inventory = player->getComponent<InventoryComponent>().inventoryList;
+        for (auto n : inventory) {
+            ImGui::Text("%s", n.mItem.name.c_str());
+            ImGui::SameLine();
+            ImGui::Text(" (%zu)", n.quantitiy);
+            ImGui::SameLine();
+            if (ImGui::Button("Equip")) {
+                // Equip
+            }
+        }
+    }
+    ImGui::End();
 }
