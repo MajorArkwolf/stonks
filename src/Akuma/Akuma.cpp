@@ -137,11 +137,11 @@ auto Akuma::Akuma::hardInit() -> void {
     // Load models textures etc here
     modelList.push_back(OBJ::Load("flattile.obj"));
     modelList.push_back(OBJ::Load("flatwall.obj"));
+    ItemLoader item;
+    item.init();
 
     createPlayer();
     turnManager.addEntity(player);
-    ItemLoader item;
-    item.init();
     makeStairs();
     generateLevel();
     softInit();
@@ -701,14 +701,15 @@ void Akuma::createPlayer() {
     player->addComponentID<TurnComponent>();
     player->addComponentID<CombatComponent>();
     player->addComponentID<InventoryComponent>();
-    player->getComponent<InventoryComponent>().addItemToInventory(
-        ItemManager::getItem(0));
-    player->getComponent<InventoryComponent>().addItemToInventory(
-        ItemManager::getItem(0));
-    player->getComponent<InventoryComponent>().addItemToInventory(
-        ItemManager::getItem(0));
+    ItemID temp = ItemManager::getItem(1);
+    player->getComponent<InventoryComponent>().addItemToInventory(temp
+        );
     player->getComponent<InventoryComponent>().addItemToInventory(
         ItemManager::getItem(1));
+    player->getComponent<InventoryComponent>().addItemToInventory(
+        ItemManager::getItem(1));
+    player->getComponent<InventoryComponent>().addItemToInventory(
+        ItemManager::getItem(2));
 }
 
 void Akuma::placePlayer() {
