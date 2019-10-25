@@ -143,7 +143,7 @@ auto Menu::displayGrid() -> void {
 /**
  * @brief Draws cubes, used to display walls on the grid
  * @param size The relative size of the cube
- * @param bool Whether to draw wireframe cube
+ * @param wireframe Whether to draw wireframe cube
  */
 void Menu::drawCube(float size, bool wireframe) {
 

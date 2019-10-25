@@ -16,7 +16,7 @@ using std::stringstream;
 /**
  * @brief Default constructor for the Akuma game state
  */
-Akuma::Akuma::Akuma() {
+Akuma::Akuma() {
 
     light_position[0] = 1;
     light_position[1] = 4;
@@ -32,7 +32,7 @@ Akuma::Akuma::Akuma() {
 /**
  * @brief Akuma display function
  */
-auto Akuma::Akuma::display() -> void {
+auto Akuma::display() -> void {
     auto &stonk = Stonk::Engine::get();
     if (showEscapeMenu || showCharacterMenu || playerMouse) {
         relativeMouse = 0;
@@ -110,7 +110,7 @@ auto Akuma::Akuma::display() -> void {
  * @brief Soft initialiser for the Akuma gamestate
  */
 
-auto Akuma::Akuma::softInit() -> void {
+auto Akuma::softInit() -> void {
     glLoadIdentity();
     glLineWidth(1);
     auto &engine = Stonk::Engine::get();
@@ -131,7 +131,7 @@ auto Akuma::Akuma::softInit() -> void {
 /**
  * @brief Hard initialiser for the Akuma gamestate
  */
-auto Akuma::Akuma::hardInit() -> void {
+auto Akuma::hardInit() -> void {
 
     // Load models textures etc here
     modelList.push_back(OBJ::Load("flattile.obj"));
@@ -191,7 +191,7 @@ void Akuma::handleWindowEvent(SDL_Event &event) {
 /**
  * @brief Displays the IMGUI debug menu
  */
-void Akuma::Akuma::displayDebugMenu() {
+void Akuma::displayDebugMenu() {
     auto &stonk = Stonk::Engine::get();
     auto buffer = stringstream{};
 
@@ -231,7 +231,7 @@ void Akuma::Akuma::displayDebugMenu() {
 /**
  * @brief Displays the IMGUI debug menu
  */
-void Akuma::Akuma::displayGameStats() {
+void Akuma::displayGameStats() {
     auto &playerStats = player->getComponent<StatComponent>().stat;
 
     ImGui::SetNextWindowSize(ImVec2(250, 500), 1);
@@ -264,13 +264,13 @@ void Akuma::Akuma::displayGameStats() {
 /**
  * @brief Uninitialiser for the Akuma gamestate
  */
-auto Akuma::Akuma::unInit() -> void {}
+auto Akuma::unInit() -> void {}
 
 /**
  * @brief Handles input for the Akuma gamestate
  * @param event The SDL event to read input from
  */
-auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {
+auto Akuma::handleInput(SDL_Event &event) -> void {
 
     switch (event.type) {
         case SDL_WINDOWEVENT: {
@@ -472,7 +472,7 @@ void Akuma::drawCharacterMenu() {
  * @param z The z-coordinate to start the axis
  * @param length The amount to extend the axis lines in each respective direction
  */
-auto Akuma::Akuma::drawAxis(float x, float y, float z, float length) -> void {
+auto Akuma::drawAxis(float x, float y, float z, float length) -> void {
     glPushMatrix();
     glDepthMask(false);
     glLineWidth(5.0);
@@ -510,7 +510,7 @@ auto Akuma::Akuma::drawAxis(float x, float y, float z, float length) -> void {
 /**
  * @brief Displays the current grid within the room object
  */
-auto Akuma::Akuma::displayGrid() -> void {
+auto Akuma::displayGrid() -> void {
     auto gridSize = floor.getGridSize();
 
     glPushMatrix();
@@ -589,7 +589,7 @@ auto Akuma::drawRectangle(float _width, float _height, bool wireframe) -> void {
  * @param size Size of the cube
  * @param wireframe Unused wireframe parameter
  */
-auto Akuma::Akuma::drawCube(float size, [[maybe_unused]] bool wireframe) -> void {
+auto Akuma::drawCube(float size, [[maybe_unused]] bool wireframe) -> void {
     glEnable(GL_TEXTURE_2D);
     OBJ::displayModel(modelList[1], size);
     glDisable(GL_TEXTURE_2D);
