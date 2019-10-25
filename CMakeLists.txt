@@ -69,6 +69,7 @@ set (SOURCES
 	src/ECS/ECS.cpp
     src/ECS/EnemyComponent.cpp	 
 	src/ECS/FloorComponent.cpp 
+	src/ECS/InventoryComponent.cpp
     src/ECS/ModelComponent.cpp
 	src/ECS/MoveComponent.cpp
 	src/ECS/PlayerComponent.cpp
