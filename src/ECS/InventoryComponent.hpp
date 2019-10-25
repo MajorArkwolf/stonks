@@ -2,10 +2,10 @@
 
 #include "ECS.hpp"
 #include <vector>
-#include "..//Akuma/Items/ItemManager"
+#include "../Akuma/Items/ItemManager.hpp"
 
 struct Item {
-    ItemID itemID;
+    ItemID mItem;
     size_t quantitiy = 0;
 };
 
@@ -18,9 +18,9 @@ class InventoryComponent : public Component {
     void update();
     void draw();
 
-	void addItemToInventory();
+	void addItemToInventory(ItemID newItem);
     //ItemID dropItem();
 
   private:
-	//std::vector<ItemID> inventoryList;
+    std::vector<Item> inventoryList;
 };
