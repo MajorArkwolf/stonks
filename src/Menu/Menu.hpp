@@ -4,7 +4,10 @@
 #include "Stonk/BaseState.hpp"
 #include "Stonk/Engine.hpp"
 #include "Stonk/OpenGl.hpp"
-
+/**
+ * @class Menu
+ * @brief The Menu game state object
+ */
 class Menu : public BaseState {
   public:
     void display();
@@ -19,8 +22,11 @@ class Menu : public BaseState {
     void handleWindowEvent(SDL_Event &event);
 
   private:
+	  ///The floor object being rendered behind the gui
     Floor floor;
+	///The current roation of the grid begin rendered
     float gridRotation = 0;
+	/// The current path being rendered on the grid
     std::vector<Pathing::Node *> currentPath;
     auto updatePath() -> void;
 };
