@@ -34,7 +34,7 @@ Akuma::Akuma::Akuma() {
  */
 auto Akuma::Akuma::display() -> void {
     auto &stonk = Stonk::Engine::get();
-    if (showEscapeMenu || showCharacterMenu || playerMouse) {
+    if (showEscapeMenu || showCharacterMenu || playerMouse || showInventory) {
         relativeMouse = 0;
     } else {
         relativeMouse = 1;
@@ -85,7 +85,10 @@ auto Akuma::Akuma::display() -> void {
 
     displayDebugMenu();
     displayGameStats();
-    drawInventoryWindow();
+    if (showInventory) {
+        drawInventoryWindow();
+	}
+
     if (showCharacterMenu) {
         drawCharacterMenu();
     }
@@ -307,6 +310,9 @@ void Akuma::handleKeyPress(SDL_Event &event) {
         } break;
         case SDL_SCANCODE_E: {
             cameraComp.rotateCamera(-2);
+        } break;
+        case SDL_SCANCODE_I: {
+            this->showInventory = showInventory ? 0 : 1;
         } break;
         case SDL_SCANCODE_ESCAPE: {
             this->showEscapeMenu = showEscapeMenu ? false : true;
@@ -721,15 +727,15 @@ void Akuma::placePlayer() {
 
 void Akuma::drawInventoryWindow() {
     ImGui::SetNextWindowSize(ImVec2(400, 120), ImGuiCond_Once);
-    ImGui::SetNextWindowPos(ImVec2(200, 0), ImGuiCond_Once);
-    ImGui::Begin("Inventory");
+    ImGui::SetNextWindowPos(ImVec2(0, 400), ImGuiCond_Once);
+    ImGui::Begin("Inventory", &showInventory);
     if (player->hasComponent<InventoryComponent>()) {
         auto &inventory = player->getComponent<InventoryComponent>().inventoryList;
         for (auto n : inventory) {
             ImGui::Text("%s", n.mItem.name.c_str());
-            ImGui::SameLine();
+            ImGui::SameLine(ImGui::GetWindowWidth() - 130);
             ImGui::Text(" (%zu)", n.quantitiy);
-            ImGui::SameLine();
+            ImGui::SameLine(ImGui::GetWindowWidth()-100);
             if (ImGui::Button("Equip")) {
                 // Equip
             }
