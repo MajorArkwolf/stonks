@@ -76,3 +76,19 @@ auto StatComponent::getMod(int checkStat) -> int {
         return 0;
     }
 }
+
+auto StatComponent::setupEntity() -> void {
+    for (auto i = 1; i <= this->stat.level; i++) {
+        if (i == 1) {
+            this->stat.maxHP = this->stat.HD + getVitalityMod();
+        } else {
+            this->stat.maxHP +=
+                this->diceroller.Roll(1, this->stat.HD) + getVitalityMod();
+        }
+	}
+    this->stat.HP = this->stat.maxHP;
+}
+
+auto StatComponent::takeDamage(int damage) -> void {
+    this->stat.HP -= damage;
+}

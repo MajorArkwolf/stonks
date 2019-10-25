@@ -80,6 +80,9 @@ void CombatComponent::singleHanded(Entity *opponent) {
                       opponent->getComponent<StatComponent>().stat.name + ".";
         logInformation(info);
     }
+    if (damage > 0) {
+        opponent->getComponent<StatComponent>().takeDamage(damage);
+	}
 }
 
 int CombatComponent::weaponDamage(int weaponPreHitDie, int weaponHitDie) {

@@ -3,6 +3,7 @@
 #include <string>
 
 #include "ECS.hpp"
+#include "../Akuma/RNG/Dice.hpp"
 
 struct CharacterSheet {
     std::string name = "";
@@ -38,6 +39,8 @@ class StatComponent : public Component {
     void update();
     void draw();
 
+	auto takeDamage(int damage) -> void;
+	auto setupEntity() -> void;
     auto getStrengthMod() -> int;
     auto getIntelligenceMod() -> int;
     auto getDexterityMod() -> int;
@@ -48,5 +51,6 @@ class StatComponent : public Component {
     CharacterSheet stat;
 
   private:
+    Dice diceroller;
     auto getMod(int checkStat) -> int;
 };
