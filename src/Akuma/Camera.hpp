@@ -20,5 +20,9 @@ namespace Player {
 
         /// The current angle values of the camera
         glm::dvec2 angles = {glm::pi<double>(), 0};
+		///Whether to rotate
+        bool rotateLeft   = 0;
+		///Whether to rotat
+        bool rotateRight  = 0;
     };
 }

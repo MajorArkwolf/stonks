@@ -165,6 +165,10 @@ auto Akuma::Akuma::hardInit() -> void {
 	turnManager.turnOnManager();
 }
 
+/**
+ * @brief Handles window events for the Akuma class
+ * @param event The SDL event object containing the window event
+ */
 void Akuma::handleWindowEvent(SDL_Event &event) {
     switch (event.window.event) {
         case SDL_WINDOWEVENT_SIZE_CHANGED:
@@ -338,6 +342,10 @@ void Akuma::handleKeyPress(SDL_Event &event) {
     }
 }
 
+/**
+ * @brief Handles key release events for the Akuma game state
+ * @param event The SDL event with the release event
+ */
 void Akuma::handleKeyRelease(SDL_Event &event) {
     switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_A: {
@@ -356,6 +364,10 @@ void Akuma::handleKeyRelease(SDL_Event &event) {
     }
 }
 
+/**
+ * @brief Handles mouse wheel events for the akuma gamestate
+ * @param event The SDL event containing the mouse wheel event
+ */
 void Akuma::handleMouseWheel(SDL_Event &event) {
     auto &cameraComp = player->getComponent<CameraComponent>();
 
@@ -363,6 +375,15 @@ void Akuma::handleMouseWheel(SDL_Event &event) {
     cameraComp.zoomCamera(amountScrolledY);
 }
 
+/**
+ * @brief ImGui stat selector label and changer
+ * @param attribName The name of the attribute
+ * @param statMin The minimum the stat can be
+ * @param pointsLeft The number of total points left
+ * @param attributePoints The number of attribute points
+ * @param desc The description of the attribute
+ * @param buttonCount The Imgui button ID, needs to be different for every stat
+ */
 void Akuma::statSelection(const char *attribName, int statMin, int &pointsLeft,
                           int &attributePoints, std::string desc, int buttonCount) {
     ImGui::PushID(buttonCount);
@@ -390,6 +411,9 @@ void Akuma::statSelection(const char *attribName, int statMin, int &pointsLeft,
     ImGui::PopID();
 }
 
+/**
+ * @brief Draws the character selection menu using ImGui
+ */
 void Akuma::drawCharacterMenu() {
     const int statMin = 8;
     auto &playerStats = player->getComponent<StatComponent>().stat;
@@ -560,12 +584,20 @@ auto Akuma::drawRectangle(float _width, float _height, bool wireframe) -> void {
     glEnd();
 }
 
+/**
+ * @brief Draws a cube model
+ * @param size Size of the cube
+ * @param wireframe Unused wireframe parameter
+ */
 auto Akuma::Akuma::drawCube(float size, [[maybe_unused]] bool wireframe) -> void {
     glEnable(GL_TEXTURE_2D);
     OBJ::displayModel(modelList[1], size);
     glDisable(GL_TEXTURE_2D);
 }
 
+/**
+ * @brief Descends a level for the akuma gamestate
+ */
 void Akuma::descendLevel() {
     turnManager.turnOffManager();
     floor.regen();
@@ -580,6 +612,9 @@ void Akuma::descendLevel() {
     turnManager.turnOnManager();
 }
 
+/**
+ * @brief Clears all enemies in the enemy array and removes them from the manager
+ */
 void Akuma::clearEnemies() {
     for (auto &i : enemies) {
         i->destroy();
@@ -588,6 +623,9 @@ void Akuma::clearEnemies() {
     enemies.clear();
 }
 
+/**
+ * @brief Displays the escape menu
+ */
 void Akuma::displayEscapeMenu() {
     auto &stonk = Stonk::Engine::get();
     ImGui::SetNextWindowSize(ImVec2(300, 500), 1);
@@ -609,6 +647,9 @@ void Akuma::displayEscapeMenu() {
     ImGui::End();
 }
 
+/**
+ * @brief Displays the combat log
+ */
 void Akuma::displayCombatLog() {
     ImGui::SetNextWindowSize(ImVec2(400, 120), ImGuiCond_Once);
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
@@ -621,6 +662,9 @@ void Akuma::displayCombatLog() {
     ImGui::End();
 }
 
+/**
+ * @brief Generates a level by creating all enemies, and placing the enemies, player and stairs and the correct positions
+ */
 void Akuma::generateLevel() {
     unsigned int enemyCount = diceRoller.Roll(floorLevel, 3u);
     for (unsigned i = 0; i <= enemyCount; ++i) {
@@ -655,6 +699,9 @@ void Akuma::generateLevel() {
     }
 }
 
+/**
+ * @brief Creates the stair entity within the level
+ */
 void Akuma::makeStairs() {
     if (stairs == nullptr) {
         stairs = &manager.addEntity();
@@ -697,6 +744,9 @@ void Akuma::makeStairs() {
     }
 }
 
+/**
+ * @brief Places a player entity within the level
+ */
 void Akuma::placePlayer() {
     auto roomList  = floor.getRoomList();
     glm::uvec2 pos = roomList[0]->getCentrePoint();
