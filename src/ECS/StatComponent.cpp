@@ -1,4 +1,6 @@
 #include "StatComponent.hpp"
+#include "PlayerComponent.hpp"
+#include "EnemyComponent.hpp"
 
 StatComponent::StatComponent()  = default;
 StatComponent::~StatComponent() = default;
@@ -8,10 +10,7 @@ StatComponent::StatComponent(CharacterSheet newStat) {
 
 void StatComponent::init() {}
 void StatComponent::update() {
-    if (this->stat.exp > 100) {
-        this->stat.exp -= 100;
-        this->stat.levelPoint++; 
-	}
+    deathTrigger();
 }
 void StatComponent::draw() {}
 
@@ -91,4 +90,22 @@ auto StatComponent::setupEntity() -> void {
 
 auto StatComponent::takeDamage(int damage) -> void {
     this->stat.HP -= damage;
+}
+
+auto StatComponent::deathTrigger() -> void {
+    if (this->stat.HP < 0 && !this->stat.dead) {
+        this->stat.dead = true;
+		if (this->entity->hasComponent<PlayerComponent>()) {
+			
+		} else if (this->entity->hasComponent<EnemyComponent>()) {
+            this->entity->getComponent<EnemyComponent>().deadEnemy();
+		}
+    }
+}
+
+auto StatComponent::expCheck() -> void {
+    if (this->stat.exp > 100) {
+        this->stat.exp -= 100;
+        this->stat.levelPoint++;
+    }
 }

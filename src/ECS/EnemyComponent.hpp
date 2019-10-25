@@ -23,6 +23,8 @@ class EnemyComponent : public Component {
 
     void turnEntity(int i);
 
+	auto deadEnemy() -> void;
+
   private:
     Dice diceroller;
     int turn            = 0;

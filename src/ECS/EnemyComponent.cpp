@@ -2,6 +2,8 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include "../Akuma/Pathing/Pathfinding.hpp"
+#include "../Akuma/Items/ItemManager.hpp"
+#include "..//Akuma/CombatLog.hpp"
 
 #include "PositionComponent.hpp"
 #include "MoveComponent.hpp"
@@ -9,6 +11,8 @@
 #include "StatComponent.hpp"
 #include "CombatComponent.hpp"
 #include "FloorComponent.hpp"
+#include "InventoryComponent.hpp"
+#include "DeadComponent.hpp"
 
 EnemyComponent::EnemyComponent()  = default;
 EnemyComponent::~EnemyComponent() = default;
@@ -228,5 +232,29 @@ auto EnemyComponent::combatCheck() -> void {
                 break;
             }
         }
+    }
+}
+
+auto EnemyComponent::deadEnemy() -> void {
+    if (this->entity->hasComponent<StatComponent>()) {
+        this->entity->addComponentID<DeadComponent>();
+        	unsigned int maxSize = static_cast<unsigned int>(ItemManager::ItemManager().size());
+        	size_t lookUp = static_cast<size_t>(diceroller.Roll(1u, maxSize));
+            ItemID returnedItem = ItemManager::getItem(lookUp);
+            player->getComponent<InventoryComponent>().addItemToInventory(
+                returnedItem);
+		//int item = diceroller.Roll(1, 2);
+		//if (item == 1) {
+		//	unsigned int maxSize = static_cast<unsigned int>(ItemManager::WeaponManager().size());
+		//	size_t itemID = static_cast<size_t>(diceroller.Roll(1u, maxSize));
+		//	ItemID lookUp = ItemManager::getItem(itemID);
+		//	player->getComponent<InventoryComponent>().addItemToInventory(lookUp);
+		//} else if (item == 2) {
+		//	unsigned int maxSize =
+		//		static_cast<unsigned int>(ItemManager::ArmorManager().size());
+		//	size_t itemID = static_cast<size_t>(diceroller.Roll(1u, maxSize));
+		//	ItemID lookUp = ItemManager::getItem(itemID);
+		//	player->getComponent<InventoryComponent>().addItemToInventory(lookUp);
+		//}
     }
 }

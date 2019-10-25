@@ -2,6 +2,7 @@
 #include "../RNG/Dice.hpp"
 #include "../../ECS/TurnComponent.hpp"
 #include "../../ECS/StatComponent.hpp"
+#include "../../ECS/DeadComponent.hpp"
 #include "Akuma/CombatLog.hpp"
 #include <algorithm>
 #include <functional>
@@ -13,8 +14,10 @@ void TurnManager::update() {
     if (turnManagerSwitch) {
         if (turnToken) {
             if (actors.size() > actorTurnID) {
-                actors.at(actorTurnID).entity->getComponent<TurnComponent>().startYourTurn();
-                turnToken = false;
+                if (!actors.at(actorTurnID).entity->hasComponent<DeadComponent>()) {
+					actors.at(actorTurnID).entity->getComponent<TurnComponent>().startYourTurn();
+					turnToken = false;
+                }
             } else {
                 actorTurnID = 0;
                 roundCounter++;

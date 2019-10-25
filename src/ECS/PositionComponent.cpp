@@ -1,7 +1,10 @@
 #include "PositionComponent.hpp"
 
 PositionComponent::PositionComponent()  = default;
-PositionComponent::~PositionComponent() = default;
+PositionComponent::~PositionComponent(){
+    currentTile->occupant = nullptr;
+    currentTile->occupied = false;
+};
 void PositionComponent::init() {}
 void PositionComponent::update() {}
 void PositionComponent::draw() {}

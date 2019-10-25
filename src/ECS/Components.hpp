@@ -15,5 +15,6 @@
 #include "CombatComponent.hpp"
 #include "StairComponent.hpp"
 #include "InventoryComponent.hpp"
+#include "DeadComponent.hpp"
 
 

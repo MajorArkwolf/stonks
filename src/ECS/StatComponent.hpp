@@ -20,6 +20,7 @@ struct CharacterSheet {
     int intelligence = 10;
     int vitality     = 10;
     int pointsLeft   = 10;
+    bool dead        = false;
 };
 
 struct StatDescription {
@@ -48,6 +49,9 @@ class StatComponent : public Component {
     auto getVitalityMod() -> int;
     auto getStatSheet() -> CharacterSheet &;
     auto setStatSheet(CharacterSheet newStat) -> void;
+    auto deathTrigger() -> void;
+    auto expCheck() -> void;
+
     CharacterSheet stat;
 
   private:
