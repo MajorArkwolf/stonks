@@ -11,7 +11,7 @@ struct Item {
 
 /* This will need to handle input to the player */
 class InventoryComponent : public Component {
-  public:
+  public: 
     InventoryComponent();
     ~InventoryComponent();
     void init();
