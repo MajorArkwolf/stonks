@@ -7,7 +7,12 @@ StatComponent::StatComponent(CharacterSheet newStat) {
 }
 
 void StatComponent::init() {}
-void StatComponent::update() {}
+void StatComponent::update() {
+    if (this->stat.exp > 100) {
+        this->stat.exp -= 100;
+        this->stat.levelPoint++; 
+	}
+}
 void StatComponent::draw() {}
 
 auto StatComponent::getStrengthMod() -> int {

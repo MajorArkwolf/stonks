@@ -7,8 +7,11 @@
 struct CharacterSheet {
     std::string name = "";
     int level        = 1;
+    int levelPoint   = 0;
+    int exp          = 0;
     int HD           = 8;
     bool assignedHP  = false;
+    int maxHP        = 0;
     int HP           = 1;
     int strength     = 10;
     int dexterity    = 10;
