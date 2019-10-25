@@ -1,13 +1,8 @@
 #pragma once
 
-#include <glm/vec2.hpp>
-#include <glm/vec3.hpp>
-
 #include "../Akuma/Floor.hpp"
-#include "../Akuma/Pathing/Pathfinding.hpp"
-#include "../Akuma/RNG/Dice.hpp"
-#include "Components.hpp"
 #include "ECS.hpp"
+#include "../Akuma/RNG/Dice.hpp"
 
 /* This will need to handle input to the player */
 class EnemyComponent : public Component {

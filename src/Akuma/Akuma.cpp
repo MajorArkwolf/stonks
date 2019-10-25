@@ -137,28 +137,32 @@ auto Akuma::Akuma::hardInit() -> void {
     modelList.push_back(OBJ::Load("flattile.obj"));
     modelList.push_back(OBJ::Load("flatwall.obj"));
 
-    player = &manager.addEntity();
-    player->addComponentID<FloorComponent>();
-    player->getComponent<FloorComponent>().setFloor(floor);
-    player->addComponentID<ScaleComponent>();
-    player->getComponent<ScaleComponent>().setScale(glm::vec3{0.5, 0.5, 0.5});
-    player->addComponentID<PositionComponent>();
-    placePlayer();
-    player->addComponentID<ModelComponent>();
-    player->getComponent<ModelComponent>().setModel("player_female.obj");
-    player->addComponentID<PlayerComponent>();
-    player->addComponentID<MoveComponent>();
-    player->addComponentID<StatComponent>();
-    player->getComponent<StatComponent>().stat.name = "";
-    player->addComponentID<CameraComponent>();
-    player->addComponentID<TurnComponent>();
-    player->addComponentID<CombatComponent>();
-    turnManager.addEntity(player);
-    stairs = &manager.addEntity();
-    MakeStairs();
-    // generateLevel();
-    softInit();
-    turnManager.turnOnManager();
+	player = &manager.addEntity();
+	player->addComponentID<FloorComponent>();
+	player->getComponent<FloorComponent>().setFloor(floor);
+	player->addComponentID<ScaleComponent>();
+	player->getComponent<ScaleComponent>().setScale(glm::vec3{ 0.5, 0.5, 0.5 });
+	player->addComponentID<PositionComponent>();
+	auto roomList = floor.getRoomList();
+	glm::uvec2 pos = roomList[0]->getCentrePoint();
+	auto roomNode = floor.getGridNode(pos);
+	player->getComponent<PositionComponent>().setPos(roomNode);
+	player->addComponentID<ModelComponent>();
+	player->getComponent<ModelComponent>().setModel("player_female.obj");
+	player->addComponentID<PlayerComponent>();
+	player->addComponentID<MoveComponent>();
+	player->addComponentID<StatComponent>();
+	player->getComponent<StatComponent>().stat.name = "Waman";
+	player->addComponentID<CameraComponent>();
+	player->addComponentID<TurnComponent>();
+	player->addComponentID<CombatComponent>();
+	turnManager.addEntity(player);
+	ItemLoader item;
+	item.init();
+    makeStairs();
+	generateLevel();
+	softInit();
+	turnManager.turnOnManager();
 }
 
 void Akuma::handleWindowEvent(SDL_Event &event) {
@@ -298,11 +302,13 @@ void Akuma::update([[maybe_unused]] double dt) {
     // light_position[1] = 2;
     light_position[2] = player->getComponent<PositionComponent>().getZPos();
     // light_position[3] = 1;
+    if (stairs != nullptr) {
     if (stairs->hasComponent<StairComponent>()) {
         if (stairs->getComponent<StairComponent>().checkStairActive()) {
             stairs->getComponent<StairComponent>().resetStairCase();
             descendLevel();
         }
+    }
     }
 }
 
@@ -567,7 +573,7 @@ void Akuma::descendLevel() {
     clearEnemies();
     turnManager.clearActors();
     turnManager.addEntity(player);
-    MakeStairs();
+    makeStairs();
     generateLevel();
     placePlayer(); // move player to new node.
     turnManager.sortActors();
@@ -619,7 +625,6 @@ void Akuma::generateLevel() {
     unsigned int enemyCount = diceRoller.Roll(floorLevel, 3u);
     for (unsigned i = 0; i <= enemyCount; ++i) {
         enemies.push_back(&manager.addEntity());
-        enemies.at(i)->addComponentID<TurnComponent>();
         enemies.at(i)->addComponentID<ScaleComponent>(glm::vec3{0.5, 0.5, 0.5});
         enemies.at(i)->addComponentID<PositionComponent>();
         bool walkable    = false;
@@ -641,14 +646,19 @@ void Akuma::generateLevel() {
         enemies.at(i)->addComponentID<FloorComponent>();
         enemies.at(i)->getComponent<FloorComponent>().setFloor(floor);
         enemies.at(i)->addComponentID<EnemyComponent>();
-        enemies.at(i)->addComponentID<StatComponent>();
         enemies.at(i)->getComponent<EnemyComponent>().SetPlayerTarget(player);
-        enemies.at(i)->addComponentID<CombatComponent>();
+		enemies.at(i)->addComponentID<EquipmentComponent>();
+		enemies.at(i)->addComponentID<CombatComponent>();
+        enemies.at(i)->addComponentID<StatComponent>();
+        enemies.at(i)->addComponentID<TurnComponent>();
         turnManager.addEntity(enemies.at(i));
     }
 }
 
-void Akuma::MakeStairs() {
+void Akuma::makeStairs() {
+    if (stairs == nullptr) {
+        stairs = &manager.addEntity();
+	}
     auto roomList = floor.getRoomList();
     for (auto i = roomList.size() - 1; i > 0; i--) {
         auto roomSize =

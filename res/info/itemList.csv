@@ -1,0 +1,8 @@
+#Armor,Name,Description,Rarity,AC,Dex Penalty,,,
+#Weapon,Name,Description,Rarity,PreHitDie,PostHitDie,CritRange,CritMulitplier,Range,Type(S,A,I)
+#Consumable
+weapon,Iron Dagger,Better then nothing but you should probably upgrade soon.,common,1,3,0,2,1
+weapon,Great Sword,A mighty sword that squishes foes.,rare,2,6,0,3,1
+weapon,Brass Nuckles,Not practical. But cool,common,1,3,4,2,1,2
+weapon,Club,Wooden and reliable,common,1,4,1,2,1,1
+weapon,Shay Bane,An item of incrediable Shay slaying,mythic,2,8,1,4,1,1

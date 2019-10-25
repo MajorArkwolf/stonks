@@ -1,5 +1,6 @@
 #include "ModelComponent.hpp"
 
+
 ModelComponent::ModelComponent()  = default;
 ModelComponent::~ModelComponent() = default;
 void ModelComponent::init() {

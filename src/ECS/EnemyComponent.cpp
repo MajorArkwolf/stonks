@@ -1,4 +1,14 @@
 #include "EnemyComponent.hpp"
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+#include "../Akuma/Pathing/Pathfinding.hpp"
+
+#include "PositionComponent.hpp"
+#include "MoveComponent.hpp"
+#include "TurnComponent.hpp"
+#include "StatComponent.hpp"
+#include "CombatComponent.hpp"
+#include "FloorComponent.hpp"
 
 EnemyComponent::EnemyComponent()  = default;
 EnemyComponent::~EnemyComponent() = default;

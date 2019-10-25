@@ -5,8 +5,12 @@
 #include "PositionComponent.hpp"
 #include "TurnComponent.hpp"
 #include "CombatComponent.hpp"
+#include "EquipmentComponent.hpp"
 
-PlayerComponent::PlayerComponent()  = default;
+#include "Akuma/Akuma.hpp"
+#include "Stonk/OpenGl.hpp"
+
+PlayerComponent::PlayerComponent() = default;
 PlayerComponent::~PlayerComponent() = default;
 void PlayerComponent::init() {}
 void PlayerComponent::update() {
