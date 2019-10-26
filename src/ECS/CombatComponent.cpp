@@ -54,6 +54,12 @@ void CombatComponent::singleHanded(Entity *opponent) {
 
     int diceRoll =
         diceroller.Roll(1, 20) + this->entity->getComponent<StatComponent>().getDexterityMod();
+    if (this->entity->hasComponent<EquipmentComponent>()) {
+        auto e =
+            this->entity->getComponent<EquipmentComponent>().getEquippedArmor().itemID;
+        diceRoll -= ItemManager::getArmor(e).dexPentalty;
+            
+	}
     int weaponHitDie         = mainHand.weaponHitDie;
     int weaponPreHitDie      = mainHand.weaponPreHitDie;
     int weaponCritMultiplier = mainHand.critMultiplier;
