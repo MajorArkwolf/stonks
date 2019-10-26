@@ -1,5 +1,5 @@
 #include "EquipmentComponent.hpp"
-
+#include "InventoryComponent.hpp"
 #include "../Akuma/CombatLog.hpp"
 
 EquipmentComponent::EquipmentComponent()  = default;
@@ -11,9 +11,9 @@ void EquipmentComponent::init() {
 void EquipmentComponent::update() {}
 void EquipmentComponent::draw() {}
 
-void EquipmentComponent::equipMainHand(ItemID &item) {
+void EquipmentComponent::equipMainHand(ItemID item) {
     if (item.type == weapon) {
-        if (mainHand.itemID == 0) {
+        if (mainHand.itemID == 1) {
             mainHand = item;
         } else {
             if (unquipMainHand()) {
@@ -27,7 +27,7 @@ void EquipmentComponent::equipMainHand(ItemID &item) {
         CombatLog::log().push_back("You cant equip that here");
     }
 }
-void EquipmentComponent::equipOffHand(ItemID &item) {
+void EquipmentComponent::equipOffHand(ItemID item) {
     if (item.type == weapon /*add shield here further down the line */) {
         if (offHand.itemID == 0 /*Once implemented 2H this will also need to make sure its not a 2h*/) {
             offHand = item;
@@ -43,9 +43,9 @@ void EquipmentComponent::equipOffHand(ItemID &item) {
         CombatLog::log().push_back("You cant equip that here");
     }
 }
-void EquipmentComponent::equipTwoHand(ItemID &item) {
+void EquipmentComponent::equipTwoHand(ItemID item) {
     if (item.type == weapon) {
-        if (mainHand.itemID == 0 && offHand.itemID == 0) {
+        if (mainHand.itemID == 1 && offHand.itemID == 1) {
             mainHand = item;
             offHand  = ItemID();
         } else {
@@ -61,9 +61,9 @@ void EquipmentComponent::equipTwoHand(ItemID &item) {
         CombatLog::log().push_back("You cant equip that here");
     }
 }
-void EquipmentComponent::equipArmor(ItemID &item) {
+void EquipmentComponent::equipArmor(ItemID item) {
     if (item.type == armor) {
-        if (eArmor.itemID == 0) {
+        if (eArmor.itemID == 2) {
             eArmor = item;
         } else {
             if (unequipArmor()) {
@@ -79,15 +79,19 @@ void EquipmentComponent::equipArmor(ItemID &item) {
     }
 }
 bool EquipmentComponent::unquipMainHand() {
+    this->entity->getComponent<InventoryComponent>().addItemToInventory(mainHand);
     return true;
 }
 bool EquipmentComponent::unequipOffHand() {
+    this->entity->getComponent<InventoryComponent>().addItemToInventory(offHand);
     return true;
 }
 bool EquipmentComponent::unequipTwoHand() {
+    //this->entity->getComponent<InventoryComponent>().addItemToInventory(tw);
     return true;
 }
 bool EquipmentComponent::unequipArmor() {
+    this->entity->getComponent<InventoryComponent>().addItemToInventory(eArmor);
     return true;
 }
 

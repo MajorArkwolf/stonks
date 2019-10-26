@@ -4,9 +4,9 @@
 
 class DeadComponent : public Component {
   public:
-    DeadComponent() {}
-    ~DeadComponent() {}
-    void init() {}
-    void update() {}
-    void draw() {}
+    DeadComponent();
+    ~DeadComponent();
+    void init();
+    void update();
+    void draw();
 };

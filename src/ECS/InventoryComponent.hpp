@@ -19,6 +19,7 @@ class InventoryComponent : public Component {
     void draw();
 
 	void addItemToInventory(ItemID newItem);
+    void equipItemtoSlot(ItemID equipItem);
     //ItemID dropItem();
     std::vector<Item> inventoryList;
 };

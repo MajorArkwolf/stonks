@@ -729,6 +729,12 @@ void Akuma::createPlayer() {
     player->addComponentID<CombatComponent>();
     player->addComponentID<InventoryComponent>();
     player->addComponentID<EquipmentComponent>();
+    player->getComponent<InventoryComponent>().addItemToInventory(
+        ItemManager::getItem(3));
+    player->getComponent<InventoryComponent>().addItemToInventory(
+        ItemManager::getItem(4));
+    player->getComponent<InventoryComponent>().addItemToInventory(
+        ItemManager::getItem(5));
 }
 
 void Akuma::placePlayer() {
@@ -750,7 +756,8 @@ void Akuma::drawInventoryWindow() {
             ImGui::Text(" (%zu)", n.quantitiy);
             ImGui::SameLine(ImGui::GetWindowWidth()-100);
             if (ImGui::Button("Equip")) {
-                // Equip
+                player->getComponent<InventoryComponent>().equipItemtoSlot(n.mItem);
+                break;
             }
         }
     }

@@ -12,10 +12,10 @@ class EquipmentComponent : public Component {
     void draw();
 
 	
-    void equipMainHand(ItemID &item);
-    void equipOffHand(ItemID &item);
-    void equipTwoHand(ItemID &item);
-    void equipArmor(ItemID &item);
+    void equipMainHand(ItemID item);
+    void equipOffHand(ItemID item);
+    void equipTwoHand(ItemID item);
+    void equipArmor(ItemID item);
     bool unquipMainHand();
     bool unequipOffHand();
     bool unequipTwoHand();

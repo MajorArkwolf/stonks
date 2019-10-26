@@ -1,6 +1,6 @@
 #include "CombatComponent.hpp"
 #include "../Akuma/CombatLog.hpp"
-
+#include "Akuma/Items/ItemManager.hpp"
 
 #include "EquipmentComponent.hpp"
 #include "StatComponent.hpp"
@@ -80,6 +80,7 @@ void CombatComponent::singleHanded(Entity *opponent) {
     if (damage > 0) {
         opponent->getComponent<StatComponent>().takeDamage(damage);
 	}
+    opponent->getComponent<StatComponent>().deathTrigger();
 }
 
 int CombatComponent::weaponDamage(int weaponPreHitDie, int weaponHitDie) {

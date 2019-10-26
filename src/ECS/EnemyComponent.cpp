@@ -246,7 +246,10 @@ auto EnemyComponent::deadEnemy() -> void {
 			this->entity->addComponentID<DeadComponent>();
             if (diceroller.Roll(1, 10) > 8) {
         		unsigned int maxSize = static_cast<unsigned int>(ItemManager::ItemManager().size());
-        		size_t lookUp = static_cast<size_t>(diceroller.Roll(1u, maxSize));
+                size_t lookUp = 0;
+                do {
+					lookUp = static_cast<size_t>(diceroller.Roll(1u, maxSize));
+                } while (lookUp < 2);
 				ItemID returnedItem = ItemManager::getItem(lookUp);
 				player->getComponent<InventoryComponent>().addItemToInventory(
 					returnedItem);

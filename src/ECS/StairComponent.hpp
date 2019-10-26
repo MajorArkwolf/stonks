@@ -14,6 +14,7 @@ class StairComponent : public Component {
     bool checkStairActive();
     void SetStairActive();
     void resetStairCase();
+    void equipItemtoSlot();
     
 
 	void setNodes(Pathing::Node *node1, Pathing::Node *node2, Pathing::Node *node3,
