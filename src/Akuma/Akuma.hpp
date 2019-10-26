@@ -47,33 +47,43 @@ class Akuma : public BaseState {
     void placePlayer();
     void drawInventoryWindow();
 
+	///The current floor level
     unsigned floorLevel = 1;
     unsigned bossFloor  = 1;
     void descendLevel();
-
-    glm::vec3 gridTranslation = {0, 0, -50.f};
-
+	///Light position array
     GLfloat light_position[4];
 
   private:
+	  ///Whether to draw the mouse on screen
     bool playerMouse = 0;
     bool showInventory = 0;
     void statSelection(const char *attribName, int statMin, int &pointsLeft,
                        int &attributePoints, std::string desc, int buttonCount);
+	///Whether to draw the character menu
     bool showCharacterMenu = 1;
+	///Whether to draw the escape menu
     bool showEscapeMenu    = 0;
+
+	///ECS Manager
     Manager manager;
+	///Player entity
     Entity *player = nullptr;
+	///Stair entity used to ascend levels
     Entity *stairs = nullptr;
     Entity *boss   = nullptr;
+	///Vector of enemy entities
     std::vector<Entity *> enemies;
+	///RNG generator
     Dice diceRoller;
+	///Manages turns between enemies and players
     TurnManager turnManager;
     /// The floor
     Floor floor;
     // Toggle for drawing 3d axis
     // bool shouldDrawAxis = false;
     auto drawAxis(float x, float y, float z, float length) -> void;
+	///Vector of models
     std::vector<Model> modelList;
     void bossBattleEngage();
 	void makeStairs();

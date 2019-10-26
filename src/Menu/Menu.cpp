@@ -5,6 +5,9 @@
 #include "imgui_impl_opengl2.h"
 #include "imgui_impl_sdl.h"
 
+/**
+ * @brief Method for displaying the main menu window
+ */
 void Menu::displayMenuWindow() {
     auto &stonk  = Stonk::Engine::get();
     auto display = SDL_DisplayMode{};
@@ -39,6 +42,9 @@ void Menu::displayMenuWindow() {
     ImGui::End();
 }
 
+/**
+ * @brief Display function that is called every frame
+ */
 void Menu::display() {
     auto &stonk = Stonk::Engine::get();
 
@@ -74,7 +80,9 @@ void Menu::display() {
     ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
     SDL_GL_SwapWindow(stonk.window.get());
 }
-
+/**
+ * @brief Displays the grid beind the main menu
+ */
 auto Menu::displayGrid() -> void {
     auto gridSize = floor.getGridSize();
 
@@ -134,7 +142,11 @@ auto Menu::displayGrid() -> void {
     }
     glPopMatrix();
 }
-
+/**
+ * @brief Draws cubes, used to display walls on the grid
+ * @param size The relative size of the cube
+ * @param wireframe Whether to draw wireframe cube
+ */
 void Menu::drawCube(float size, bool wireframe) {
 
     float vertices[8][3] = {{-0.5, -0.5, -0.5}, {-0.5, 0.5, -0.5},
@@ -206,6 +218,10 @@ void Menu::drawCube(float size, bool wireframe) {
     glPopMatrix();
 }
 
+/**
+ * @brief Window event handler used to handle window resizes
+ * @param event The SDL Event containing the window event
+ */
 void Menu::handleWindowEvent(SDL_Event &event) {
 
     switch (event.window.event) {
@@ -227,6 +243,9 @@ void Menu::handleWindowEvent(SDL_Event &event) {
     }
 }
 
+/**
+ * @brief Updates the currently rendered path on the grid
+ */
 auto Menu::updatePath() -> void {
     auto roomList     = floor.getRoomList();
     auto startNode    = (*roomList.begin())->getCentrePoint();
@@ -240,6 +259,9 @@ auto Menu::updatePath() -> void {
                                                  *endingNode, 0);
 }
 
+/**
+ * @brief Used for resetting variables after the previous game state has been popped
+ */
 void Menu::softInit() {
     relativeMouse = 0;
     updatePath();
@@ -263,13 +285,22 @@ void Menu::softInit() {
 
     glEnable(GL_DEPTH_TEST);
 }
-
+/**
+ * @brief Used to load data into memory, called after creating new instance on the stack
+ */
 void Menu::hardInit() {
     softInit();
 }
 
+/**
+ * @brief Default constructor for the Akuma game state
+ */
 void Menu::unInit() {}
 
+/**
+ * @brief Handles SDL events for the menu state
+ * @param event The SDL event being passed in
+ */
 void Menu::handleInput(SDL_Event &event) {
     switch (event.type) {
         case SDL_WINDOWEVENT: {
@@ -279,6 +310,10 @@ void Menu::handleInput(SDL_Event &event) {
     }
 }
 
+/**
+ * @brief Used to decouple physics from frame rate
+ * @param dt Delta time since last frame
+ */
 void Menu::update(double dt) {
     gridRotation = gridRotation + static_cast<float>(dt) * 40;
     if (gridRotation > 359) {
