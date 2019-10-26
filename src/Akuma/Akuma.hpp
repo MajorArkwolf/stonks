@@ -15,6 +15,8 @@
 #include "TurnManager/TurnManager.hpp"
 #include "Akuma/Items/ItemManager.hpp"
 #include "glm/vec3.hpp"
+#include "Akuma/EnemyFactory.hpp"
+
 /**
  * @class Akuma
  * @brief The Akuma game state object
@@ -66,6 +68,7 @@ class Akuma : public BaseState {
     Entity *player = nullptr;
     Entity *stairs = nullptr;
     Entity *boss   = nullptr;
+    EnemyFactory enemyFactory;
     std::vector<Entity *> enemies;
     Dice diceRoller;
     TurnManager turnManager;

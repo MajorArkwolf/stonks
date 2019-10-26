@@ -1,26 +1,26 @@
-#include "EnemyFactor.hpp"
+#include "EnemyFactory.hpp"
 #include "RNG/Dice.hpp"
 
-EnemyFactory::EnemyFactory()  = default;
+EnemyFactory::EnemyFactory(){};
 EnemyFactory::~EnemyFactory() = default;
 void EnemyFactory::factorySetup(Floor *currentFloor, Entity *currentPlayer,
-                                vector<Entities> &currentEnemies) {
+                                vector<Entity*> &currentEnemies) {
     floor = currentFloor;
     player = currentPlayer;
-    enemies = currentEnemies;
+    &enemies = &currentEnemies;
 }
 
 void EnemyFactory::generateEnemy(unsigned int floorLevel) {
-    Dice diceroller;
+    Dice diceRoller;
     unsigned int enemyCount = diceRoller.Roll(1u, 3u);
-    generateEnemy(level, unsigned int enemyCount);
+    generateEnemy(floorLevel, unsigned int enemyCount);
 }
 
 void EnemyFactory::generateEnemy(unsigned int floorLevel, unsigned int amount) {
     Dice diceroller;	
 
     for (unsigned i = 0; i <= amount; ++i) {
-        string modelName = models.at(diceroller.Roll(1u, models.size()))
+        string modelName = models.at(diceroller.Roll(1u, models.size()));
         enemies.push_back(&manager.addEntity());
         enemies.at(i)->addComponentID<ScaleComponent>(glm::vec3{0.5, 0.5,
         0.5}); enemies.at(i)->addComponentID<PositionComponent>(); bool
@@ -38,7 +38,7 @@ void EnemyFactory::generateEnemy(unsigned int floorLevel, unsigned int amount) {
         enemies.at(i)->getComponent<ModelComponent>().setModel(modelName);
         enemies.at(i)->addComponentID<MoveComponent>();
         enemies.at(i)->addComponentID<FloorComponent>();
-        enemies.at(i)->getComponent<FloorComponent>().setFloor(floor);
+        enemies.at(i)->getComponent<FloorComponent>().setFloor(*floor);
         enemies.at(i)->addComponentID<EnemyComponent>();
         enemies.at(i)->getComponent<EnemyComponent>().SetPlayerTarget(player);
         enemies.at(i)->addComponentID<EquipmentComponent>();
