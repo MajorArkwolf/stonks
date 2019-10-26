@@ -45,6 +45,7 @@ class Akuma : public BaseState {
     void displayEscapeMenu();
     void displayCombatLog();
     void placePlayer();
+    void drawInventoryWindow();
 
     unsigned floorLevel = 1;
     void descendLevel();
@@ -55,6 +56,7 @@ class Akuma : public BaseState {
 
   private:
     bool playerMouse = 0;
+    bool showInventory = 0;
     void statSelection(const char *attribName, int statMin, int &pointsLeft,
                        int &attributePoints, std::string desc, int buttonCount);
     bool showCharacterMenu = 1;
