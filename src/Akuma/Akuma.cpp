@@ -318,6 +318,13 @@ void Akuma::update([[maybe_unused]] double dt) {
             stonk.daGameStateStack.pop();
         }
     }
+    if (player != nullptr) {
+        if (player->hasComponent<DeadComponent>()) {
+            // THE DEATH MECHANIC
+            auto &stonk = Stonk::Engine::get();
+            stonk.daGameStateStack.pop();
+        }
+    }
 }
 
 /**
@@ -580,6 +587,8 @@ auto Akuma::Akuma::drawCube(float size, [[maybe_unused]] bool wireframe) -> void
 
 void Akuma::descendLevel() {
     turnManager.turnOffManager();
+    auto &p = player->getComponent<StatComponent>().stat;
+    p.HP    = p.maxHP;
     if (floorLevel < bossFloor) {
 		floor.regen();
 		floorLevel++;

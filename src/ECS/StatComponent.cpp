@@ -1,6 +1,7 @@
 #include "StatComponent.hpp"
 #include "PlayerComponent.hpp"
 #include "EnemyComponent.hpp"
+#include "DeadComponent.hpp"
 
 StatComponent::StatComponent()  = default;
 StatComponent::~StatComponent() = default;
@@ -94,7 +95,7 @@ auto StatComponent::deathTrigger() -> void {
     if (this->stat.HP < 0 && !this->stat.dead) {
         this->stat.dead = true;
 		if (this->entity->hasComponent<PlayerComponent>()) {
-			
+            this->entity->addComponentID<DeadComponent>();
 		} else if (this->entity->hasComponent<EnemyComponent>()) {
             this->entity->getComponent<EnemyComponent>().deadEnemy();
 		}
