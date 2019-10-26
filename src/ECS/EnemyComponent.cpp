@@ -314,7 +314,7 @@ auto EnemyComponent::deadEnemy() -> void {
                 size_t lookUp = 0;
                 do {
 					lookUp = static_cast<size_t>(diceroller.Roll(1u, maxSize));
-                } while (lookUp < 2);
+                } while (lookUp <= 2);
 				ItemID returnedItem = ItemManager::getItem(lookUp);
 				player->getComponent<InventoryComponent>().addItemToInventory(
 					returnedItem);
