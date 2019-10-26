@@ -142,8 +142,8 @@ auto Akuma::Akuma::hardInit() -> void {
     modelList.push_back(OBJ::Load("flattile.obj"));
     modelList.push_back(OBJ::Load("flatwall.obj"));
 
-    enemyFactory.factorySetup(&floor, player, enemies);
     createPlayer();
+    enemyFactory.factorySetup(&floor, player);
     generateLevel();
     makeStairs();
     turnManager.addEntity(player);
@@ -654,7 +654,7 @@ void Akuma::displayCombatLog() {
 }
 
 void Akuma::generateLevel() {
-    enemyFactory.generateEnemy(floorLevel);
+    enemyFactory.generateEnemy(floorLevel, enemies, manager);
     for (auto &e : enemies) {
         turnManager.addEntity(e);
 	}
