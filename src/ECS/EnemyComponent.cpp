@@ -260,9 +260,6 @@ auto EnemyComponent::deadEnemy() -> void {
                        " has died, it dropped nothing of value.";
 			}
             CombatLog::log().push_back(info);
-
-			//DELETE IF DOESNT FIX.
-            this->entity->getComponent<TurnComponent>().endYourTurn();
         }
     }
 }

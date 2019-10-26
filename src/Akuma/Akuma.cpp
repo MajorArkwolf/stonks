@@ -754,12 +754,6 @@ void Akuma::createPlayer() {
     player->addComponentID<CombatComponent>();
     player->addComponentID<InventoryComponent>();
     player->addComponentID<EquipmentComponent>();
-    player->getComponent<InventoryComponent>().addItemToInventory(
-        ItemManager::getItem(4));
-    player->getComponent<InventoryComponent>().addItemToInventory(
-        ItemManager::getItem(5));
-    player->getComponent<InventoryComponent>().addItemToInventory(
-        ItemManager::getItem(6));
 }
 
 void Akuma::placePlayer() {
