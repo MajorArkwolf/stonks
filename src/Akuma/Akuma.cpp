@@ -585,6 +585,8 @@ void Akuma::descendLevel() {
 		turnManager.sortActors();
 		turnManager.turnOnManager();
     } else if (floorLevel == 10){
+        floor.regen(glm::uvec2(30, 30), 1);
+        floorLevel++;
         clearEnemies();
         turnManager.clearActors();
         turnManager.addEntity(player);
@@ -750,15 +752,20 @@ void Akuma::drawInventoryWindow() {
     ImGui::Begin("Inventory", &showInventory);
     if (player->hasComponent<InventoryComponent>()) {
         auto &inventory = player->getComponent<InventoryComponent>().inventoryList;
-        for (auto n : inventory) {
-            ImGui::Text("%s", n.mItem.name.c_str());
+
+        for (int i = 0; i < inventory.size(); i++) {
+            ImGui::Text("%s", inventory[i].mItem.name.c_str());
             ImGui::SameLine(ImGui::GetWindowWidth() - 130);
-            ImGui::Text(" (%zu)", n.quantitiy);
+            ImGui::Text(" (%zu)", inventory[i].quantitiy);
             ImGui::SameLine(ImGui::GetWindowWidth()-100);
+            ImGui::PushID(i + 10);
             if (ImGui::Button("Equip")) {
-                player->getComponent<InventoryComponent>().equipItemtoSlot(n.mItem);
+                player->getComponent<InventoryComponent>().equipItemtoSlot(inventory[i].mItem);
                 break;
             }
+            ImGui::PopID();
+
+  
         }
     }
     ImGui::End();
