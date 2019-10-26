@@ -244,7 +244,7 @@ auto EnemyComponent::deadEnemy() -> void {
 
             string info = "";
 			this->entity->addComponentID<DeadComponent>();
-            if (diceroller.Roll(1, 10) > 8) {
+            if (diceroller.Roll(1, 10) > 6) {
         		unsigned int maxSize = static_cast<unsigned int>(ItemManager::ItemManager().size());
                 size_t lookUp = 0;
                 do {
