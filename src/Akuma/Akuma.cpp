@@ -727,7 +727,6 @@ void Akuma::makeStairs() {
 }
 
 
-=======
 void Akuma::createPlayer() {
     player = &manager.addEntity();
     player->addComponentID<FloorComponent>();
