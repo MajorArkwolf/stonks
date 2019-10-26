@@ -573,7 +573,7 @@ auto Akuma::Akuma::drawCube(float size, [[maybe_unused]] bool wireframe) -> void
 
 void Akuma::descendLevel() {
     turnManager.turnOffManager();
-    if (floorLevel < 10) {
+    if (floorLevel < bossFloor) {
 		floor.regen();
 		floorLevel++;
 		clearEnemies();
@@ -584,7 +584,7 @@ void Akuma::descendLevel() {
 		placePlayer(); // move player to new node.
 		turnManager.sortActors();
 		turnManager.turnOnManager();
-    } else if (floorLevel == 10){
+    } else if (floorLevel == bossFloor){
         clearEnemies();
         turnManager.clearActors();
         turnManager.addEntity(player);

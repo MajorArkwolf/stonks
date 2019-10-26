@@ -48,6 +48,7 @@ class Akuma : public BaseState {
     void drawInventoryWindow();
 
     unsigned floorLevel = 1;
+    unsigned bossFloor  = 3;
     void descendLevel();
 
     glm::vec3 gridTranslation = {0, 0, -50.f};
