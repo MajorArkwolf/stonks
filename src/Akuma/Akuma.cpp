@@ -136,18 +136,19 @@ auto Akuma::Akuma::softInit() -> void {
  * @brief Hard initialiser for the Akuma gamestate
  */
 auto Akuma::Akuma::hardInit() -> void {
+    ItemLoader item;
+    item.init();
 
     // Load models textures etc here
     modelList.push_back(OBJ::Load("flattile.obj"));
     modelList.push_back(OBJ::Load("flatwall.obj"));
-    ItemLoader item;
-    item.init();
 
     createPlayer();
-    turnManager.addEntity(player);
-    makeStairs();
     generateLevel();
+    makeStairs();
+    turnManager.addEntity(player);
     softInit();
+
     turnManager.turnOnManager();
 }
 
@@ -236,10 +237,24 @@ void Akuma::Akuma::displayGameStats() {
     ImGui::Text("Vitality    :  %.0d", playerStats.vitality);
     ImGui::Text("Intelligence:  %.0d", playerStats.intelligence);
 
+	auto *e = player->getComponent<PlayerComponent>().getLookingAtNode();
     ImGui::Separator();
     ImGui::Text("Selected Enemy Stats");
     ImGui::Separator();
-
+    if (e->occupant != nullptr) {
+  //      auto &enemyStats      = e->occupant->getComponent<StatComponent>().stat;
+		//std::string name       = "Name        : ";
+  //      std::string enemy = enemyStats.name;
+  //      name                   = name + enemy;
+		//ImGui::Text("%s", name.c_str());
+  //      ImGui::Text("Level       :  %.0d", enemyStats.level);
+  //      ImGui::Text("HP          :  %.0d", enemyStats.HP);
+  //      ImGui::Text("Strength    :  %.0d", enemyStats.strength);
+  //      ImGui::Text("Dexterity   :  %.0d", enemyStats.dexterity);
+  //      ImGui::Text("Luck        :  %.0d", enemyStats.luck);
+  //      ImGui::Text("Vitality    :  %.0d", enemyStats.vitality);
+  //      ImGui::Text("Intelligence:  %.0d", enemyStats.intelligence);
+     }
     ImGui::End();
 }
 
@@ -424,6 +439,7 @@ void Akuma::drawCharacterMenu() {
             player->getComponent<ModelComponent>().setModel(
                 "player_female.obj");
         }
+        //player->getComponent<StatComponent>().
         this->showCharacterMenu = false;
     }
 
@@ -568,7 +584,7 @@ void Akuma::descendLevel() {
 		placePlayer(); // move player to new node.
 		turnManager.sortActors();
 		turnManager.turnOnManager();
-    } else {
+    } else if (floorLevel == 10){
         clearEnemies();
         turnManager.clearActors();
         turnManager.addEntity(player);
@@ -647,7 +663,8 @@ void Akuma::generateLevel() {
         enemies.at(i)->addComponentID<EquipmentComponent>();
         enemies.at(i)->addComponentID<CombatComponent>();
         enemies.at(i)->addComponentID<StatComponent>();
-        enemies.at(i)->getComponent<StatComponent>().stat.name = "Orc";
+        string name = "Orc " + std::to_string(i);
+        enemies.at(i)->getComponent<StatComponent>().stat.name = name;
         enemies.at(i)->addComponentID<TurnComponent>();
         turnManager.addEntity(enemies.at(i));
     }
@@ -702,10 +719,7 @@ void Akuma::createPlayer() {
     player->addComponentID<ScaleComponent>();
     player->getComponent<ScaleComponent>().setScale(glm::vec3{0.5, 0.5, 0.5});
     player->addComponentID<PositionComponent>();
-    auto roomList  = floor.getRoomList();
-    glm::uvec2 pos = roomList[0]->getCentrePoint();
-    auto roomNode  = floor.getGridNode(pos);
-    player->getComponent<PositionComponent>().setPos(roomNode);
+    placePlayer();
     player->addComponentID<ModelComponent>();
     player->addComponentID<PlayerComponent>();
     player->addComponentID<MoveComponent>();
@@ -714,15 +728,6 @@ void Akuma::createPlayer() {
     player->addComponentID<TurnComponent>();
     player->addComponentID<CombatComponent>();
     player->addComponentID<InventoryComponent>();
-    ItemID temp = ItemManager::getItem(1);
-    player->getComponent<InventoryComponent>().addItemToInventory(temp
-        );
-    player->getComponent<InventoryComponent>().addItemToInventory(
-        ItemManager::getItem(1));
-    player->getComponent<InventoryComponent>().addItemToInventory(
-        ItemManager::getItem(1));
-    player->getComponent<InventoryComponent>().addItemToInventory(
-        ItemManager::getItem(2));
 }
 
 void Akuma::placePlayer() {

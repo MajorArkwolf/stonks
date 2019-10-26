@@ -10,7 +10,9 @@ StatComponent::StatComponent(CharacterSheet newStat) {
 
 void StatComponent::init() {}
 void StatComponent::update() {
-    deathTrigger();
+    if (!this->stat.dead) {
+		deathTrigger();
+    }
 }
 void StatComponent::draw() {}
 
@@ -93,7 +95,7 @@ auto StatComponent::takeDamage(int damage) -> void {
 }
 
 auto StatComponent::deathTrigger() -> void {
-    if (this->stat.HP < 0 && !this->stat.dead) {
+    if (this->stat.HP < 0) {
         this->stat.dead = true;
 		if (this->entity->hasComponent<PlayerComponent>()) {
 			

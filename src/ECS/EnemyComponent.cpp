@@ -18,13 +18,15 @@ EnemyComponent::EnemyComponent()  = default;
 EnemyComponent::~EnemyComponent() = default;
 void EnemyComponent::init() {}
 void EnemyComponent::update() {
-    if (this->entity->hasComponent<TurnComponent>()) {
-        if (this->entity->getComponent<TurnComponent>().checkTurn()) {
-            this->entity->getComponent<TurnComponent>().assignAction();
-            combatCheck();
-            moveAction();
-            // facing = facingBuffer;
-            // setTurnAngle();
+    if (!this->entity->hasComponent<DeadComponent>()) {
+		if (this->entity->hasComponent<TurnComponent>()) {
+			if (this->entity->getComponent<TurnComponent>().checkTurn()) {
+				this->entity->getComponent<TurnComponent>().assignAction();
+				combatCheck();
+				moveAction();
+				// facing = facingBuffer;
+				// setTurnAngle();
+			}
         }
     }
 }
@@ -238,9 +240,11 @@ auto EnemyComponent::combatCheck() -> void {
 auto EnemyComponent::deadEnemy() -> void {
     if (this->entity->hasComponent<StatComponent>()) {
         if (!this->entity->hasComponent<DeadComponent>()) {
+            this->entity->getComponent<PositionComponent>().removePosition();
+            this->lockedToPlayer = false;
+            this->player         = nullptr;
             string info = "";
 			this->entity->addComponentID<DeadComponent>();
-            this->entity->getComponent<PositionComponent>().removePosition();
             if (diceroller.Roll(1, 10) > 8) {
         		unsigned int maxSize = static_cast<unsigned int>(ItemManager::ItemManager().size());
         		size_t lookUp = static_cast<size_t>(diceroller.Roll(1u, maxSize));
@@ -255,18 +259,5 @@ auto EnemyComponent::deadEnemy() -> void {
 			}
             CombatLog::log().push_back(info);
         }
-		//int item = diceroller.Roll(1, 2);
-		//if (item == 1) {
-		//	unsigned int maxSize = static_cast<unsigned int>(ItemManager::WeaponManager().size());
-		//	size_t itemID = static_cast<size_t>(diceroller.Roll(1u, maxSize));
-		//	ItemID lookUp = ItemManager::getItem(itemID);
-		//	player->getComponent<InventoryComponent>().addItemToInventory(lookUp);
-		//} else if (item == 2) {
-		//	unsigned int maxSize =
-		//		static_cast<unsigned int>(ItemManager::ArmorManager().size());
-		//	size_t itemID = static_cast<size_t>(diceroller.Roll(1u, maxSize));
-		//	ItemID lookUp = ItemManager::getItem(itemID);
-		//	player->getComponent<InventoryComponent>().addItemToInventory(lookUp);
-		//}
     }
 }

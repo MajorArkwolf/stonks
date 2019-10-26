@@ -9,11 +9,7 @@
 CombatComponent::CombatComponent()  = default;
 CombatComponent::~CombatComponent() = default;
 
-void CombatComponent::init() {
-    if (!this->entity->hasComponent<EquipmentComponent>()) {
-        this->entity->addComponentID<EquipmentComponent>();
-	}
-}
+void CombatComponent::init() {}
 void CombatComponent::update() {}
 void CombatComponent::draw() {}
 
