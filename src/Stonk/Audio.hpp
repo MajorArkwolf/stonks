@@ -7,6 +7,9 @@
 #include <SDL2/SDL_mixer.h>
 
 namespace Stonk {
+    /**
+     * @brief Audio manager for the Stonk engine
+     */
     class Audio {
       public:
         /**
@@ -45,7 +48,7 @@ namespace Stonk {
          */
         auto LoadMusic(std::string filename) -> Music;
         /**
-         * @brief Init
+         * @brief Init. Call this after Stonk's engine is loaded.
          */
         void Init();
         /**

@@ -80,6 +80,8 @@ auto Floor::getBSP() -> BSP::BSPTree & {
 /**
  * @brief Returns the grid node at the given grid coordinates
  * @return The grid node at the given coordinates
+ * @param x X coord
+ * @param y Y coord
  * If coordinates out of bounds, returns node at (0,0)
  */
 auto Floor::getGridNode(unsigned x, unsigned y) -> Pathing::Node * {
@@ -90,9 +92,15 @@ auto Floor::getGridNode(unsigned x, unsigned y) -> Pathing::Node * {
     return &grid.nodeGrid[x][y];
 }
 
-auto Floor::getGridNode(glm::uvec2 nodeCords) -> Pathing::Node * {
-    auto x    = nodeCords.x;
-    auto y    = nodeCords.y;
+/**
+ * @brief Returns the grid node at the given grid coordinates
+ * @return The grid node at the given coordinates
+ * If coordinates out of bounds, returns node at (0,0)
+ * @param nodeCoords A vector containing the node coordinates
+ */
+auto Floor::getGridNode(glm::uvec2 nodeCoords) -> Pathing::Node * {
+    auto x    = nodeCoords.x;
+    auto y    = nodeCoords.y;
     auto size = getGridSize();
     if (x > size.x || y > size.y) {
         return &grid.nodeGrid[0][0];
@@ -165,16 +173,29 @@ auto Floor::setGridSquare(glm::uvec2 bottomLeft, glm::uvec2 topRight,
         }
     }
 }
-
+/**
+ * @brief Returns all neighbours of a given node given they exist
+ * @return A vector of all neighbours
+ * @param _node The node to return the neighbours of
+ */
 auto Floor::getNeighbours(Pathing::Node &_node) -> vector<Pathing::Node *> {
     return grid.getNeighbours(_node);
 }
 
+/**
+ * @brief Returns the path starting and ending at the given nodes
+ * @return A vector of pointers to nodes symbolising the path, from start to finish
+ * @param startNode The node to start from
+ * @param endNode The node to path to
+ */
 auto Floor::findPath(Pathing::Node &startNode, Pathing::Node &endNode)
     -> std::vector<Pathing::Node *> {
     return Pathing::Pathfinding::findPath(grid, startNode, endNode, 1);
 }
 
+/**
+ * @brief Regenerates the current floor based on default parameters
+ */
 auto Floor::regen() -> void {
     auto size = defaultGridSize;
     size.x -= 1;
@@ -184,6 +205,11 @@ auto Floor::regen() -> void {
     loadGrid();
 }
 
+/**
+ * @brief Regenerates the current floor based on given parameters
+ * @param size The size of the room to create
+ * @param subdivisions The amount of times to subdivide the room
+ */
 auto Floor::regen(glm::uvec2 size, int subdivisions) -> void {
     this->grid = Grid(size.x, size.y);
     size.x -= 1;

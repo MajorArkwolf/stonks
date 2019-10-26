@@ -16,7 +16,7 @@ using std::stringstream;
 /**
  * @brief Default constructor for the Akuma game state
  */
-Akuma::Akuma::Akuma() {
+Akuma::Akuma() {
 
     light_position[0] = 1;
     light_position[1] = 4;
@@ -32,7 +32,7 @@ Akuma::Akuma::Akuma() {
 /**
  * @brief Akuma display function
  */
-auto Akuma::Akuma::display() -> void {
+auto Akuma::display() -> void {
     auto &stonk = Stonk::Engine::get();
     if (showEscapeMenu || showCharacterMenu || playerMouse || showInventory) {
         relativeMouse = 0;
@@ -114,7 +114,7 @@ auto Akuma::Akuma::display() -> void {
  * @brief Soft initialiser for the Akuma gamestate
  */
 
-auto Akuma::Akuma::softInit() -> void {
+auto Akuma::softInit() -> void {
     glLoadIdentity();
     glLineWidth(1);
     auto &engine = Stonk::Engine::get();
@@ -152,6 +152,10 @@ auto Akuma::Akuma::hardInit() -> void {
     turnManager.turnOnManager();
 }
 
+/**
+ * @brief Handles window events for the Akuma class
+ * @param event The SDL event object containing the window event
+ */
 void Akuma::handleWindowEvent(SDL_Event &event) {
     switch (event.window.event) {
         case SDL_WINDOWEVENT_SIZE_CHANGED:
@@ -174,7 +178,7 @@ void Akuma::handleWindowEvent(SDL_Event &event) {
 /**
  * @brief Displays the IMGUI debug menu
  */
-void Akuma::Akuma::displayDebugMenu() {
+void Akuma::displayDebugMenu() {
     auto &stonk = Stonk::Engine::get();
     auto buffer = stringstream{};
 
@@ -214,7 +218,7 @@ void Akuma::Akuma::displayDebugMenu() {
 /**
  * @brief Displays the IMGUI debug menu
  */
-void Akuma::Akuma::displayGameStats() {
+void Akuma::displayGameStats() {
     auto &playerStats = player->getComponent<StatComponent>().stat;
 
     ImGui::SetNextWindowSize(ImVec2(250, 500), 1);
@@ -261,13 +265,13 @@ void Akuma::Akuma::displayGameStats() {
 /**
  * @brief Uninitialiser for the Akuma gamestate
  */
-auto Akuma::Akuma::unInit() -> void {}
+auto Akuma::unInit() -> void {}
 
 /**
  * @brief Handles input for the Akuma gamestate
  * @param event The SDL event to read input from
  */
-auto Akuma::Akuma::handleInput(SDL_Event &event) -> void {
+auto Akuma::handleInput(SDL_Event &event) -> void {
 
     switch (event.type) {
         case SDL_WINDOWEVENT: {
@@ -356,6 +360,10 @@ void Akuma::handleKeyPress(SDL_Event &event) {
     }
 }
 
+/**
+ * @brief Handles key release events for the Akuma game state
+ * @param event The SDL event with the release event
+ */
 void Akuma::handleKeyRelease(SDL_Event &event) {
     switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_A: {
@@ -374,6 +382,10 @@ void Akuma::handleKeyRelease(SDL_Event &event) {
     }
 }
 
+/**
+ * @brief Handles mouse wheel events for the akuma gamestate
+ * @param event The SDL event containing the mouse wheel event
+ */
 void Akuma::handleMouseWheel(SDL_Event &event) {
     auto &cameraComp = player->getComponent<CameraComponent>();
 
@@ -381,6 +393,15 @@ void Akuma::handleMouseWheel(SDL_Event &event) {
     cameraComp.zoomCamera(amountScrolledY);
 }
 
+/**
+ * @brief ImGui stat selector label and changer
+ * @param attribName The name of the attribute
+ * @param statMin The minimum the stat can be
+ * @param pointsLeft The number of total points left
+ * @param attributePoints The number of attribute points
+ * @param desc The description of the attribute
+ * @param buttonCount The Imgui button ID, needs to be different for every stat
+ */
 void Akuma::statSelection(const char *attribName, int statMin, int &pointsLeft,
                           int &attributePoints, std::string desc, int buttonCount) {
     ImGui::PushID(buttonCount);
@@ -408,6 +429,9 @@ void Akuma::statSelection(const char *attribName, int statMin, int &pointsLeft,
     ImGui::PopID();
 }
 
+/**
+ * @brief Draws the character selection menu using ImGui
+ */
 void Akuma::drawCharacterMenu() {
     const int statMin = 8;
     auto &playerStats = player->getComponent<StatComponent>().stat;
@@ -467,7 +491,7 @@ void Akuma::drawCharacterMenu() {
  * @param z The z-coordinate to start the axis
  * @param length The amount to extend the axis lines in each respective direction
  */
-auto Akuma::Akuma::drawAxis(float x, float y, float z, float length) -> void {
+auto Akuma::drawAxis(float x, float y, float z, float length) -> void {
     glPushMatrix();
     glDepthMask(false);
     glLineWidth(5.0);
@@ -505,7 +529,7 @@ auto Akuma::Akuma::drawAxis(float x, float y, float z, float length) -> void {
 /**
  * @brief Displays the current grid within the room object
  */
-auto Akuma::Akuma::displayGrid() -> void {
+auto Akuma::displayGrid() -> void {
     auto gridSize = floor.getGridSize();
 
     glPushMatrix();
@@ -579,12 +603,20 @@ auto Akuma::drawRectangle(float _width, float _height, bool wireframe) -> void {
     glEnd();
 }
 
-auto Akuma::Akuma::drawCube(float size, [[maybe_unused]] bool wireframe) -> void {
+/**
+ * @brief Draws a cube model
+ * @param size Size of the cube
+ * @param wireframe Unused wireframe parameter
+ */
+auto Akuma::drawCube(float size, [[maybe_unused]] bool wireframe) -> void {
     glEnable(GL_TEXTURE_2D);
     OBJ::displayModel(modelList[1], size);
     glDisable(GL_TEXTURE_2D);
 }
 
+/**
+ * @brief Descends a level for the akuma gamestate
+ */
 void Akuma::descendLevel() {
     turnManager.turnOffManager();
     auto &p = player->getComponent<StatComponent>().stat;
@@ -612,6 +644,9 @@ void Akuma::descendLevel() {
 	}
 }
 
+/**
+ * @brief Clears all enemies in the enemy array and removes them from the manager
+ */
 void Akuma::clearEnemies() {
     for (auto &i : enemies) {
         i->destroy();
@@ -620,6 +655,9 @@ void Akuma::clearEnemies() {
     enemies.clear();
 }
 
+/**
+ * @brief Displays the escape menu
+ */
 void Akuma::displayEscapeMenu() {
     auto &stonk = Stonk::Engine::get();
     ImGui::SetNextWindowSize(ImVec2(300, 500), 1);
@@ -641,6 +679,9 @@ void Akuma::displayEscapeMenu() {
     ImGui::End();
 }
 
+/**
+ * @brief Displays the combat log
+ */
 void Akuma::displayCombatLog() {
     ImGui::SetNextWindowSize(ImVec2(400, 120), ImGuiCond_Once);
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
@@ -653,6 +694,9 @@ void Akuma::displayCombatLog() {
     ImGui::End();
 }
 
+/**
+ * @brief Generates a level by creating all enemies, and placing the enemies, player and stairs and the correct positions
+ */
 void Akuma::generateLevel() {
     enemyFactory.generateEnemy(floorLevel, enemies, manager);
     for (auto &e : enemies) {
@@ -660,6 +704,9 @@ void Akuma::generateLevel() {
 	}
 }
 
+/**
+ * @brief Creates the stair entity within the level
+ */
 void Akuma::makeStairs() {
     if (stairs == nullptr) {
         stairs = &manager.addEntity();
@@ -727,6 +774,9 @@ void Akuma::createPlayer() {
     player->addComponentID<EquipmentComponent>();
 }
 
+/**
+ * @brief Places a player entity within the level
+ */
 void Akuma::placePlayer() {
     auto roomList  = floor.getRoomList();
     glm::uvec2 pos = roomList[0]->getCentrePoint();
@@ -742,14 +792,14 @@ void Akuma::drawInventoryWindow() {
         auto &inventory = player->getComponent<InventoryComponent>().inventoryList;
 
         for (size_t i = 0; i < inventory.size(); i++) {
+            ImGui::PushID(static_cast<int>(i));
             ImGui::Text("%s", inventory[i].mItem.name.c_str());
             ImGui::SameLine(ImGui::GetWindowWidth() - 130);
             ImGui::Text(" (%zu)", inventory[i].quantitiy);
             ImGui::SameLine(ImGui::GetWindowWidth()-100);
-            ImGui::PushID(static_cast<int>(i) + 10);
+
             if (ImGui::Button("Equip")) {
                 player->getComponent<InventoryComponent>().equipItemtoSlot(inventory[i].mItem);
-                break;
             }
             ImGui::PopID();
 
