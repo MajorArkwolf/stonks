@@ -241,8 +241,7 @@ auto EnemyComponent::deadEnemy() -> void {
     if (this->entity->hasComponent<StatComponent>()) {
         if (!this->entity->hasComponent<DeadComponent>()) {
             this->entity->getComponent<PositionComponent>().removePosition();
-            this->lockedToPlayer = false;
-            this->player         = nullptr;
+
             string info = "";
 			this->entity->addComponentID<DeadComponent>();
             if (diceroller.Roll(1, 10) > 8) {
@@ -258,6 +257,9 @@ auto EnemyComponent::deadEnemy() -> void {
                        " has died, it dropped nothing of value.";
 			}
             CombatLog::log().push_back(info);
+
+			//DELETE IF DOESNT FIX.
+            this->entity->getComponent<TurnComponent>().endYourTurn();
         }
     }
 }

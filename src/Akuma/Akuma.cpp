@@ -241,19 +241,19 @@ void Akuma::Akuma::displayGameStats() {
     ImGui::Separator();
     ImGui::Text("Selected Enemy Stats");
     ImGui::Separator();
-    if (e->occupant != nullptr) {
-  //      auto &enemyStats      = e->occupant->getComponent<StatComponent>().stat;
-		//std::string name       = "Name        : ";
-  //      std::string enemy = enemyStats.name;
-  //      name                   = name + enemy;
-		//ImGui::Text("%s", name.c_str());
-  //      ImGui::Text("Level       :  %.0d", enemyStats.level);
-  //      ImGui::Text("HP          :  %.0d", enemyStats.HP);
-  //      ImGui::Text("Strength    :  %.0d", enemyStats.strength);
-  //      ImGui::Text("Dexterity   :  %.0d", enemyStats.dexterity);
-  //      ImGui::Text("Luck        :  %.0d", enemyStats.luck);
-  //      ImGui::Text("Vitality    :  %.0d", enemyStats.vitality);
-  //      ImGui::Text("Intelligence:  %.0d", enemyStats.intelligence);
+    if (e->occupant != nullptr && e->occupant->hasComponent<EnemyComponent>()) {
+        auto &enemyStats      = e->occupant->getComponent<StatComponent>().stat;
+		std::string name       = "Name        : ";
+        std::string enemy = enemyStats.name;
+        name                   = name + enemy;
+		ImGui::Text("%s", name.c_str());
+        ImGui::Text("Level       :  %.0d", enemyStats.level);
+        ImGui::Text("HP          :  %.0d", enemyStats.HP);
+        ImGui::Text("Strength    :  %.0d", enemyStats.strength);
+        ImGui::Text("Dexterity   :  %.0d", enemyStats.dexterity);
+        ImGui::Text("Luck        :  %.0d", enemyStats.luck);
+        ImGui::Text("Vitality    :  %.0d", enemyStats.vitality);
+        ImGui::Text("Intelligence:  %.0d", enemyStats.intelligence);
      }
     ImGui::End();
 }
@@ -439,7 +439,7 @@ void Akuma::drawCharacterMenu() {
             player->getComponent<ModelComponent>().setModel(
                 "player_female.obj");
         }
-        //player->getComponent<StatComponent>().
+        player->getComponent<StatComponent>().setupEntity();
         this->showCharacterMenu = false;
     }
 
@@ -728,6 +728,7 @@ void Akuma::createPlayer() {
     player->addComponentID<TurnComponent>();
     player->addComponentID<CombatComponent>();
     player->addComponentID<InventoryComponent>();
+    player->addComponentID<EquipmentComponent>();
 }
 
 void Akuma::placePlayer() {
