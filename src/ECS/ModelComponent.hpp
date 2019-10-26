@@ -34,7 +34,7 @@ class ModelComponent : public Component {
      * @brief Draw
      */
     void draw();
-
+    void unSetModel();
   private:
     /**
      * The model ID used by this component

@@ -1,27 +1,22 @@
 #include "MoveComponent.hpp"
 #include "PositionComponent.hpp"
 #include "TurnComponent.hpp"
+#include "DeadComponent.hpp"
 
 MoveComponent::MoveComponent()  = default;
 MoveComponent::~MoveComponent() = default;
 void MoveComponent::init() {}
 void MoveComponent::update() {
-    /*if (component is facing direction)
-    then do move,
-    else (tell rotation system to start rotating object)
-    */
-    // if (this->entity->hasComponent<PositionComponent>()) {
-    //    this->entity->getComponent<PositionComponent>().setPos(moveTo);
-    //}
-    // isMoving = true;
-    if (this->turnToken == true) {
-        this->entity->getComponent<PositionComponent>().getNode()->occupied = false;
-        this->entity->getComponent<PositionComponent>().getNode()->occupant =
-            nullptr;
-        this->entity->getComponent<PositionComponent>().setPos(goingToNode);
-        this->goingToNode = nullptr;
-        this->turnToken   = false;
-        this->entity->getComponent<TurnComponent>().endYourTurn();
+    if (!this->entity->hasComponent<DeadComponent>()) {
+		if (this->turnToken == true) {
+			this->entity->getComponent<PositionComponent>().getNode()->occupied = false;
+			this->entity->getComponent<PositionComponent>().getNode()->occupant =
+				nullptr;
+			this->entity->getComponent<PositionComponent>().setPos(goingToNode);
+			this->goingToNode = nullptr;
+			this->turnToken   = false;
+			this->entity->getComponent<TurnComponent>().endYourTurn();
+		}
     }
 }
 void MoveComponent::draw() {}

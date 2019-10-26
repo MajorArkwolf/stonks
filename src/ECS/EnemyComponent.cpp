@@ -2,6 +2,8 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include "../Akuma/Pathing/Pathfinding.hpp"
+#include "../Akuma/Items/ItemManager.hpp"
+#include "..//Akuma/CombatLog.hpp"
 
 #include "PositionComponent.hpp"
 #include "MoveComponent.hpp"
@@ -9,18 +11,22 @@
 #include "StatComponent.hpp"
 #include "CombatComponent.hpp"
 #include "FloorComponent.hpp"
+#include "InventoryComponent.hpp"
+#include "DeadComponent.hpp"
 
 EnemyComponent::EnemyComponent()  = default;
 EnemyComponent::~EnemyComponent() = default;
 void EnemyComponent::init() {}
 void EnemyComponent::update() {
-    if (this->entity->hasComponent<TurnComponent>()) {
-        if (this->entity->getComponent<TurnComponent>().checkTurn()) {
-            this->entity->getComponent<TurnComponent>().assignAction();
-            combatCheck();
-            moveAction();
-            // facing = facingBuffer;
-            // setTurnAngle();
+    if (!this->entity->hasComponent<DeadComponent>()) {
+		if (this->entity->hasComponent<TurnComponent>()) {
+			if (this->entity->getComponent<TurnComponent>().checkTurn()) {
+				this->entity->getComponent<TurnComponent>().assignAction();
+				combatCheck();
+				moveAction();
+				// facing = facingBuffer;
+				// setTurnAngle();
+			}
         }
     }
 }
@@ -227,6 +233,36 @@ auto EnemyComponent::combatCheck() -> void {
                     x->occupant);
                 break;
             }
+        }
+    }
+}
+
+auto EnemyComponent::deadEnemy() -> void {
+    if (this->entity->hasComponent<StatComponent>()) {
+        if (!this->entity->hasComponent<DeadComponent>()) {
+            this->entity->getComponent<PositionComponent>().removePosition();
+
+            string info = "";
+			this->entity->addComponentID<DeadComponent>();
+            if (diceroller.Roll(1, 10) > 6) {
+        		unsigned int maxSize = static_cast<unsigned int>(ItemManager::ItemManager().size());
+                size_t lookUp = 0;
+                do {
+					lookUp = static_cast<size_t>(diceroller.Roll(1u, maxSize));
+                } while (lookUp < 2);
+				ItemID returnedItem = ItemManager::getItem(lookUp);
+				player->getComponent<InventoryComponent>().addItemToInventory(
+					returnedItem);
+                info =
+                    this->entity->getComponent<StatComponent>().stat.name + " has died dropping a " + returnedItem.name + ".";
+            } else {
+                info = this->entity->getComponent<StatComponent>().stat.name +
+                       " has died, it dropped nothing of value.";
+			}
+            CombatLog::log().push_back(info);
+
+			//DELETE IF DOESNT FIX.
+            this->entity->getComponent<TurnComponent>().endYourTurn();
         }
     }
 }

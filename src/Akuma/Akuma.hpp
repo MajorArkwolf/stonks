@@ -45,9 +45,11 @@ class Akuma : public BaseState {
     void displayEscapeMenu();
     void displayCombatLog();
     void placePlayer();
+    void drawInventoryWindow();
 
 	///The current floor level
     unsigned floorLevel = 1;
+    unsigned bossFloor  = 1;
     void descendLevel();
 	///Light position array
     GLfloat light_position[4];
@@ -55,6 +57,7 @@ class Akuma : public BaseState {
   private:
 	  ///Whether to draw the mouse on screen
     bool playerMouse = 0;
+    bool showInventory = 0;
     void statSelection(const char *attribName, int statMin, int &pointsLeft,
                        int &attributePoints, std::string desc, int buttonCount);
 	///Whether to draw the character menu
@@ -68,6 +71,7 @@ class Akuma : public BaseState {
     Entity *player = nullptr;
 	///Stair entity used to ascend levels
     Entity *stairs = nullptr;
+    Entity *boss   = nullptr;
 	///Vector of enemy entities
     std::vector<Entity *> enemies;
 	///RNG generator
@@ -81,7 +85,8 @@ class Akuma : public BaseState {
     auto drawAxis(float x, float y, float z, float length) -> void;
 	///Vector of models
     std::vector<Model> modelList;
-
+    void bossBattleEngage();
 	void makeStairs();
     void createPlayer();
+    void unMakeStairs();
 };

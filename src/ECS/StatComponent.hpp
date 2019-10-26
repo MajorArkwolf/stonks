@@ -3,12 +3,16 @@
 #include <string>
 
 #include "ECS.hpp"
+#include "../Akuma/RNG/Dice.hpp"
 
 struct CharacterSheet {
     std::string name = "";
     int level        = 1;
+    int levelPoint   = 0;
+    int exp          = 0;
     int HD           = 8;
     bool assignedHP  = false;
+    int maxHP        = 0;
     int HP           = 1;
     int strength     = 10;
     int dexterity    = 10;
@@ -16,6 +20,7 @@ struct CharacterSheet {
     int intelligence = 10;
     int vitality     = 10;
     int pointsLeft   = 10;
+    bool dead        = false;
 };
 
 struct StatDescription {
@@ -35,6 +40,8 @@ class StatComponent : public Component {
     void update();
     void draw();
 
+	auto takeDamage(int damage) -> void;
+	auto setupEntity() -> void;
     auto getStrengthMod() -> int;
     auto getIntelligenceMod() -> int;
     auto getDexterityMod() -> int;
@@ -42,8 +49,12 @@ class StatComponent : public Component {
     auto getVitalityMod() -> int;
     auto getStatSheet() -> CharacterSheet &;
     auto setStatSheet(CharacterSheet newStat) -> void;
+    auto deathTrigger() -> void;
+    auto expCheck() -> void;
+
     CharacterSheet stat;
 
   private:
+    Dice diceroller;
     auto getMod(int checkStat) -> int;
 };

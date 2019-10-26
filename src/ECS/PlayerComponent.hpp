@@ -20,6 +20,7 @@ class PlayerComponent : public Component {
 
     void issueAction();
     void skipTurn();
+    Pathing::Node *getLookingAtNode();
 
   private:
     bool issuedAction   = false;
@@ -29,7 +30,7 @@ class PlayerComponent : public Component {
 
     glm::uvec2 getNodeFacing(unsigned int x, unsigned int y);
 
-    Pathing::Node *getLookingAtNode();
+    
 
     void commandExecution();
     /**

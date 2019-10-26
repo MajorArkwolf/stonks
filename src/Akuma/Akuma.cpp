@@ -34,7 +34,7 @@ Akuma::Akuma() {
  */
 auto Akuma::display() -> void {
     auto &stonk = Stonk::Engine::get();
-    if (showEscapeMenu || showCharacterMenu || playerMouse) {
+    if (showEscapeMenu || showCharacterMenu || playerMouse || showInventory) {
         relativeMouse = 0;
     } else {
         relativeMouse = 1;
@@ -85,6 +85,10 @@ auto Akuma::display() -> void {
 
     displayDebugMenu();
     displayGameStats();
+    if (showInventory) {
+        drawInventoryWindow();
+	}
+
     if (showCharacterMenu) {
         drawCharacterMenu();
     }
@@ -131,20 +135,21 @@ auto Akuma::softInit() -> void {
 /**
  * @brief Hard initialiser for the Akuma gamestate
  */
-auto Akuma::hardInit() -> void {
+auto Akuma::Akuma::hardInit() -> void {
+    ItemLoader item;
+    item.init();
 
     // Load models textures etc here
     modelList.push_back(OBJ::Load("flattile.obj"));
     modelList.push_back(OBJ::Load("flatwall.obj"));
 
-	createPlayer();
-	turnManager.addEntity(player);
-	ItemLoader item;
-	item.init();
+    createPlayer();
+    generateLevel();
     makeStairs();
-	generateLevel();
-	softInit();
-	turnManager.turnOnManager();
+    turnManager.addEntity(player);
+    softInit();
+
+    turnManager.turnOnManager();
 }
 
 /**
@@ -236,10 +241,24 @@ void Akuma::displayGameStats() {
     ImGui::Text("Vitality    :  %.0d", playerStats.vitality);
     ImGui::Text("Intelligence:  %.0d", playerStats.intelligence);
 
+	auto *e = player->getComponent<PlayerComponent>().getLookingAtNode();
     ImGui::Separator();
     ImGui::Text("Selected Enemy Stats");
     ImGui::Separator();
-
+    if (e->occupant != nullptr && e->occupant->hasComponent<EnemyComponent>()) {
+        auto &enemyStats      = e->occupant->getComponent<StatComponent>().stat;
+		std::string enemyNamename       = "Name        : ";
+        std::string enemy = enemyStats.name;
+        enemyNamename                   = name + enemy;
+		ImGui::Text("%s", name.c_str());
+        ImGui::Text("Level       :  %.0d", enemyStats.level);
+        ImGui::Text("HP          :  %.0d", enemyStats.HP);
+        ImGui::Text("Strength    :  %.0d", enemyStats.strength);
+        ImGui::Text("Dexterity   :  %.0d", enemyStats.dexterity);
+        ImGui::Text("Luck        :  %.0d", enemyStats.luck);
+        ImGui::Text("Vitality    :  %.0d", enemyStats.vitality);
+        ImGui::Text("Intelligence:  %.0d", enemyStats.intelligence);
+     }
     ImGui::End();
 }
 
@@ -289,12 +308,26 @@ void Akuma::update([[maybe_unused]] double dt) {
     light_position[2] = player->getComponent<PositionComponent>().getZPos();
     // light_position[3] = 1;
     if (stairs != nullptr) {
-    if (stairs->hasComponent<StairComponent>()) {
-        if (stairs->getComponent<StairComponent>().checkStairActive()) {
-            stairs->getComponent<StairComponent>().resetStairCase();
-            descendLevel();
+        if (stairs->hasComponent<StairComponent>()) {
+            if (stairs->getComponent<StairComponent>().checkStairActive()) {
+                stairs->getComponent<StairComponent>().resetStairCase();
+                descendLevel();
+            }
         }
     }
+    if (boss != nullptr) {
+        if (boss->hasComponent<DeadComponent>()) {
+			//THE END MECHANIC
+            auto &stonk = Stonk::Engine::get();
+            stonk.daGameStateStack.pop();
+        }
+    }
+    if (player != nullptr) {
+        if (player->hasComponent<DeadComponent>()) {
+            // THE DEATH MECHANIC
+            auto &stonk = Stonk::Engine::get();
+            stonk.daGameStateStack.pop();
+        }
     }
 }
 
@@ -310,6 +343,9 @@ void Akuma::handleKeyPress(SDL_Event &event) {
         } break;
         case SDL_SCANCODE_E: {
             cameraComp.rotateCamera(-2);
+        } break;
+        case SDL_SCANCODE_I: {
+            this->showInventory = showInventory ? 0 : 1;
         } break;
         case SDL_SCANCODE_ESCAPE: {
             this->showEscapeMenu = showEscapeMenu ? false : true;
@@ -441,6 +477,7 @@ void Akuma::drawCharacterMenu() {
             player->getComponent<ModelComponent>().setModel(
                 "player_female.obj");
         }
+        player->getComponent<StatComponent>().setupEntity();
         this->showCharacterMenu = false;
     }
 
@@ -582,16 +619,29 @@ auto Akuma::drawCube(float size, [[maybe_unused]] bool wireframe) -> void {
  */
 void Akuma::descendLevel() {
     turnManager.turnOffManager();
-    floor.regen();
-    floorLevel++;
-    clearEnemies();
-    turnManager.clearActors();
-    turnManager.addEntity(player);
-    makeStairs();
-    generateLevel();
-    placePlayer(); // move player to new node.
-    turnManager.sortActors();
-    turnManager.turnOnManager();
+    auto &p = player->getComponent<StatComponent>().stat;
+    p.HP    = p.maxHP;
+    if (floorLevel < bossFloor) {
+		floor.regen();
+		floorLevel++;
+		clearEnemies();
+		turnManager.clearActors();
+		turnManager.addEntity(player);
+		makeStairs();
+		generateLevel();
+		placePlayer(); // move player to new node.
+		turnManager.sortActors();
+		turnManager.turnOnManager();
+    } else if (floorLevel == bossFloor){
+        floor.regen(glm::uvec2(30, 30), 1);
+        clearEnemies();
+        turnManager.clearActors();
+        bossBattleEngage();
+        turnManager.addEntity(player);
+        unMakeStairs();
+        turnManager.sortActors();
+        turnManager.turnOnManager();
+	}
 }
 
 /**
@@ -673,9 +723,11 @@ void Akuma::generateLevel() {
         enemies.at(i)->getComponent<FloorComponent>().setFloor(floor);
         enemies.at(i)->addComponentID<EnemyComponent>();
         enemies.at(i)->getComponent<EnemyComponent>().SetPlayerTarget(player);
-		enemies.at(i)->addComponentID<EquipmentComponent>();
-		enemies.at(i)->addComponentID<CombatComponent>();
+        enemies.at(i)->addComponentID<EquipmentComponent>();
+        enemies.at(i)->addComponentID<CombatComponent>();
         enemies.at(i)->addComponentID<StatComponent>();
+        string name = "Orc " + std::to_string(i);
+        enemies.at(i)->getComponent<StatComponent>().stat.name = name;
         enemies.at(i)->addComponentID<TurnComponent>();
         turnManager.addEntity(enemies.at(i));
     }
@@ -687,7 +739,7 @@ void Akuma::generateLevel() {
 void Akuma::makeStairs() {
     if (stairs == nullptr) {
         stairs = &manager.addEntity();
-	}
+    }
     auto roomList = floor.getRoomList();
     for (auto i = roomList.size() - 1; i > 0; i--) {
         auto roomSize =
@@ -726,6 +778,11 @@ void Akuma::makeStairs() {
     }
 }
 
+void Akuma::unMakeStairs() {
+    stairs->getComponent<ModelComponent>().unSetModel();
+    stairs->destroy();
+    stairs = nullptr;
+}
 
 void Akuma::createPlayer() {
     player = &manager.addEntity();
@@ -734,20 +791,22 @@ void Akuma::createPlayer() {
     player->addComponentID<ScaleComponent>();
     player->getComponent<ScaleComponent>().setScale(glm::vec3{0.5, 0.5, 0.5});
     player->addComponentID<PositionComponent>();
-    auto roomList  = floor.getRoomList();
-    glm::uvec2 pos = roomList[0]->getCentrePoint();
-    auto roomNode  = floor.getGridNode(pos);
-    player->getComponent<PositionComponent>().setPos(roomNode);
+    placePlayer();
     player->addComponentID<ModelComponent>();
-    player->getComponent<ModelComponent>().setModel("player_female.obj");
     player->addComponentID<PlayerComponent>();
     player->addComponentID<MoveComponent>();
     player->addComponentID<StatComponent>();
-    player->getComponent<StatComponent>().stat.name = "Waman";
     player->addComponentID<CameraComponent>();
     player->addComponentID<TurnComponent>();
     player->addComponentID<CombatComponent>();
     player->addComponentID<InventoryComponent>();
+    player->addComponentID<EquipmentComponent>();
+    player->getComponent<InventoryComponent>().addItemToInventory(
+        ItemManager::getItem(4));
+    player->getComponent<InventoryComponent>().addItemToInventory(
+        ItemManager::getItem(5));
+    player->getComponent<InventoryComponent>().addItemToInventory(
+        ItemManager::getItem(6));
 }
 
 /**
@@ -758,4 +817,73 @@ void Akuma::placePlayer() {
     glm::uvec2 pos = roomList[0]->getCentrePoint();
     auto roomNode  = floor.getGridNode(pos);
     player->getComponent<PositionComponent>().setPos(roomNode);
+}
+
+void Akuma::drawInventoryWindow() {
+    ImGui::SetNextWindowSize(ImVec2(400, 120), ImGuiCond_Once);
+    ImGui::SetNextWindowPos(ImVec2(0, 400), ImGuiCond_Once);
+    ImGui::Begin("Inventory", &showInventory);
+    if (player->hasComponent<InventoryComponent>()) {
+        auto &inventory = player->getComponent<InventoryComponent>().inventoryList;
+
+        for (size_t i = 0; i < inventory.size(); i++) {
+            ImGui::Text("%s", inventory[i].mItem.name.c_str());
+            ImGui::SameLine(ImGui::GetWindowWidth() - 130);
+            ImGui::Text(" (%zu)", inventory[i].quantitiy);
+            ImGui::SameLine(ImGui::GetWindowWidth()-100);
+            ImGui::PushID(static_cast<int>(i) + 10);
+            if (ImGui::Button("Equip")) {
+                player->getComponent<InventoryComponent>().equipItemtoSlot(inventory[i].mItem);
+                break;
+            }
+            ImGui::PopID();
+
+  
+        }
+    }
+    ImGui::End();
+}
+
+void Akuma::bossBattleEngage() {
+    auto floorSize = floor.getGridSize();
+    bool loop      = true;
+    for (auto x = 1u; x < (floorSize.x - 1u) && loop; x++) {
+        for (auto y = 1u; x < (floorSize.y - 1u) && loop; y++) {
+            if (floor.getGridNode(x, y)->walkable) {
+                player->getComponent<PositionComponent>().setNode(
+                    floor.getGridNode(x, y));
+                loop = false;
+            
+			}
+		}
+	}
+    boss = &manager.addEntity();
+    boss->addComponentID<ScaleComponent>(glm::vec3{0.5, 0.5, 0.5});
+    boss->addComponentID<PositionComponent>();
+    loop = true;
+    for (auto x = (floorSize.x - 1u); x > 1u && loop; x--) {
+        for (auto y = (floorSize.y - 1u); y > 1u && loop; y--) {
+            if (floor.getGridNode(x, y)->walkable) {
+                boss->getComponent<PositionComponent>().setNode(
+                    floor.getGridNode(x, y));
+                loop = false;
+            }
+        }
+    }
+    boss->addComponentID<ModelComponent>();
+    boss->getComponent<ModelComponent>().setModel(
+        "goblin_baseball.obj");
+    boss->addComponentID<MoveComponent>();
+    boss->addComponentID<FloorComponent>();
+    boss->getComponent<FloorComponent>().setFloor(floor);
+    boss->addComponentID<EnemyComponent>();
+    boss->getComponent<EnemyComponent>().SetPlayerTarget(player);
+    boss->getComponent<EnemyComponent>().lockedToPlayer = true;
+    boss->addComponentID<EquipmentComponent>();
+    boss->addComponentID<CombatComponent>();
+    boss->addComponentID<StatComponent>();
+    string name = "Akuma Shei";
+    boss->getComponent<StatComponent>().stat.name = name;
+    boss->addComponentID<TurnComponent>();
+    turnManager.addEntity(boss);
 }

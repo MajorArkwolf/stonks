@@ -14,6 +14,9 @@ PlayerComponent::PlayerComponent() = default;
 PlayerComponent::~PlayerComponent() = default;
 void PlayerComponent::init() {}
 void PlayerComponent::update() {
+    if (this->entity->hasComponent<StatComponent>()) {
+        this->entity->getComponent<StatComponent>().expCheck();
+	}
     if (this->entity->hasComponent<TurnComponent>()) {
         if (this->entity->getComponent<TurnComponent>().checkTurn()) {
             facing = facingBuffer;
