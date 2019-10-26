@@ -79,6 +79,3 @@ CharacterSheet EnemyFactory::generateStats(unsigned int floorLevel) {
 	}
 	return result;
 }
-
-// void Akuma::generateLevel() {
-//}

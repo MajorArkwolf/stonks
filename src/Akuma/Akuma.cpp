@@ -220,12 +220,27 @@ void Akuma::displayDebugMenu() {
  */
 void Akuma::displayGameStats() {
     auto &playerStats = player->getComponent<StatComponent>().stat;
+    auto &playerEquip = player->getComponent<EquipmentComponent>();
+    auto playerTurn  = player->getComponent<TurnComponent>().checkTurn();
+    auto turnOutput   = string();
+    if (playerTurn) {
+        turnOutput = "Your Turn";
+    } else {
+        turnOutput = "Enemy Turn";
+	}
 
     ImGui::SetNextWindowSize(ImVec2(250, 500), 1);
     ImGui::SetNextWindowPos(ImVec2(width - 250, 0), 1);
 
     ImGui::Begin("Game Info", nullptr,
                  ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+    ImGui::Separator();
+    ImGui::Text("Game Stats");
+    ImGui::Separator();
+    ImGui::Text("%s", turnOutput.c_str());
+    ImGui::Text("Floor Level  :  %.0d", floorLevel);
+    ImGui::Text("Round        :  %.0d", turnManager.getTurnRound());
+
     ImGui::Separator();
     ImGui::Text("Player Stats");
     ImGui::Separator();
@@ -240,6 +255,11 @@ void Akuma::displayGameStats() {
     ImGui::Text("Luck        :  %.0d", playerStats.luck);
     ImGui::Text("Vitality    :  %.0d", playerStats.vitality);
     ImGui::Text("Intelligence:  %.0d", playerStats.intelligence);
+    ImGui::Separator();
+    ImGui::Text("Equipped Items");
+    ImGui::Separator();
+    ImGui::Text("Main Hand:  %s", playerEquip.getEquippedMainHand().name.c_str());
+    ImGui::Text("Armor:  %s", playerEquip.getEquippedArmor().name.c_str());
 
 	auto *e = player->getComponent<PlayerComponent>().getLookingAtNode();
     ImGui::Separator();

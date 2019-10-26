@@ -51,7 +51,7 @@ class Akuma : public BaseState {
 
 	///The current floor level
     unsigned floorLevel = 1;
-    unsigned bossFloor  = 1;
+    unsigned bossFloor  = 9;
     void descendLevel();
 	///Light position array
     GLfloat light_position[4];

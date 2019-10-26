@@ -25,8 +25,8 @@ void TurnManager::update() {
             } else {
                 actorTurnID = 0;
                 roundCounter++;
-                CombatLog::log().push_back(
-                    "-----" + std::to_string(roundCounter) + "-----");
+                /*CombatLog::log().push_back(
+                   "-----" + std::to_string(roundCounter) + "-----");*/
             }
         } else {
             if (!actors.at(actorTurnID).entity->getComponent<TurnComponent>().checkTurn()) {
@@ -74,7 +74,7 @@ void TurnManager::checkEntityTurnState(Entity *entity) {
 void TurnManager::turnOnManager() {
     turnManagerSwitch = true;
     if (roundCounter == 1) {
-        CombatLog::log().push_back("-----" + std::to_string(roundCounter) + "-----");
+        //CombatLog::log().push_back("-----" + std::to_string(roundCounter) + "-----");
     }
     turnToken = true;
 }
@@ -102,4 +102,8 @@ void TurnManager::checkDexChange() {
     if (sortArray) {
         sortActors();
     }
+}
+
+int TurnManager::getTurnRound() {
+    return roundCounter;
 }
