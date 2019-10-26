@@ -243,9 +243,9 @@ void Akuma::Akuma::displayGameStats() {
     ImGui::Separator();
     if (e->occupant != nullptr && e->occupant->hasComponent<EnemyComponent>()) {
         auto &enemyStats      = e->occupant->getComponent<StatComponent>().stat;
-		std::string name       = "Name        : ";
+		std::string enemyNamename       = "Name        : ";
         std::string enemy = enemyStats.name;
-        name                   = name + enemy;
+        enemyNamename                   = name + enemy;
 		ImGui::Text("%s", name.c_str());
         ImGui::Text("Level       :  %.0d", enemyStats.level);
         ImGui::Text("HP          :  %.0d", enemyStats.HP);
@@ -776,12 +776,12 @@ void Akuma::drawInventoryWindow() {
     if (player->hasComponent<InventoryComponent>()) {
         auto &inventory = player->getComponent<InventoryComponent>().inventoryList;
 
-        for (int i = 0; i < inventory.size(); i++) {
+        for (size_t i = 0; i < inventory.size(); i++) {
             ImGui::Text("%s", inventory[i].mItem.name.c_str());
             ImGui::SameLine(ImGui::GetWindowWidth() - 130);
             ImGui::Text(" (%zu)", inventory[i].quantitiy);
             ImGui::SameLine(ImGui::GetWindowWidth()-100);
-            ImGui::PushID(i + 10);
+            ImGui::PushID(static_cast<int>(i) + 10);
             if (ImGui::Button("Equip")) {
                 player->getComponent<InventoryComponent>().equipItemtoSlot(inventory[i].mItem);
                 break;
