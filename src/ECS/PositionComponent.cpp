@@ -1,10 +1,7 @@
 #include "PositionComponent.hpp"
 
 PositionComponent::PositionComponent()  = default;
-PositionComponent::~PositionComponent(){
-    currentTile->occupant = nullptr;
-    currentTile->occupied = false;
-};
+PositionComponent::~PositionComponent(){};
 void PositionComponent::init() {}
 void PositionComponent::update() {}
 void PositionComponent::draw() {}
@@ -95,4 +92,9 @@ float PositionComponent::getZPos() {
 
 float PositionComponent::getRotation() {
     return this->rotation;
+}
+
+void PositionComponent::removePosition() {
+    currentTile->occupant = nullptr;
+    currentTile->occupied = false;
 }

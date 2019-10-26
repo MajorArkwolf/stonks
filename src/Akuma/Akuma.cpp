@@ -550,16 +550,24 @@ auto Akuma::Akuma::drawCube(float size, [[maybe_unused]] bool wireframe) -> void
 
 void Akuma::descendLevel() {
     turnManager.turnOffManager();
-    floor.regen();
-    floorLevel++;
-    clearEnemies();
-    turnManager.clearActors();
-    turnManager.addEntity(player);
-    makeStairs();
-    generateLevel();
-    placePlayer(); // move player to new node.
-    turnManager.sortActors();
-    turnManager.turnOnManager();
+    if (floorLevel < 10) {
+		floor.regen();
+		floorLevel++;
+		clearEnemies();
+		turnManager.clearActors();
+		turnManager.addEntity(player);
+		makeStairs();
+		generateLevel();
+		placePlayer(); // move player to new node.
+		turnManager.sortActors();
+		turnManager.turnOnManager();
+    } else {
+        clearEnemies();
+        turnManager.clearActors();
+        turnManager.addEntity(player);
+        stairs->destroy();
+        stairs = nullptr;
+	}
 }
 
 void Akuma::clearEnemies() {
@@ -632,6 +640,7 @@ void Akuma::generateLevel() {
 		enemies.at(i)->addComponentID<EquipmentComponent>();
 		enemies.at(i)->addComponentID<CombatComponent>();
         enemies.at(i)->addComponentID<StatComponent>();
+        enemies.at(i)->getComponent<StatComponent>().stat.name = "Orc";
         enemies.at(i)->addComponentID<TurnComponent>();
         turnManager.addEntity(enemies.at(i));
     }
@@ -691,11 +700,9 @@ void Akuma::createPlayer() {
     auto roomNode  = floor.getGridNode(pos);
     player->getComponent<PositionComponent>().setPos(roomNode);
     player->addComponentID<ModelComponent>();
-    player->getComponent<ModelComponent>().setModel("player_female.obj");
     player->addComponentID<PlayerComponent>();
     player->addComponentID<MoveComponent>();
     player->addComponentID<StatComponent>();
-    player->getComponent<StatComponent>().stat.name = "Waman";
     player->addComponentID<CameraComponent>();
     player->addComponentID<TurnComponent>();
     player->addComponentID<CombatComponent>();

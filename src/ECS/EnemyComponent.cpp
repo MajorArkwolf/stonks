@@ -237,12 +237,24 @@ auto EnemyComponent::combatCheck() -> void {
 
 auto EnemyComponent::deadEnemy() -> void {
     if (this->entity->hasComponent<StatComponent>()) {
-        this->entity->addComponentID<DeadComponent>();
-        	unsigned int maxSize = static_cast<unsigned int>(ItemManager::ItemManager().size());
-        	size_t lookUp = static_cast<size_t>(diceroller.Roll(1u, maxSize));
-            ItemID returnedItem = ItemManager::getItem(lookUp);
-            player->getComponent<InventoryComponent>().addItemToInventory(
-                returnedItem);
+        if (!this->entity->hasComponent<DeadComponent>()) {
+            string info = "";
+			this->entity->addComponentID<DeadComponent>();
+            this->entity->getComponent<PositionComponent>().removePosition();
+            if (diceroller.Roll(1, 10) > 8) {
+        		unsigned int maxSize = static_cast<unsigned int>(ItemManager::ItemManager().size());
+        		size_t lookUp = static_cast<size_t>(diceroller.Roll(1u, maxSize));
+				ItemID returnedItem = ItemManager::getItem(lookUp);
+				player->getComponent<InventoryComponent>().addItemToInventory(
+					returnedItem);
+                info =
+                    this->entity->getComponent<StatComponent>().stat.name + " has died dropping a " + returnedItem.name + ".";
+            } else {
+                info = this->entity->getComponent<StatComponent>().stat.name +
+                       " has died, it dropped nothing of value.";
+			}
+            CombatLog::log().push_back(info);
+        }
 		//int item = diceroller.Roll(1, 2);
 		//if (item == 1) {
 		//	unsigned int maxSize = static_cast<unsigned int>(ItemManager::WeaponManager().size());
