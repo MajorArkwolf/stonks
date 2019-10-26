@@ -777,14 +777,14 @@ void Akuma::drawInventoryWindow() {
         auto &inventory = player->getComponent<InventoryComponent>().inventoryList;
 
         for (size_t i = 0; i < inventory.size(); i++) {
+            ImGui::PushID(static_cast<int>(i));
             ImGui::Text("%s", inventory[i].mItem.name.c_str());
             ImGui::SameLine(ImGui::GetWindowWidth() - 130);
             ImGui::Text(" (%zu)", inventory[i].quantitiy);
             ImGui::SameLine(ImGui::GetWindowWidth()-100);
-            ImGui::PushID(static_cast<int>(i) + 10);
+
             if (ImGui::Button("Equip")) {
                 player->getComponent<InventoryComponent>().equipItemtoSlot(inventory[i].mItem);
-                break;
             }
             ImGui::PopID();
 
