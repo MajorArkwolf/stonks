@@ -74,7 +74,7 @@ class Akuma : public BaseState {
 	///Stair entity used to ascend levels
     Entity *stairs = nullptr;
     Entity *boss   = nullptr;
-	///Factory used to generate enemies
+    ///Factory used to generate enemies
     EnemyFactory enemyFactory;
 	///Vector of enemy entities
     std::vector<Entity *> enemies;
