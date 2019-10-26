@@ -1,4 +1,5 @@
 #include "ModelComponent.hpp"
+#include "DeadComponent.hpp"
 
 
 ModelComponent::ModelComponent()  = default;
@@ -19,21 +20,27 @@ void ModelComponent::setModel(std::string filename) {
     hasModel = true;
     modelId  = ModelManager::GetModelID(filename);
 }
+void ModelComponent::unSetModel() {
+    hasModel = false;
+    modelId  = 0;
+}
 void ModelComponent::update() {}
 void ModelComponent::draw() {
-    glm::vec3 entityScale{1, 1, 1};
-    glm::vec3 entityPos{0, 0, 0};
-    float entityRotation = 0;
-    if (hasModel) {
-        if (hasScale) {
-            entityScale = this->entity->getComponent<ScaleComponent>().getScale();
-        }
-        if (this->entity->hasComponent<PositionComponent>()) {
-            entityPos = this->entity->getComponent<PositionComponent>().getPos();
-            entityRotation =
-                this->entity->getComponent<PositionComponent>().getRotation();
-        }
-        ModelManager::DrawModel(this->modelId, entityRotation, entityScale,
-                                entityPos);
+    if (!this->entity->hasComponent<DeadComponent>()) {
+		glm::vec3 entityScale{1, 1, 1};
+		glm::vec3 entityPos{0, 0, 0};
+		float entityRotation = 0;
+		if (hasModel) {
+			if (hasScale) {
+				entityScale = this->entity->getComponent<ScaleComponent>().getScale();
+			}
+			if (this->entity->hasComponent<PositionComponent>()) {
+				entityPos = this->entity->getComponent<PositionComponent>().getPos();
+				entityRotation =
+					this->entity->getComponent<PositionComponent>().getRotation();
+			}
+			ModelManager::DrawModel(this->modelId, entityRotation, entityScale,
+									entityPos);
+		}
     }
 }

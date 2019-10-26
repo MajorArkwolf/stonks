@@ -15,7 +15,7 @@ class ModelComponent : public Component {
     void setModel(std::string filename);
     void update();
     void draw();
-
+    void unSetModel();
   private:
     size_t modelId         = 0;
     bool hasModel          = false;

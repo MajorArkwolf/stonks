@@ -1,6 +1,6 @@
 #include "CombatComponent.hpp"
 #include "../Akuma/CombatLog.hpp"
-
+#include "Akuma/Items/ItemManager.hpp"
 
 #include "EquipmentComponent.hpp"
 #include "StatComponent.hpp"
@@ -9,11 +9,7 @@
 CombatComponent::CombatComponent()  = default;
 CombatComponent::~CombatComponent() = default;
 
-void CombatComponent::init() {
-    if (!this->entity->hasComponent<EquipmentComponent>()) {
-        this->entity->addComponentID<EquipmentComponent>();
-	}
-}
+void CombatComponent::init() {}
 void CombatComponent::update() {}
 void CombatComponent::draw() {}
 
@@ -36,7 +32,8 @@ void CombatComponent::singleHanded(Entity *opponent) {
     // auto &offHand = ItemManager::getWeapon(
     //    this->entity->getComponent<EquipmentComponent>().getEquippedOffHand().itemID);
 
-    int diceRoll             = diceroller.Roll(1, 20);
+    int diceRoll =
+        diceroller.Roll(1, 20) + this->entity->getComponent<StatComponent>().getDexterityMod();
     int weaponHitDie         = mainHand.weaponHitDie;
     int weaponPreHitDie      = mainHand.weaponPreHitDie;
     int weaponCritMultiplier = mainHand.critMultiplier;
@@ -76,10 +73,14 @@ void CombatComponent::singleHanded(Entity *opponent) {
         }
     } else {
         string info = this->entity->getComponent<StatComponent>().stat.name +
-                      " misses their attack on" +
+                      " misses their attack on " +
                       opponent->getComponent<StatComponent>().stat.name + ".";
         logInformation(info);
     }
+    if (damage > 0) {
+        opponent->getComponent<StatComponent>().takeDamage(damage);
+	}
+    opponent->getComponent<StatComponent>().deathTrigger();
 }
 
 int CombatComponent::weaponDamage(int weaponPreHitDie, int weaponHitDie) {

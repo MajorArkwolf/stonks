@@ -48,6 +48,7 @@ class Akuma : public BaseState {
     void drawInventoryWindow();
 
     unsigned floorLevel = 1;
+    unsigned bossFloor  = 1;
     void descendLevel();
 
     glm::vec3 gridTranslation = {0, 0, -50.f};
@@ -64,6 +65,7 @@ class Akuma : public BaseState {
     Manager manager;
     Entity *player = nullptr;
     Entity *stairs = nullptr;
+    Entity *boss   = nullptr;
     std::vector<Entity *> enemies;
     Dice diceRoller;
     TurnManager turnManager;
@@ -73,7 +75,8 @@ class Akuma : public BaseState {
     // bool shouldDrawAxis = false;
     auto drawAxis(float x, float y, float z, float length) -> void;
     std::vector<Model> modelList;
-
+    void bossBattleEngage();
 	void makeStairs();
     void createPlayer();
+    void unMakeStairs();
 };

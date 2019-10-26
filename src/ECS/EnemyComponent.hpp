@@ -23,12 +23,14 @@ class EnemyComponent : public Component {
 
     void turnEntity(int i);
 
+	auto deadEnemy() -> void;
+    bool lockedToPlayer = false;
+
   private:
     Dice diceroller;
     int turn            = 0;
     Facing facingBuffer = Facing::N;
     Facing facing       = Facing::N;
-    bool lockedToPlayer = false;
     Entity *player      = nullptr;
 
     // This function is scuffed and wont face the player all the time, cant debug

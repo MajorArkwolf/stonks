@@ -1,4 +1,7 @@
 #include "StatComponent.hpp"
+#include "PlayerComponent.hpp"
+#include "EnemyComponent.hpp"
+#include "DeadComponent.hpp"
 
 StatComponent::StatComponent()  = default;
 StatComponent::~StatComponent() = default;
@@ -69,5 +72,39 @@ auto StatComponent::getMod(int checkStat) -> int {
         return 10;
     } else {
         return 0;
+    }
+}
+
+auto StatComponent::setupEntity() -> void {
+    for (auto i = 1; i <= this->stat.level; i++) {
+        if (i == 1) {
+            this->stat.maxHP = this->stat.HD + getVitalityMod();
+        } else {
+            this->stat.maxHP +=
+                this->diceroller.Roll(1, this->stat.HD) + getVitalityMod();
+        }
+	}
+    this->stat.HP = this->stat.maxHP;
+}
+
+auto StatComponent::takeDamage(int damage) -> void {
+    this->stat.HP -= damage;
+}
+
+auto StatComponent::deathTrigger() -> void {
+    if (this->stat.HP < 0 && !this->stat.dead) {
+        this->stat.dead = true;
+		if (this->entity->hasComponent<PlayerComponent>()) {
+            this->entity->addComponentID<DeadComponent>();
+		} else if (this->entity->hasComponent<EnemyComponent>()) {
+            this->entity->getComponent<EnemyComponent>().deadEnemy();
+		}
+    }
+}
+
+auto StatComponent::expCheck() -> void {
+    if (this->stat.exp > 100) {
+        this->stat.exp -= 100;
+        this->stat.levelPoint++;
     }
 }
