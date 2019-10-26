@@ -2,9 +2,19 @@
 #include "PositionComponent.hpp"
 #include <cmath>
 
+/**
+ * @brief  Default Constructor
+ */
 CameraComponent::CameraComponent()  = default;
+
+/**
+ * @brief  Default Destructor
+ */
 CameraComponent::~CameraComponent() = default;
 
+/**
+ * @brief  intitalizes the camera
+ */
 void CameraComponent::init() {
     UpdateCameraLook();
     if (this->entity->hasComponent<PositionComponent>()) {
@@ -12,18 +22,32 @@ void CameraComponent::init() {
     }
     camera.position.y = 25;
 }
+
+/**
+ * @brief  updates the camera based on the new location
+ */
 void CameraComponent::update() {
     UpdateCameraLook();
     UpdateCameraPosition();
 }
+
+/**
+ * @brief  Unused
+ */
 void CameraComponent::draw() {}
 
+/**
+ * @brief  Update the camera look location
+ */
 auto CameraComponent::UpdateCameraLook() -> void {
     if (this->entity->hasComponent<PositionComponent>()) {
         camera.look = this->entity->getComponent<PositionComponent>().getPos();
     }
 }
 
+/**
+ * @brief  Update the camera position
+ */
 auto CameraComponent::UpdateCameraPosition() -> void {
     if (this->entity->hasComponent<PositionComponent>()) {
         glm::dvec3 entityPosition =
@@ -39,10 +63,18 @@ auto CameraComponent::UpdateCameraPosition() -> void {
     }
 }
 
+/**
+ * @brief  rotate the camera
+ * @param  amount the amount of rotation change by
+ */
 auto CameraComponent::rotateCamera(double amount) -> void {
     currentRotation += amount;
 }
 
+/**
+ * @brief  zoom the camera
+ * @param  amount the amount to zoom the camera
+ */
 auto CameraComponent::zoomCamera(double amount) -> void {
     double minDist = 3;
     double maxDist = 25;

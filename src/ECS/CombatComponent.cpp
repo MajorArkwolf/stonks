@@ -6,31 +6,51 @@
 #include "StatComponent.hpp"
 #include "TurnComponent.hpp"
 
+/**
+ * @brief  Default Constructor
+ */
 CombatComponent::CombatComponent()  = default;
+
+/**
+ * @brief  Default Destructor
+ */
 CombatComponent::~CombatComponent() = default;
 
+/**
+ * @brief  Unused
+ */
 void CombatComponent::init() {}
+
+/**
+ * @brief  Unused
+ */
 void CombatComponent::update() {}
+
+/**
+ * @brief  Unused
+ */
 void CombatComponent::draw() {}
 
+/**
+ * @brief  Attacks an entity and determines what type of combat to be used
+ * @param opponent a pointer to the opponent attacking
+ */
 void CombatComponent::attackEntity(Entity *opponent) {
-	//Add dual hand and single handed combat
     singleHanded(opponent);
  
     this->entity->getComponent<TurnComponent>().endYourTurn();
 }
 
+/**
+ * @brief  Single handed combat
+ * @param opponent a pointer to the opponent attacking
+ */
 void CombatComponent::singleHanded(Entity *opponent) {
     auto enemyArmor = ItemManager::getArmor(
         opponent->getComponent<EquipmentComponent>().getEquippedArmor().itemID);
-    //   if (/*this->entity->getComponent<EquipmentComponent>().getEquippedOffHand().type() == shield*/) {
-    //       auto &enemyShield =
-    //           opponent->getComponent<EquipmentComponent>().getEquippedOffHand();
-    //    }
+
     auto mainHand = ItemManager::getWeapon(
         this->entity->getComponent<EquipmentComponent>().getEquippedMainHand().itemID);
-    // auto &offHand = ItemManager::getWeapon(
-    //    this->entity->getComponent<EquipmentComponent>().getEquippedOffHand().itemID);
 
     int diceRoll =
         diceroller.Roll(1, 20) + this->entity->getComponent<StatComponent>().getDexterityMod();
@@ -83,10 +103,23 @@ void CombatComponent::singleHanded(Entity *opponent) {
     opponent->getComponent<StatComponent>().deathTrigger();
 }
 
+/**
+ * @brief  Overloaded function to determine the total damage
+ * @param  weaponPreHitDie the amount of die to roll
+ * @param  WeaponHitDie The total sides of the dice
+ * @return the total damage deal to the entity
+ */
 int CombatComponent::weaponDamage(int weaponPreHitDie, int weaponHitDie) {
     return weaponDamage(weaponPreHitDie, weaponHitDie, 1);
 }
 
+/**
+ * @brief  Determine the total damage
+ * @param  weaponPreHitDie the amount of die to roll
+ * @param  WeaponHitDie The total sides of the dice
+ * @param  weaponCritMultiplier determine how many times to roll if critted
+ * @return the total damage deal to the entity
+ */
 int CombatComponent::weaponDamage(int weaponPreHitDie, int weaponHitDie,
                                   int weaponCritMultiplier) {
     int totalDamage = 0;
@@ -96,18 +129,33 @@ int CombatComponent::weaponDamage(int weaponPreHitDie, int weaponHitDie,
     return totalDamage;
 }
 
+/**
+ * @brief  Attack an an entity from a given node
+ * @param  opponentSquare a pointer to the node
+ */
 void CombatComponent::attackEntity(Pathing::Node *opponentSquare) {
     attackEntity(opponentSquare->occupant);
 }
 
+/**
+ * @brief  Logs information to the combat log
+ * @param  damage the damage to be logged
+ * @param  opponent the entity that was attacked
+ */
 void CombatComponent::logInformation(int damage, Entity *opponent) {
     string eventLog =
-        "Combat: Name: " + this->entity->getComponent<StatComponent>().stat.name +
+        this->entity->getComponent<StatComponent>().stat.name +
         "hit " + opponent->getComponent<StatComponent>().stat.name + " for " +
         std::to_string(damage) + " points of damage.";
     logInformation(eventLog);
 }
 
+/**
+ * @brief  Logs information to the combat log
+ * @param  damage the damage to be logged
+ * @param  opponent the entity that was attacked
+ * @param  weapon the weapon used to attack
+ */
 void CombatComponent::logInformation(int damage, Entity *opponent, Weapon weapon) {
     string eventLog =
         "Combat: Name: " + this->entity->getComponent<StatComponent>().stat.name +
@@ -116,6 +164,10 @@ void CombatComponent::logInformation(int damage, Entity *opponent, Weapon weapon
     logInformation(eventLog);
 }
 
+/**
+ * @brief  Logs information to the combat log
+ * @param info the output to the screen
+ */
 void CombatComponent::logInformation(string info) {
     CombatLog::log().push_back(info);
 }

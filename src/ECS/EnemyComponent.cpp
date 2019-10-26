@@ -14,9 +14,24 @@
 #include "InventoryComponent.hpp"
 #include "DeadComponent.hpp"
 
+/**
+ * @brief  Default Constructor
+ */
 EnemyComponent::EnemyComponent()  = default;
+
+/**
+ * @brief  Default Destructor
+ */
 EnemyComponent::~EnemyComponent() = default;
+
+/**
+ * @brief  Unused
+ */
 void EnemyComponent::init() {}
+
+/**
+ * @brief  On update, does a dead check a turn check and then if all passed it allows the enemy to take there turn.
+ */
 void EnemyComponent::update() {
     if (!this->entity->hasComponent<DeadComponent>()) {
 		if (this->entity->hasComponent<TurnComponent>()) {
@@ -30,15 +45,31 @@ void EnemyComponent::update() {
         }
     }
 }
+
+/**
+ * @brief  Unused
+ */
 void EnemyComponent::draw() {}
+
+/**
+ * @brief  Sets the facing direction to the buffer
+ * @param newFace the direction to face
+ */
 void EnemyComponent::setFacing(Facing newFace) {
     facingBuffer = newFace;
 }
 
+/**
+ * @brief  Pushes the buffer into the facing direction
+ */
 void EnemyComponent::updateFacing() {
     facing = facingBuffer;
 }
 
+/**
+ * @brief  Uses an int value to determine the facing direction
+ * @param i used to determine direction, 0 being N and 7 being NW
+ */
 void EnemyComponent::setFacing(int i) {
     switch (i) {
         case 0: {
@@ -80,10 +111,18 @@ void EnemyComponent::setFacing(int i) {
     }
 }
 
+/**
+ * @brief  Sets the entity the player they will target
+ * @param currentPlayer the only player in the game
+ */
 void EnemyComponent::SetPlayerTarget(Entity *currentPlayer) {
     player = currentPlayer;
 }
 
+/**
+ * @brief  Clamps the value if it goes over or under 0-7
+ * @param  i used to add onto the existing turn variable
+ */
 void EnemyComponent::turnEntity(int i) {
     if (this->entity->getComponent<TurnComponent>().checkTurn()) {
         if (turn + i > 7) {
@@ -97,8 +136,10 @@ void EnemyComponent::turnEntity(int i) {
     }
 }
 
-// This function is scuffed and wont face the player all the time, cant debug
-// as I dont have enough data to see what the entities are actually doing.
+/**
+ * @brief  Determines the facing direction to the next node
+ * @param  nextNode the next node to move to
+ */
 void EnemyComponent::determineFacingDirection(Pathing::Node *nextNode) {
     auto *currentNode = this->entity->getComponent<PositionComponent>().getNode();
     int x             = static_cast<int>(nextNode->x - currentNode->x);
@@ -131,6 +172,9 @@ void EnemyComponent::determineFacingDirection(Pathing::Node *nextNode) {
     }
 }
 
+/**
+ * @brief  After getting the facing direction, it sets it using fixed values
+ */
 auto EnemyComponent::setTurnAngle() -> void {
     if (this->entity->hasComponent<PositionComponent>()) {
         switch (facing) {
@@ -162,6 +206,9 @@ auto EnemyComponent::setTurnAngle() -> void {
     }
 }
 
+/**
+ * @brief  Check to see if the enemy has located the player.
+ */
 void EnemyComponent::detectPlayer() {
     if (this->entity->hasComponent<StatComponent>()) {
         auto distance = DistanceBetween();
@@ -169,8 +216,9 @@ void EnemyComponent::detectPlayer() {
             this->entity->getComponent<StatComponent>().getIntelligenceMod();
         auto playerStealth =
             player->getComponent<StatComponent>().getDexterityMod();
-        if (diceroller.Roll(1, 20) + myIntel >
-            diceroller.Roll(1, 20) + playerStealth + static_cast<int>(distance)) {
+        auto result = diceroller.Roll(1, 20);
+        if (result + myIntel >
+            diceroller.Roll(1, 20) + playerStealth + static_cast<int>(distance) || result == 20) {
             lockedToPlayer = true;
             // Play Sound here
         }
@@ -178,6 +226,10 @@ void EnemyComponent::detectPlayer() {
     this->entity->getComponent<TurnComponent>().endYourTurn();
 }
 
+/**
+ * @brief  Determines the distance between the player and the enemy
+ * @return the distance
+ */
 auto EnemyComponent::DistanceBetween() -> unsigned int {
     return static_cast<unsigned int>(
         Pathing::Pathfinding::findPath(
@@ -187,6 +239,9 @@ auto EnemyComponent::DistanceBetween() -> unsigned int {
             .size());
 }
 
+/**
+ * @brief  moves the enemy towards the current players position using a*
+ */
 auto EnemyComponent::goToPlayer() -> void {
     auto *playerNode = player->getComponent<PositionComponent>().getNode();
     if (this->entity->hasComponent<MoveComponent>()) {
@@ -214,6 +269,9 @@ auto EnemyComponent::goToPlayer() -> void {
     }
 }
 
+/**
+ * @brief  Used to determine if the player needs to be found or moved towards
+ */
 auto EnemyComponent::moveAction() -> void {
     if (lockedToPlayer) {
         goToPlayer();
@@ -221,6 +279,10 @@ auto EnemyComponent::moveAction() -> void {
         detectPlayer();
     }
 }
+
+/**
+ * @brief  Checks to see if the player is within range of combat
+ */
 auto EnemyComponent::combatCheck() -> void {
     if (lockedToPlayer) {
         auto *currentNode =
@@ -237,6 +299,9 @@ auto EnemyComponent::combatCheck() -> void {
     }
 }
 
+/**
+ * @brief  Checks to see if the enemy is dead and if so to drop an item for the player.
+ */
 auto EnemyComponent::deadEnemy() -> void {
     if (this->entity->hasComponent<StatComponent>()) {
         if (!this->entity->hasComponent<DeadComponent>()) {

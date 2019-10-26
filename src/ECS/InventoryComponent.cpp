@@ -3,12 +3,35 @@
 #include "Akuma/CombatLog.hpp"
 #include "EquipmentComponent.hpp"
 
+/**
+ * @brief  Default Constructor
+ */
 InventoryComponent::InventoryComponent()  = default;
+
+/**
+ * @brief  Default Destructor
+ */
 InventoryComponent::~InventoryComponent() = default;
+
+/**
+ * @brief  Unused
+ */
 void InventoryComponent::init() {}
+
+/**
+ * @brief  Unused
+ */
 void InventoryComponent::update() {}
+
+/**
+ * @brief  Unused
+ */
 void InventoryComponent::draw() {}
 
+/**
+ * @brief  adds an item to the players inventory
+ * @param newItem the item to be added to the inventory
+ */
 void InventoryComponent::addItemToInventory(ItemID newItem) {
     bool found = false;
     for (auto &i : inventoryList) {
@@ -25,6 +48,10 @@ void InventoryComponent::addItemToInventory(ItemID newItem) {
     }
 }
 
+/**
+ * @brief  equip item to a slot, removes it from inventory in the process.
+ * @param  equipItem the item to be equiped
+ */
 void InventoryComponent::equipItemtoSlot(ItemID equipItem) {
     size_t indexOfItem = 0;
 	for (const auto &e : inventoryList) {
@@ -63,4 +90,4 @@ void InventoryComponent::equipItemtoSlot(ItemID equipItem) {
                                        }),
                         std::end(inventoryList));
 }
-// ItemID InventoryComponent::dropItem() {}
+
