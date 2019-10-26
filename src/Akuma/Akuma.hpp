@@ -65,6 +65,7 @@ class Akuma : public BaseState {
     Manager manager;
     Entity *player = nullptr;
     Entity *stairs = nullptr;
+    Entity *boss   = nullptr;
     std::vector<Entity *> enemies;
     Dice diceRoller;
     TurnManager turnManager;

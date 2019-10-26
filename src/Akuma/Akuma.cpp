@@ -311,6 +311,13 @@ void Akuma::update([[maybe_unused]] double dt) {
             }
         }
     }
+    if (boss != nullptr) {
+        if (boss->hasComponent<DeadComponent>()) {
+			//THE END MECHANIC
+            auto &stonk = Stonk::Engine::get();
+            stonk.daGameStateStack.pop();
+        }
+    }
 }
 
 /**
@@ -587,8 +594,8 @@ void Akuma::descendLevel() {
     } else if (floorLevel == bossFloor){
         floor.regen(glm::uvec2(30, 30), 1);
         clearEnemies();
-        bossBattleEngage();
         turnManager.clearActors();
+        bossBattleEngage();
         turnManager.addEntity(player);
         unMakeStairs();
         turnManager.sortActors();
@@ -791,4 +798,33 @@ void Akuma::bossBattleEngage() {
 			}
 		}
 	}
+    boss = &manager.addEntity();
+    boss->addComponentID<ScaleComponent>(glm::vec3{0.5, 0.5, 0.5});
+    boss->addComponentID<PositionComponent>();
+    loop = true;
+    for (auto x = (floorSize.x - 1u); x > 1u && loop; x--) {
+        for (auto y = (floorSize.y - 1u); y > 1u && loop; y--) {
+            if (floor.getGridNode(x, y)->walkable) {
+                boss->getComponent<PositionComponent>().setNode(
+                    floor.getGridNode(x, y));
+                loop = false;
+            }
+        }
+    }
+    boss->addComponentID<ModelComponent>();
+    boss->getComponent<ModelComponent>().setModel(
+        "goblin_baseball.obj");
+    boss->addComponentID<MoveComponent>();
+    boss->addComponentID<FloorComponent>();
+    boss->getComponent<FloorComponent>().setFloor(floor);
+    boss->addComponentID<EnemyComponent>();
+    boss->getComponent<EnemyComponent>().SetPlayerTarget(player);
+    boss->getComponent<EnemyComponent>().lockedToPlayer = true;
+    boss->addComponentID<EquipmentComponent>();
+    boss->addComponentID<CombatComponent>();
+    boss->addComponentID<StatComponent>();
+    string name = "Akuma Shei";
+    boss->getComponent<StatComponent>().stat.name = name;
+    boss->addComponentID<TurnComponent>();
+    turnManager.addEntity(boss);
 }
