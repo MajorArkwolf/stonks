@@ -109,8 +109,8 @@ void ItemLoader::constructGenerics() {
 	// Hardcoded as this is the default starting weapon
 	Armor rags;
     rags.itemID           = ItemManager::getNewID();
-    rags.name             = "Fists";
-    rags.description      = "Everybody was kong-fu fighting.";
+    rags.name             = "Rags";
+    rags.description      = "Tattered Rags";
     rags.dexPentalty      = 0;
     rags.armorBonus       = 0;
 
