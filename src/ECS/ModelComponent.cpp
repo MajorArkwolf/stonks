@@ -20,6 +20,10 @@ void ModelComponent::setModel(std::string filename) {
     hasModel = true;
     modelId  = ModelManager::GetModelID(filename);
 }
+void ModelComponent::unSetModel() {
+    hasModel = false;
+    modelId  = 0;
+}
 void ModelComponent::update() {}
 void ModelComponent::draw() {
     if (!this->entity->hasComponent<DeadComponent>()) {

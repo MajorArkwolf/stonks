@@ -587,10 +587,12 @@ void Akuma::descendLevel() {
     } else if (floorLevel == bossFloor){
         floor.regen(glm::uvec2(30, 30), 1);
         clearEnemies();
+        bossBattleEngage();
         turnManager.clearActors();
         turnManager.addEntity(player);
-        stairs->destroy();
-        stairs = nullptr;
+        unMakeStairs();
+        turnManager.sortActors();
+        turnManager.turnOnManager();
 	}
 }
 
@@ -713,6 +715,12 @@ void Akuma::makeStairs() {
     }
 }
 
+void Akuma::unMakeStairs() {
+    stairs->getComponent<ModelComponent>().unSetModel();
+    stairs->destroy();
+    stairs = nullptr;
+}
+
 void Akuma::createPlayer() {
     player = &manager.addEntity();
     player->addComponentID<FloorComponent>();
@@ -731,11 +739,11 @@ void Akuma::createPlayer() {
     player->addComponentID<InventoryComponent>();
     player->addComponentID<EquipmentComponent>();
     player->getComponent<InventoryComponent>().addItemToInventory(
-        ItemManager::getItem(3));
-    player->getComponent<InventoryComponent>().addItemToInventory(
         ItemManager::getItem(4));
     player->getComponent<InventoryComponent>().addItemToInventory(
         ItemManager::getItem(5));
+    player->getComponent<InventoryComponent>().addItemToInventory(
+        ItemManager::getItem(6));
 }
 
 void Akuma::placePlayer() {
@@ -768,4 +776,19 @@ void Akuma::drawInventoryWindow() {
         }
     }
     ImGui::End();
+}
+
+void Akuma::bossBattleEngage() {
+    auto floorSize = floor.getGridSize();
+    bool loop      = true;
+    for (auto x = 1u; x < (floorSize.x - 1u) && loop; x++) {
+        for (auto y = 1u; x < (floorSize.y - 1u) && loop; y++) {
+            if (floor.getGridNode(x, y)->walkable) {
+                player->getComponent<PositionComponent>().setNode(
+                    floor.getGridNode(x, y));
+                loop = false;
+            
+			}
+		}
+	}
 }
