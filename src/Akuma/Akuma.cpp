@@ -666,6 +666,7 @@ auto Akuma::drawCube(float size, [[maybe_unused]] bool wireframe) -> void {
  */
 void Akuma::descendLevel() {
     turnManager.turnOffManager();
+    turnManager.resetTurnRound();
     auto &p = player->getComponent<StatComponent>();
     p.stat.HP    = p.stat.maxHP;
     p.levelUp();

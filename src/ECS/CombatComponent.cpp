@@ -173,7 +173,7 @@ void CombatComponent::logInformation(int damage, Entity *opponent) {
  */
 void CombatComponent::logInformation(int damage, Entity *opponent, Weapon weapon) {
     string eventLog =
-        "Combat: Name: " + this->entity->getComponent<StatComponent>().stat.name +
+        this->entity->getComponent<StatComponent>().stat.name +
         " hit " + opponent->getComponent<StatComponent>().stat.name + " with " + weapon.name
         +" for " + std::to_string(damage) + " points of damage.";
     logInformation(eventLog);

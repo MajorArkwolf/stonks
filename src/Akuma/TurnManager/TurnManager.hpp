@@ -23,6 +23,7 @@ class TurnManager {
     void sortActors();
     void clearActors();
     int getTurnRound();
+    void resetTurnRound();
 
   private:
     int roundCounter       = 1;
