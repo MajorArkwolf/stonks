@@ -14,6 +14,8 @@
 #include "InventoryComponent.hpp"
 #include "DeadComponent.hpp"
 
+using Stonk::Audio;
+
 /**
  * @brief  Default Constructor
  */
@@ -25,9 +27,12 @@ EnemyComponent::EnemyComponent()  = default;
 EnemyComponent::~EnemyComponent() = default;
 
 /**
- * @brief  Unused
+ * @brief  Loads music
  */
-void EnemyComponent::init() {}
+void EnemyComponent::init() {
+    this->audiomgr   = &(Stonk::Engine::get().audio);
+    this->alertSound = audiomgr->LoadSound("alert.mp3");
+}
 
 /**
  * @brief  On update, does a dead check a turn check and then if all passed it allows the enemy to take there turn.
