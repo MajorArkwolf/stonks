@@ -86,8 +86,6 @@ class Akuma : public BaseState {
     EnemyFactory enemyFactory;
 	///Vector of enemy entities
     std::vector<Entity *> enemies;
-	///RNG generator
-    Dice diceRoller;
 	///Manages turns between enemies and players
     TurnManager turnManager;
     /// The floor

@@ -32,7 +32,7 @@ namespace Stonk {
         /**
          * @brief checks if the player is playing
          */
-        int Audio::checkPlayer();
+        int checkPlayer();
 		/**
          * @brief Stop music
          */
