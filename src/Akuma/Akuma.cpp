@@ -34,7 +34,8 @@ Akuma::Akuma() {
  */
 auto Akuma::display() -> void {
     auto &stonk = Stonk::Engine::get();
-    if (showEscapeMenu || showCharacterMenu || playerMouse || showInventory) {
+    if (showEscapeMenu || showCharacterMenu || playerMouse || showInventory ||
+        playerIsDead) {
         relativeMouse = 0;
     } else {
         relativeMouse = 1;
@@ -87,7 +88,7 @@ auto Akuma::display() -> void {
     displayGameStats();
     if (showInventory) {
         drawInventoryWindow();
-	}
+    }
 
     if (showCharacterMenu) {
         drawCharacterMenu();
@@ -98,6 +99,12 @@ auto Akuma::display() -> void {
     }
     if (stonk.showSettingsMenu) {
         stonk.settingsMenu();
+    }
+    if (playerIsDead) {
+        displayDeathMenu();
+    }
+    if (showInfo) {
+        displayHelpMenu();
     }
 
     /*if (this->shouldDrawAxis) {
@@ -136,6 +143,7 @@ auto Akuma::softInit() -> void {
  * @brief Hard initialiser for the Akuma gamestate
  */
 auto Akuma::Akuma::hardInit() -> void {
+    CombatLog::log().clear();
     ItemLoader item;
     item.init();
     // Load models textures etc here
@@ -221,13 +229,13 @@ void Akuma::displayDebugMenu() {
 void Akuma::displayGameStats() {
     auto &playerStats = player->getComponent<StatComponent>().stat;
     auto &playerEquip = player->getComponent<EquipmentComponent>();
-    auto playerTurn  = player->getComponent<TurnComponent>().checkTurn();
+    auto playerTurn   = player->getComponent<TurnComponent>().checkTurn();
     auto turnOutput   = string();
     if (playerTurn) {
         turnOutput = "Your Turn";
     } else {
         turnOutput = "Enemy Turn";
-	}
+    }
 
     ImGui::SetNextWindowSize(ImVec2(250, 500), 1);
     ImGui::SetNextWindowPos(ImVec2(width - 250, 0), 1);
@@ -261,16 +269,16 @@ void Akuma::displayGameStats() {
     ImGui::Text("Main Hand:  %s", playerEquip.getEquippedMainHand().name.c_str());
     ImGui::Text("Armor:  %s", playerEquip.getEquippedArmor().name.c_str());
 
-	auto *e = player->getComponent<PlayerComponent>().getLookingAtNode();
+    auto *e = player->getComponent<PlayerComponent>().getLookingAtNode();
     ImGui::Separator();
     ImGui::Text("Selected Enemy Stats");
     ImGui::Separator();
     if (e->occupant != nullptr && e->occupant->hasComponent<EnemyComponent>()) {
-        auto &enemyStats      = e->occupant->getComponent<StatComponent>().stat;
-		std::string enemyNamename       = "Name        : ";
-        std::string enemy = enemyStats.name;
-        enemyNamename                   = name + enemy;
-		ImGui::Text("%s", name.c_str());
+        auto &enemyStats = e->occupant->getComponent<StatComponent>().stat;
+        std::string enemyNamename = "Name        : ";
+        std::string enemy         = enemyStats.name;
+        enemyNamename             = name + enemy;
+        ImGui::Text("%s", name.c_str());
         ImGui::Text("Level       :  %.0d", enemyStats.level);
         ImGui::Text("HP          :  %.0d", enemyStats.HP);
         ImGui::Text("Strength    :  %.0d", enemyStats.strength);
@@ -278,7 +286,7 @@ void Akuma::displayGameStats() {
         ImGui::Text("Luck        :  %.0d", enemyStats.luck);
         ImGui::Text("Vitality    :  %.0d", enemyStats.vitality);
         ImGui::Text("Intelligence:  %.0d", enemyStats.intelligence);
-     }
+    }
     ImGui::End();
 }
 
@@ -337,16 +345,16 @@ void Akuma::update([[maybe_unused]] double dt) {
     }
     if (boss != nullptr) {
         if (boss->hasComponent<DeadComponent>()) {
-			//THE END MECHANIC
+
             auto &stonk = Stonk::Engine::get();
             stonk.daGameStateStack.pop();
         }
     }
     if (player != nullptr) {
         if (player->hasComponent<DeadComponent>()) {
-            // THE DEATH MECHANIC
-            auto &stonk = Stonk::Engine::get();
-            stonk.daGameStateStack.pop();
+            turnManager.turnOffManager();
+            playerIsDead = 1;
+
         }
     }
 }
@@ -375,6 +383,9 @@ void Akuma::handleKeyPress(SDL_Event &event) {
         } break;
         case SDL_SCANCODE_R: {
             this->playerMouse = playerMouse ? 0 : 1;
+        } break;
+        case SDL_SCANCODE_F1: {
+            this->showInfo = showInfo ? 0 : 1;
         } break;
         default: break;
     }
@@ -642,17 +653,17 @@ void Akuma::descendLevel() {
     auto &p = player->getComponent<StatComponent>().stat;
     p.HP    = p.maxHP;
     if (floorLevel < bossFloor) {
-		floor.regen();
-		floorLevel++;
-		clearEnemies();
-		turnManager.clearActors();
-		turnManager.addEntity(player);
-		makeStairs();
-		generateLevel();
-		placePlayer(); // move player to new node.
-		turnManager.sortActors();
-		turnManager.turnOnManager();
-    } else if (floorLevel == bossFloor){
+        floor.regen();
+        floorLevel++;
+        clearEnemies();
+        turnManager.clearActors();
+        turnManager.addEntity(player);
+        makeStairs();
+        generateLevel();
+        placePlayer(); // move player to new node.
+        turnManager.sortActors();
+        turnManager.turnOnManager();
+    } else if (floorLevel == bossFloor) {
         floor.regen(glm::uvec2(30, 30), 1);
         clearEnemies();
         turnManager.clearActors();
@@ -661,7 +672,7 @@ void Akuma::descendLevel() {
         unMakeStairs();
         turnManager.sortActors();
         turnManager.turnOnManager();
-	}
+    }
 }
 
 /**
@@ -703,7 +714,7 @@ void Akuma::displayEscapeMenu() {
  * @brief Displays the combat log
  */
 void Akuma::displayCombatLog() {
-    ImGui::SetNextWindowSize(ImVec2(400, 120), ImGuiCond_Once);
+    ImGui::SetNextWindowSize(ImVec2(500, 120), ImGuiCond_Once);
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
     ImGui::Begin("Combat Log");
     for (auto n : CombatLog::log()) {
@@ -715,13 +726,14 @@ void Akuma::displayCombatLog() {
 }
 
 /**
- * @brief Generates a level by creating all enemies, and placing the enemies, player and stairs and the correct positions
+ * @brief Generates a level by creating all enemies, and placing the enemies,
+ * player and stairs and the correct positions
  */
 void Akuma::generateLevel() {
     enemyFactory.generateEnemy(floorLevel, enemies, manager);
     for (auto &e : enemies) {
         turnManager.addEntity(e);
-	}
+    }
 }
 
 /**
@@ -810,22 +822,140 @@ void Akuma::drawInventoryWindow() {
     ImGui::Begin("Inventory", &showInventory);
     if (player->hasComponent<InventoryComponent>()) {
         auto &inventory = player->getComponent<InventoryComponent>().inventoryList;
+        if (inventory.size() == 0) {
+            ImGui::Text("Only cobwebs in here");
+        } else {
 
-        for (size_t i = 0; i < inventory.size(); i++) {
-            ImGui::PushID(static_cast<int>(i));
-            ImGui::Text("%s", inventory[i].mItem.name.c_str());
-            ImGui::SameLine(ImGui::GetWindowWidth() - 130);
-            ImGui::Text(" (%zu)", inventory[i].quantitiy);
-            ImGui::SameLine(ImGui::GetWindowWidth()-100);
+            for (size_t i = 0; i < inventory.size(); i++) {
+                ImGui::PushID(static_cast<int>(i));
+                ImGui::Text("%s", inventory[i].mItem.name.c_str());
+                ImGui::SameLine(ImGui::GetWindowWidth() - 130);
+                ImGui::Text(" (%zu)", inventory[i].quantitiy);
+                ImGui::SameLine(ImGui::GetWindowWidth() - 100);
 
-            if (ImGui::Button("Equip")) {
-                player->getComponent<InventoryComponent>().equipItemtoSlot(inventory[i].mItem);
+                if (ImGui::Button("Equip")) { 
+                    player->getComponent<InventoryComponent>().equipItemtoSlot(
+                        inventory[i].mItem);
+                }
+                ImGui::PopID();
             }
-            ImGui::PopID();
-
-  
         }
     }
+    ImGui::End();
+}
+
+void Akuma::displayDeathMenu() {
+    auto &stonk = Stonk::Engine::get();
+    ImGui::SetNextWindowSize(ImVec2(300, 240), 1);
+    ImGui::SetNextWindowPosCenter(1);
+
+    ImGui::Begin("Dead", nullptr,
+                 ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
+                     ImGuiWindowFlags_NoMove);
+
+    ImGui::Text(("You died"), ImVec2(ImGui::GetWindowSize().x - 15, 200));
+
+    ImGui::Separator();
+    if (ImGui::Button(("Quit to menu"), ImVec2(ImGui::GetWindowSize().x - 15, 80))) {
+        stonk.popStack();
+    }
+    if (ImGui::Button(("Quit to desktop"),
+                      ImVec2(ImGui::GetWindowSize().x - 15, 80))) {
+        stonk.isRunning = false;
+    }
+    ImGui::End();
+}
+
+void Akuma::displayHelpMenu() {
+
+    ImGui::SetNextWindowSize(ImVec2(450, 270), 1);
+    ImGui::SetNextWindowPosCenter(ImGuiCond_FirstUseEver);
+
+    ImGui::Begin("Game Information", &showInfo, ImGuiWindowFlags_AlwaysAutoResize);
+    ImGui::Separator();
+    ImGui::Text("Controls");
+    ImGui::Separator();
+    ImGui::Separator();
+
+    ImGui::Text("A");
+    ImGui::SameLine(ImGui::GetWindowWidth() - 350);
+    ImGui::BulletText("Rotates player counter-clockwise");
+    ImGui::Separator();
+    ImGui::Text("D");
+    ImGui::SameLine(ImGui::GetWindowWidth() - 350);
+    ImGui::BulletText("Rotates player clockwise");
+    ImGui::Separator();
+    ImGui::Text("Spacebar");
+    ImGui::SameLine(ImGui::GetWindowWidth() - 350);
+    ImGui::BulletText("Moves to or attacks selected square");
+    ImGui::Separator();
+    ImGui::Text("I");
+    ImGui::SameLine(ImGui::GetWindowWidth() - 350);
+    ImGui::BulletText("Shows player inventory");
+    ImGui::Separator();
+    ImGui::Text("Q");
+    ImGui::SameLine(ImGui::GetWindowWidth() - 350);
+    ImGui::BulletText("Rotates camera counter-clockwise around player");
+    ImGui::Separator();
+    ImGui::Text("E");
+    ImGui::SameLine(ImGui::GetWindowWidth() - 350);
+    ImGui::BulletText("Rotates camera clockwise aorund player");
+    ImGui::Separator();
+    ImGui::Text("Mouse Wheel");
+    ImGui::SameLine(ImGui::GetWindowWidth() - 350);
+    ImGui::BulletText("Zooms in and out");
+    ImGui::Separator();
+    ImGui::Text("Escape");
+    ImGui::SameLine(ImGui::GetWindowWidth() - 350);
+    ImGui::BulletText("Shows escape menu");
+    ImGui::Separator();
+    ImGui::Text("F1");
+    ImGui::SameLine(ImGui::GetWindowWidth() - 350);
+    ImGui::BulletText("Displays help menu");
+    ImGui::Separator();
+    ImGui::Text("R");
+    ImGui::SameLine(ImGui::GetWindowWidth() - 350);
+    ImGui::BulletText("Shows mouse");
+    ImGui::Separator();
+    ImGui::End();
+}
+
+void Akuma::displayStartMenu() {}
+
+void Akuma::displayLevelUp() {
+    auto &playerStats = player->getComponent<StatComponent>().stat;
+
+    ImGui::SetNextWindowSize(ImVec2(300, 500), 1);
+    ImGui::SetNextWindowPosCenter(1);
+
+    ImGui::Begin("Level Up!", nullptr,
+                 ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+    ImGui::Separator();
+    ImGui::Text("%s", playerStats.name.c_str());
+    ImGui::Separator();
+
+    static StatDescription desc;
+
+	//STUB
+    /*ImGui::Text("Player Stats");
+    ImGui::Text("Points Left: %d", playerStats.pointsLeft);
+    statSelection("Strength", playerStats.strength, playerStats.pointsLeft,
+                  playerStats.strength, desc.strength, 1);
+    statSelection("Vitality", playerStats.vitality, playerStats.pointsLeft,
+                  playerStats.vitality, desc.vitality, 2);
+    statSelection("Dexterity", playerStats.dexterity, playerStats.pointsLeft,
+                  playerStats.dexterity, desc.dexterity, 3);
+    statSelection("Intelligence", playerStats.intelligence, playerStats.pointsLeft,
+                  playerStats.intelligence, desc.intelligence, 4);
+    statSelection("Luck", playerStats.luck, playerStats.pointsLeft, playerStats.luck,
+                  desc.luck, 5);*/
+
+    ImGui::Separator();
+    if (ImGui::Button("Accept")) {
+        
+        this->showCharacterMenu = false;
+    }
+
     ImGui::End();
 }
 
@@ -838,10 +968,9 @@ void Akuma::bossBattleEngage() {
                 player->getComponent<PositionComponent>().setNode(
                     floor.getGridNode(x, y));
                 loop = false;
-            
-			}
-		}
-	}
+            }
+        }
+    }
     boss = &manager.addEntity();
     boss->addComponentID<ScaleComponent>(glm::vec3{0.5, 0.5, 0.5});
     boss->addComponentID<PositionComponent>();
@@ -856,8 +985,7 @@ void Akuma::bossBattleEngage() {
         }
     }
     boss->addComponentID<ModelComponent>();
-    boss->getComponent<ModelComponent>().setModel(
-        "goblin_baseball.obj");
+    boss->getComponent<ModelComponent>().setModel("goblin_baseball.obj");
     boss->addComponentID<MoveComponent>();
     boss->addComponentID<FloorComponent>();
     boss->getComponent<FloorComponent>().setFloor(floor);
@@ -867,7 +995,7 @@ void Akuma::bossBattleEngage() {
     boss->addComponentID<EquipmentComponent>();
     boss->addComponentID<CombatComponent>();
     boss->addComponentID<StatComponent>();
-    string name = "Akuma Shei";
+    string name                                   = "Akuma Shei";
     boss->getComponent<StatComponent>().stat.name = name;
     boss->addComponentID<TurnComponent>();
     turnManager.addEntity(boss);
