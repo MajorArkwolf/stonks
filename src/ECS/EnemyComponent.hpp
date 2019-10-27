@@ -36,8 +36,9 @@ class EnemyComponent : public Component {
     Entity *player      = nullptr;
 
 	Stonk::Audio *audiomgr = nullptr;
-
-    Stonk::Audio::Sound alertSound;
+	Stonk::Audio::Sound alertSound;
+    Stonk::Audio::Sound deadSound;
+    Stonk::Audio::Sound itemDropSound;
 
     // This function is scuffed and wont face the player all the time, cant debug
     // as I dont have enough data to see what the entities are actually doing.

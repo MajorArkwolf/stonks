@@ -28,8 +28,12 @@ namespace Stonk {
         /**
          * @brief Play music
          */
-        void PlayMusic(Music music, int playcount = -1);
+        void PlayMusic(Music music, int playcount = 0);
         /**
+         * @brief checks if the player is playing
+         */
+        int Audio::checkPlayer();
+		/**
          * @brief Stop music
          */
         void StopMusic();

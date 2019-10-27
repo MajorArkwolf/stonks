@@ -1,7 +1,7 @@
 #include "CombatComponent.hpp"
 #include "../Akuma/CombatLog.hpp"
 #include "Akuma/Items/ItemManager.hpp"
-
+#include "Stonk/Engine.hpp"
 #include "EquipmentComponent.hpp"
 #include "StatComponent.hpp"
 #include "TurnComponent.hpp"
@@ -17,9 +17,14 @@ CombatComponent::CombatComponent()  = default;
 CombatComponent::~CombatComponent() = default;
 
 /**
- * @brief  Unused
+ * @brief  Loads combat audio
  */
-void CombatComponent::init() {}
+void CombatComponent::init() {
+    this->audiomgr   = &(Stonk::Engine::get().audio);
+    this->combatSound = audiomgr->LoadSound("hit.ogg");
+    this->naturalCritSound = audiomgr->LoadSound("natural_crit.ogg");
+    this->critSound      = audiomgr->LoadSound("crit.ogg");
+}
 
 /**
  * @brief  Unused
@@ -81,9 +86,11 @@ void CombatComponent::singleHanded(Entity *opponent) {
             damage =
                 weaponDamage(weaponPreHitDie, weaponHitDie, weaponCritMultiplier);
             logInformation(damage, opponent, mainHand);
+            this->audiomgr->PlaySound(this->naturalCritSound);
         } else {
             damage = weaponDamage(weaponPreHitDie, weaponHitDie);
             logInformation(damage, opponent, mainHand);
+            this->audiomgr->PlaySound(this->combatSound);
             // regular damage
         }
     } else if (diceRoll >= ((enemyAC + enemyDodge) - enemyDodgePenalty)) {
@@ -91,10 +98,12 @@ void CombatComponent::singleHanded(Entity *opponent) {
             damage =
                 weaponDamage(weaponPreHitDie, weaponHitDie, weaponCritMultiplier);
             logInformation(damage, opponent, mainHand);
+            this->audiomgr->PlaySound(this->critSound);
             // damage multiplier
         } else {
             damage = weaponDamage(weaponPreHitDie, weaponHitDie);
             logInformation(damage, opponent, mainHand);
+            this->audiomgr->PlaySound(this->combatSound);
             // regular damage
         }
     } else {

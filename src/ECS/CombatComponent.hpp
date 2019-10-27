@@ -4,6 +4,7 @@
 #include "ECS.hpp"
 #include "Akuma/Items/ItemManager.hpp"
 #include "../Akuma/RNG/Dice.hpp"
+#include "Stonk/Audio.hpp"
 
 
 
@@ -24,6 +25,11 @@ class CombatComponent : public Component {
     void attackEntity(Pathing::Node *opponentSquare);
 
   private:
+    Stonk::Audio *audiomgr = nullptr;
+    Stonk::Audio::Sound combatSound;
+    Stonk::Audio::Sound naturalCritSound;
+    Stonk::Audio::Sound critSound;
+
     Dice diceroller;
     void singleHanded(Entity *opponent);
     void logInformation(string info);

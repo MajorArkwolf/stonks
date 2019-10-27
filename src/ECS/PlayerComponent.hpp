@@ -2,7 +2,7 @@
 
 #include "../Akuma/Floor.hpp"
 #include "ECS.hpp"
-
+#include "Stonk/Audio.hpp"
 
 /* This will need to handle input to the player */
 class PlayerComponent : public Component {
@@ -23,6 +23,8 @@ class PlayerComponent : public Component {
     Pathing::Node *getLookingAtNode();
 
   private:
+    Stonk::Audio *audiomgr = nullptr;
+    Stonk::Audio::Sound stepSound;
     bool issuedAction   = false;
     int turn            = 0;
     Facing facingBuffer = Facing::N;

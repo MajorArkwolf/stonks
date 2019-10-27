@@ -33,6 +33,8 @@ EnemyComponent::~EnemyComponent() = default;
 void EnemyComponent::init() {
     this->audiomgr   = &(Stonk::Engine::get().audio);
     this->alertSound = audiomgr->LoadSound("alert.mp3");
+    this->deadSound  = audiomgr->LoadSound("death.ogg");
+    this->itemDropSound = audiomgr->LoadSound("pickup.ogg");
 }
 
 /**
@@ -314,7 +316,8 @@ auto EnemyComponent::deadEnemy() -> void {
             this->entity->getComponent<PositionComponent>().removePosition();
 
             string info = "";
-			this->entity->addComponentID<DeadComponent>();
+            this->audiomgr->PlaySound(this->deadSound);
+			this->entity->addComponentID<DeadComponent>();            
             if (diceroller.Roll(1, 10) > 6) {
         		unsigned int maxSize = static_cast<unsigned int>(ItemManager::ItemManager().size());
                 size_t lookUp = 0;
@@ -326,6 +329,7 @@ auto EnemyComponent::deadEnemy() -> void {
 					returnedItem);
                 info =
                     this->entity->getComponent<StatComponent>().stat.name + " has died dropping a " + returnedItem.name + ".";
+                this->audiomgr->PlaySound(this->itemDropSound);
             } else {
                 info = this->entity->getComponent<StatComponent>().stat.name +
                        " has died, it dropped nothing of value.";
