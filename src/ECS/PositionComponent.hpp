@@ -17,9 +17,8 @@ class PositionComponent : public Component {
 
     void setPos(glm::vec3 newPos);
 
-    void setPos(Pathing::Node *newTile);
-
     void setNode(Pathing::Node *newTile);
+    void setPos(Pathing::Node *newTile);
 
     void setPos(float x, float y, float z);
     void setPos(float x, float z);

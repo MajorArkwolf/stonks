@@ -15,6 +15,8 @@
 #include "TurnManager/TurnManager.hpp"
 #include "Akuma/Items/ItemManager.hpp"
 #include "glm/vec3.hpp"
+#include "Akuma/EnemyFactory.hpp"
+
 /**
  * @class Akuma
  * @brief The Akuma game state object
@@ -49,7 +51,7 @@ class Akuma : public BaseState {
 
 	///The current floor level
     unsigned floorLevel = 1;
-    unsigned bossFloor  = 1;
+    unsigned bossFloor  = 9;
     void descendLevel();
 	///Light position array
     GLfloat light_position[4];
@@ -72,6 +74,8 @@ class Akuma : public BaseState {
 	///Stair entity used to ascend levels
     Entity *stairs = nullptr;
     Entity *boss   = nullptr;
+    ///Factory used to generate enemies
+    EnemyFactory enemyFactory;
 	///Vector of enemy entities
     std::vector<Entity *> enemies;
 	///RNG generator

@@ -47,6 +47,7 @@ set (SOURCES
 	src/Akuma/TurnManager/TurnManager.cpp
     src/Akuma/Items/ItemManager.cpp
 	src/Akuma/CombatLog.cpp
+	src/Akuma/EnemyFactory.cpp
 
     src/Menu/Menu.cpp
     

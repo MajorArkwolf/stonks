@@ -3,40 +3,102 @@
 #include "EnemyComponent.hpp"
 #include "DeadComponent.hpp"
 
+/**
+ * @brief  Defaulted Constructor
+ */
 StatComponent::StatComponent()  = default;
+
+/**
+ * @brief  Defaulted Destructor
+ */
 StatComponent::~StatComponent() = default;
+
+/**
+ * @brief   Alternate Constructor
+ * @param   newStat CharacterSheet
+ */
 StatComponent::StatComponent(CharacterSheet newStat) {
     this->stat = newStat;
 }
 
+/**
+ * @brief  Unused
+ */
 void StatComponent::init() {}
+
+/**
+ * @brief  Unused
+ */
 void StatComponent::update() {}
+
+/**
+ * @brief  Unused
+ */
 void StatComponent::draw() {}
 
+/**
+ * @brief  Used to determine the modifier of Strength
+ * @return Strength Modifier
+ */
 auto StatComponent::getStrengthMod() -> int {
     return getMod(this->stat.strength);
 }
+
+/**
+ * @brief  Used to determine the modifier of Intelligence
+ * @return Intelligence Modifier
+ */
 auto StatComponent::getIntelligenceMod() -> int {
     return getMod(this->stat.intelligence);
 }
+
+/**
+ * @brief  Used to determine the modifier of Dexterity
+ * @return Dexterity Modifier
+ */
 auto StatComponent::getDexterityMod() -> int {
     return getMod(this->stat.dexterity);
 }
+
+/**
+ * @brief  Used to determine the modifier of Luck
+ * @return Luck Modifier
+ */
 auto StatComponent::getLuckMod() -> int {
     return getMod(this->stat.luck);
 }
+
+/**
+ * @brief  Used to determine the modifier of Vitality
+ * @return Vitality Modifier
+ */
 auto StatComponent::getVitalityMod() -> int {
     return getMod(this->stat.vitality);
 }
 
+
+/**
+ * @brief  getter for stat sheet
+ * @return Stat sheet, Character shet
+ */
 auto StatComponent::getStatSheet() -> CharacterSheet & {
     return stat;
 }
 
+
+/**
+ * @brief  setter for stat sheet
+ * @param newStat CharacterSheet
+ */
 auto StatComponent::setStatSheet(CharacterSheet newStat) -> void {
     this->stat = newStat;
 }
 
+
+/**
+ * @brief  Calculates Modifer, hard coded
+ * @return Modifier of any given stat
+ */
 auto StatComponent::getMod(int checkStat) -> int {
     if (checkStat <= 1) {
         return -5;
@@ -75,6 +137,10 @@ auto StatComponent::getMod(int checkStat) -> int {
     }
 }
 
+/**
+ * @brief  Sets the HP of the entity based of there level
+ *
+*/
 auto StatComponent::setupEntity() -> void {
     for (auto i = 1; i <= this->stat.level; i++) {
         if (i == 1) {
@@ -87,10 +153,18 @@ auto StatComponent::setupEntity() -> void {
     this->stat.HP = this->stat.maxHP;
 }
 
+/**
+ * @brief  Removes HP of the given entity
+ *
+ */
 auto StatComponent::takeDamage(int damage) -> void {
     this->stat.HP -= damage;
 }
 
+/**
+ * @brief  Checks to see if the entity should be dead and then proceeds to kill them if true
+ *
+ */
 auto StatComponent::deathTrigger() -> void {
     if (this->stat.HP < 0 && !this->stat.dead) {
         this->stat.dead = true;
@@ -102,6 +176,10 @@ auto StatComponent::deathTrigger() -> void {
     }
 }
 
+/**
+ * @brief  checks if the entity has leveled up then gives them a point
+ *
+ */
 auto StatComponent::expCheck() -> void {
     if (this->stat.exp > 100) {
         this->stat.exp -= 100;

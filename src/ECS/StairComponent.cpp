@@ -1,11 +1,25 @@
 #include "StairComponent.hpp"
+
+/**
+ * @brief  Modifies the slope
+ * @return if the stair case has been activated
+ */
 bool StairComponent::checkStairActive() {
     return stairCaseActivate;
 }
+
+/**
+ * @brief  Sets the staircase to active
+ *
+ */
 void StairComponent::SetStairActive() {
     stairCaseActivate = true;
 }
 
+/**
+ * @brief  Removes all values on the grid, safety measure
+ *
+ */
 void StairComponent::resetStairCase() {
 	stairCaseActivate = false;
     occupiedNodes[0]->occupied = false;
@@ -18,6 +32,14 @@ void StairComponent::resetStairCase() {
     occupiedNodes[3]  = nullptr;
 }
 
+/**
+ * @brief  Modifies the slope
+ *
+ * @param node1 First node to occupy
+ * @param node2 Second node to occupy
+ * @param node3 Third node to occupy
+ * @param node4 Fourth First node to occupy
+ */
 void StairComponent::setNodes(Pathing::Node *node1, Pathing::Node *node2,
                             Pathing::Node *node3, Pathing::Node *node4) {
     node1->occupied  = true;
