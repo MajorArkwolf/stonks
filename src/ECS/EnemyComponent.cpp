@@ -3,7 +3,8 @@
 #include <glm/vec3.hpp>
 #include "../Akuma/Pathing/Pathfinding.hpp"
 #include "../Akuma/Items/ItemManager.hpp"
-#include "..//Akuma/CombatLog.hpp"
+#include "../Akuma/CombatLog.hpp"
+#include "Stonk/Engine.hpp"
 
 #include "PositionComponent.hpp"
 #include "MoveComponent.hpp"
@@ -225,7 +226,7 @@ void EnemyComponent::detectPlayer() {
         if (result + myIntel >
             diceroller.Roll(1, 20) + playerStealth + static_cast<int>(distance) || result == 20) {
             lockedToPlayer = true;
-            // Play Sound here
+            this->audiomgr->PlaySound(this->alertSound);
         }
     }
     this->entity->getComponent<TurnComponent>().endYourTurn();
