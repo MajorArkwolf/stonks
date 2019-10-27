@@ -276,7 +276,7 @@ void Akuma::displayGameStats() {
     name                   = name + playerName;
     ImGui::Text("%s", name.c_str());
     ImGui::Text("Level       :  %.0d", playerStats.level);
-    ImGui::Text("HP          :  %.0d", playerStats.HP);
+    ImGui::Text("HP          :  %.0d/%.0d", playerStats.HP, playerStats.maxHP);
     ImGui::Text("Strength    :  %.0d", playerStats.strength);
     ImGui::Text("Dexterity   :  %.0d", playerStats.dexterity);
     ImGui::Text("Luck        :  %.0d", playerStats.luck);
