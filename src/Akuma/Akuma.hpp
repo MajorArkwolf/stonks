@@ -61,7 +61,7 @@ class Akuma : public BaseState {
   private:
     /// Whether to draw the mouse on screen
     bool playerIsDead = 0;
-
+    bool showLevelUp   = 0;
     bool showIntro     = 1;
     bool showEnd       = 0;
     bool showInfo      = 0;
@@ -69,6 +69,9 @@ class Akuma : public BaseState {
     bool showInventory = 0;
     void statSelection(const char *attribName, int statMin, int &pointsLeft,
                        int &attributePoints, std::string desc, int buttonCount);
+
+    void levelStatSelection(const char *attribName, int &pointsLeft, int &attributePoints,
+                       std::string desc, int buttonCount);
     /// Whether to draw the character menu
     bool showCharacterMenu = 1;
     /// Whether to draw the escape menu

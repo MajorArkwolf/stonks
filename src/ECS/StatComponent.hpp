@@ -56,11 +56,11 @@ class StatComponent : public Component {
     auto pointIntelligence() -> void;
     auto pointVitality() -> void;
     auto levelUp() -> void;
-
+    auto newMaxHP() -> void;
     CharacterSheet stat;
 
   private:
     Dice diceroller;
     auto getMod(int checkStat) -> int;
-    auto newMaxHP() -> void;
+
 };

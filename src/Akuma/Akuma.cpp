@@ -39,10 +39,14 @@ Akuma::~Akuma() {
 auto Akuma::display() -> void {
     auto &stonk = Stonk::Engine::get();
     if (showEscapeMenu || showCharacterMenu || playerMouse || showInventory ||
-        playerIsDead) {
+        playerIsDead || showLevelUp) {
         relativeMouse = 0;
     } else {
         relativeMouse = 1;
+    }
+    if (!showLevelUp && !showCharacterMenu &&
+        (player->getComponent<StatComponent>().stat.pointsLeft > 0)) {
+        showLevelUp = 1;
     }
     glLoadIdentity();
 
@@ -113,6 +117,9 @@ auto Akuma::display() -> void {
     }
     if (showInfo) {
         displayHelpMenu();
+    }
+    if (showLevelUp) {
+        displayLevelUp();
     }
 
     /*if (this->shouldDrawAxis) {
@@ -476,6 +483,26 @@ void Akuma::statSelection(const char *attribName, int statMin, int &pointsLeft,
     ImGui::PopID();
 }
 
+void Akuma::levelStatSelection(const char *attribName, int &pointsLeft,
+                               int &attributePoints, std::string desc,
+                               int buttonCount) {
+    ImGui::PushID(buttonCount);
+    ImGui::Text("%s: ", attribName);
+    if (ImGui::IsItemHovered())
+        ImGui::SetTooltip("%s", desc.c_str());
+    ImGui::SameLine(ImGui::GetWindowWidth() - 80);
+    ImGui::Text("%d", attributePoints);
+    ImGui::SameLine(ImGui::GetWindowWidth() - 30);
+
+    if (ImGui::Button("++")) {
+        if (pointsLeft >= 1) {
+            attributePoints++;
+            pointsLeft--;
+        }
+    }
+    ImGui::PopID();
+}
+
 /**
  * @brief Draws the character selection menu using ImGui
  */
@@ -667,8 +694,8 @@ auto Akuma::drawCube(float size, [[maybe_unused]] bool wireframe) -> void {
 void Akuma::descendLevel() {
     turnManager.turnOffManager();
     turnManager.resetTurnRound();
-    auto &p = player->getComponent<StatComponent>();
-    p.stat.HP    = p.stat.maxHP;
+    auto &p   = player->getComponent<StatComponent>();
+    p.stat.HP = p.stat.maxHP;
     p.levelUp();
     if (floorLevel < bossFloor) {
         floor.regen();
@@ -940,8 +967,6 @@ void Akuma::displayHelpMenu() {
     ImGui::End();
 }
 
-void Akuma::displayStartMenu() {}
-
 void Akuma::displayLevelUp() {
     auto &playerStats = player->getComponent<StatComponent>().stat;
 
@@ -950,29 +975,45 @@ void Akuma::displayLevelUp() {
 
     ImGui::Begin("Level Up!", nullptr,
                  ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
-    ImGui::Separator();
-    ImGui::Text("%s", playerStats.name.c_str());
-    ImGui::Separator();
 
     static StatDescription desc;
-
-    // STUB
-    /*ImGui::Text("Player Stats");
+    ImGui::Separator();
+    ImGui::Text("Player Stats");
     ImGui::Text("Points Left: %d", playerStats.pointsLeft);
-    statSelection("Strength", playerStats.strength, playerStats.pointsLeft,
-                  playerStats.strength, desc.strength, 1);
-    statSelection("Vitality", playerStats.vitality, playerStats.pointsLeft,
-                  playerStats.vitality, desc.vitality, 2);
-    statSelection("Dexterity", playerStats.dexterity, playerStats.pointsLeft,
-                  playerStats.dexterity, desc.dexterity, 3);
-    statSelection("Intelligence", playerStats.intelligence,
-    playerStats.pointsLeft, playerStats.intelligence, desc.intelligence, 4); statSelection("Luck",
-    playerStats.luck, playerStats.pointsLeft, playerStats.luck, desc.luck, 5);*/
+    levelStatSelection("Strength", playerStats.pointsLeft, playerStats.strength,
+                       desc.strength, 1);
+
+    ImGui::PushID(2);
+    ImGui::Text("Vitality");
+    if (ImGui::IsItemHovered())
+        ImGui::SetTooltip("%s", desc.vitality.c_str());
+    ImGui::SameLine(ImGui::GetWindowWidth() - 80);
+    ImGui::Text("%d", playerStats.vitality);
+    ImGui::SameLine(ImGui::GetWindowWidth() - 30);
+
+    if (ImGui::Button("++")) {
+        if (playerStats.pointsLeft >= 1) {
+            player->getComponent<StatComponent>().pointVitality();
+            playerStats.pointsLeft--;
+        }
+    }
+    ImGui::PopID();
+
+    levelStatSelection("Dexterity", playerStats.pointsLeft,
+                       playerStats.dexterity, desc.dexterity, 3);
+    levelStatSelection("Intelligence", playerStats.pointsLeft,
+                       playerStats.intelligence, desc.intelligence, 4);
+    levelStatSelection("Luck", playerStats.pointsLeft, playerStats.luck,
+                       desc.luck, 5);
 
     ImGui::Separator();
-    if (ImGui::Button("Accept")) {
+    if (playerStats.pointsLeft < 1) {
 
-        this->showCharacterMenu = false;
+        if (ImGui::Button("Accept")) {
+
+            this->showLevelUp = false;
+            player->getComponent<StatComponent>().newMaxHP();
+        }
     }
 
     ImGui::End();
