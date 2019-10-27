@@ -121,7 +121,7 @@ void CombatComponent::singleHanded(Entity *opponent) {
 /**
  * @brief  Overloaded function to determine the total damage
  * @param  weaponPreHitDie the amount of die to roll
- * @param  WeaponHitDie The total sides of the dice
+ * @param  weaponHitDie The total sides of the dice
  * @return the total damage deal to the entity
  */
 int CombatComponent::weaponDamage(int weaponPreHitDie, int weaponHitDie) {

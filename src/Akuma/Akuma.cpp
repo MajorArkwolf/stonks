@@ -666,8 +666,9 @@ auto Akuma::drawCube(float size, [[maybe_unused]] bool wireframe) -> void {
  */
 void Akuma::descendLevel() {
     turnManager.turnOffManager();
-    auto &p = player->getComponent<StatComponent>().stat;
-    p.HP    = p.maxHP;
+    auto &p = player->getComponent<StatComponent>();
+    p.stat.HP    = p.stat.maxHP;
+    p.levelUp();
     if (floorLevel < bossFloor) {
         floor.regen();
         floorLevel++;
