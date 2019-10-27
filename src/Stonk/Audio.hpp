@@ -30,6 +30,10 @@ namespace Stonk {
          */
         void PlayMusic(Music music, int playcount = 1);
         /**
+         * @brief checks if the player is playing
+         */
+        int checkPlayer();
+		/**
          * @brief Stop music
          */
         void StopMusic();

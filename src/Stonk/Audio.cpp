@@ -11,6 +11,11 @@ auto Audio::PlaySound(Audio::Sound audio, int playcount) -> int {
 void Audio::PlayMusic(Audio::Music music, int playcount) {
     Mix_PlayMusic(this->musicChunks.at(music).get(), playcount - 1);
 }
+
+int Audio::checkPlayer() {
+    return Mix_PlayingMusic();
+}
+
 void Audio::StopMusic() {
     Mix_HaltMusic();
 }

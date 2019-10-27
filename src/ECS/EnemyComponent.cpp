@@ -3,7 +3,8 @@
 #include <glm/vec3.hpp>
 #include "../Akuma/Pathing/Pathfinding.hpp"
 #include "../Akuma/Items/ItemManager.hpp"
-#include "..//Akuma/CombatLog.hpp"
+#include "../Akuma/CombatLog.hpp"
+#include "Stonk/Engine.hpp"
 
 #include "PositionComponent.hpp"
 #include "MoveComponent.hpp"
@@ -13,6 +14,8 @@
 #include "FloorComponent.hpp"
 #include "InventoryComponent.hpp"
 #include "DeadComponent.hpp"
+
+using Stonk::Audio;
 
 /**
  * @brief  Default Constructor
@@ -25,9 +28,14 @@ EnemyComponent::EnemyComponent()  = default;
 EnemyComponent::~EnemyComponent() = default;
 
 /**
- * @brief  Unused
+ * @brief  Loads music
  */
-void EnemyComponent::init() {}
+void EnemyComponent::init() {
+    this->audiomgr   = &(Stonk::Engine::get().audio);
+    this->alertSound = audiomgr->LoadSound("alert.mp3");
+    this->deadSound  = audiomgr->LoadSound("death.ogg");
+    this->itemDropSound = audiomgr->LoadSound("pickup.ogg");
+}
 
 /**
  * @brief  On update, does a dead check a turn check and then if all passed it allows the enemy to take there turn.
@@ -220,7 +228,7 @@ void EnemyComponent::detectPlayer() {
         if (result + myIntel >
             diceroller.Roll(1, 20) + playerStealth + static_cast<int>(distance) || result == 20) {
             lockedToPlayer = true;
-            // Play Sound here
+            this->audiomgr->PlaySound(this->alertSound);
         }
     }
     this->entity->getComponent<TurnComponent>().endYourTurn();
@@ -308,7 +316,8 @@ auto EnemyComponent::deadEnemy() -> void {
             this->entity->getComponent<PositionComponent>().removePosition();
 
             string info = "";
-			this->entity->addComponentID<DeadComponent>();
+            this->audiomgr->PlaySound(this->deadSound);
+			this->entity->addComponentID<DeadComponent>();            
             if (diceroller.Roll(1, 10) > 6) {
         		unsigned int maxSize = static_cast<unsigned int>(ItemManager::ItemManager().size());
                 size_t lookUp = 0;
@@ -320,6 +329,7 @@ auto EnemyComponent::deadEnemy() -> void {
 					returnedItem);
                 info =
                     this->entity->getComponent<StatComponent>().stat.name + " has died dropping a " + returnedItem.name + ".";
+                this->audiomgr->PlaySound(this->itemDropSound);
             } else {
                 info = this->entity->getComponent<StatComponent>().stat.name +
                        " has died, it dropped nothing of value.";
