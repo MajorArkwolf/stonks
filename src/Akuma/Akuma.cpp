@@ -29,6 +29,10 @@ Akuma::Akuma() {
     glLightf(GL_LIGHT0, GL_SPOT_DIRECTION, 1);
 }
 
+Akuma::~Akuma() {
+    audiomgr->StopMusic();
+}
+
 /**
  * @brief Akuma display function
  */
@@ -150,6 +154,10 @@ auto Akuma::Akuma::hardInit() -> void {
     modelList.push_back(OBJ::Load("flattile.obj"));
     modelList.push_back(OBJ::Load("flatwall.obj"));
 
+	this->audiomgr = &(Stonk::Engine::get().audio);
+    audioPlaylist.push_back(audiomgr->LoadMusic("ambient.ogg"));
+    audioPlaylist.push_back(audiomgr->LoadMusic("ambient2.ogg"));
+    akumaSound = audiomgr->LoadSound("akuma.ogg");
     createPlayer();
     enemyFactory.factorySetup(&floor, player);
     generateLevel();
@@ -325,6 +333,7 @@ auto Akuma::handleInput(SDL_Event &event) -> void {
  * @param dt Delta time since last frame
  */
 void Akuma::update([[maybe_unused]] double dt) {
+    audioPlayList();
     turnManager.update();
     manager.update();
     // player->getComponent<PositionComponent>().setXPos(
@@ -348,10 +357,13 @@ void Akuma::update([[maybe_unused]] double dt) {
 
             auto &stonk = Stonk::Engine::get();
             stonk.daGameStateStack.pop();
+            audiomgr->StopMusic();
         }
     }
     if (player != nullptr) {
         if (player->hasComponent<DeadComponent>()) {
+            // THE DEATH MECHANIC
+            audiomgr->StopMusic();
             turnManager.turnOffManager();
             playerIsDead = 1;
 
@@ -672,7 +684,8 @@ void Akuma::descendLevel() {
         unMakeStairs();
         turnManager.sortActors();
         turnManager.turnOnManager();
-    }
+        this->audiomgr->PlaySound(this->akumaSound);
+	}
 }
 
 /**
@@ -985,7 +998,8 @@ void Akuma::bossBattleEngage() {
         }
     }
     boss->addComponentID<ModelComponent>();
-    boss->getComponent<ModelComponent>().setModel("goblin_baseball.obj");
+    boss->getComponent<ModelComponent>().setModel(
+        "akuma.obj");
     boss->addComponentID<MoveComponent>();
     boss->addComponentID<FloorComponent>();
     boss->getComponent<FloorComponent>().setFloor(floor);
@@ -995,8 +1009,25 @@ void Akuma::bossBattleEngage() {
     boss->addComponentID<EquipmentComponent>();
     boss->addComponentID<CombatComponent>();
     boss->addComponentID<StatComponent>();
-    string name                                   = "Akuma Shei";
-    boss->getComponent<StatComponent>().stat.name = name;
+    CharacterSheet akumaShet;
+    akumaShet.strength                            = 16;
+    akumaShet.dexterity                           = 14;
+    akumaShet.vitality                            = 14;
+    akumaShet.name                                = "Akuma Shei";
+    boss->getComponent<StatComponent>().stat      = akumaShet;
+    boss->getComponent<StatComponent>().setupEntity();
     boss->addComponentID<TurnComponent>();
     turnManager.addEntity(boss);
+}
+
+void Akuma::audioPlayList() {
+    if (audiomgr->checkPlayer() == 0) {
+        if (trackNumber < audioPlaylist.size()) {
+            audiomgr->PlayMusic(audioPlaylist.at(trackNumber), 1);
+            trackNumber++;
+        } else {
+            trackNumber = 0;
+            audiomgr->PlayMusic(audioPlaylist.at(trackNumber));
+		}
+	}
 }

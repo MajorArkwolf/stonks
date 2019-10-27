@@ -21,7 +21,7 @@
 class Akuma : public BaseState {
   public:
     Akuma();
-    ~Akuma() = default;
+    ~Akuma();
     auto display() -> void;
     auto softInit() -> void;
     auto hardInit() -> void;
@@ -51,7 +51,7 @@ class Akuma : public BaseState {
     void displayLevelUp();
     /// The current floor level
     unsigned floorLevel = 1;
-    unsigned bossFloor  = 9;
+    unsigned bossFloor  = 10;
     void descendLevel();
     /// Light position array
     GLfloat light_position[4];
@@ -70,7 +70,15 @@ class Akuma : public BaseState {
     /// Whether to draw the escape menu
     bool showEscapeMenu = 0;
 
-    /// ECS Manager
+	//Audio Manager
+	Stonk::Audio *audiomgr = nullptr;
+	///Audio playlist
+    std::vector<Stonk::Audio::Music> audioPlaylist;
+	///Shay Sound
+    Stonk::Audio::Sound akumaSound;
+	///Track Number
+    size_t trackNumber = 0;
+	///ECS Manager
     Manager manager;
     /// Player entity
     Entity *player = nullptr;
@@ -81,9 +89,7 @@ class Akuma : public BaseState {
     EnemyFactory enemyFactory;
     /// Vector of enemy entities
     std::vector<Entity *> enemies;
-    /// RNG generator
-    Dice diceRoller;
-    /// Manages turns between enemies and players
+	///Manages turns between enemies and players
     TurnManager turnManager;
     /// The floor
     Floor floor;
@@ -96,4 +102,5 @@ class Akuma : public BaseState {
     void makeStairs();
     void createPlayer();
     void unMakeStairs();
+    void audioPlayList();
 };

@@ -1,5 +1,5 @@
 #include "PlayerComponent.hpp"
-
+#include "Stonk/Engine.hpp"
 #include "Akuma/Akuma.hpp"
 #include "CombatComponent.hpp"
 #include "EnemyComponent.hpp"
@@ -23,7 +23,10 @@ PlayerComponent::~PlayerComponent() = default;
 /**
  * @brief  Unused
  */
-void PlayerComponent::init() {}
+void PlayerComponent::init() {
+    this->audiomgr    = &(Stonk::Engine::get().audio);
+    this->stepSound = audiomgr->LoadSound("step.ogg");
+}
 
 /**
  * @brief  Checks to see if the player has leveled up, sets the direction they are facing and allows them to move
@@ -299,6 +302,7 @@ void PlayerComponent::commandExecution() {
             }
         } else if (newNode->walkable) {
             this->entity->getComponent<MoveComponent>().moveEntityToNode(newNode);
+            this->audiomgr->PlaySound(this->stepSound);
             issuedAction = false;
         }
         issuedAction = false;
