@@ -21,14 +21,14 @@ namespace Stonk {
          */
         typedef size_t Music;
         /**
-         * @brief Play a sound
+         * @brief Play a sound. 0 playcount to loop
          * @return The channel the audio is playing on
          */
         auto PlaySound(Sound audio, int playcount = 1) -> int;
         /**
-         * @brief Play music
+         * @brief Play music. 0 playcount to loop
          */
-        void PlayMusic(Music music, int playcount = 0);
+        void PlayMusic(Music music, int playcount = 1);
         /**
          * @brief checks if the player is playing
          */
