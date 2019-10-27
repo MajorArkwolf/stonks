@@ -49,6 +49,8 @@ class Akuma : public BaseState {
     void displayHelpMenu();
     void displayStartMenu();
     void displayLevelUp();
+    void displayIntro();
+    void displayEnd();
     /// The current floor level
     unsigned floorLevel = 1;
     unsigned bossFloor  = 10;
@@ -58,9 +60,11 @@ class Akuma : public BaseState {
 
   private:
     /// Whether to draw the mouse on screen
-    bool playerIsDead  = 0;
+    bool playerIsDead = 0;
 
-	bool showInfo   = 0;
+    bool showIntro     = 1;
+    bool showEnd       = 0;
+    bool showInfo      = 0;
     bool playerMouse   = 0;
     bool showInventory = 0;
     void statSelection(const char *attribName, int statMin, int &pointsLeft,
@@ -70,15 +74,15 @@ class Akuma : public BaseState {
     /// Whether to draw the escape menu
     bool showEscapeMenu = 0;
 
-	//Audio Manager
-	Stonk::Audio *audiomgr = nullptr;
-	///Audio playlist
+    // Audio Manager
+    Stonk::Audio *audiomgr = nullptr;
+    /// Audio playlist
     std::vector<Stonk::Audio::Music> audioPlaylist;
-	///Shay Sound
+    /// Shay Sound
     Stonk::Audio::Sound akumaSound;
-	///Track Number
+    /// Track Number
     size_t trackNumber = 0;
-	///ECS Manager
+    /// ECS Manager
     Manager manager;
     /// Player entity
     Entity *player = nullptr;
@@ -89,7 +93,7 @@ class Akuma : public BaseState {
     EnemyFactory enemyFactory;
     /// Vector of enemy entities
     std::vector<Entity *> enemies;
-	///Manages turns between enemies and players
+    /// Manages turns between enemies and players
     TurnManager turnManager;
     /// The floor
     Floor floor;
