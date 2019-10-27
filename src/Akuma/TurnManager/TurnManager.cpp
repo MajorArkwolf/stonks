@@ -25,8 +25,6 @@ void TurnManager::update() {
             } else {
                 actorTurnID = 0;
                 roundCounter++;
-                /*CombatLog::log().push_back(
-                   "-----" + std::to_string(roundCounter) + "-----");*/
             }
         } else {
             if (!actors.at(actorTurnID).entity->getComponent<TurnComponent>().checkTurn()) {
