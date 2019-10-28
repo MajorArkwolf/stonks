@@ -183,6 +183,66 @@ auto StatComponent::deathTrigger() -> void {
 auto StatComponent::expCheck() -> void {
     if (this->stat.exp > 100) {
         this->stat.exp -= 100;
-        this->stat.levelPoint++;
+        this->stat.pointsLeft++;
+        this->stat.level++;
     }
+}
+
+/**
+ * @brief  Adds a point into strength value
+ */
+auto StatComponent::pointStrength() -> void {
+    this->stat.strength++;
+    newMaxHP();
+}
+
+/**
+ * @brief  Adds a point into dexterity value
+ */
+auto StatComponent::pointDexterity() -> void {
+    this->stat.dexterity++;
+    newMaxHP();
+}
+
+/**
+ * @brief  Adds a point into luck value
+ */
+auto StatComponent::pointLuck() -> void {
+    this->stat.luck++;
+    newMaxHP();
+}
+
+/**
+ * @brief  Adds a point into intelligence value
+ */
+auto StatComponent::pointIntelligence() -> void {
+    this->stat.intelligence++;
+    newMaxHP();
+}
+
+/**
+ * @brief  If there is a change in mod, will add several hitpoints on top of the ones they get for the level.
+ */
+auto StatComponent::pointVitality() -> void {
+    auto e = getVitalityMod();
+    this->stat.vitality++;
+    if (e != getVitalityMod()) {
+        this->stat.maxHP += this->stat.level;
+	}
+    newMaxHP();
+}
+
+/**
+ * @brief  Levels up the player
+ */
+auto StatComponent::levelUp() -> void {
+    this->stat.level++;
+    this->stat.pointsLeft++;
+}
+
+/**
+ * @brief  adds additional points to the players hp
+ */
+auto StatComponent::newMaxHP() -> void {
+    this->stat.maxHP += diceroller.Roll(1, this->stat.HD) + getVitalityMod();
 }

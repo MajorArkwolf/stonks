@@ -8,11 +8,10 @@
 struct CharacterSheet {
     std::string name = "";
     int level        = 1;
-    int levelPoint   = 0;
     int exp          = 0;
     int HD           = 8;
     bool assignedHP  = false;
-    int maxHP        = 0;
+    int maxHP        = 1;
     int HP           = 1;
     int strength     = 10;
     int dexterity    = 10;
@@ -51,10 +50,17 @@ class StatComponent : public Component {
     auto setStatSheet(CharacterSheet newStat) -> void;
     auto deathTrigger() -> void;
     auto expCheck() -> void;
-
+    auto pointStrength() -> void;
+    auto pointDexterity() -> void;
+    auto pointLuck() -> void;
+    auto pointIntelligence() -> void;
+    auto pointVitality() -> void;
+    auto levelUp() -> void;
+    auto newMaxHP() -> void;
     CharacterSheet stat;
 
   private:
     Dice diceroller;
     auto getMod(int checkStat) -> int;
+
 };
