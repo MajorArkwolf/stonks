@@ -342,17 +342,19 @@ auto Akuma::handleInput(SDL_Event &event) -> void {
  * @param dt Delta time since last frame
  */
 void Akuma::update([[maybe_unused]] double dt) {
-    audioPlayList();
-    turnManager.update();
-    manager.update();
-    // player->getComponent<PositionComponent>().setXPos(
-    //    player->getComponent<PositionComponent>().getXPos() + 0.01f);
-    // player->getComponent<PositionComponent>().setZPos(
-    //    player->getComponent<PositionComponent>().getZPos() + 0.01f);
-    light_position[0] = player->getComponent<PositionComponent>().getXPos();
-    // light_position[1] = 2;
-    light_position[2] = player->getComponent<PositionComponent>().getZPos();
-    // light_position[3] = 1;
+    if (!playerIsDead) {
+		audioPlayList();
+		turnManager.update();
+		manager.update();
+		// player->getComponent<PositionComponent>().setXPos(
+		//    player->getComponent<PositionComponent>().getXPos() + 0.01f);
+		// player->getComponent<PositionComponent>().setZPos(
+		//    player->getComponent<PositionComponent>().getZPos() + 0.01f);
+		light_position[0] = player->getComponent<PositionComponent>().getXPos();
+		// light_position[1] = 2;
+		light_position[2] = player->getComponent<PositionComponent>().getZPos();
+		// light_position[3] = 1;
+    }
     if (stairs != nullptr) {
         if (stairs->hasComponent<StairComponent>()) {
             if (stairs->getComponent<StairComponent>().checkStairActive()) {
@@ -367,15 +369,17 @@ void Akuma::update([[maybe_unused]] double dt) {
             auto &stonk = Stonk::Engine::get();
             stonk.daGameStateStack.pop();
             audiomgr->StopMusic();
+            showEnd      = 1;
         }
     }
     if (player != nullptr) {
         if (player->hasComponent<DeadComponent>()) {
             // THE DEATH MECHANIC
-            audiomgr->StopMusic();
+            clearEnemies();
+            turnManager.clearActors();
             turnManager.turnOffManager();
+            audiomgr->StopMusic();
             playerIsDead = 1;
-            showEnd      = 1;
         }
     }
 }
@@ -552,6 +556,7 @@ void Akuma::drawCharacterMenu() {
             player->getComponent<ModelComponent>().setModel(
                 "player_female.obj");
         }
+        playerStats.pointsLeft = 0;
         player->getComponent<StatComponent>().setupEntity();
         this->showCharacterMenu = false;
     }
