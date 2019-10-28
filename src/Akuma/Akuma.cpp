@@ -394,6 +394,8 @@ void Akuma::handleKeyPress(SDL_Event &event) {
         case SDL_SCANCODE_ESCAPE: {
             this->showEscapeMenu = showEscapeMenu ? false : true;
         } break;
+        case SDL_SCANCODE_UP:
+        case SDL_SCANCODE_W:
         case SDL_SCANCODE_SPACE: {
             player->getComponent<PlayerComponent>().issueAction();
         } break;
@@ -416,10 +418,12 @@ void Akuma::handleKeyPress(SDL_Event &event) {
  */
 void Akuma::handleKeyRelease(SDL_Event &event) {
     switch (event.key.keysym.scancode) {
+        case SDL_SCANCODE_LEFT:
         case SDL_SCANCODE_A: {
             player->getComponent<PlayerComponent>().turnEntity(1);
             break;
         }
+        case SDL_SCANCODE_RIGHT:
         case SDL_SCANCODE_D: {
             player->getComponent<PlayerComponent>().turnEntity(-1);
             break;
