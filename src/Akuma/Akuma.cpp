@@ -292,8 +292,8 @@ void Akuma::displayGameStats() {
             auto &enemyStats = e->occupant->getComponent<StatComponent>().stat;
             std::string enemyNamename = "Name        : ";
             std::string enemy         = enemyStats.name;
-            enemyNamename             = name + enemy;
-            ImGui::Text("%s", name.c_str());
+            enemyNamename             = enemyNamename + enemy;
+            ImGui::Text("%s", enemyNamename.c_str());
             ImGui::Text("Level       :  %.0d", enemyStats.level);
             ImGui::Text("HP          :  %.0d", enemyStats.HP);
             ImGui::Text("Strength    :  %.0d", enemyStats.strength);
