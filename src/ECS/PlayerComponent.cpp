@@ -301,6 +301,7 @@ void PlayerComponent::commandExecution() {
                 newNode->occupant->getComponent<StairComponent>().SetStairActive();
             }
         } else if (newNode->walkable) {
+            this->entity->getComponent<TurnComponent>().assignAction();
             this->entity->getComponent<MoveComponent>().moveEntityToNode(newNode);
             this->audiomgr->PlaySound(this->stepSound);
             issuedAction = false;
