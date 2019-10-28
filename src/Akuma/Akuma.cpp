@@ -44,10 +44,7 @@ auto Akuma::display() -> void {
     } else {
         relativeMouse = 1;
     }
-    if (!showLevelUp && !showCharacterMenu &&
-        (player->getComponent<StatComponent>().stat.pointsLeft > 0)) {
-        showLevelUp = 1;
-    }
+
     glLoadIdentity();
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -275,6 +272,7 @@ void Akuma::displayGameStats() {
     std::string playerName = playerStats.name;
     name                   = name + playerName;
     ImGui::Text("%s", name.c_str());
+    ImGui::Text("Unspent Points: %d", playerStats.pointsLeft);
     ImGui::Text("Level       :  %.0d", playerStats.level);
     ImGui::Text("HP          :  %.0d/%.0d", playerStats.HP, playerStats.maxHP);
     ImGui::Text("Strength    :  %.0d", playerStats.strength);
@@ -409,6 +407,9 @@ void Akuma::handleKeyPress(SDL_Event &event) {
         } break;
         case SDL_SCANCODE_F1: {
             this->showInfo = showInfo ? 0 : 1;
+        } break;
+        case SDL_SCANCODE_K: {
+            this->showLevelUp = showLevelUp ? 0 : 1;
         } break;
         default: break;
     }
@@ -914,11 +915,11 @@ void Akuma::displayDeathMenu() {
 
 void Akuma::displayHelpMenu() {
 
-    ImGui::SetNextWindowSize(ImVec2(450, 270), 1);
+    ImGui::SetNextWindowSize(ImVec2(550, 300), 1);
     ImGui::SetNextWindowPosCenter(ImGuiCond_FirstUseEver);
 
     ImGui::Begin("Game Information", &showInfo,
-                 ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse);
+                 ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
     ImGui::Separator();
     ImGui::Text("Controls");
     ImGui::Separator();
@@ -936,9 +937,17 @@ void Akuma::displayHelpMenu() {
     ImGui::SameLine(ImGui::GetWindowWidth() - 350);
     ImGui::BulletText("Moves to or attacks selected square");
     ImGui::Separator();
+    ImGui::Text("X");
+    ImGui::SameLine(ImGui::GetWindowWidth() - 350);
+    ImGui::BulletText("Skips current player turn");
+    ImGui::Separator();
     ImGui::Text("I");
     ImGui::SameLine(ImGui::GetWindowWidth() - 350);
     ImGui::BulletText("Shows player inventory");
+    ImGui::Separator();
+    ImGui::Text("K");
+    ImGui::SameLine(ImGui::GetWindowWidth() - 350);
+    ImGui::BulletText("Open Level up menu");
     ImGui::Separator();
     ImGui::Text("Q");
     ImGui::SameLine(ImGui::GetWindowWidth() - 350);
@@ -979,7 +988,11 @@ void Akuma::displayLevelUp() {
     static StatDescription desc;
     ImGui::Separator();
     ImGui::Text("Player Stats");
+    ImGui::Separator();
+    ImGui::TextColored(ImVec4(255, 0, 0, 255), "Points are non refundable");
+    ImGui::Separator();
     ImGui::Text("Points Left: %d", playerStats.pointsLeft);
+    ImGui::Separator();
     levelStatSelection("Strength", playerStats.pointsLeft, playerStats.strength,
                        desc.strength, 1);
 
