@@ -95,6 +95,9 @@ auto Akuma::display() -> void {
     if ((showIntro)) {
         displayIntro();
     }
+    if (showEnd) {
+        displayEnd();
+	}
     displayCombatLog();
     if (showEscapeMenu) {
         displayEscapeMenu();
@@ -115,7 +118,6 @@ auto Akuma::display() -> void {
     ImGui::Render();
     ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
     SDL_GL_SwapWindow(stonk.window.get());
-
 
     if (hardExit) {
         stonk.isRunning = false;
@@ -330,7 +332,9 @@ auto Akuma::handleInput(SDL_Event &event) -> void {
         case SDL_MOUSEBUTTONDOWN: break;
         case SDL_MOUSEBUTTONUP: break;
         case SDL_MOUSEWHEEL: {
-            this->handleMouseWheel(event);
+            if (!menuOpen()) {
+                this->handleMouseWheel(event);
+            }
         } break;
         default: break;
     }
@@ -389,11 +393,15 @@ void Akuma::handleKeyPress(SDL_Event &event) {
             cameraComp.rotateCamera(-2);
         } break;
         case SDL_SCANCODE_I: {
-            this->showInventory = showInventory ? 0 : 1;
+            if (!showCharacterMenu) {
+                this->showInventory = showInventory ? 0 : 1;
+            }
         } break;
         case SDL_SCANCODE_ESCAPE: {
             this->showEscapeMenu = showEscapeMenu ? false : true;
         } break;
+        case SDL_SCANCODE_UP:
+        case SDL_SCANCODE_W:
         case SDL_SCANCODE_SPACE: {
             player->getComponent<PlayerComponent>().issueAction();
         } break;
@@ -404,7 +412,9 @@ void Akuma::handleKeyPress(SDL_Event &event) {
             this->showInfo = showInfo ? 0 : 1;
         } break;
         case SDL_SCANCODE_K: {
-            this->showLevelUp = showLevelUp ? 0 : 1;
+            if (!showCharacterMenu) {
+                this->showLevelUp = showLevelUp ? 0 : 1;
+            }
         } break;
         default: break;
     }
@@ -416,10 +426,12 @@ void Akuma::handleKeyPress(SDL_Event &event) {
  */
 void Akuma::handleKeyRelease(SDL_Event &event) {
     switch (event.key.keysym.scancode) {
+        case SDL_SCANCODE_LEFT:
         case SDL_SCANCODE_A: {
             player->getComponent<PlayerComponent>().turnEntity(1);
             break;
         }
+        case SDL_SCANCODE_RIGHT:
         case SDL_SCANCODE_D: {
             player->getComponent<PlayerComponent>().turnEntity(-1);
             break;
@@ -1016,7 +1028,7 @@ void Akuma::displayEnd() {
         "the staircase out ofhere.Hopefully there is still a society to come "
         "home too");
     ImGui::PushItemWidth(-100);
-    if (ImGui::Button("START")) {
+    if (ImGui::Button("END")) {
         showEnd = showEnd ? 0 : 1;
     }
     ImGui::End();
@@ -1079,4 +1091,12 @@ void Akuma::audioPlayList() {
             audiomgr->PlayMusic(audioPlaylist.at(trackNumber));
         }
     }
+}
+
+bool Akuma::menuOpen() {
+    if (playerIsDead || showLevelUp || showIntro || showEnd || showInfo ||
+        showInventory || showCharacterMenu) {
+        return true;
+    }
+    return false;
 }

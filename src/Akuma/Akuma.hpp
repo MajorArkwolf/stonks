@@ -109,4 +109,5 @@ class Akuma : public BaseState {
     void createPlayer();
     void unMakeStairs();
     void audioPlayList();
+    bool menuOpen();
 };
