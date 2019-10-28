@@ -116,7 +116,6 @@ auto Akuma::display() -> void {
     ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
     SDL_GL_SwapWindow(stonk.window.get());
 
-
     if (hardExit) {
         stonk.isRunning = false;
     }
@@ -330,7 +329,9 @@ auto Akuma::handleInput(SDL_Event &event) -> void {
         case SDL_MOUSEBUTTONDOWN: break;
         case SDL_MOUSEBUTTONUP: break;
         case SDL_MOUSEWHEEL: {
-            this->handleMouseWheel(event);
+            if (!menuOpen()) {
+                this->handleMouseWheel(event);
+            }
         } break;
         default: break;
     }
@@ -389,7 +390,9 @@ void Akuma::handleKeyPress(SDL_Event &event) {
             cameraComp.rotateCamera(-2);
         } break;
         case SDL_SCANCODE_I: {
-            this->showInventory = showInventory ? 0 : 1;
+            if (!showCharacterMenu) {
+                this->showInventory = showInventory ? 0 : 1;
+            }
         } break;
         case SDL_SCANCODE_ESCAPE: {
             this->showEscapeMenu = showEscapeMenu ? false : true;
@@ -406,7 +409,9 @@ void Akuma::handleKeyPress(SDL_Event &event) {
             this->showInfo = showInfo ? 0 : 1;
         } break;
         case SDL_SCANCODE_K: {
-            this->showLevelUp = showLevelUp ? 0 : 1;
+            if (!showCharacterMenu) {
+                this->showLevelUp = showLevelUp ? 0 : 1;
+            }
         } break;
         default: break;
     }
@@ -1083,4 +1088,12 @@ void Akuma::audioPlayList() {
             audiomgr->PlayMusic(audioPlaylist.at(trackNumber));
         }
     }
+}
+
+bool Akuma::menuOpen() {
+    if (playerIsDead || showLevelUp || showIntro || showEnd || showInfo ||
+        showInventory || showCharacterMenu) {
+        return true;
+    }
+    return false;
 }
