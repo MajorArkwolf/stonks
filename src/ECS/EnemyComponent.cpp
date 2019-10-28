@@ -43,7 +43,7 @@ void EnemyComponent::init() {
 void EnemyComponent::update() {
     if (!this->entity->hasComponent<DeadComponent>()) {
 		if (this->entity->hasComponent<TurnComponent>()) {
-			if (this->entity->getComponent<TurnComponent>().checkTurn()) {
+            if (this->entity->getComponent<TurnComponent>().checkActionTurn()) {
 				this->entity->getComponent<TurnComponent>().assignAction();
 				combatCheck();
 				moveAction();
@@ -132,7 +132,7 @@ void EnemyComponent::SetPlayerTarget(Entity *currentPlayer) {
  * @param  i used to add onto the existing turn variable
  */
 void EnemyComponent::turnEntity(int i) {
-    if (this->entity->getComponent<TurnComponent>().checkTurn()) {
+    if (this->entity->getComponent<TurnComponent>().checkActionTurn()) {
         if (turn + i > 7) {
             turn = 0;
         } else if (turn + i < 0) {

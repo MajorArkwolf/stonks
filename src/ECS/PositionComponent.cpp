@@ -30,9 +30,9 @@ void PositionComponent::draw() {}
  * @param   newPos new Position
  */
 void PositionComponent::setPos(glm::vec3 newPos) {
-    this->position.x = newPos.x;
-    this->position.y = newPos.y;
-    this->position.z = newPos.z;
+    position.x = newPos.x;
+    position.y = newPos.y;
+    position.z = newPos.z;
 }
 
 /**
@@ -54,6 +54,12 @@ void PositionComponent::setNode(Pathing::Node *newTile) {
     this->position.z            = static_cast<float>(newTile->y);
     this->currentTile           = newTile;
     this->currentTile->occupant = this->entity;
+    this->currentTile->occupied = true;
+}
+
+void PositionComponent::setNodeSoft(Pathing::Node *newTile) {
+    this->currentTile = newTile;
+	this->currentTile->occupant = this->entity;
     this->currentTile->occupied = true;
 }
 

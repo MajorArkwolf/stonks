@@ -80,7 +80,6 @@ namespace Stonk {
         std::string basepath = "";
 
       private:
-        auto getTime() const -> double;
         auto getBasePath() -> void;
 
         Engine();
@@ -92,6 +91,7 @@ namespace Stonk {
 
         static auto get() -> Engine &;
         static auto run() -> void;
+        auto getTime() const -> double;
 
         auto loadState(GameMode) -> void;
 

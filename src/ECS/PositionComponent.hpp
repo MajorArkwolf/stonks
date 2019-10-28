@@ -46,6 +46,7 @@ class PositionComponent : public Component {
     float getZPos();
 
     float getRotation();
+    void setNodeSoft(Pathing::Node *newTile);
 
 	void removePosition();
 

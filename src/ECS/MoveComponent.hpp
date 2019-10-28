@@ -16,11 +16,15 @@ class MoveComponent : public Component {
     void draw();
 
     void moveEntity(const glm::vec3 &movingTo);
-
+    void setTime();
+    double getDeltaTime();
     void moveEntityToNode(Pathing::Node *newNode);
-
+    bool checkSigns(float num1, float num2);
   private:
+    double time                  = 0;
     Pathing::Node *goingToNode = nullptr;
     bool turnToken             = false;
+    bool startMovement           = false;
     glm::vec3 moveTo           = {0, 0, 0};
+    glm::vec3 startToEnd        = {0, 0, 0};
 };

@@ -15,6 +15,7 @@ class TurnComponent : public Component {
     void startYourTurn();
     void assignAction();
     void endYourTurn();
+    bool checkActionTurn();
 
   private:
     bool turnPhase2 = false;
