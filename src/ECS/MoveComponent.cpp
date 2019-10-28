@@ -40,7 +40,9 @@ void MoveComponent::update() {
             movement.x = startToEnd.x * static_cast<float>(getDeltaTime()) * 2.5f;
             movement.z =
                 startToEnd.z * static_cast<float>(getDeltaTime()) * 2.5f;
-            e.setPos(e.getPos() + movement);
+            movement   = e.getPos() + movement;
+            movement.y = 0;
+            e.setPos(movement);
 
             glm::vec3 currentToEnd = moveTo - e.getPos();
             if (checkSigns(startToEnd.x, currentToEnd.x) ||
