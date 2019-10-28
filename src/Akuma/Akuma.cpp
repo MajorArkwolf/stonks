@@ -95,6 +95,9 @@ auto Akuma::display() -> void {
     if ((showIntro)) {
         displayIntro();
     }
+    if (showEnd) {
+        displayEnd();
+	}
     displayCombatLog();
     if (showEscapeMenu) {
         displayEscapeMenu();
@@ -1025,7 +1028,7 @@ void Akuma::displayEnd() {
         "the staircase out ofhere.Hopefully there is still a society to come "
         "home too");
     ImGui::PushItemWidth(-100);
-    if (ImGui::Button("START")) {
+    if (ImGui::Button("END")) {
         showEnd = showEnd ? 0 : 1;
     }
     ImGui::End();
