@@ -105,3 +105,7 @@ void TurnManager::checkDexChange() {
 int TurnManager::getTurnRound() {
     return roundCounter;
 }
+
+void TurnManager::resetTurnRound() {
+    roundCounter = 1;
+}

@@ -75,6 +75,7 @@ void Menu::display() {
     if (stonk.showSettingsMenu) {
         stonk.settingsMenu();
     }
+    displayDisclaimer();
 
     ImGui::Render();
     ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
@@ -241,6 +242,20 @@ void Menu::handleWindowEvent(SDL_Event &event) {
         } break;
         default: break;
     }
+}
+
+void Menu::displayDisclaimer() {
+
+    ImGui::SetNextWindowSize(ImVec2(300, 500), 1);
+    ImGui::SetNextWindowPos(ImVec2(0,0), 1);
+    ImGui::Begin("asd", nullptr, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_AlwaysAutoResize);
+    ImGui::TextWrapped(
+        "This is a work of fiction. Names, characters, businesses, places, "
+        "events, locales, and incidents are either the products of the "
+        "authors imagination or used in a fictitious manner. Any resemblance "
+        "to actual persons, living or dead, or actual events is purely "
+        "coincidental.");
+    ImGui::End();
 }
 
 /**
