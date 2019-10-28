@@ -36,7 +36,7 @@ void PlayerComponent::update() {
         this->entity->getComponent<StatComponent>().expCheck();
     }
     if (this->entity->hasComponent<TurnComponent>()) {
-        if (this->entity->getComponent<TurnComponent>().checkTurn()) {
+        if (this->entity->getComponent<TurnComponent>().checkActionTurn()) {
             facing = facingBuffer;
         }
         if (this->entity->hasComponent<PositionComponent>()) {
@@ -81,7 +81,7 @@ void PlayerComponent::draw() {
 
             if (this->entity->hasComponent<TurnComponent>()) {
 
-                if (this->entity->getComponent<TurnComponent>().checkTurn()) {
+                if (this->entity->getComponent<TurnComponent>().checkActionTurn()) {
 
                     Floor *floor =
                         this->entity->getComponent<FloorComponent>().getFloor();
@@ -189,7 +189,7 @@ void PlayerComponent::setFacing(int i) {
  * @param i integerer to be turned into a direction 0 being N and NW being 7
  */
 void PlayerComponent::turnEntity(int i) {
-    if (this->entity->getComponent<TurnComponent>().checkTurn()) {
+    if (this->entity->getComponent<TurnComponent>().checkActionTurn()) {
         if (turn + i > 7) {
             turn = 0;
         } else if (turn + i < 0) {
@@ -205,7 +205,7 @@ void PlayerComponent::turnEntity(int i) {
  * @brief  Stops any weird bugs being able to allow a player to issue multiple turns
  */
 void PlayerComponent::issueAction() {
-    if (this->entity->getComponent<TurnComponent>().checkTurn()) {
+    if (this->entity->getComponent<TurnComponent>().checkActionTurn()) {
         if (!issuedAction) {
             issuedAction = true;
         }
@@ -216,7 +216,7 @@ void PlayerComponent::issueAction() {
  * @brief  Allows the player to skip there turn.
  */
 void PlayerComponent::skipTurn() {
-    if (this->entity->getComponent<TurnComponent>().checkTurn()) {
+    if (this->entity->getComponent<TurnComponent>().checkActionTurn()) {
         this->entity->getComponent<TurnComponent>().endYourTurn();
     }
 }
@@ -301,6 +301,7 @@ void PlayerComponent::commandExecution() {
                 newNode->occupant->getComponent<StairComponent>().SetStairActive();
             }
         } else if (newNode->walkable) {
+            this->entity->getComponent<TurnComponent>().assignAction();
             this->entity->getComponent<MoveComponent>().moveEntityToNode(newNode);
             this->audiomgr->PlaySound(this->stepSound);
             issuedAction = false;

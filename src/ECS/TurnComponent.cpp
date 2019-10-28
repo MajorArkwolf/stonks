@@ -28,6 +28,14 @@ void TurnComponent::draw() {}
 /**
  * @brief  Checks to see if the opponent has concluded there entire turn
  * @return End of Turn
+ */
+bool TurnComponent::checkActionTurn() {
+    return this->isTurn;
+}
+
+/**
+ * @brief  Checks to see if the opponent has concluded there entire turn
+ * @return End of Turn
 */
 bool TurnComponent::checkTurn() {
     return this->turnPhase2;

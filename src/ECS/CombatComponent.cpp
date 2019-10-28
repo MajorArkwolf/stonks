@@ -131,7 +131,7 @@ int CombatComponent::weaponDamage(int weaponPreHitDie, int weaponHitDie) {
 /**
  * @brief  Determine the total damage
  * @param  weaponPreHitDie the amount of die to roll
- * @param  WeaponHitDie The total sides of the dice
+ * @param  weaponHitDie The total sides of the dice
  * @param  weaponCritMultiplier determine how many times to roll if critted
  * @return the total damage deal to the entity
  */

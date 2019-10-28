@@ -1,12 +1,14 @@
 #include "MoveComponent.hpp"
-#include "PositionComponent.hpp"
-#include "TurnComponent.hpp"
+
 #include "DeadComponent.hpp"
+#include "PositionComponent.hpp"
+#include "Stonk/Engine.hpp"
+#include "TurnComponent.hpp"
 
 /**
  * @brief  Default Constructor
  */
-MoveComponent::MoveComponent()  = default;
+MoveComponent::MoveComponent() = default;
 
 /**
  * @brief  Default Destructor
@@ -16,23 +18,44 @@ MoveComponent::~MoveComponent() = default;
 /**
  * @brief  Unused
  */
-void MoveComponent::init() {}
+void MoveComponent::init() {
+    setTime();
+}
 
 /**
  * @brief  WHen the movetoken is passed to this function, it executes a move then ends the turn of that entity
  */
 void MoveComponent::update() {
     if (!this->entity->hasComponent<DeadComponent>()) {
-		if (this->turnToken == true) {
-			this->entity->getComponent<PositionComponent>().getNode()->occupied = false;
-			this->entity->getComponent<PositionComponent>().getNode()->occupant =
-				nullptr;
-			this->entity->getComponent<PositionComponent>().setPos(goingToNode);
-			this->goingToNode = nullptr;
-			this->turnToken   = false;
-			this->entity->getComponent<TurnComponent>().endYourTurn();
-		}
+        auto &e = this->entity->getComponent<PositionComponent>();
+        if (this->turnToken == true && startMovement == false) {
+            e.getNode()->occupied = false;
+            e.getNode()->occupant = nullptr;
+            e.setNodeSoft(goingToNode);
+            startMovement = true;
+            startToEnd    = moveTo - e.getPos();
+            setTime();
+        } else if (this->turnToken == true && startMovement == true) {
+            glm::vec3 movement;
+            movement.x = startToEnd.x * static_cast<float>(getDeltaTime()) * 2.5f;
+            movement.z =
+                startToEnd.z * static_cast<float>(getDeltaTime()) * 2.5f;
+            e.setPos(e.getPos() + movement);
+
+            glm::vec3 currentToEnd = moveTo - e.getPos();
+            if (checkSigns(startToEnd.x, currentToEnd.x) ||
+                checkSigns(startToEnd.z, currentToEnd.z)) {
+                e.setPos(moveTo);
+                this->moveTo = {0, 0, 0};
+                this->startToEnd    = {0, 0, 0};
+                this->goingToNode   = nullptr;
+                this->turnToken     = false;
+                this->startMovement = false;
+	            this->entity->getComponent<TurnComponent>().endYourTurn();
+            }
+        }
     }
+    setTime();
 }
 
 /**
@@ -55,9 +78,30 @@ void MoveComponent::moveEntity(const glm::vec3 &movingTo) {
  */
 void MoveComponent::moveEntityToNode(Pathing::Node *newNode) {
     this->turnToken       = true;
-    this->moveTo.x        = float(newNode->x) + 0.5f;
-    this->moveTo.z        = float(newNode->y) + 0.5f;
+    this->moveTo.x        = float(newNode->x)/* + 0.5f*/;
+    this->moveTo.z        = float(newNode->y)/* + 0.5f*/;
     goingToNode           = newNode;
     goingToNode->occupied = true;
     goingToNode->occupant = this->entity;
+}
+
+void MoveComponent::setTime() {
+    auto &e = Stonk::Engine::get();
+    time    = e.getTime();
+}
+
+double MoveComponent::getDeltaTime() {
+    auto &e      = Stonk::Engine::get();
+    auto newTime = e.getTime();
+    return (newTime - time);
+}
+
+bool MoveComponent::checkSigns(float num1, float num2) {
+    //int i = static_cast<int>(num1);
+    //int x = static_cast<int>(num2);
+    if ((num2 * num1) >= 0) {
+        return false;
+    } else {
+        return true;
+	}
 }

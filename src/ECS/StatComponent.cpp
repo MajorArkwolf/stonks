@@ -238,11 +238,15 @@ auto StatComponent::pointVitality() -> void {
 auto StatComponent::levelUp() -> void {
     this->stat.level++;
     this->stat.pointsLeft++;
+    this->stat.leveledUp = true;
 }
 
 /**
  * @brief  adds additional points to the players hp
  */
 auto StatComponent::newMaxHP() -> void {
-    this->stat.maxHP += diceroller.Roll(1, this->stat.HD) + getVitalityMod();
+    if (this->stat.leveledUp) {
+		this->stat.maxHP += diceroller.Roll(1, this->stat.HD) + getVitalityMod();
+        this->stat.leveledUp = false;
+	}
 }

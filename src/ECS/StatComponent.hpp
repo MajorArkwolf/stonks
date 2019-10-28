@@ -8,6 +8,7 @@
 struct CharacterSheet {
     std::string name = "";
     int level        = 1;
+    bool leveledUp   = false;
     int exp          = 0;
     int HD           = 8;
     bool assignedHP  = false;
