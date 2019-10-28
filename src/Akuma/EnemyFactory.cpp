@@ -20,7 +20,7 @@ void EnemyFactory::generateEnemy(unsigned int floorLevel, unsigned int amount,
     Dice diceRoller;
 
     for (unsigned i = 0; i <= amount; ++i) {
-        string modelName = models.at(diceRoller.Roll(1u, (models.size() - 1u)));
+        string modelName = models.at(static_cast<size_t>(diceRoller.Roll(1u, (static_cast<unsigned>(models.size()) - 1u))));
         enemies.push_back(&manager.addEntity());
         enemies.at(i)->addComponentID<ScaleComponent>(glm::vec3{0.5, 0.5,
         0.5}); enemies.at(i)->addComponentID<PositionComponent>(); bool

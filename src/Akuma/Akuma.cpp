@@ -358,8 +358,6 @@ void Akuma::update([[maybe_unused]] double dt) {
     }
     if (boss != nullptr) {
         if (boss->hasComponent<DeadComponent>()) {
-
-            auto &stonk = Stonk::Engine::get();
             turnManager.turnOffManager();
             audiomgr->StopMusic();
             showEnd = 1;
@@ -848,7 +846,6 @@ void Akuma::drawInventoryWindow() {
 }
 
 void Akuma::displayDeathMenu() {
-    auto &stonk = Stonk::Engine::get();
     ImGui::SetNextWindowSize(ImVec2(300, 240), 1);
     ImGui::SetNextWindowPosCenter(1);
 
@@ -856,7 +853,7 @@ void Akuma::displayDeathMenu() {
                  ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
                      ImGuiWindowFlags_NoMove);
 
-    ImGui::Text(("You died"), ImVec2(ImGui::GetWindowSize().x - 15, 200));
+    ImGui::Text("You died");
 
     ImGui::Separator();
     if (ImGui::Button(("Quit to menu"), ImVec2(ImGui::GetWindowSize().x - 15, 80))) {
@@ -1011,7 +1008,7 @@ void Akuma::displayEnd() {
     ImGui::SetNextWindowPosCenter(1);
     ImGui::Begin("Congratulations", &showIntro, ImGuiWindowFlags_AlwaysAutoResize);
     ImGui::TextWrapped(
-        "Devil Shei’s corpse lays on the ground, demonic blood of a thick dark "
+        "Devil Sheis corpse lays on the ground, demonic blood of a thick dark "
         "tarry substance oozes out, the smell causes you to convulse, however "
         "nows not the time to admire your accomplishments but instead get out "
         "of this god awful dungeon and back to society.You wonder how long you "

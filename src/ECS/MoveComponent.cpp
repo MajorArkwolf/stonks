@@ -37,7 +37,6 @@ void MoveComponent::update() {
             setTime();
         } else if (this->turnToken == true && startMovement == true) {
             glm::vec3 movement;
-            auto dt     = getDeltaTime();
             movement.x = startToEnd.x * static_cast<float>(getDeltaTime()) * 2.5f;
             movement.z =
                 startToEnd.z * static_cast<float>(getDeltaTime()) * 2.5f;
