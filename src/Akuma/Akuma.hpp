@@ -76,7 +76,8 @@ class Akuma : public BaseState {
     bool showCharacterMenu = 1;
     /// Whether to draw the escape menu
     bool showEscapeMenu = 0;
-
+    bool menuExit       = 0;
+    bool hardExit       = 0;
     // Audio Manager
     Stonk::Audio *audiomgr = nullptr;
     /// Audio playlist
@@ -100,9 +101,7 @@ class Akuma : public BaseState {
     TurnManager turnManager;
     /// The floor
     Floor floor;
-    // Toggle for drawing 3d axis
-    // bool shouldDrawAxis = false;
-    auto drawAxis(float x, float y, float z, float length) -> void;
+    
     /// Vector of models
     std::vector<Model> modelList;
     void bossBattleEngage();

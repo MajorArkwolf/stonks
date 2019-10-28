@@ -70,17 +70,10 @@ auto Akuma::display() -> void {
     ImGui::NewFrame();
 
     glPushMatrix();
-    // glTranslatef(gridTranslation.x, gridTranslation.y, gridTranslation.z);
     displayGrid();
     glPopMatrix();
 
     glEnable(GL_TEXTURE_2D);
-    manager.draw();
-    glPushMatrix();
-    glTranslatef(0, 0, -20);
-    // OBJ::displayModel(modelList[0], 5, 1);
-    glPopMatrix();
-
     manager.draw();
 
     glDisable(GL_LIGHT0);
@@ -109,24 +102,27 @@ auto Akuma::display() -> void {
     if (stonk.showSettingsMenu) {
         stonk.settingsMenu();
     }
-    if (playerIsDead) {
-        displayDeathMenu();
-    }
     if (showInfo) {
         displayHelpMenu();
     }
     if (showLevelUp) {
         displayLevelUp();
     }
-
-    /*if (this->shouldDrawAxis) {
-        auto origin = this->camera.look + (this->camera.getForwardDir()
-    * 1.01f); drawAxis(origin.x, origin.y, origin.z, 0.5f);
-    }*/
+    if (playerIsDead) {
+        displayDeathMenu();
+    }
 
     ImGui::Render();
     ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
     SDL_GL_SwapWindow(stonk.window.get());
+
+
+    if (hardExit) {
+        stonk.isRunning = false;
+    }
+    if (menuExit) {
+        stonk.popStack();
+    }
 }
 
 /**
@@ -286,23 +282,26 @@ void Akuma::displayGameStats() {
     ImGui::Text("Main Hand:  %s", playerEquip.getEquippedMainHand().name.c_str());
     ImGui::Text("Armor:  %s", playerEquip.getEquippedArmor().name.c_str());
 
-    auto *e = player->getComponent<PlayerComponent>().getLookingAtNode();
-    ImGui::Separator();
-    ImGui::Text("Selected Enemy Stats");
-    ImGui::Separator();
-    if (e->occupant != nullptr && e->occupant->hasComponent<EnemyComponent>()) {
-        auto &enemyStats = e->occupant->getComponent<StatComponent>().stat;
-        std::string enemyNamename = "Name        : ";
-        std::string enemy         = enemyStats.name;
-        enemyNamename             = name + enemy;
-        ImGui::Text("%s", name.c_str());
-        ImGui::Text("Level       :  %.0d", enemyStats.level);
-        ImGui::Text("HP          :  %.0d", enemyStats.HP);
-        ImGui::Text("Strength    :  %.0d", enemyStats.strength);
-        ImGui::Text("Dexterity   :  %.0d", enemyStats.dexterity);
-        ImGui::Text("Luck        :  %.0d", enemyStats.luck);
-        ImGui::Text("Vitality    :  %.0d", enemyStats.vitality);
-        ImGui::Text("Intelligence:  %.0d", enemyStats.intelligence);
+    if (!playerIsDead) {
+
+        auto *e = player->getComponent<PlayerComponent>().getLookingAtNode();
+        ImGui::Separator();
+        ImGui::Text("Selected Enemy Stats");
+        ImGui::Separator();
+        if (e->occupant != nullptr && e->occupant->hasComponent<EnemyComponent>()) {
+            auto &enemyStats = e->occupant->getComponent<StatComponent>().stat;
+            std::string enemyNamename = "Name        : ";
+            std::string enemy         = enemyStats.name;
+            enemyNamename             = name + enemy;
+            ImGui::Text("%s", name.c_str());
+            ImGui::Text("Level       :  %.0d", enemyStats.level);
+            ImGui::Text("HP          :  %.0d", enemyStats.HP);
+            ImGui::Text("Strength    :  %.0d", enemyStats.strength);
+            ImGui::Text("Dexterity   :  %.0d", enemyStats.dexterity);
+            ImGui::Text("Luck        :  %.0d", enemyStats.luck);
+            ImGui::Text("Vitality    :  %.0d", enemyStats.vitality);
+            ImGui::Text("Intelligence:  %.0d", enemyStats.intelligence);
+        }
     }
     ImGui::End();
 }
@@ -343,17 +342,11 @@ auto Akuma::handleInput(SDL_Event &event) -> void {
  */
 void Akuma::update([[maybe_unused]] double dt) {
     if (!playerIsDead) {
-		audioPlayList();
-		turnManager.update();
-		manager.update();
-		// player->getComponent<PositionComponent>().setXPos(
-		//    player->getComponent<PositionComponent>().getXPos() + 0.01f);
-		// player->getComponent<PositionComponent>().setZPos(
-		//    player->getComponent<PositionComponent>().getZPos() + 0.01f);
-		light_position[0] = player->getComponent<PositionComponent>().getXPos();
-		// light_position[1] = 2;
-		light_position[2] = player->getComponent<PositionComponent>().getZPos();
-		// light_position[3] = 1;
+        audioPlayList();
+        turnManager.update();
+        manager.update();
+        light_position[0] = player->getComponent<PositionComponent>().getXPos();
+        light_position[2] = player->getComponent<PositionComponent>().getZPos();
     }
     if (stairs != nullptr) {
         if (stairs->hasComponent<StairComponent>()) {
@@ -367,9 +360,9 @@ void Akuma::update([[maybe_unused]] double dt) {
         if (boss->hasComponent<DeadComponent>()) {
 
             auto &stonk = Stonk::Engine::get();
-            stonk.daGameStateStack.pop();
+            turnManager.turnOffManager();
             audiomgr->StopMusic();
-            showEnd      = 1;
+            showEnd = 1;
         }
     }
     if (player != nullptr) {
@@ -565,48 +558,6 @@ void Akuma::drawCharacterMenu() {
 }
 
 /**
- * @brief Draws a 3-dimensional spatial axis at the given coordinates at the given length
- * @param x The x-coordinate to start the axis
- * @param y The y-coordinate to start the axis
- * @param z The z-coordinate to start the axis
- * @param length The amount to extend the axis lines in each respective direction
- */
-auto Akuma::drawAxis(float x, float y, float z, float length) -> void {
-    glPushMatrix();
-    glDepthMask(false);
-    glLineWidth(5.0);
-
-    // Draw the x-axis.
-    glColor3f(1.0f, 0.0f, 0.0f);
-
-    glBegin(GL_LINES);
-    glVertex3f(x, y, z);
-    glVertex3f(x + length, y, z);
-    glEnd();
-
-    // Draw the y-axis.
-    glColor3f(0.0f, 1.0f, 0.0f);
-
-    glBegin(GL_LINES);
-    glVertex3f(x, y, z);
-    glVertex3f(x, y + length, z);
-    glEnd();
-
-    // Draw the z-axis.
-    glColor3f(0.0f, 0.0f, 1.0f);
-
-    glBegin(GL_LINES);
-    glVertex3f(x, y, z);
-    glVertex3f(x, y, z + length);
-    glEnd();
-
-    glColor3f(1.0f, 1.0f, 1.0f);
-
-    glDepthMask(true);
-    glPopMatrix();
-}
-
-/**
  * @brief Displays the current grid within the room object
  */
 auto Akuma::displayGrid() -> void {
@@ -753,11 +704,11 @@ void Akuma::displayEscapeMenu() {
         stonk.showSettingsMenu = stonk.showSettingsMenu ? false : true;
     }
     if (ImGui::Button("Quit to Main Menu")) {
-        stonk.daGameStateStack.pop();
+        menuExit = 1;
     }
     ImGui::SameLine();
     if (ImGui::Button("Quit to Desktop")) {
-        stonk.isRunning = false;
+        hardExit = 1;
     }
     ImGui::End();
 }
@@ -909,11 +860,11 @@ void Akuma::displayDeathMenu() {
 
     ImGui::Separator();
     if (ImGui::Button(("Quit to menu"), ImVec2(ImGui::GetWindowSize().x - 15, 80))) {
-        stonk.popStack();
+        menuExit = 1;
     }
     if (ImGui::Button(("Quit to desktop"),
                       ImVec2(ImGui::GetWindowSize().x - 15, 80))) {
-        stonk.isRunning = false;
+        hardExit = 1;
     }
     ImGui::End();
 }
