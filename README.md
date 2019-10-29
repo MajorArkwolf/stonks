@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  <a href="https://travis-ci.com/opeik/ICT290"> <img src="https://travis-ci.com/opeik/ICT290.svg?token=2cgrDpWeJERSzmm7HcTg&branch=develop"
+  <a href="https://travis-ci.com/opeik/stonks"> <img src="https://travis-ci.com/opeik/stonks.svg?token=2cgrDpWeJERSzmm7HcTg&branch=develop"
      alt="build-badge"> </a>
 </p>
 
@@ -35,7 +35,7 @@
 
 ### Cloning
 ```
-git clone --recurse-submodules https://github.com/opeik/ICT290.git
+git clone --recurse-submodules https://github.com/opeik/Stonk.git
 git checkout develop && git submodule update --init
 ```
 

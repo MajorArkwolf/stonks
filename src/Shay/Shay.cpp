@@ -1,54 +1,49 @@
 #include "Shay.hpp"
 
+#include <cmath>
+#include <sstream>
+
+#include <SDL2/SDL.h>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/vec3.hpp>
+
+#include "ObjLoader/ObjDisplay.hpp"
+#include "Shay/PlainNode.hpp"
 #include "Stonk/Engine.hpp"
+#include "imgui.h"
+#include "imgui_impl_opengl2.h"
+#include "imgui_impl_sdl.h"
 
-using namespace Shay;
+using glm::vec3;
+using Shay::Camera;
+using Shay::ShayAxis;
+using Shay::ShaysWorld;
+using Shay::ShayTexture;
+using std::stringstream;
+using Slope = Shay::PlainNode::Slope;
+using Image = Shay::TexturedPolygons::Image;
 
-GLfloat ShaysWorld::stepIncrement  = 0;
-GLfloat ShaysWorld::angleIncrement = 0;
-int ShaysWorld::frameCount         = 0;
-clock_t ShaysWorld::lastClock      = {};
+/**
+ * @brief Shays world default constructor, initialises all required variables, objects and textures
+ */
+ShaysWorld::ShaysWorld() {
 
-int ShaysWorld::width    = 0;
-int ShaysWorld::height   = 0;
-double ShaysWorld::ratio = 0;
+    // set light position
+    light_position[0] = 7000;
+    light_position[1] = 14000;
+    light_position[2] = -5000;
+    light_position[3] = 1;
 
-bool ShaysWorld::DisplayMap     = false;
-bool ShaysWorld::DisplayWelcome = true;
-bool ShaysWorld::DisplayExit    = false;
-bool ShaysWorld::lightsOn       = true;
-bool ShaysWorld::displayECL     = true;
-bool ShaysWorld::displayDebug   = true;
-int ShaysWorld::calcFPS         = 0;
-
-GLfloat ShaysWorld::step                = 0.0f;
-GLfloat ShaysWorld::step2               = 0.0f;
-GLfloat ShaysWorld::stepLength          = 0.0f;
-GLUquadricObj *ShaysWorld::glu_cylinder = nullptr;
-unsigned char *ShaysWorld::image        = nullptr;
-Camera ShaysWorld::cam                  = {};
-TexturedPolygons ShaysWorld::tp         = {};
-
-auto ShaysWorld::getCamPtr() -> Camera * {
-    return &cam;
+    light_position1[0] = 20000;
+    light_position1[1] = 11000;
+    light_position1[2] = 15000;
+    light_position1[3] = 1;
 }
 
-void ShaysWorld::Init() {
-    auto &engine = Stonk::Engine::get();
-    SDL_GetWindowSize(engine.window.get(), &width, &height);
-    ShaysWorld::ratio = static_cast<double>(width) / static_cast<double>(height);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glViewport(0, 0, width, height);
-    gluPerspective(60, ShaysWorld::ratio, 1, 50000);
-    glMatrixMode(GL_MODELVIEW);
-
-    // set background (sky colour)
-    glClearColor(97.0f / 255.0f, 140.0f / 255.0f, 185.0f / 255.0f, 1.0f);
-
-    // set perpsective
-    gluLookAt(0.0, 1.75, 0.0, 0.0, 1.75, -1.0, 0.0, 1.0, 0.0);
+auto Shay::ShaysWorld::hardInit() -> void {
+    modelList.push_back(OBJ::Load("tav7.obj"));
+    modelList.push_back(OBJ::Load("orb.obj"));
+    modelList.push_back(OBJ::Load("penta.obj"));
 
     // settings for glut cylinders
     glu_cylinder = gluNewQuadric();
@@ -67,23 +62,219 @@ void ShaysWorld::Init() {
     // load texture images and create display lists
     CreateTextureList();
     CreateTextures();
+
+    softInit();
 }
 
-//--------------------------------------------------------------------------------------
-//  Main Display Function
-//--------------------------------------------------------------------------------------
-void ShaysWorld::Display() {
+auto Shay::ShaysWorld::softInit() -> void {
+
+    auto &engine = Stonk::Engine::get();
+    SDL_GL_GetDrawableSize(engine.window.get(), &width, &height);
+    ShaysWorld::ratio = static_cast<double>(width) / static_cast<double>(height);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glViewport(0, 0, width, height);
+    gluPerspective(60, ShaysWorld::ratio, 1, 50000);
+    glMatrixMode(GL_MODELVIEW);
+
+    // set background (sky colour)
+    glClearColor(97.0f / 255.0f, 140.0f / 255.0f, 185.0f / 255.0f, 1.0f);
+
+    // set perpsective
+    gluLookAt(0.0, 1.75, 0.0, 0.0, 1.75, -1.0, 0.0, 1.0, 0.0);
+}
+
+auto Shay::ShaysWorld::handleInput(SDL_Event &event) -> void {
+    switch (event.type) {
+        case SDL_KEYDOWN:
+        case SDL_KEYUP: {
+            this->handleKeyEvents(event);
+        } break;
+        case SDL_MOUSEBUTTONDOWN:
+        case SDL_MOUSEBUTTONUP:
+        case SDL_MOUSEMOTION: {
+            this->handleMouseEvents(event);
+        } break;
+        default: break;
+    }
+}
+
+auto Shay::ShaysWorld::unInit() -> void {}
+
+auto Shay::ShaysWorld::teleportToAkuma() -> void {
+    auto &pos = this->cam.position;
+    if (pos.x < 20150.f && pos.x > 19800.f && pos.z > 14800 && pos.z < 15200) {
+        auto &engine = Stonk::Engine::get();
+        engine.popStack();
+        engine.loadState(Stonk::GameMode::AKUMA);
+    }
+}
+
+/**
+ * @brief Calls all other display functions to display Shay's world
+ */
+void ShaysWorld::display() {
     auto &stonk = Stonk::Engine::get();
 
+    ImGui_ImplOpenGL2_NewFrame();
+    ImGui_ImplSDL2_NewFrame(stonk.window.get());
+    ImGui::NewFrame();
+    portalSpinAngle++;
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glEnable(GL_TEXTURE_2D);
-    glPushMatrix();
+    glEnable(GL_DEPTH_TEST);
 
+    // Draw normal scene
+    glPushMatrix();
+    glDisable(GL_TEXTURE_2D);
+    displayTavern();
+
+    // displayPortalFrame();
+    glEnable(GL_TEXTURE_2D);
+
+    displayPentagram();
+
+    DrawBackdrop();
+    DisplaySigns();
+
+    glPopMatrix();
+
+    // Draw Portal frame
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_ALWAYS, 1, 0xFF);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+    glStencilMask(0xFF);
+    glDepthMask(GL_FALSE);
+    glClear(GL_STENCIL_BUFFER_BIT);
+    glDisable(GL_TEXTURE_2D);
+
+    glPushMatrix();
+    glColor3f(0.9f, 0.1f, 0.f);
+    // glColor3f(97.0f / 255.0f, 140.0f / 255.0f, 185.0f / 255.0f);
+
+    glTranslatef(20000, 10100, 15000);
+    glRotatef(static_cast<float>(portalSpinAngle), 0.f, 1.f, 0.f);
+    OBJ::displayModel(modelList[1], 5000, 0);
+    // drawSolidCube(1000);
+
+    glColor3f(1, 1, 1);
+
+    // Draw highlighting
+    glDisable(GL_TEXTURE_2D);
+    glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+    glColor3f(1, 0, 0);
+    glStencilMask(0x00);
+    glPushMatrix();
+    glTranslatef(0, -20, 0);
+    OBJ::displayModel(modelList[1], 5100, 0);
+    glPopMatrix();
+    // drawSolidCube(1050);
+    glPopMatrix();
+
+    // Draw Portal World
+    glEnable(GL_TEXTURE_2D);
+    glStencilFunc(GL_EQUAL, 1, 0xFF);
+    glStencilMask(0x00);
+    glDepthMask(GL_TRUE);
+    glClear(GL_DEPTH_BUFFER_BIT);
+    glPushMatrix();
+    // glTranslatef(-10000, -00, -25000);
+    glDisable(GL_TEXTURE_2D);
+    displayTavern();
+
+    // displayPortalFrame();
+    glEnable(GL_TEXTURE_2D);
+
+    displayPentagram();
+    glColor3f(1, 0.5, 0.5);
+    DrawBackdrop();
+    DisplaySigns();
+    glPopMatrix();
+    glColor3f(1, 1, 1);
+
+    // scene
+    glDepthMask(GL_TRUE);
+    glDisable(GL_STENCIL_TEST);
+
+    glPopMatrix();
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_TEXTURE_2D);
+
+    if (this->shouldDrawAxis) {
+        auto origin = this->cam.look + (this->cam.getForwardDir() * 1.01f);
+        drawAxis(origin.x, origin.y, origin.z, 0.5f);
+    }
+
+    DisplayDebugMenu();
+
+    if (stonk.showSettingsMenu) {
+        stonk.settingsMenu();
+    }
+    teleportToAkuma();
+
+    ImGui::Render();
+    ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+    SDL_GL_SwapWindow(stonk.window.get());
+}
+
+void ShaysWorld::displayPentagram(void) {
+    glPushMatrix();
+    glTranslatef(20000, 10000, 15000);
+    // glRotatef(90.f, 0, 0, 1);
+    glEnable(GL_CULL_FACE);
+    OBJ::depDisplayModel(modelList[2], 300, 1);
+    glDisable(GL_CULL_FACE);
+    glPopMatrix();
+}
+
+/**
+ * @brief Displays the IMGUI debug menu
+ */
+void ShaysWorld::DisplayDebugMenu() {
+    auto &stonk = Stonk::Engine::get();
+    auto buffer = stringstream{};
+
+    if (stonk.showDebugMenu) {
+        auto &pos    = this->cam.position;
+        auto &look   = this->cam.look;
+        auto &angles = this->cam.angles;
+
+        ImGui::Begin("Debug Menu");
+        ImGui::Text("Camera: %.2f, %.2f, %.2f", static_cast<double>(pos.x),
+                    static_cast<double>(pos.y), static_cast<double>(pos.z));
+        ImGui::Text("Look: %.2f, %.2f, %.2f", static_cast<double>(look.x),
+                    static_cast<double>(look.y), static_cast<double>(look.z));
+        ImGui::Text("Angles: %.2f, %.2f", static_cast<double>(angles.x),
+                    static_cast<double>(angles.y));
+        ImGui::Separator();
+        ImGui::Checkbox("Draw axis", &this->shouldDrawAxis);
+        ImGui::End();
+
+        ImGui::Begin("FPS", nullptr,
+                     ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+        ImGui::SetNextWindowBgAlpha(0.35f);
+        ImGui::Text("%.0f", std::ceil(stonk.fps));
+
+        ImGui::End();
+    }
+}
+
+/**
+ * @brief Updates camera variables based on the delta time between frames
+ */
+void ShaysWorld::update(double dt) {
+    cam.Update(dt);
+}
+
+/**
+ * @brief Displays on screen signs, like the welcome screen
+ */
+void ShaysWorld::DisplaySigns() {
     if (DisplayWelcome) {
-        cam.DisplayWelcomeScreen(width, height, 1, tp.GetTexture(WELCOME));
+        cam.DisplayWelcomeScreen(width, height, tp.GetTexture(WELCOME));
     } else if (DisplayExit) {
-        cam.DisplayWelcomeScreen(width, height, 0, tp.GetTexture(EXIT));
+        cam.DisplayWelcomeScreen(width, height, tp.GetTexture(EXIT));
     }
 
     if (DisplayMap) {
@@ -94,158 +285,424 @@ void ShaysWorld::Display() {
         ((cam.GetLR() > 34100.0f) && (cam.GetFB() > 41127.0f))) {
         cam.DisplayNoExit(width, height, tp.GetTexture(NO_EXIT));
     }
+}
 
-    DrawBackdrop();
+/**
+ * @brief Draws a 3-dimensional spatial axis at the given coordinates at the given length
+ * @param x The x-coordinate to start the axis
+ * @param y The y-coordinate to start the axis
+ * @param z The z-coordinate to start the axis
+ * @param length The amount to extend the axis lines in each respective direction
+ */
+auto ShaysWorld::drawAxis(float x, float y, float z, float length) -> void {
+    glPushMatrix();
+    glDepthMask(false);
+    glLineWidth(5.0);
+
+    // Draw the x-axis.
+    glColor3f(1.0f, 0.0f, 0.0f);
+
+    glBegin(GL_LINES);
+    glVertex3f(x, y, z);
+    glVertex3f(x + length, y, z);
+    glEnd();
+
+    // Draw the y-axis.
+    glColor3f(0.0f, 1.0f, 0.0f);
+
+    glBegin(GL_LINES);
+    glVertex3f(x, y, z);
+    glVertex3f(x, y + length, z);
+    glEnd();
+
+    // Draw the z-axis.
+    glColor3f(0.0f, 0.0f, 1.0f);
+
+    glBegin(GL_LINES);
+    glVertex3f(x, y, z);
+    glVertex3f(x, y, z + length);
+    glEnd();
+
+    glColor3f(1.0f, 1.0f, 1.0f);
+
+    glDepthMask(true);
     glPopMatrix();
-    glDisable(GL_TEXTURE_2D);
-
-    SDL_GL_SwapWindow(stonk.window.get());
 }
 
-void ShaysWorld::Update(double dt) {
-    cam.Update(dt);
+/**
+ * @brief Handles Key events passed from the SDL2 subsystem
+ * @param event The SDL2 event being read from
+ */
+auto ShaysWorld::handleKeyEvents(SDL_Event &event) -> void {
+    switch (event.type) {
+        case SDL_KEYDOWN: {
+            switch (event.key.keysym.scancode) {
+                case SDL_SCANCODE_SPACE: {
+                    this->DisplayWelcome = (this->DisplayWelcome) ? false : true;
+                } break;
+                case SDL_SCANCODE_M: {
+                    this->DisplayMap = (this->DisplayMap) ? false : true;
+                } break;
+                case SDL_SCANCODE_L: {
+                    this->lightsOn = (this->lightsOn) ? false : true;
+                } break;
+                case SDL_SCANCODE_LSHIFT: {
+                    getCamPtr()->MOVEMENT_SPEED = 10000.0f;
+                } break;
+                case SDL_SCANCODE_ESCAPE: {
+                    this->DisplayExit = (this->DisplayExit) ? false : true;
+                } break;
+                default: break;
+            }
+        } break;
+        case SDL_KEYUP: {
+            switch (event.key.keysym.scancode) {
+                case SDL_SCANCODE_LSHIFT: {
+                    getCamPtr()->MOVEMENT_SPEED = 2000.0f;
+                } break;
+                default: break;
+            }
+
+        } break;
+        default: break;
+    }
 }
 
+auto ShaysWorld::handleMouseEvents(SDL_Event &event) -> void {
+
+    switch (event.button.button) {
+        case SDL_BUTTON_LEFT: {
+            if (DisplayExit == 1) {
+                exit(0);
+            }
+        } break;
+        case SDL_BUTTON_RIGHT: break;
+        case SDL_BUTTON_MIDDLE: break;
+        default: break;
+    }
+}
+
+/**
+ * @brief Returns the current shaysWorld isntance
+ * @return The current ShaysWorld instance
+ */
+auto ShaysWorld::get() -> ShaysWorld & {
+    static auto instance = ShaysWorld{};
+
+    return instance;
+}
+
+/**
+ * @brief Returns a pointer to the Shay camera
+ * @return A pointer to the shay camera
+ */
+
+auto ShaysWorld::getCamPtr() -> Camera * {
+    return &cam;
+}
+
+/**
+ * @brief Creates all original shay bounding boxes
+ */
 void ShaysWorld::CreateBoundingBoxes() {
     // chanc block
-    cam.SetAABBMaxX(0, 35879.0);
-    cam.SetAABBMinX(0, 33808.0);
-    cam.SetAABBMaxZ(0, 22096.0);
-    cam.SetAABBMinZ(0, 4688.0);
+    cam.SetAABBMaxX(35879.0);
+    cam.SetAABBMinX(33808.0);
+    cam.SetAABBMaxZ(22096.0);
+    cam.SetAABBMinZ(4688.0);
+    cam.FinishAABB();
 
     // between chanc block and phys sci
-    cam.SetAABBMaxX(1, 35999.0);
-    cam.SetAABBMinX(1, 35730.0);
-    cam.SetAABBMaxZ(1, 25344.0);
-    cam.SetAABBMinZ(1, 22096.0);
+    cam.SetAABBMaxX(35999.0);
+    cam.SetAABBMinX(35730.0);
+    cam.SetAABBMaxZ(25344.0);
+    cam.SetAABBMinZ(22096.0);
+    cam.FinishAABB();
 
     // phy sci block panel 1
-    cam.SetAABBMaxX(2, 35879.0);
-    cam.SetAABBMinX(2, 33808.0);
-    cam.SetAABBMaxZ(2, 26752.0);
-    cam.SetAABBMinZ(2, 25344.0);
+    cam.SetAABBMaxX(35879.0);
+    cam.SetAABBMinX(33808.0);
+    cam.SetAABBMaxZ(26752.0);
+    cam.SetAABBMinZ(25344.0);
+    cam.FinishAABB();
 
     // phy sci block 1st doorway
-    cam.SetAABBMaxX(3, 35879.0);
-    cam.SetAABBMinX(3, 34256.0);
-    cam.SetAABBMaxZ(3, 27559.0);
-    cam.SetAABBMinZ(3, 26752.0);
+    cam.SetAABBMaxX(35879.0);
+    cam.SetAABBMinX(34256.0);
+    cam.SetAABBMaxZ(27559.0);
+    cam.SetAABBMinZ(26752.0);
+    cam.FinishAABB();
 
     // phy sci block 2nd panel
-    cam.SetAABBMaxX(4, 35879.0);
-    cam.SetAABBMinX(4, 33808.0);
-    cam.SetAABBMaxZ(4, 36319.0);
-    cam.SetAABBMinZ(4, 27559.0);
+    cam.SetAABBMaxX(35879.0);
+    cam.SetAABBMinX(33808.0);
+    cam.SetAABBMaxZ(36319.0);
+    cam.SetAABBMinZ(27559.0);
+    cam.FinishAABB();
 
     // phy sci block 2nd doorway
-    cam.SetAABBMaxX(5, 35879.0);
-    cam.SetAABBMinX(5, 34260.0);
-    cam.SetAABBMaxZ(5, 37855.0);
-    cam.SetAABBMinZ(5, 36319.0);
+    cam.SetAABBMaxX(35879.0);
+    cam.SetAABBMinX(34260.0);
+    cam.SetAABBMaxZ(37855.0);
+    cam.SetAABBMinZ(36319.0);
+    cam.FinishAABB();
 
     // phy sci block 3rd panel
-    cam.SetAABBMaxX(6, 35879.0);
-    cam.SetAABBMinX(6, 33808.0);
-    cam.SetAABBMaxZ(6, 41127.0);
-    cam.SetAABBMinZ(6, 37855.0);
+    cam.SetAABBMaxX(35879.0);
+    cam.SetAABBMinX(33808.0);
+    cam.SetAABBMaxZ(41127.0);
+    cam.SetAABBMinZ(37855.0);
+    cam.FinishAABB();
 
     // drinks machine
-    cam.SetAABBMaxX(7, 35879.0);
-    cam.SetAABBMinX(7, 34704.0);
-    cam.SetAABBMaxZ(7, 25344.0);
-    cam.SetAABBMinZ(7, 24996.0);
+    cam.SetAABBMaxX(35879.0);
+    cam.SetAABBMinX(34704.0);
+    cam.SetAABBMaxZ(25344.0);
+    cam.SetAABBMinZ(24996.0);
+    cam.FinishAABB();
 
-    // bottom of steps
-    cam.SetAABBMaxX(8, 33808.0);
-    cam.SetAABBMinX(8, 0.0);
-    cam.SetAABBMaxZ(8, 4688.0);
-    cam.SetAABBMinZ(8, 0.0);
+    //// bottom of steps
+    // cam.SetAABBMaxX(33808.0);
+    // cam.SetAABBMinX(0.0);
+    // cam.SetAABBMaxZ(4688.0);
+    // cam.SetAABBMinZ(0.0);
+    // cam.FinishAABB();
 
     // end of phy sci block exit (top of steps)
-    cam.SetAABBMaxX(9, 35879.0);
-    cam.SetAABBMinX(9, 34320.0);
-    cam.SetAABBMaxZ(9, 43056.0);
-    cam.SetAABBMinZ(9, 41127.0);
+    cam.SetAABBMaxX(35879.0);
+    cam.SetAABBMinX(34320.0);
+    cam.SetAABBMaxZ(43056.0);
+    cam.SetAABBMinZ(41127.0);
+    cam.FinishAABB();
 
     // library end panel
-    cam.SetAABBMaxX(10, 34320.0);
-    cam.SetAABBMinX(10, 6514.0);
-    cam.SetAABBMaxZ(10, 50000.0);
-    cam.SetAABBMinZ(10, 43036.0);
+    cam.SetAABBMaxX(34320.0);
+    cam.SetAABBMinX(6514.0);
+    cam.SetAABBMaxZ(50000.0);
+    cam.SetAABBMinZ(43036.0);
+    cam.FinishAABB();
 
     // KBLT
-    cam.SetAABBMaxX(11, 28104.0);
-    cam.SetAABBMinX(11, 25608.0);
-    cam.SetAABBMaxZ(11, 43046.0);
-    cam.SetAABBMinZ(11, 42754.0);
+    cam.SetAABBMaxX(28104.0);
+    cam.SetAABBMinX(25608.0);
+    cam.SetAABBMaxZ(43046.0);
+    cam.SetAABBMinZ(42754.0);
+    cam.FinishAABB();
 
     // Canteen block
-    cam.SetAABBMaxX(12, 2608.0);
-    cam.SetAABBMinX(12, 0.0);
-    cam.SetAABBMaxZ(12, 49046.0);
-    cam.SetAABBMinZ(12, 0.0);
+    cam.SetAABBMaxX(2608.0);
+    cam.SetAABBMinX(0.0);
+    cam.SetAABBMaxZ(49046.0);
+    cam.SetAABBMinZ(0.0);
+    cam.FinishAABB();
 
     // Telephones
-    cam.SetAABBMaxX(13, 33892.0);
-    cam.SetAABBMinX(13, 33872.0);
-    cam.SetAABBMaxZ(13, 25344.0);
-    cam.SetAABBMinZ(13, 25173.0);
+    cam.SetAABBMaxX(33892.0);
+    cam.SetAABBMinX(33872.0);
+    cam.SetAABBMaxZ(25344.0);
+    cam.SetAABBMinZ(25173.0);
+    cam.FinishAABB();
 
     // Telephones
-    cam.SetAABBMaxX(14, 34277.0);
-    cam.SetAABBMinX(14, 34157.0);
-    cam.SetAABBMaxZ(14, 25344.0);
-    cam.SetAABBMinZ(14, 25173.0);
+    cam.SetAABBMaxX(34277.0);
+    cam.SetAABBMinX(34157.0);
+    cam.SetAABBMaxZ(25344.0);
+    cam.SetAABBMinZ(25173.0);
+    cam.FinishAABB();
 
     // Telephones
-    cam.SetAABBMaxX(15, 35462.0);
-    cam.SetAABBMinX(15, 34541.0);
-    cam.SetAABBMaxZ(15, 25344.0);
-    cam.SetAABBMinZ(15, 25173.0);
+    cam.SetAABBMaxX(35462.0);
+    cam.SetAABBMinX(34541.0);
+    cam.SetAABBMaxZ(25344.0);
+    cam.SetAABBMinZ(25173.0);
+    cam.FinishAABB();
 
     // Wall by Steps
-    cam.SetAABBMaxX(16, 31548.0);
-    cam.SetAABBMinX(16, 31444.0);
-    cam.SetAABBMaxZ(16, 10395.0);
-    cam.SetAABBMinZ(16, 4590.0);
+    cam.SetAABBMaxX(31548.0);
+    cam.SetAABBMinX(31444.0);
+    cam.SetAABBMaxZ(10395.0);
+    cam.SetAABBMinZ(4590.0);
+    cam.FinishAABB();
+
+    CreatePostBoundingBoxes();
 }
 
-//--------------------------------------------------------------------------------------
-// Set up co-ordinates of different plains
-//--------------------------------------------------------------------------------------
+void ShaysWorld::drawSolidCube(float scale) {
+    glPushMatrix();
+    glScalef(scale, scale, scale);
+    // White side - BACK
+    glBegin(GL_POLYGON);
+
+    glVertex3f(0.5, -0.5, 0.5);
+    glVertex3f(0.5, 0.5, 0.5);
+    glVertex3f(-0.5, 0.5, 0.5);
+    glVertex3f(-0.5, -0.5, 0.5);
+    glEnd();
+
+    // Purple side - RIGHT
+    glBegin(GL_POLYGON);
+
+    glVertex3f(0.5, -0.5, -0.5);
+    glVertex3f(0.5, 0.5, -0.5);
+    glVertex3f(0.5, 0.5, 0.5);
+    glVertex3f(0.5, -0.5, 0.5);
+    glEnd();
+
+    // Green side - LEFT
+    glBegin(GL_POLYGON);
+
+    glVertex3f(-0.5, -0.5, 0.5);
+    glVertex3f(-0.5, 0.5, 0.5);
+    glVertex3f(-0.5, 0.5, -0.5);
+    glVertex3f(-0.5, -0.5, -0.5);
+    glEnd();
+
+    // Blue side - TOP
+    glBegin(GL_POLYGON);
+
+    glVertex3f(0.5, 0.5, 0.5);
+    glVertex3f(0.5, 0.5, -0.5);
+    glVertex3f(-0.5, 0.5, -0.5);
+    glVertex3f(-0.5, 0.5, 0.5);
+    glEnd();
+
+    // Red side - BOTTOM
+    glBegin(GL_POLYGON);
+
+    glVertex3f(0.5, -0.5, -0.5);
+    glVertex3f(0.5, -0.5, 0.5);
+    glVertex3f(-0.5, -0.5, 0.5);
+    glVertex3f(-0.5, -0.5, -0.5);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glVertex3f(0.5, -0.5, -0.5);  // P1 is red
+    glVertex3f(0.5, 0.5, -0.5);   // P2 is green
+    glVertex3f(-0.5, 0.5, -0.5);  // P3 is blue
+    glVertex3f(-0.5, -0.5, -0.5); // P4 is purple
+    glEnd();
+    glPopMatrix();
+}
+
+void ShaysWorld::displayTavern() {
+    glPushMatrix();
+    glEnable(GL_LIGHTING);
+    glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_LIGHT0);
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+    glPushMatrix();
+    glTranslatef(7000, 9100, -5000);
+    OBJ::depDisplayModel(modelList[0], 3.f, 1);
+    glPopMatrix();
+
+    glDisable(GL_LIGHTING);
+    glDisable(GL_COLOR_MATERIAL);
+    glPopMatrix();
+}
+
+/**
+ * @brief Creates post bounding boxes
+ */
+void ShaysWorld::CreatePostBoundingBoxes() {
+    // This code is based on DisplayMainPosts.
+    step       = 0.0f;
+    stepLength = 0.0f;
+    step2      = 0.0f;
+
+    // The calllist to draw pillars draws them offset from the origin
+    // instead of just drawing them at origin and then translating (Why, shay.)
+    constexpr float pillarXOffset = 31740.0f;
+    // constexpr float pillarYOffset = 9995.0f;
+    constexpr float pillarZOffset = 10105.0f;
+    constexpr float pillarSize    = 128.0f;
+    for (int j = 0; j < 2; j++) {
+        for (int i = 0; i < 17; i++) { // 17: left post count
+            float pillarZPos = pillarZOffset + step + step2;
+            float pillarXPos = pillarXOffset + stepLength;
+            cam.SetAABBMaxX(pillarXPos + pillarSize);
+            cam.SetAABBMinX(pillarXPos);
+            cam.SetAABBMaxZ(pillarZPos + pillarSize);
+            cam.SetAABBMinZ(pillarZPos);
+            cam.FinishAABB();
+            if ((i == 7) && (j == 0)) // between chanc and phys sci
+            {
+                // left pillar near bike racks between the two buildings
+                constexpr float betweenPillarOffset = 4008.0f;
+                cam.SetAABBMaxX(pillarXPos + pillarSize + betweenPillarOffset);
+                cam.SetAABBMinX(pillarXPos + betweenPillarOffset);
+                cam.SetAABBMaxZ(pillarZPos + pillarSize);
+                cam.SetAABBMinZ(pillarZPos);
+                cam.FinishAABB();
+            }
+            step += 1930.0f;
+        }
+        stepLength -= 27192.0f; // Move to draw right posts
+        step2 -= 32810.0f;      // Move right posts to start
+    }
+
+    // library front pillars
+    step = -1940.0f;
+    // library pillar Z offset
+    constexpr float libPillarZ = 30880.0f;
+    for (int i = 0; i < 13; i++) {
+        float pillarZPos = pillarZOffset + libPillarZ;
+        float pillarXPos = pillarXOffset + step;
+        cam.SetAABBMaxX(pillarXPos + pillarSize);
+        cam.SetAABBMinX(pillarXPos);
+        cam.SetAABBMaxZ(pillarZPos + pillarSize);
+        cam.SetAABBMinZ(pillarZPos);
+        cam.FinishAABB();
+        step -= 1940.0f;
+    }
+    // For some reason, the chancellery pillar's "model" is offset
+    // differently than the other pillars.
+    constexpr float chancelleryPillarZOffset = 8100.0f;
+    // First pillar (taller pillar at chancellery, by spawn)
+    cam.SetAABBMaxX(pillarXOffset + 128.f);
+    cam.SetAABBMinX(pillarXOffset);
+    cam.SetAABBMaxZ(chancelleryPillarZOffset + 128.0f);
+    cam.SetAABBMinZ(chancelleryPillarZOffset);
+    cam.FinishAABB();
+}
+
+/**
+ * @brief Set up co-ordinates of different plains
+ */
 void ShaysWorld::CreatePlains() {
     // grass slope
-    cam.SetPlains(ZY_PLAIN, 4848.0, 31568.0, 9536.0, 10450.0, 6200.0, 10000.0);
+    cam.SetPlains(Slope::ZY, 4848.0, 31568.0, 9536.0, 10450.0, 6200.0, 10000.0);
 
     // flat land (pavement and grass)
-    cam.SetPlains(FLAT_PLAIN, 0.0, 36000.0, 10450.0, 10450.0, 10000.0, 17000.0);
-    cam.SetPlains(FLAT_PLAIN, 0.0, 6500.0, 10450.0, 10450.0, 17000.0, 40000.0);
-    cam.SetPlains(FLAT_PLAIN, 27000.0, 36000.0, 10450.0, 10450.0, 17000.0, 40000.0);
-    cam.SetPlains(FLAT_PLAIN, 0.0, 36000.0, 10450.0, 10450.0, 40000.0, 50000.0);
+    cam.SetPlains(Slope::FLAT, 0.0, 36000.0, 10450.0, 10450.0, 10000.0, 17000.0);
+    cam.SetPlains(Slope::FLAT, 0.0, 6500.0, 10450.0, 10450.0, 17000.0, 40000.0);
+    cam.SetPlains(Slope::FLAT, 27000.0, 36000.0, 10450.0, 10450.0, 17000.0, 40000.0);
+    cam.SetPlains(Slope::FLAT, 0.0, 36000.0, 10450.0, 10450.0, 40000.0, 50000.0);
 
     // top of lower hill
-    cam.SetPlains(FLAT_PLAIN, 9000.0, 22000.0, 10650.0, 10650.0, 19000.0, 23000.0);
-    cam.SetPlains(FLAT_PLAIN, 9000.0, 10000.0, 10650.0, 10650.0, 28000.0, 33000.0);
-    cam.SetPlains(FLAT_PLAIN, 9000.0, 22000.0, 10650.0, 10650.0, 36000.0, 37000.0);
+    cam.SetPlains(Slope::FLAT, 9000.0, 22000.0, 10650.0, 10650.0, 19000.0, 23000.0);
+    cam.SetPlains(Slope::FLAT, 9000.0, 10000.0, 10650.0, 10650.0, 28000.0, 33000.0);
+    cam.SetPlains(Slope::FLAT, 9000.0, 22000.0, 10650.0, 10650.0, 36000.0, 37000.0);
     // sides of lower hill
-    cam.SetPlains(ZY_PLAIN, 6500.0, 27000.0, 10450.0, 10650.0, 17000.0, 19000.0);
-    cam.SetPlains(ZY_PLAIN, 6500.0, 27000.0, 10650.0, 10450.0, 37000.0, 40000.0);
-    cam.SetPlains(XY_PLAIN, 6500.0, 9000.0, 10450.0, 10650.0, 17000.0, 40000.0);
-    cam.SetPlains(XY_PLAIN, 22000.0, 27000.0, 10650.0, 10450.0, 17000.0, 40000.0);
+    cam.SetPlains(Slope::ZY, 6500.0, 27000.0, 10450.0, 10650.0, 17000.0, 19000.0);
+    cam.SetPlains(Slope::ZY, 6500.0, 27000.0, 10650.0, 10450.0, 37000.0, 40000.0);
+    cam.SetPlains(Slope::XY, 6500.0, 9000.0, 10450.0, 10650.0, 17000.0, 40000.0);
+    cam.SetPlains(Slope::XY, 22000.0, 27000.0, 10650.0, 10450.0, 17000.0, 40000.0);
 
     // top of higher hill
-    cam.SetPlains(FLAT_PLAIN, 14000.0, 18000.0, 10875.0, 108075.0, 28000.0, 33000.0);
+    cam.SetPlains(Slope::FLAT, 14000.0, 18000.0, 10875.0, 108075.0, 28000.0,
+                  33000.0);
     // sides of higher hill
-    cam.SetPlains(ZY_PLAIN, 10000.0, 22000.0, 10650.0, 10875.0, 23000.0, 28000.0);
-    cam.SetPlains(ZY_PLAIN, 10000.0, 22000.0, 10875.0, 10650.0, 33000.0, 36000.0);
-    cam.SetPlains(XY_PLAIN, 10000.0, 14000.0, 10650.0, 10875.0, 23000.0, 36000.0);
-    cam.SetPlains(XY_PLAIN, 18000.0, 22000.0, 10875.0, 10650.0, 23000.0, 36000.0);
+    cam.SetPlains(Slope::ZY, 10000.0, 22000.0, 10650.0, 10875.0, 23000.0, 28000.0);
+    cam.SetPlains(Slope::ZY, 10000.0, 22000.0, 10875.0, 10650.0, 33000.0, 36000.0);
+    cam.SetPlains(Slope::XY, 10000.0, 14000.0, 10650.0, 10875.0, 23000.0, 36000.0);
+    cam.SetPlains(Slope::XY, 18000.0, 22000.0, 10875.0, 10650.0, 23000.0, 36000.0);
 
     // entance steps
     step       = 10450.0f;
     stepLength = 9808.0f;
     for (int i = 0; i < 18; i++) {
-        cam.SetPlains(FLAT_PLAIN, 31582.0, 33835, step, step, stepLength,
+        cam.SetPlains(Slope::FLAT, 31582.0, 33835, step, step, stepLength,
                       stepLength + 42.0f);
         step -= 48.0f;
         stepLength -= 142.0f;
@@ -256,699 +713,686 @@ void ShaysWorld::CreatePlains() {
     }
 
     // temp plain to take down to ECL1
-    cam.SetPlains(ZY_PLAIN, 3200.0, 4800.0, 10450.0, 9370.0, 53400.0, 57900.0);
+    cam.SetPlains(Slope::ZY, 3200.0, 4800.0, 10450.0, 9370.0, 53400.0, 57900.0);
 }
 
-//--------------------------------------------------------------------------------------
-//  Delete raw image and clear memory
-//--------------------------------------------------------------------------------------
-void ShaysWorld::DeleteImageFromMemory(unsigned char *tempImage) {
-    delete tempImage;
-}
-
-//--------------------------------------------------------------------------------------
-
-//--------------------------------------------------------------------------------------
-// Load and Create Textures
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Load and creates all textures
+ */
 void ShaysWorld::CreateTextures() {
-    glEnable(GL_DEPTH_TEST);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
     // set texture count
     tp.SetTextureCount(250);
 
+    auto image = Image{nullptr, &SDL_FreeSurface};
+
     // load and create textures
-    image = tp.LoadTexture("res/tex/abovechanctext.raw", 128, 1024);
-    tp.CreateTexture(ABOVE_CHANC_TEXT, image, 128, 1024);
+    image = tp.LoadTexture("tex/abovechanctext.bmp");
+    tp.CreateTexture(ABOVE_CHANC_TEXT, image);
 
-    image = tp.LoadTexture("res/tex/abovechanctext2.raw", 128, 1024);
-    tp.CreateTexture(ABOVE_CHANC_TEXT_2, image, 128, 1024);
+    image = tp.LoadTexture("tex/abovechanctext2.bmp");
+    tp.CreateTexture(ABOVE_CHANC_TEXT_2, image);
 
-    image = tp.LoadTexture("res/tex/abovechanctext3.raw", 128, 1024);
-    tp.CreateTexture(ABOVE_CHANC_TEXT_3, image, 128, 1024);
+    image = tp.LoadTexture("tex/abovechanctext3.bmp");
+    tp.CreateTexture(ABOVE_CHANC_TEXT_3, image);
 
-    image = tp.LoadTexture("res/tex/abovelibtext.raw", 1024, 256);
-    tp.CreateTexture(ABOVE_LIB_TEXT, image, 1024, 256);
+    image = tp.LoadTexture("tex/abovelibtext.bmp");
+    tp.CreateTexture(ABOVE_LIB_TEXT, image);
 
-    image = tp.LoadTexture("res/tex/abovelibrarytext2.raw", 1024, 256);
-    tp.CreateTexture(ABOVE_LIB_TEXT_2, image, 1024, 256);
+    image = tp.LoadTexture("tex/abovelibrarytext2.bmp");
+    tp.CreateTexture(ABOVE_LIB_TEXT_2, image);
 
-    image = tp.LoadTexture("res/tex/aboveunder4b.raw", 256, 128);
-    tp.CreateTexture(ABOVE_UNDER_4B, image, 256, 128);
+    image = tp.LoadTexture("tex/aboveunder4b.bmp");
+    tp.CreateTexture(ABOVE_UNDER_4B, image);
 
-    image = tp.LoadTexture("res/tex/abovewindows.raw", 128, 256);
-    tp.CreateTexture(ABOVE_WINDOW_BLOCK, image, 128, 256);
+    image = tp.LoadTexture("tex/abovewindows.bmp");
+    tp.CreateTexture(ABOVE_WINDOW_BLOCK, image);
 
-    image = tp.LoadTexture("res/tex/abovewindows2.raw", 128, 256);
-    tp.CreateTexture(ABOVE_WINDOW_BLOCK_2, image, 128, 256);
+    image = tp.LoadTexture("tex/abovewindows2.bmp");
+    tp.CreateTexture(ABOVE_WINDOW_BLOCK_2, image);
 
-    image = tp.LoadTexture("res/tex/abovewindowschanc.raw", 128, 256);
-    tp.CreateTexture(ABOVE_WINDOW_BLOCK_CHANC, image, 128, 256);
+    image = tp.LoadTexture("tex/abovewindowschanc.bmp");
+    tp.CreateTexture(ABOVE_WINDOW_BLOCK_CHANC, image);
 
-    image = tp.LoadTexture("res/tex/abovewindows2posts.raw", 128, 256);
-    tp.CreateTexture(ABOVE_UNDER_POSTS, image, 128, 256);
+    image = tp.LoadTexture("tex/abovewindows2posts.bmp");
+    tp.CreateTexture(ABOVE_UNDER_POSTS, image);
 
-    image = tp.LoadTexture("res/tex/abovewindows2posts2.raw", 128, 256);
-    tp.CreateTexture(ABOVE_UNDER_POSTS_2, image, 256, 128);
+    image = tp.LoadTexture("tex/abovewindows2posts2.bmp");
+    tp.CreateTexture(ABOVE_UNDER_POSTS_2, image);
 
-    image = tp.LoadTexture("res/tex/abovewindowslib.raw", 256, 256);
-    tp.CreateTexture(ABOVE_LIB, image, 256, 256);
+    image = tp.LoadTexture("tex/abovewindowslib.bmp");
+    tp.CreateTexture(ABOVE_LIB, image);
 
-    image = tp.LoadTexture("res/tex/abovewindows2lib.raw", 256, 128);
-    tp.CreateTexture(ABOVE_WINDOW_UNDER_LIB, image, 256, 128);
+    image = tp.LoadTexture("tex/abovewindows2lib.bmp");
+    tp.CreateTexture(ABOVE_WINDOW_UNDER_LIB, image);
 
-    image = tp.LoadTexture("res/tex/abovewindows3bricks.raw", 256, 256);
-    tp.CreateTexture(ABOVE_WINDOW_BLOCK_3, image, 256, 256);
+    image = tp.LoadTexture("tex/abovewindows3bricks.bmp");
+    tp.CreateTexture(ABOVE_WINDOW_BLOCK_3, image);
 
-    image = tp.LoadTexture("res/tex/abovephysscitext.raw", 256, 1024);
-    tp.CreateTexture(ABOVE_PHYS_SCI_TEXT, image, 256, 1024);
+    image = tp.LoadTexture("tex/abovephysscitext.bmp");
+    tp.CreateTexture(ABOVE_PHYS_SCI_TEXT, image);
 
-    image = tp.LoadTexture("res/tex/abovewindows3bricksxy.raw", 256, 256);
-    tp.CreateTexture(ABOVE_WINDOW_BLOCK_XY_3, image, 256, 256);
+    image = tp.LoadTexture("tex/abovewindows3bricksxy.bmp");
+    tp.CreateTexture(ABOVE_WINDOW_BLOCK_XY_3, image);
 
-    image = tp.LoadTexture("res/tex/abovewindowedge.raw", 128, 256);
-    tp.CreateTexture(ABOVE_WINDOW_EDGE_3B, image, 128, 256);
+    image = tp.LoadTexture("tex/abovewindowedge.bmp");
+    tp.CreateTexture(ABOVE_WINDOW_EDGE_3B, image);
 
-    image = tp.LoadTexture("res/tex/abovewindowedgelib.raw", 256, 64);
-    tp.CreateTexture(ABOVE_WINDOW_EDGE_3B_LIB, image, 256, 64);
+    image = tp.LoadTexture("tex/abovewindowedgelib.bmp");
+    tp.CreateTexture(ABOVE_WINDOW_EDGE_3B_LIB, image);
 
-    image = tp.LoadTexture("res/tex/abovewindowslibedge.raw", 256, 64);
-    tp.CreateTexture(ABOVE_WINDOW_EDGE_4B_LIB, image, 256, 64);
+    image = tp.LoadTexture("tex/abovewindowslibedge.bmp");
+    tp.CreateTexture(ABOVE_WINDOW_EDGE_4B_LIB, image);
 
-    image = tp.LoadTexture("res/tex/aboveticketstext.raw", 256, 256);
-    tp.CreateTexture(ABOVE_TICKETS_TEXT, image, 256, 256);
+    image = tp.LoadTexture("tex/aboveticketstext.bmp");
+    tp.CreateTexture(ABOVE_TICKETS_TEXT, image);
 
-    image = tp.LoadTexture("res/tex/abovewindowsedge.raw", 128, 128);
-    tp.CreateTexture(ABOVE_CHANC_EDGE, image, 128, 128);
+    image = tp.LoadTexture("tex/abovewindowsedge.bmp");
+    tp.CreateTexture(ABOVE_CHANC_EDGE, image);
 
-    image = tp.LoadTexture("res/tex/belowrooffill.raw", 128, 256);
-    tp.CreateTexture(BELOW_ROOF_FILL, image, 128, 256);
+    image = tp.LoadTexture("tex/belowrooffill.bmp");
+    tp.CreateTexture(BELOW_ROOF_FILL, image);
 
-    image = tp.LoadTexture("res/tex/bench.raw", 64, 64);
-    tp.CreateTexture(BENCH_TOP, image, 64, 64);
+    image = tp.LoadTexture("tex/bench.bmp");
+    tp.CreateTexture(BENCH_TOP, image);
 
-    image = tp.LoadTexture("res/tex/benchedgeside.raw", 64, 64);
-    tp.CreateTexture(BENCH_EDGE_SIDE, image, 64, 64);
+    image = tp.LoadTexture("tex/benchedgeside.bmp");
+    tp.CreateTexture(BENCH_EDGE_SIDE, image);
 
-    image = tp.LoadTexture("res/tex/benchedge.raw", 64, 64);
-    tp.CreateTexture(BENCH_EDGE, image, 64, 64);
+    image = tp.LoadTexture("tex/benchedge.bmp");
+    tp.CreateTexture(BENCH_EDGE, image);
 
-    image = tp.LoadTexture("res/tex/benchedgetop.raw", 64, 64);
-    tp.CreateTexture(BENCH_EDGE_TOP, image, 64, 64);
+    image = tp.LoadTexture("tex/benchedgetop.bmp");
+    tp.CreateTexture(BENCH_EDGE_TOP, image);
 
-    image = tp.LoadTexture("res/tex/benchedge2.raw", 64, 64);
-    tp.CreateTexture(BENCH_EDGE_2, image, 64, 64);
+    image = tp.LoadTexture("tex/benchedge2.bmp");
+    tp.CreateTexture(BENCH_EDGE_2, image);
 
-    image = tp.LoadTexture("res/tex/benchedge3.raw", 64, 64);
-    tp.CreateTexture(BENCH_EDGE_3, image, 64, 64);
+    image = tp.LoadTexture("tex/benchedge3.bmp");
+    tp.CreateTexture(BENCH_EDGE_3, image);
 
-    image = tp.LoadTexture("res/tex/benchedgetop2.raw", 64, 64);
-    tp.CreateTexture(BENCH_EDGE_TOP_2, image, 64, 64);
+    image = tp.LoadTexture("tex/benchedgetop2.bmp");
+    tp.CreateTexture(BENCH_EDGE_TOP_2, image);
 
-    image = tp.LoadTexture("res/tex/benchside.raw", 64, 64);
-    tp.CreateTexture(BENCH_SIDE, image, 64, 64);
+    image = tp.LoadTexture("tex/benchside.bmp");
+    tp.CreateTexture(BENCH_SIDE, image);
 
-    image = tp.LoadTexture("res/tex/benchside2.raw", 64, 64);
-    tp.CreateTexture(BENCH_SIDE_2, image, 64, 64);
+    image = tp.LoadTexture("tex/benchside2.bmp");
+    tp.CreateTexture(BENCH_SIDE_2, image);
 
-    image = tp.LoadTexture("res/tex/bricks1.raw", 128, 128);
-    tp.CreateTexture(WALL_BRICK_YZ, image, 128, 128);
+    image = tp.LoadTexture("tex/bricks1.bmp");
+    tp.CreateTexture(WALL_BRICK_YZ, image);
 
-    image = tp.LoadTexture("res/tex/bricks2.raw", 128, 128);
-    tp.CreateTexture(WALL_BRICK_XY, image, 128, 128);
+    image = tp.LoadTexture("tex/bricks2.bmp");
+    tp.CreateTexture(WALL_BRICK_XY, image);
 
-    image = tp.LoadTexture("res/tex/bricks2edge.raw", 128, 128);
-    tp.CreateTexture(WALL_BRICK_XY_END, image, 128, 128);
+    image = tp.LoadTexture("tex/bricks2edge.bmp");
+    tp.CreateTexture(WALL_BRICK_XY_END, image);
 
-    image = tp.LoadTexture("res/tex/bricks1edge.raw", 128, 128);
-    tp.CreateTexture(WALL_BRICK_YZ_END, image, 128, 128);
+    image = tp.LoadTexture("tex/bricks1edge.bmp");
+    tp.CreateTexture(WALL_BRICK_YZ_END, image);
 
-    image = tp.LoadTexture("res/tex/bricks075.raw", 128, 128);
-    tp.CreateTexture(WALL_BRICK_3_4, image, 128, 128);
+    image = tp.LoadTexture("tex/bricks075.bmp");
+    tp.CreateTexture(WALL_BRICK_3_4, image);
 
-    image = tp.LoadTexture("res/tex/brick87.raw", 128, 128);
-    tp.CreateTexture(WALL_BRICK_XY_87WIDTH, image, 128, 128);
+    image = tp.LoadTexture("tex/brick87.bmp");
+    tp.CreateTexture(WALL_BRICK_XY_87WIDTH, image);
 
-    image = tp.LoadTexture("res/tex/brickgap.raw", 128, 32);
-    tp.CreateTexture(WALL_BRICK_GAP_YZ, image, 128, 32);
+    image = tp.LoadTexture("tex/brickgap.bmp");
+    tp.CreateTexture(WALL_BRICK_GAP_YZ, image);
 
-    image = tp.LoadTexture("res/tex/brickgap2.raw", 128, 32);
-    tp.CreateTexture(WALL_BRICK_GAP2_YZ, image, 128, 32);
+    image = tp.LoadTexture("tex/brickgap2.bmp");
+    tp.CreateTexture(WALL_BRICK_GAP2_YZ, image);
 
-    image = tp.LoadTexture("res/tex/bricksecsign.raw", 256, 128);
-    tp.CreateTexture(WALL_BRICK_SEC_SIGN, image, 256, 128);
+    image = tp.LoadTexture("tex/bricksecsign.bmp");
+    tp.CreateTexture(WALL_BRICK_SEC_SIGN, image);
 
-    image = tp.LoadTexture("res/tex/brickshadow.raw", 128, 128);
-    tp.CreateTexture(SHADOW_BRICK, image, 128, 128);
+    image = tp.LoadTexture("tex/brickshadow.bmp");
+    tp.CreateTexture(SHADOW_BRICK, image);
 
-    image = tp.LoadTexture("res/tex/bricksusd.raw", 128, 128);
-    tp.CreateTexture(WALL_BRICK_USD_YZ, image, 128, 128);
+    image = tp.LoadTexture("tex/bricksusd.bmp");
+    tp.CreateTexture(WALL_BRICK_USD_YZ, image);
 
-    image = tp.LoadTexture("res/tex/carpet.raw", 32, 32);
-    tp.CreateTexture(CARPET, image, 32, 32);
+    image = tp.LoadTexture("tex/carpet.bmp");
+    tp.CreateTexture(CARPET, image);
 
-    image = tp.LoadTexture("res/tex/coffeemachine.raw", 128, 256);
-    tp.CreateTexture(COFFEE_MACHINE, image, 128, 256);
+    image = tp.LoadTexture("tex/coffeemachine.bmp");
+    tp.CreateTexture(COFFEE_MACHINE, image);
 
-    image = tp.LoadTexture("res/tex/cokemachine.raw", 128, 256);
-    tp.CreateTexture(COKE_MACHINE, image, 128, 256);
+    image = tp.LoadTexture("tex/cokemachine.bmp");
+    tp.CreateTexture(COKE_MACHINE, image);
 
-    image = tp.LoadTexture("res/tex/cosign.raw", 256, 128);
-    tp.CreateTexture(CO_SIGN, image, 256, 128);
+    image = tp.LoadTexture("tex/cosign.bmp");
+    tp.CreateTexture(CO_SIGN, image);
 
-    image = tp.LoadTexture("res/tex/counterside.raw", 4, 16);
-    tp.CreateTexture(COUNTER_SIDE, image, 4, 16);
+    image = tp.LoadTexture("tex/counterside.bmp");
+    tp.CreateTexture(COUNTER_SIDE, image);
 
-    image = tp.LoadTexture("res/tex/countertop.raw", 1, 1);
-    tp.CreateTexture(COUNTER_TOP, image, 1, 1);
+    image = tp.LoadTexture("tex/countertop.bmp");
+    tp.CreateTexture(COUNTER_TOP, image);
 
-    image = tp.LoadTexture("res/tex/drainpipe.raw", 32, 2);
-    tp.CreateTexture(DRAINPIPE, image, 32, 2);
+    image = tp.LoadTexture("tex/drainpipe.bmp");
+    tp.CreateTexture(DRAINPIPE, image);
 
-    image = tp.LoadTexture("res/tex/drinksedge.raw", 16, 2);
-    tp.CreateTexture(DRINKS_EDGE, image, 16, 2);
+    image = tp.LoadTexture("tex/drinksedge.bmp");
+    tp.CreateTexture(DRINKS_EDGE, image);
 
-    image = tp.LoadTexture("res/tex/drinksside.raw", 64, 64);
-    tp.CreateTexture(DRINKS_SIDE, image, 64, 64);
+    image = tp.LoadTexture("tex/drinksside.bmp");
+    tp.CreateTexture(DRINKS_SIDE, image);
 
-    image = tp.LoadTexture("res/tex/drinksside2.raw", 64, 64);
-    tp.CreateTexture(DRINKS_SIDE_2, image, 64, 64);
+    image = tp.LoadTexture("tex/drinksside2.bmp");
+    tp.CreateTexture(DRINKS_SIDE_2, image);
 
-    image = tp.LoadTexture("res/tex/drinkssidetop.raw", 64, 64);
-    tp.CreateTexture(DRINKS_TOP, image, 64, 64);
+    image = tp.LoadTexture("tex/drinkssidetop.bmp");
+    tp.CreateTexture(DRINKS_TOP, image);
 
-    image = tp.LoadTexture("res/tex/doorpave1.raw", 128, 256);
-    tp.CreateTexture(DOORPAVE_1, image, 128, 256);
+    image = tp.LoadTexture("tex/doorpave1.bmp");
+    tp.CreateTexture(DOORPAVE_1, image);
 
-    image = tp.LoadTexture("res/tex/doorpost1.raw", 1024, 128);
-    tp.CreateTexture(DOOR_POST_CHANC, image, 1024, 128);
+    image = tp.LoadTexture("tex/doorpost1.bmp");
+    tp.CreateTexture(DOOR_POST_CHANC, image);
 
-    image = tp.LoadTexture("res/tex/doorpostsec.raw", 1024, 128);
-    tp.CreateTexture(DOOR_POST_SECURITY, image, 1024, 128);
+    image = tp.LoadTexture("tex/doorpostsec.bmp");
+    tp.CreateTexture(DOOR_POST_SECURITY, image);
 
-    image = tp.LoadTexture("res/tex/doorpostside1.raw", 64, 1024);
-    tp.CreateTexture(DOOR_SIDEPOST_CHANC, image, 64, 1024);
+    image = tp.LoadTexture("tex/doorpostside1.bmp");
+    tp.CreateTexture(DOOR_SIDEPOST_CHANC, image);
 
-    image = tp.LoadTexture("res/tex/doorpostlibside.raw", 512, 64);
-    tp.CreateTexture(DOOR_POST_LIB, image, 512, 64);
+    image = tp.LoadTexture("tex/doorpostlibside.bmp");
+    tp.CreateTexture(DOOR_POST_LIB, image);
 
-    image = tp.LoadTexture("res/tex/glassboard.raw", 512, 256);
-    tp.CreateTexture(GLASS_BOARD, image, 512, 256);
+    image = tp.LoadTexture("tex/glassboard.bmp");
+    tp.CreateTexture(GLASS_BOARD, image);
 
-    image = tp.LoadTexture("res/tex/glassboard2.raw", 512, 256);
-    tp.CreateTexture(GLASS_BOARD_2, image, 512, 256);
+    image = tp.LoadTexture("tex/glassboard2.bmp");
+    tp.CreateTexture(GLASS_BOARD_2, image);
 
-    image = tp.LoadTexture("res/tex/glassboard3.raw", 512, 256);
-    tp.CreateTexture(GLASS_BOARD_3, image, 512, 256);
+    image = tp.LoadTexture("tex/glassboard3.bmp");
+    tp.CreateTexture(GLASS_BOARD_3, image);
 
-    image = tp.LoadTexture("res/tex/glassboardside.raw", 2, 16);
-    tp.CreateTexture(GLASS_B_SIDE, image, 2, 16);
+    image = tp.LoadTexture("tex/glassboardside.bmp");
+    tp.CreateTexture(GLASS_B_SIDE, image);
 
-    image = tp.LoadTexture("res/tex/grass.raw", 64, 64);
-    tp.CreateTexture(GRASS, image, 64, 64);
+    image = tp.LoadTexture("tex/grass.bmp");
+    tp.CreateTexture(GRASS, image);
 
-    image = tp.LoadTexture("res/tex/grass2.raw", 64, 64);
-    tp.CreateTexture(GRASS_2, image, 64, 64);
+    image = tp.LoadTexture("tex/grass2.bmp");
+    tp.CreateTexture(GRASS_2, image);
 
-    image = tp.LoadTexture("res/tex/grass3.raw", 64, 64);
-    tp.CreateTexture(GRASS_HILL, image, 64, 64);
+    image = tp.LoadTexture("tex/grass3.bmp");
+    tp.CreateTexture(GRASS_HILL, image);
 
-    image = tp.LoadTexture("res/tex/gssign.raw", 256, 256);
-    tp.CreateTexture(GS_SIGN, image, 256, 256);
+    image = tp.LoadTexture("tex/gssign.bmp");
+    tp.CreateTexture(GS_SIGN, image);
 
-    image = tp.LoadTexture("res/tex/gssign2.raw", 256, 256);
-    tp.CreateTexture(GS_SIGN_2, image, 256, 256);
+    image = tp.LoadTexture("tex/gssign2.bmp");
+    tp.CreateTexture(GS_SIGN_2, image);
 
-    image = tp.LoadTexture("res/tex/gssignedge.raw", 256, 64);
-    tp.CreateTexture(GS_SIGN_EDGE, image, 256, 64);
+    image = tp.LoadTexture("tex/gssignedge.bmp");
+    tp.CreateTexture(GS_SIGN_EDGE, image);
 
-    image = tp.LoadTexture("res/tex/kbl.raw", 512, 256);
-    tp.CreateTexture(KBLT, image, 512, 256);
+    image = tp.LoadTexture("tex/kbl.bmp");
+    tp.CreateTexture(KBLT, image);
 
-    image = tp.LoadTexture("res/tex/kbltside1.raw", 2, 128);
-    tp.CreateTexture(KBLT_SIDE_1, image, 2, 128);
+    image = tp.LoadTexture("tex/kbltside1.bmp");
+    tp.CreateTexture(KBLT_SIDE_1, image);
 
-    image = tp.LoadTexture("res/tex/kbltside2.raw", 2, 2);
-    tp.CreateTexture(KBLT_SIDE_2, image, 2, 2);
+    image = tp.LoadTexture("tex/kbltside2.bmp");
+    tp.CreateTexture(KBLT_SIDE_2, image);
 
-    image = tp.LoadTexture("res/tex/kblcorner.raw", 1, 1);
-    tp.CreateTexture(KBLT_EDGE_CORNER, image, 1, 1);
+    image = tp.LoadTexture("tex/kblcorner.bmp");
+    tp.CreateTexture(KBLT_EDGE_CORNER, image);
 
-    image = tp.LoadTexture("res/tex/kbltedge.raw", 16, 32);
-    tp.CreateTexture(KBLT_EDGE, image, 16, 32);
+    image = tp.LoadTexture("tex/kbltedge.bmp");
+    tp.CreateTexture(KBLT_EDGE, image);
 
-    image = tp.LoadTexture("res/tex/kbltedge2.raw", 32, 16);
-    tp.CreateTexture(KBLT_EDGE_2, image, 32, 16);
+    image = tp.LoadTexture("tex/kbltedge2.bmp");
+    tp.CreateTexture(KBLT_EDGE_2, image);
 
-    image = tp.LoadTexture("res/tex/light.raw", 256, 64);
-    tp.CreateTexture(LIGHT, image, 256, 64);
+    image = tp.LoadTexture("tex/light.bmp");
+    tp.CreateTexture(LIGHT, image);
 
-    image = tp.LoadTexture("res/tex/lightsupport.raw", 8, 2);
-    tp.CreateTexture(LIGHT_SUPPORT, image, 8, 2);
+    image = tp.LoadTexture("tex/lightsupport.bmp");
+    tp.CreateTexture(LIGHT_SUPPORT, image);
 
-    image = tp.LoadTexture("res/tex/lightsupport2.raw", 2, 8);
-    tp.CreateTexture(LIGHT_SUPPORT_2, image, 2, 8);
+    image = tp.LoadTexture("tex/lightsupport2.bmp");
+    tp.CreateTexture(LIGHT_SUPPORT_2, image);
 
-    image = tp.LoadTexture("res/tex/machinesides.raw", 1, 1);
-    tp.CreateTexture(MACHINE_SIDES, image, 1, 1);
+    image = tp.LoadTexture("tex/machinesides.bmp");
+    tp.CreateTexture(MACHINE_SIDES, image);
 
-    image = tp.LoadTexture("res/tex/machinesides2.raw", 1, 1);
-    tp.CreateTexture(MACHINE_SIDES_2, image, 1, 1);
+    image = tp.LoadTexture("tex/machinesides2.bmp");
+    tp.CreateTexture(MACHINE_SIDES_2, image);
 
-    image = tp.LoadTexture("res/tex/mainpost.raw", 128, 256);
-    tp.CreateTexture(MAIN_POST, image, 128, 256);
+    image = tp.LoadTexture("tex/mainpost.bmp");
+    tp.CreateTexture(MAIN_POST, image);
 
-    image = tp.LoadTexture("res/tex/mainpost2.raw", 256, 128);
-    tp.CreateTexture(MAIN_POST_2, image, 256, 128);
+    image = tp.LoadTexture("tex/mainpost2.bmp");
+    tp.CreateTexture(MAIN_POST_2, image);
 
-    image = tp.LoadTexture("res/tex/map2.raw", 256, 512);
-    tp.CreateTexture(MAP_2, image, 256, 512);
+    image = tp.LoadTexture("tex/map2.bmp");
+    tp.CreateTexture(MAP_2, image);
 
-    image = tp.LoadTexture("res/tex/nexus.raw", 512, 256);
-    tp.CreateTexture(NEXUS_SIGN, image, 512, 256);
+    image = tp.LoadTexture("tex/nexus.bmp");
+    tp.CreateTexture(NEXUS_SIGN, image);
 
-    image = tp.LoadTexture("res/tex/nexusside.raw", 2, 16);
-    tp.CreateTexture(NEXUS_SIDE, image, 2, 16);
+    image = tp.LoadTexture("tex/nexusside.bmp");
+    tp.CreateTexture(NEXUS_SIDE, image);
 
-    image = tp.LoadTexture("res/tex/noexit.raw", 256, 64);
-    tp.CreateTexture(NO_EXIT, image, 256, 64);
+    image = tp.LoadTexture("tex/noexit.bmp");
+    tp.CreateTexture(NO_EXIT, image);
 
-    image = tp.LoadTexture("res/tex/nosmokesign.raw", 256, 128);
-    tp.CreateTexture(NO_SMOKE_SIGN, image, 256, 128);
+    image = tp.LoadTexture("tex/nosmokesign.bmp");
+    tp.CreateTexture(NO_SMOKE_SIGN, image);
 
-    image = tp.LoadTexture("res/tex/pavement.raw", 128, 64);
-    tp.CreateTexture(PAVEMENT, image, 128, 64);
+    image = tp.LoadTexture("tex/pavement.bmp");
+    tp.CreateTexture(PAVEMENT, image);
 
-    image = tp.LoadTexture("res/tex/pavement16.raw", 32, 64);
-    tp.CreateTexture(PAVEMENT_16, image, 32, 64);
+    image = tp.LoadTexture("tex/pavement16.bmp");
+    tp.CreateTexture(PAVEMENT_16, image);
 
-    image = tp.LoadTexture("res/tex/pavementflip.raw", 128, 64);
-    tp.CreateTexture(PAVEMENT_FLIP, image, 128, 64);
+    image = tp.LoadTexture("tex/pavementflip.bmp");
+    tp.CreateTexture(PAVEMENT_FLIP, image);
 
-    image = tp.LoadTexture("res/tex/pavementcorner1.raw", 128, 128);
-    tp.CreateTexture(PAVEMENT_CORNER_1, image, 128, 128);
+    image = tp.LoadTexture("tex/pavementcorner1.bmp");
+    tp.CreateTexture(PAVEMENT_CORNER_1, image);
 
-    image = tp.LoadTexture("res/tex/pavementcorner2.raw", 128, 128);
-    tp.CreateTexture(PAVEMENT_CORNER_2, image, 128, 128);
+    image = tp.LoadTexture("tex/pavementcorner2.bmp");
+    tp.CreateTexture(PAVEMENT_CORNER_2, image);
 
-    image = tp.LoadTexture("res/tex/pavementtop.raw", 64, 128);
-    tp.CreateTexture(PAVEMENT_TOP, image, 64, 128);
+    image = tp.LoadTexture("tex/pavementtop.bmp");
+    tp.CreateTexture(PAVEMENT_TOP, image);
 
-    image = tp.LoadTexture("res/tex/pavementtopflip.raw", 64, 128);
-    tp.CreateTexture(PAVEMENT_TOP_FLIP, image, 64, 128);
+    image = tp.LoadTexture("tex/pavementtopflip.bmp");
+    tp.CreateTexture(PAVEMENT_TOP_FLIP, image);
 
-    image = tp.LoadTexture("res/tex/pavementside.raw", 64, 64);
-    tp.CreateTexture(PAVEMENTSIDE_LEFT, image, 64, 64);
+    image = tp.LoadTexture("tex/pavementside.bmp");
+    tp.CreateTexture(PAVEMENTSIDE_LEFT, image);
 
-    image = tp.LoadTexture("res/tex/pavementside2.raw", 64, 64);
-    tp.CreateTexture(PAVEMENTSIDE_RIGHT, image, 64, 64);
+    image = tp.LoadTexture("tex/pavementside2.bmp");
+    tp.CreateTexture(PAVEMENTSIDE_RIGHT, image);
 
-    image = tp.LoadTexture("res/tex/pavementside3.raw", 64, 64);
-    tp.CreateTexture(PAVEMENTSIDE_TOP, image, 64, 64);
+    image = tp.LoadTexture("tex/pavementside3.bmp");
+    tp.CreateTexture(PAVEMENTSIDE_TOP, image);
 
-    image = tp.LoadTexture("res/tex/phonefront.raw", 512, 32);
-    tp.CreateTexture(TELEPHONE_FRONT, image, 512, 32);
+    image = tp.LoadTexture("tex/phonefront.bmp");
+    tp.CreateTexture(TELEPHONE_FRONT, image);
 
-    image = tp.LoadTexture("res/tex/phoneside1.raw", 32, 256);
-    tp.CreateTexture(TELEPHONE_SIDE_1, image, 32, 256);
+    image = tp.LoadTexture("tex/phoneside1.bmp");
+    tp.CreateTexture(TELEPHONE_SIDE_1, image);
 
-    image = tp.LoadTexture("res/tex/phonefront2.raw", 512, 16);
-    tp.CreateTexture(TELEPHONE_FRONT_2, image, 512, 16);
+    image = tp.LoadTexture("tex/phonefront2.bmp");
+    tp.CreateTexture(TELEPHONE_FRONT_2, image);
 
-    image = tp.LoadTexture("res/tex/phonemainside.raw", 512, 256);
-    tp.CreateTexture(TELEPHONE_MAIN_SIDE, image, 512, 256);
+    image = tp.LoadTexture("tex/phonemainside.bmp");
+    tp.CreateTexture(TELEPHONE_MAIN_SIDE, image);
 
-    image = tp.LoadTexture("res/tex/phonetop1.raw", 512, 128);
-    tp.CreateTexture(TELEPHONE_TOP_1, image, 512, 128);
+    image = tp.LoadTexture("tex/phonetop1.bmp");
+    tp.CreateTexture(TELEPHONE_TOP_1, image);
 
-    image = tp.LoadTexture("res/tex/phoneside2.raw", 16, 256);
-    tp.CreateTexture(TELEPHONE_SIDE_2, image, 16, 256);
+    image = tp.LoadTexture("tex/phoneside2.bmp");
+    tp.CreateTexture(TELEPHONE_SIDE_2, image);
 
-    image = tp.LoadTexture("res/tex/phonetop2.raw", 128, 256);
-    tp.CreateTexture(TELEPHONE_TOP_2, image, 128, 256);
+    image = tp.LoadTexture("tex/phonetop2.bmp");
+    tp.CreateTexture(TELEPHONE_TOP_2, image);
 
-    image = tp.LoadTexture("res/tex/phonebottom.raw", 512, 128);
-    tp.CreateTexture(TELEPHONE_BOTTOM, image, 512, 128);
+    image = tp.LoadTexture("tex/phonebottom.bmp");
+    tp.CreateTexture(TELEPHONE_BOTTOM, image);
 
-    image = tp.LoadTexture("res/tex/phonefill.raw", 2, 2);
-    tp.CreateTexture(TELEPHONE_FILL, image, 2, 2);
+    image = tp.LoadTexture("tex/phonefill.bmp");
+    tp.CreateTexture(TELEPHONE_FILL, image);
 
-    image = tp.LoadTexture("res/tex/phonefront3.raw", 16, 512);
-    tp.CreateTexture(TELEPHONE_FRONT_3, image, 16, 512);
+    image = tp.LoadTexture("tex/phonefront3.bmp");
+    tp.CreateTexture(TELEPHONE_FRONT_3, image);
 
-    image = tp.LoadTexture("res/tex/pscsign.raw", 256, 128);
-    tp.CreateTexture(PSC_SIGN, image, 256, 128);
+    image = tp.LoadTexture("tex/pscsign.bmp");
+    tp.CreateTexture(PSC_SIGN, image);
 
-    image = tp.LoadTexture("res/tex/pscsign2.raw", 256, 128);
-    tp.CreateTexture(PSC_SIGN_2, image, 256, 128);
+    image = tp.LoadTexture("tex/pscsign2.bmp");
+    tp.CreateTexture(PSC_SIGN_2, image);
 
-    image = tp.LoadTexture("res/tex/purplepost.raw", 64, 128);
-    tp.CreateTexture(PURPLE_POST, image, 64, 128);
+    image = tp.LoadTexture("tex/purplepost.bmp");
+    tp.CreateTexture(PURPLE_POST, image);
 
-    image = tp.LoadTexture("res/tex/purplepostside.raw", 128, 64);
-    tp.CreateTexture(PURPLE_POSTSIDE, image, 128, 64);
+    image = tp.LoadTexture("tex/purplepostside.bmp");
+    tp.CreateTexture(PURPLE_POSTSIDE, image);
 
-    image = tp.LoadTexture("res/tex/redpost.raw", 64, 128);
-    tp.CreateTexture(RED_POST, image, 64, 128);
+    image = tp.LoadTexture("tex/redpost.bmp");
+    tp.CreateTexture(RED_POST, image);
 
-    image = tp.LoadTexture("res/tex/redpostside.raw", 64, 64);
-    tp.CreateTexture(RED_POSTSIDE, image, 64, 64);
+    image = tp.LoadTexture("tex/redpostside.bmp");
+    tp.CreateTexture(RED_POSTSIDE, image);
 
-    image = tp.LoadTexture("res/tex/roofbeam1.raw", 128, 32);
-    tp.CreateTexture(ROOF_BEAM_1, image, 128, 32);
+    image = tp.LoadTexture("tex/roofbeam1.bmp");
+    tp.CreateTexture(ROOF_BEAM_1, image);
 
-    image = tp.LoadTexture("res/tex/roofbeam2.raw", 32, 128);
-    tp.CreateTexture(ROOF_BEAM_2, image, 32, 128);
+    image = tp.LoadTexture("tex/roofbeam2.bmp");
+    tp.CreateTexture(ROOF_BEAM_2, image);
 
-    image = tp.LoadTexture("res/tex/roofbeam3.raw", 64, 128);
-    tp.CreateTexture(ROOF_BEAM_3, image, 64, 128);
+    image = tp.LoadTexture("tex/roofbeam3.bmp");
+    tp.CreateTexture(ROOF_BEAM_3, image);
 
-    image = tp.LoadTexture("res/tex/roofbeam3top.raw", 128, 128);
-    tp.CreateTexture(ROOF_BEAM_3_TOP, image, 128, 128);
+    image = tp.LoadTexture("tex/roofbeam3top.bmp");
+    tp.CreateTexture(ROOF_BEAM_3_TOP, image);
 
-    image = tp.LoadTexture("res/tex/roofbeam4.raw", 128, 64);
-    tp.CreateTexture(ROOF_BEAM_4, image, 128, 64);
+    image = tp.LoadTexture("tex/roofbeam4.bmp");
+    tp.CreateTexture(ROOF_BEAM_4, image);
 
-    image = tp.LoadTexture("res/tex/roofplanks.raw", 128, 128);
-    tp.CreateTexture(ROOF_PLANKS, image, 128, 128);
+    image = tp.LoadTexture("tex/roofplanks.bmp");
+    tp.CreateTexture(ROOF_PLANKS, image);
 
-    image = tp.LoadTexture("res/tex/roofplanks2.raw", 128, 128);
-    tp.CreateTexture(ROOF_PLANKS_2, image, 128, 128);
+    image = tp.LoadTexture("tex/roofplanks2.bmp");
+    tp.CreateTexture(ROOF_PLANKS_2, image);
 
-    image = tp.LoadTexture("res/tex/rooftop.raw", 2, 128);
-    tp.CreateTexture(ROOF_TOP, image, 2, 128);
+    image = tp.LoadTexture("tex/rooftop.bmp");
+    tp.CreateTexture(ROOF_TOP, image);
 
-    image = tp.LoadTexture("res/tex/rooftoplib.raw", 128, 2);
-    tp.CreateTexture(ROOF_TOP_LIB, image, 128, 2);
+    image = tp.LoadTexture("tex/rooftoplib.bmp");
+    tp.CreateTexture(ROOF_TOP_LIB, image);
 
-    image = tp.LoadTexture("res/tex/rustyman.raw", 256, 1024);
-    tp.CreateTexture(RUSTY_MAN, image, 256, 1024);
+    image = tp.LoadTexture("tex/rustyman.bmp");
+    tp.CreateTexture(RUSTY_MAN, image);
 
-    image = tp.LoadTexture("res/tex/securitysign1.raw", 128, 128);
-    tp.CreateTexture(SECURITY_SIGN, image, 128, 128);
+    image = tp.LoadTexture("tex/securitysign1.bmp");
+    tp.CreateTexture(SECURITY_SIGN, image);
 
-    image = tp.LoadTexture("res/tex/securitysign2.raw", 128, 128);
-    tp.CreateTexture(SECURITY_SIGN_2, image, 128, 128);
+    image = tp.LoadTexture("tex/securitysign2.bmp");
+    tp.CreateTexture(SECURITY_SIGN_2, image);
 
-    image = tp.LoadTexture("res/tex/sign1.raw", 512, 256);
-    tp.CreateTexture(SIGN_1, image, 512, 256);
+    image = tp.LoadTexture("tex/sign1.bmp");
+    tp.CreateTexture(SIGN_1, image);
 
-    image = tp.LoadTexture("res/tex/sign1side1.raw", 16, 512);
-    tp.CreateTexture(SIGN_1_SIDE_1, image, 16, 512);
+    image = tp.LoadTexture("tex/sign1side1.bmp");
+    tp.CreateTexture(SIGN_1_SIDE_1, image);
 
-    image = tp.LoadTexture("res/tex/sign1side2.raw", 16, 512);
-    tp.CreateTexture(SIGN_1_SIDE_2, image, 16, 512);
+    image = tp.LoadTexture("tex/sign1side2.bmp");
+    tp.CreateTexture(SIGN_1_SIDE_2, image);
 
-    image = tp.LoadTexture("res/tex/sign2.raw", 512, 512);
-    tp.CreateTexture(SIGN_2, image, 512, 512);
+    image = tp.LoadTexture("tex/sign2.bmp");
+    tp.CreateTexture(SIGN_2, image);
 
-    image = tp.LoadTexture("res/tex/sign2side.raw", 512, 16);
-    tp.CreateTexture(SIGN_2_SIDE, image, 512, 16);
+    image = tp.LoadTexture("tex/sign2side.bmp");
+    tp.CreateTexture(SIGN_2_SIDE, image);
 
-    image = tp.LoadTexture("res/tex/statravel.raw", 256, 256);
-    tp.CreateTexture(STA_TRAVEL, image, 256, 256);
+    image = tp.LoadTexture("tex/statravel.bmp");
+    tp.CreateTexture(STA_TRAVEL, image);
 
-    image = tp.LoadTexture("res/tex/statraveledge.raw", 256, 64);
-    tp.CreateTexture(STA_TRAVEL_EDGE, image, 256, 64);
+    image = tp.LoadTexture("tex/statraveledge.bmp");
+    tp.CreateTexture(STA_TRAVEL_EDGE, image);
 
-    image = tp.LoadTexture("res/tex/statravelbracket.raw", 16, 2);
-    tp.CreateTexture(STA_TRAVEL_BRACKET, image, 16, 2);
+    image = tp.LoadTexture("tex/statravelbracket.bmp");
+    tp.CreateTexture(STA_TRAVEL_BRACKET, image);
 
-    image = tp.LoadTexture("res/tex/statravel2.raw", 256, 256);
-    tp.CreateTexture(STA_TRAVEL_2, image, 256, 256);
+    image = tp.LoadTexture("tex/statravel2.bmp");
+    tp.CreateTexture(STA_TRAVEL_2, image);
 
-    image = tp.LoadTexture("res/tex/statravelbottom.raw", 2, 64);
-    tp.CreateTexture(STA_TRAVEL_BOTTOM, image, 2, 64);
+    image = tp.LoadTexture("tex/statravelbottom.bmp");
+    tp.CreateTexture(STA_TRAVEL_BOTTOM, image);
 
-    image = tp.LoadTexture("res/tex/stepbricks.raw", 128, 128);
-    tp.CreateTexture(WALL_BRICK_STEPS, image, 128, 128);
+    image = tp.LoadTexture("tex/stepbricks.bmp");
+    tp.CreateTexture(WALL_BRICK_STEPS, image);
 
-    image = tp.LoadTexture("res/tex/stepbrickscover.raw", 64, 128);
-    tp.CreateTexture(WALL_BRICK_STEPS_COVER, image, 64, 128);
+    image = tp.LoadTexture("tex/stepbrickscover.bmp");
+    tp.CreateTexture(WALL_BRICK_STEPS_COVER, image);
 
-    image = tp.LoadTexture("res/tex/stepbricksedge.raw", 64, 32);
-    tp.CreateTexture(WALL_BRICK_STEPS_EDGE, image, 64, 32);
+    image = tp.LoadTexture("tex/stepbricksedge.bmp");
+    tp.CreateTexture(WALL_BRICK_STEPS_EDGE, image);
 
-    image = tp.LoadTexture("res/tex/stepbricksedge2.raw", 64, 64);
-    tp.CreateTexture(WALL_BRICK_STEPS_EDGE_2, image, 64, 64);
+    image = tp.LoadTexture("tex/stepbricksedge2.bmp");
+    tp.CreateTexture(WALL_BRICK_STEPS_EDGE_2, image);
 
-    image = tp.LoadTexture("res/tex/stepbrickstop.raw", 32, 128);
-    tp.CreateTexture(WALL_BRICK_STEPS_TOP, image, 32, 128);
+    image = tp.LoadTexture("tex/stepbrickstop.bmp");
+    tp.CreateTexture(WALL_BRICK_STEPS_TOP, image);
 
-    image = tp.LoadTexture("res/tex/stepslibrary.raw", 128, 1024);
-    tp.CreateTexture(STEPS_LIBRARY, image, 128, 1024);
+    image = tp.LoadTexture("tex/stepslibrary.bmp");
+    tp.CreateTexture(STEPS_LIBRARY, image);
 
-    image = tp.LoadTexture("res/tex/stepslibrarytop.raw", 256, 1024);
-    tp.CreateTexture(STEPS_LIBRARY_TOP, image, 256, 1024);
+    image = tp.LoadTexture("tex/stepslibrarytop.bmp");
+    tp.CreateTexture(STEPS_LIBRARY_TOP, image);
 
-    image = tp.LoadTexture("res/tex/steppaving1.raw", 1024, 512);
-    tp.CreateTexture(STEP_PAVING_1, image, 1024, 512);
+    image = tp.LoadTexture("tex/steppaving1.bmp");
+    tp.CreateTexture(STEP_PAVING_1, image);
 
-    image = tp.LoadTexture("res/tex/steppavingedge.raw", 64, 64);
-    tp.CreateTexture(STEP_EDGE, image, 64, 64);
+    image = tp.LoadTexture("tex/steppavingedge.bmp");
+    tp.CreateTexture(STEP_EDGE, image);
 
-    image = tp.LoadTexture("res/tex/sweetmachine.raw", 256, 256);
-    tp.CreateTexture(SWEET_MACHINE, image, 256, 256);
+    image = tp.LoadTexture("tex/sweetmachine.bmp");
+    tp.CreateTexture(SWEET_MACHINE, image);
 
-    image = tp.LoadTexture("res/tex/telephoneback.raw", 512, 512);
-    tp.CreateTexture(TELEPHONE_BACK, image, 512, 512);
+    image = tp.LoadTexture("tex/telephoneback.bmp");
+    tp.CreateTexture(TELEPHONE_BACK, image);
 
-    image = tp.LoadTexture("res/tex/ticketcounteredge2.raw", 64, 64);
-    tp.CreateTexture(TICKET_COUNTER_EDGE_2, image, 64, 64);
+    image = tp.LoadTexture("tex/ticketcounteredge2.bmp");
+    tp.CreateTexture(TICKET_COUNTER_EDGE_2, image);
 
-    image = tp.LoadTexture("res/tex/ticketcounteredge3.raw", 64, 64);
-    tp.CreateTexture(TICKET_COUNTER_EDGE_3, image, 64, 64);
+    image = tp.LoadTexture("tex/ticketcounteredge3.bmp");
+    tp.CreateTexture(TICKET_COUNTER_EDGE_3, image);
 
-    image = tp.LoadTexture("res/tex/ticketcountertop.raw", 128, 256);
-    tp.CreateTexture(TICKET_COUNTER_TOP, image, 128, 256);
+    image = tp.LoadTexture("tex/ticketcountertop.bmp");
+    tp.CreateTexture(TICKET_COUNTER_TOP, image);
 
-    image = tp.LoadTexture("res/tex/ticketledgeedge.raw", 2, 32);
-    tp.CreateTexture(TICKET_LEDGE_EDGE, image, 2, 32);
+    image = tp.LoadTexture("tex/ticketledgeedge.bmp");
+    tp.CreateTexture(TICKET_LEDGE_EDGE, image);
 
-    image = tp.LoadTexture("res/tex/ticketledge.raw", 2, 128);
-    tp.CreateTexture(TICKET_LEDGE, image, 2, 128);
+    image = tp.LoadTexture("tex/ticketledge.bmp");
+    tp.CreateTexture(TICKET_LEDGE, image);
 
-    image = tp.LoadTexture("res/tex/ticketledgeedge2.raw", 32, 2);
-    tp.CreateTexture(TICKET_LEDGE_EDGE_2, image, 32, 2);
+    image = tp.LoadTexture("tex/ticketledgeedge2.bmp");
+    tp.CreateTexture(TICKET_LEDGE_EDGE_2, image);
 
-    image = tp.LoadTexture("res/tex/ticketcounteredge.raw", 128, 32);
-    tp.CreateTexture(TICKET_COUNTER_EDGE, image, 128, 32);
+    image = tp.LoadTexture("tex/ticketcounteredge.bmp");
+    tp.CreateTexture(TICKET_COUNTER_EDGE, image);
 
-    image = tp.LoadTexture("res/tex/toiletdoortop.raw", 32, 256);
-    tp.CreateTexture(TOILET_DOOR_TOP, image, 32, 256);
+    image = tp.LoadTexture("tex/toiletdoortop.bmp");
+    tp.CreateTexture(TOILET_DOOR_TOP, image);
 
-    image = tp.LoadTexture("res/tex/toiletmen.raw", 128, 128);
-    tp.CreateTexture(TOILET_MEN, image, 128, 128);
+    image = tp.LoadTexture("tex/toiletmen.bmp");
+    tp.CreateTexture(TOILET_MEN, image);
 
-    image = tp.LoadTexture("res/tex/toiletwomen.raw", 128, 128);
-    tp.CreateTexture(TOILET_WOMEN, image, 128, 128);
+    image = tp.LoadTexture("tex/toiletwomen.bmp");
+    tp.CreateTexture(TOILET_WOMEN, image);
 
-    image = tp.LoadTexture("res/tex/wallgap1.raw", 8, 128);
-    tp.CreateTexture(WALL_GAP_1, image, 8, 128);
+    image = tp.LoadTexture("tex/wallgap1.bmp");
+    tp.CreateTexture(WALL_GAP_1, image);
 
-    image = tp.LoadTexture("res/tex/windowledge1.raw", 32, 1024);
-    tp.CreateTexture(WINDOWLEDGE_CHANC_FRONT, image, 32, 1024);
+    image = tp.LoadTexture("tex/windowledge1.bmp");
+    tp.CreateTexture(WINDOWLEDGE_CHANC_FRONT, image);
 
-    image = tp.LoadTexture("res/tex/windowledge2.raw", 128, 1024);
-    tp.CreateTexture(WINDOWLEDGE_CHANC_TOP, image, 128, 1024);
+    image = tp.LoadTexture("tex/windowledge2.bmp");
+    tp.CreateTexture(WINDOWLEDGE_CHANC_TOP, image);
 
-    image = tp.LoadTexture("res/tex/windowledgeend.raw", 32, 64);
-    tp.CreateTexture(WINDOW_LEDGE_END_1, image, 32, 64);
+    image = tp.LoadTexture("tex/windowledgeend.bmp");
+    tp.CreateTexture(WINDOW_LEDGE_END_1, image);
 
-    image = tp.LoadTexture("res/tex/windowledgeend2.raw", 64, 64);
-    tp.CreateTexture(WINDOW_LEDGE_END_2, image, 64, 64);
+    image = tp.LoadTexture("tex/windowledgeend2.bmp");
+    tp.CreateTexture(WINDOW_LEDGE_END_2, image);
 
-    image = tp.LoadTexture("res/tex/windowledgelibfa.raw", 1024, 32);
-    tp.CreateTexture(WINDOWLEDGE_LIB_A, image, 1024, 32);
+    image = tp.LoadTexture("tex/windowledgelibfa.bmp");
+    tp.CreateTexture(WINDOWLEDGE_LIB_A, image);
 
-    image = tp.LoadTexture("res/tex/windowledgelibfb.raw", 1024, 32);
-    tp.CreateTexture(WINDOWLEDGE_LIB_B, image, 1024, 32);
+    image = tp.LoadTexture("tex/windowledgelibfb.bmp");
+    tp.CreateTexture(WINDOWLEDGE_LIB_B, image);
 
-    image = tp.LoadTexture("res/tex/windowledgelibta.raw", 1024, 128);
-    tp.CreateTexture(WINDOWLEDGE_LIB_TOP_A, image, 1024, 128);
+    image = tp.LoadTexture("tex/windowledgelibta.bmp");
+    tp.CreateTexture(WINDOWLEDGE_LIB_TOP_A, image);
 
-    image = tp.LoadTexture("res/tex/windowledgelibtb.raw", 1024, 128);
-    tp.CreateTexture(WINDOWLEDGE_LIB_TOP_B, image, 1024, 128);
+    image = tp.LoadTexture("tex/windowledgelibtb.bmp");
+    tp.CreateTexture(WINDOWLEDGE_LIB_TOP_B, image);
 
-    image = tp.LoadTexture("res/tex/windowledgeus1.raw", 32, 1024);
-    tp.CreateTexture(WINDOWLEDGE_PS_FRONT, image, 32, 1024);
+    image = tp.LoadTexture("tex/windowledgeus1.bmp");
+    tp.CreateTexture(WINDOWLEDGE_PS_FRONT, image);
 
-    image = tp.LoadTexture("res/tex/windowledgeus2.raw", 128, 1024);
-    tp.CreateTexture(WINDOWLEDGE_PS_TOP, image, 128, 1024);
+    image = tp.LoadTexture("tex/windowledgeus2.bmp");
+    tp.CreateTexture(WINDOWLEDGE_PS_TOP, image);
 
-    image = tp.LoadTexture("res/tex/windowledgeus3.raw", 128, 1024);
-    tp.CreateTexture(WINDOWLEDGE_PS_BOTT, image, 128, 1024);
+    image = tp.LoadTexture("tex/windowledgeus3.bmp");
+    tp.CreateTexture(WINDOWLEDGE_PS_BOTT, image);
 
-    image = tp.LoadTexture("res/tex/windowpost1.raw", 1024, 128);
-    tp.CreateTexture(WINDOWPOST_CHANC_FRONT, image, 1024, 128);
+    image = tp.LoadTexture("tex/windowpost1.bmp");
+    tp.CreateTexture(WINDOWPOST_CHANC_FRONT, image);
 
-    image = tp.LoadTexture("res/tex/windowpostsmall.raw", 512, 128);
-    tp.CreateTexture(WINDOWPOST_PHYSSCI_FRONT, image, 512, 128);
+    image = tp.LoadTexture("tex/windowpostsmall.bmp");
+    tp.CreateTexture(WINDOWPOST_PHYSSCI_FRONT, image);
 
-    image = tp.LoadTexture("res/tex/windowpostsmallside2.raw", 64, 512);
-    tp.CreateTexture(WINDOWPOST_PHYSSCI_RIGHT, image, 64, 512);
+    image = tp.LoadTexture("tex/windowpostsmallside2.bmp");
+    tp.CreateTexture(WINDOWPOST_PHYSSCI_RIGHT, image);
 
-    image = tp.LoadTexture("res/tex/windowpostsmallside.raw", 64, 512);
-    tp.CreateTexture(WINDOWPOST_PHYSSCI_LEFT, image, 64, 512);
+    image = tp.LoadTexture("tex/windowpostsmallside.bmp");
+    tp.CreateTexture(WINDOWPOST_PHYSSCI_LEFT, image);
 
-    image = tp.LoadTexture("res/tex/windowpostlib.raw", 128, 512);
-    tp.CreateTexture(WINDOWPOST_LIB_FRONT, image, 128, 512);
+    image = tp.LoadTexture("tex/windowpostlib.bmp");
+    tp.CreateTexture(WINDOWPOST_LIB_FRONT, image);
 
-    image = tp.LoadTexture("res/tex/windowpostlibside1.raw", 512, 64);
-    tp.CreateTexture(WINDOWPOST_LIB_LEFT, image, 512, 64);
+    image = tp.LoadTexture("tex/windowpostlibside1.bmp");
+    tp.CreateTexture(WINDOWPOST_LIB_LEFT, image);
 
-    image = tp.LoadTexture("res/tex/windowpostlibside2.raw", 512, 64);
-    tp.CreateTexture(WINDOWPOST_LIB_RIGHT, image, 512, 64);
+    image = tp.LoadTexture("tex/windowpostlibside2.bmp");
+    tp.CreateTexture(WINDOWPOST_LIB_RIGHT, image);
 
-    image = tp.LoadTexture("res/tex/windowposthalf1.raw", 64, 1024);
-    tp.CreateTexture(WINDOWPOST_CHANC_RIGHT, image, 64, 1024);
+    image = tp.LoadTexture("tex/windowposthalf1.bmp");
+    tp.CreateTexture(WINDOWPOST_CHANC_RIGHT, image);
 
-    image = tp.LoadTexture("res/tex/windowposthalf2.raw", 64, 1024);
-    tp.CreateTexture(WINDOWPOST_CHANC_LEFT, image, 64, 1024);
+    image = tp.LoadTexture("tex/windowposthalf2.bmp");
+    tp.CreateTexture(WINDOWPOST_CHANC_LEFT, image);
 
     // Larger Textures
 
-    image = tp.LoadTexture("res/tex/windows/stepwindow.raw", 128, 256);
-    tp.CreateTexture(STEP_WINDOW, image, 128, 256);
+    image = tp.LoadTexture("tex/windows/stepwindow.bmp");
+    tp.CreateTexture(STEP_WINDOW, image);
 
-    image = tp.LoadTexture("res/tex/windows/chancdoor1.raw", 256, 256);
-    tp.CreateTexture(CHANC_DOOR_1, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/chancdoor1.bmp");
+    tp.CreateTexture(CHANC_DOOR_1, image);
 
-    image = tp.LoadTexture("res/tex/windows/chancdoor2.raw", 256, 256);
-    tp.CreateTexture(CHANC_DOOR_2, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/chancdoor2.bmp");
+    tp.CreateTexture(CHANC_DOOR_2, image);
 
-    image = tp.LoadTexture("res/tex/windows/entrance.raw", 512, 256);
-    tp.CreateTexture(ENTRANCE, image, 512, 256);
+    image = tp.LoadTexture("tex/windows/entrance.bmp");
+    tp.CreateTexture(ENTRANCE, image);
 
-    image = tp.LoadTexture("res/tex/windows/entrance2.raw", 512, 512);
-    tp.CreateTexture(ENTRANCE_2, image, 512, 512);
+    image = tp.LoadTexture("tex/windows/entrance2.bmp");
+    tp.CreateTexture(ENTRANCE_2, image);
 
-    image = tp.LoadTexture("res/tex/windows/exiteast.raw", 512, 512);
-    tp.CreateTexture(EXIT_EAST, image, 512, 512);
+    image = tp.LoadTexture("tex/windows/exiteast.bmp");
+    tp.CreateTexture(EXIT_EAST, image);
 
-    image = tp.LoadTexture("res/tex/windows/exitwest.raw", 256, 512);
-    tp.CreateTexture(EXIT_WEST, image, 256, 512);
+    image = tp.LoadTexture("tex/windows/exitwest.bmp");
+    tp.CreateTexture(EXIT_WEST, image);
 
-    image = tp.LoadTexture("res/tex/windows/window1.raw", 256, 256);
-    tp.CreateTexture(WINDOW_1, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/window1.bmp");
+    tp.CreateTexture(WINDOW_1, image);
 
-    image = tp.LoadTexture("res/tex/windows/window1b.raw", 256, 256);
-    tp.CreateTexture(WINDOW_1B, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/window1b.bmp");
+    tp.CreateTexture(WINDOW_1B, image);
 
-    image = tp.LoadTexture("res/tex/windows/window2.raw", 256, 256);
-    tp.CreateTexture(WINDOW_2, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/window2.bmp");
+    tp.CreateTexture(WINDOW_2, image);
 
-    image = tp.LoadTexture("res/tex/windows/window2b.raw", 256, 256);
-    tp.CreateTexture(WINDOW_2B, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/window2b.bmp");
+    tp.CreateTexture(WINDOW_2B, image);
 
-    image = tp.LoadTexture("res/tex/windows/window2c.raw", 256, 256);
-    tp.CreateTexture(WINDOW_2C, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/window2c.bmp");
+    tp.CreateTexture(WINDOW_2C, image);
 
-    image = tp.LoadTexture("res/tex/windows/window2d.raw", 256, 256);
-    tp.CreateTexture(WINDOW_2D, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/window2d.bmp");
+    tp.CreateTexture(WINDOW_2D, image);
 
-    image = tp.LoadTexture("res/tex/windows/window2e.raw", 256, 256);
-    tp.CreateTexture(WINDOW_2E, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/window2e.bmp");
+    tp.CreateTexture(WINDOW_2E, image);
 
-    image = tp.LoadTexture("res/tex/windows/window2us.raw", 256, 256);
-    tp.CreateTexture(WINDOW_2US, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/window2us.bmp");
+    tp.CreateTexture(WINDOW_2US, image);
 
-    image = tp.LoadTexture("res/tex/windows/window2usb.raw", 256, 256);
-    tp.CreateTexture(WINDOW_2USB, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/window2usb.bmp");
+    tp.CreateTexture(WINDOW_2USB, image);
 
-    image = tp.LoadTexture("res/tex/windows/window3.raw", 256, 256);
-    tp.CreateTexture(WINDOW_3, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/window3.bmp");
+    tp.CreateTexture(WINDOW_3, image);
 
-    image = tp.LoadTexture("res/tex/windows/window3b.raw", 256, 256);
-    tp.CreateTexture(WINDOW_3B, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/window3b.bmp");
+    tp.CreateTexture(WINDOW_3B, image);
 
-    image = tp.LoadTexture("res/tex/windows/window4.raw", 128, 256);
-    tp.CreateTexture(WINDOW_4, image, 128, 256);
+    image = tp.LoadTexture("tex/windows/window4.bmp");
+    tp.CreateTexture(WINDOW_4, image);
 
-    image = tp.LoadTexture("res/tex/windows/window5.raw", 128, 256);
-    tp.CreateTexture(WINDOW_5, image, 128, 256);
+    image = tp.LoadTexture("tex/windows/window5.bmp");
+    tp.CreateTexture(WINDOW_5, image);
 
-    image = tp.LoadTexture("res/tex/windows/window6.raw", 256, 256);
-    tp.CreateTexture(WINDOW_6, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/window6.bmp");
+    tp.CreateTexture(WINDOW_6, image);
 
-    image = tp.LoadTexture("res/tex/windows/window7.raw", 256, 256);
-    tp.CreateTexture(WINDOW_7, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/window7.bmp");
+    tp.CreateTexture(WINDOW_7, image);
 
-    image = tp.LoadTexture("res/tex/windows/window8.raw", 256, 256);
-    tp.CreateTexture(WINDOW_8, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/window8.bmp");
+    tp.CreateTexture(WINDOW_8, image);
 
-    image = tp.LoadTexture("res/tex/windows/window9.raw", 256, 256);
-    tp.CreateTexture(WINDOW_9, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/window9.bmp");
+    tp.CreateTexture(WINDOW_9, image);
 
-    image = tp.LoadTexture("res/tex/windows/window10.raw", 256, 256);
-    tp.CreateTexture(WINDOW_10, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/window10.bmp");
+    tp.CreateTexture(WINDOW_10, image);
 
-    image = tp.LoadTexture("res/tex/windows/window11.raw", 256, 256);
-    tp.CreateTexture(WINDOW_11, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/window11.bmp");
+    tp.CreateTexture(WINDOW_11, image);
 
-    image = tp.LoadTexture("res/tex/windows/window12.raw", 256, 256);
-    tp.CreateTexture(WINDOW_12, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/window12.bmp");
+    tp.CreateTexture(WINDOW_12, image);
 
-    image = tp.LoadTexture("res/tex/windows/window13.raw", 256, 256);
-    tp.CreateTexture(WINDOW_13, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/window13.bmp");
+    tp.CreateTexture(WINDOW_13, image);
 
-    image = tp.LoadTexture("res/tex/windows/window14.raw", 256, 128);
-    tp.CreateTexture(WINDOW_14, image, 256, 128);
+    image = tp.LoadTexture("tex/windows/window14.bmp");
+    tp.CreateTexture(WINDOW_14, image);
 
-    image = tp.LoadTexture("res/tex/windows/window14b.raw", 256, 128);
-    tp.CreateTexture(WINDOW_14B, image, 256, 128);
+    image = tp.LoadTexture("tex/windows/window14b.bmp");
+    tp.CreateTexture(WINDOW_14B, image);
 
-    image = tp.LoadTexture("res/tex/windows/window15.raw", 256, 256);
-    tp.CreateTexture(WINDOW_15, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/window15.bmp");
+    tp.CreateTexture(WINDOW_15, image);
 
-    image = tp.LoadTexture("res/tex/windows/window16.raw", 128, 256);
-    tp.CreateTexture(WINDOW_16, image, 128, 256);
+    image = tp.LoadTexture("tex/windows/window16.bmp");
+    tp.CreateTexture(WINDOW_16, image);
 
-    image = tp.LoadTexture("res/tex/windows/window17.raw", 128, 256);
-    tp.CreateTexture(WINDOW_17, image, 128, 256);
+    image = tp.LoadTexture("tex/windows/window17.bmp");
+    tp.CreateTexture(WINDOW_17, image);
 
-    image = tp.LoadTexture("res/tex/windows/windowlib1.raw", 256, 128);
-    tp.CreateTexture(WINDOW_LIB_1, image, 256, 128);
+    image = tp.LoadTexture("tex/windows/windowlib1.bmp");
+    tp.CreateTexture(WINDOW_LIB_1, image);
 
-    image = tp.LoadTexture("res/tex/windows/windowlib1a.raw", 256, 128);
-    tp.CreateTexture(WINDOW_LIB_1A, image, 256, 128);
+    image = tp.LoadTexture("tex/windows/windowlib1a.bmp");
+    tp.CreateTexture(WINDOW_LIB_1A, image);
 
-    image = tp.LoadTexture("res/tex/windows/windowlib1b.raw", 256, 128);
-    tp.CreateTexture(WINDOW_LIB_1B, image, 256, 128);
+    image = tp.LoadTexture("tex/windows/windowlib1b.bmp");
+    tp.CreateTexture(WINDOW_LIB_1B, image);
 
-    image = tp.LoadTexture("res/tex/windows/windowlib1c.raw", 256, 128);
-    tp.CreateTexture(WINDOW_LIB_1C, image, 256, 128);
+    image = tp.LoadTexture("tex/windows/windowlib1c.bmp");
+    tp.CreateTexture(WINDOW_LIB_1C, image);
 
-    image = tp.LoadTexture("res/tex/windows/windowlibusa.raw", 256, 128);
-    tp.CreateTexture(WINDOW_LIB_US_A, image, 256, 128);
+    image = tp.LoadTexture("tex/windows/windowlibusa.bmp");
+    tp.CreateTexture(WINDOW_LIB_US_A, image);
 
-    image = tp.LoadTexture("res/tex/windows/windowlibusb.raw", 256, 128);
-    tp.CreateTexture(WINDOW_LIB_US_B, image, 256, 128);
+    image = tp.LoadTexture("tex/windows/windowlibusb.bmp");
+    tp.CreateTexture(WINDOW_LIB_US_B, image);
 
-    image = tp.LoadTexture("res/tex/windows/windowlibdoor1.raw", 256, 256);
-    tp.CreateTexture(WINDOW_LIB_DOOR_1, image, 256, 256);
+    image = tp.LoadTexture("tex/windows/windowlibdoor1.bmp");
+    tp.CreateTexture(WINDOW_LIB_DOOR_1, image);
 
-    image = tp.LoadTexture("res/tex/windows/windowlibdoor2.raw", 512, 256);
-    tp.CreateTexture(WINDOW_LIB_DOOR_2, image, 512, 256);
+    image = tp.LoadTexture("tex/windows/windowlibdoor2.bmp");
+    tp.CreateTexture(WINDOW_LIB_DOOR_2, image);
 
-    image = tp.LoadTexture("res/tex/windows/windowliblong.raw", 256, 128);
-    tp.CreateTexture(WINDOW_LIB_LONG, image, 256, 128);
+    image = tp.LoadTexture("tex/windows/windowliblong.bmp");
+    tp.CreateTexture(WINDOW_LIB_LONG, image);
 
-    image = tp.LoadTexture("res/tex/map.raw", 256, 256);
-    tp.CreateTexture(MAP, image, 256, 256);
-    image = tp.LoadTexture("res/tex/welcome.raw", 512, 512);
-    tp.CreateTexture(WELCOME, image, 512, 512);
-    image = tp.LoadTexture("res/tex/thanks.raw", 512, 512);
-    tp.CreateTexture(EXIT, image, 512, 512);
-
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+    image = tp.LoadTexture("tex/map.bmp");
+    tp.CreateTexture(MAP, image);
+    image = tp.LoadTexture("tex/welcome.bmp");
+    tp.CreateTexture(WELCOME, image);
+    image = tp.LoadTexture("tex/thanks.bmp");
+    tp.CreateTexture(EXIT, image);
 }
 
-//--------------------------------------------------------------------------------------
-//  Called from the main display function to draw the backdrop (all images)
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Called from the main display function to draw the backdrop (all images)
+ */
 void ShaysWorld::DrawBackdrop() {
     DisplayAboveWindowBlock();
     DisplayBench();
@@ -958,6 +1402,7 @@ void ShaysWorld::DrawBackdrop() {
     DisplayDoorPaving();
     DisplayDoorPosts();
     DisplayEntranceSteps();
+    DisplayTavSteps();
     DisplayExtras();
     DisplayGrass();
     DisplayLargerTextures();
@@ -969,13 +1414,14 @@ void ShaysWorld::DrawBackdrop() {
     DisplayRedPosts();
     DisplayRoof();
     DisplayStepBricks();
+    DisplayTavStepBricks();
     if (lightsOn)
         DisplayLights();
 }
 
-//--------------------------------------------------------------------------------------
-// Display the chancellery windoe and door posts
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Display the chancellery windoe and door posts
+ */
 void ShaysWorld::DisplayChancPosts() {
     // Windowposts Chanc (downstairs)
     step = 0.0f;
@@ -1115,6 +1561,9 @@ void ShaysWorld::DisplayChancPosts() {
     glPopMatrix();
 }
 
+/**
+ * @brief Draws chancellor posts
+ */
 void ShaysWorld::DrawChancPosts() {
     // Front of Window Post Chanc
     tp.CreateDisplayList(YZ, 11, 1024.0f, 128.0f, 33848.0f, 10237.0f, 9505.0f,
@@ -1161,10 +1610,9 @@ void ShaysWorld::DrawChancPosts() {
     glEndList();
 }
 
-//--------------------------------------------------------------------------------------
-// Display Door Posts
-//--------------------------------------------------------------------------------------
-
+/**
+ * @brief Displays Door posts
+ */
 void ShaysWorld::DisplayDoorPosts() {
     // Door Posts Chanc
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(DOOR_POST_SECURITY));
@@ -1199,6 +1647,9 @@ void ShaysWorld::DisplayDoorPosts() {
     glPopMatrix();
 }
 
+/**
+ * @brief Draws door posts
+ */
 void ShaysWorld::DrawDoorPosts() {
     // DOORPOSTS_CHANC
     tp.CreateDisplayList(YZ_FLIP, 25, 1024.0f, 128.0f, 33848.0f, 10000.0f,
@@ -1211,9 +1662,9 @@ void ShaysWorld::DrawDoorPosts() {
                          10465.0f, 0.83f, 0.7344f); // post
 }
 
-//--------------------------------------------------------------------------------------
-// Display blocks above Windows and Posts
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Displays objects above the window block
+ */
 void ShaysWorld::DisplayAboveWindowBlock() {
     // Blocks Above Windows Chanc & Phys Sci
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ABOVE_WINDOW_BLOCK));
@@ -1235,6 +1686,22 @@ void ShaysWorld::DisplayAboveWindowBlock() {
     glPushMatrix();
     glTranslatef(0.0f, 0.0f, 9728.0f);
     glCallList(226);
+    glPopMatrix();
+
+    // Display alcove roof
+    // 33808.0f, 10832.0f, 26624.0f (physSciTextPosition)
+    constexpr auto alcoveX            = 33808.0f;
+    constexpr auto alcoveY            = 10834.0f;
+    constexpr auto alcoveZ            = 26624.0f;
+    constexpr auto secondAlcoveOffset = 9710.0f;
+    glBindTexture(GL_TEXTURE_2D, tp.GetTexture(MAIN_POST));
+    glPushMatrix();
+    glTranslatef(alcoveX, alcoveY, alcoveZ);
+    glCallList(9000);
+    glPopMatrix();
+    glPushMatrix();
+    glTranslatef(alcoveX, alcoveY, alcoveZ + secondAlcoveOffset);
+    glCallList(9000);
     glPopMatrix();
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ABOVE_WINDOW_BLOCK_2));
@@ -1267,10 +1734,12 @@ void ShaysWorld::DisplayAboveWindowBlock() {
     glCallList(231);
     glCallList(43);
     glCallList(45);
-    glCallList(53); // aboves posts
+    glCallList(53);   // aboves posts
+    glCallList(1000); // support beam, student hub
     glPushMatrix();
     glTranslatef(128.0f, 0.0f, 0.0f);
     glCallList(53);
+    glCallList(1000); // support beam, student hub.
     glPopMatrix();
     glCallList(68);
     glCallList(71); // above post between chanc and phys sci
@@ -1293,6 +1762,10 @@ void ShaysWorld::DisplayAboveWindowBlock() {
     glPopMatrix();
     glPushMatrix();
     glTranslatef(-2068.0f, 310.0f, -17244.0f);
+    glCallList(49);
+    glPopMatrix();
+    glPushMatrix(); // Student Hub pillar cap *KIERA*
+    glTranslatef(-29258.0f, 310.0f, -17244.0f);
     glCallList(49);
     glPopMatrix();
     glCallList(425);
@@ -1320,11 +1793,14 @@ void ShaysWorld::DisplayAboveWindowBlock() {
     glCallList(208);
     glCallList(233);
     glCallList(234);
+    glCallList(6024);
+    glCallList(6025);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ABOVE_UNDER_POSTS));
     glCallList(54);
     glCallList(67);
     glCallList(72);
+    glCallList(1001);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(BELOW_ROOF_FILL));
     glCallList(39);
@@ -1334,6 +1810,7 @@ void ShaysWorld::DisplayAboveWindowBlock() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ABOVE_UNDER_POSTS_2));
     glCallList(69);
     glCallList(232);
+    glCallList(6023);
 
     // -------------------------------- Above Library
     // ------------------------------------
@@ -1386,6 +1863,10 @@ void ShaysWorld::DisplayAboveWindowBlock() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ABOVE_CHANC_EDGE));
     glCallList(424);
 }
+
+/**
+ * @brief Draws area above window block
+ */
 
 void ShaysWorld::DrawAboveWindowBlock() {
     tp.CreateDisplayList(YZ, 20, 128.0f, 256.0f, 33808.0f, 10832.0f, 9552.0f, 1.0f,
@@ -1447,9 +1928,9 @@ void ShaysWorld::DrawAboveWindowBlock() {
                          6.125f); // phys sci above under 2nd door
 
     tp.CreateDisplayList(YZ, 53, 256.0f, 256.0f, 31740.0f, 11142.0f, 8100.0f, 0.75f,
-                         128.955f); // above posts chanc and canteen sides
+                         128.955f); // above posts chanc and canteen sides *PETER*
     tp.CreateDisplayList(XZ, 54, 128.0f, 256.0f, 31740.0f, 11142.0f, 8100.0f, 1.0f,
-                         128.955f); // above under main posts
+                         128.955f); // above under main posts *PETER*
     tp.CreateDisplayList(XZ, 67, 128.0f, 256.0f, 35920.0f, 10832.0f, 41127.0f, 1.0f,
                          7.6f); // above under steps at end of phys sci
     tp.CreateDisplayList(YZ, 68, 256.0f, 256.0f, 35920.0f, 10832.0f, 41127.0f, 0.75f,
@@ -1463,6 +1944,12 @@ void ShaysWorld::DrawAboveWindowBlock() {
                          12.69f); // above post between chanc and phys sci
     tp.CreateDisplayList(XZ, 72, 128.0f, 256.0f, 35748.0f, 11142.0f, 22096.0f, 1.0f,
                          12.69f); // above under post between chanc and phys sci
+
+    /* Added by Peter to Display the support beam on student hub*/
+    tp.CreateDisplayList(YZ, 1000, 256.0f, 256.0f, 4550.0f, 11142.0f, 8100.0f, 0.75f,
+                         128.955f); // above posts chanc and canteen sides *PETER*
+    tp.CreateDisplayList(XZ, 1001, 128.0f, 256.0f, 4550.0f, 11142.0f, 8100.0f, 1.0f,
+                         128.955f); // above under main posts *PETER*
 
     glNewList(232, GL_COMPILE);
     glBegin(GL_QUADS);
@@ -1499,7 +1986,47 @@ void ShaysWorld::DrawAboveWindowBlock() {
     glTexCoord2f(10.54f, 0.75f);
     glVertex3f(33848.0f + 45.0f, 11920.0f + 192.0f, 43095.2f - 45.0f);
     glTexCoord2f(0.0f, 0.75f);
-    glVertex3f(31768.0f + 45, 11162.0f + 192.0f, 41011.2f - 45.0f);
+    glVertex3f(31768.0f + 45.0f, 11162.0f + 192.0f, 41011.2f - 45.0f);
+    glEnd();
+    glEndList();
+
+    // Hub / Library Join support *KIERA*
+    glNewList(6023, GL_COMPILE);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(33848.0f - 45.0f - 29200.0f, 11162.0f, 41011.2f - 45.0f);
+    glTexCoord2f(10.54f, 0.0f);
+    glVertex3f(31768.0f - 45.0f - 29200.0f, 11920.0f, 43095.2f - 45.0f);
+    glTexCoord2f(10.54f, 1.0f);
+    glVertex3f(31768.0f + 45.0f - 29200.0f, 11920.0f, 43095.2f + 45.0f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(33848.0f + 45.0f - 29200.0f, 11162.0f, 41011.2f + 45.0f);
+    glEnd();
+    glEndList();
+
+    glNewList(6024, GL_COMPILE);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(33848.0f + 45.0f - 29200.0f, 11162.0f, 41011.2f + 45.0f);
+    glTexCoord2f(10.54f, 0.0f);
+    glVertex3f(31768.0f + 45.0f - 29200.0f, 11920.0f, 43095.2f + 45.0f);
+    glTexCoord2f(10.54f, 0.75f);
+    glVertex3f(31768.0f + 45.0f - 29200.0f, 11920.0f + 192.0f, 43095.2f + 45.0f);
+    glTexCoord2f(0.0f, 0.75f);
+    glVertex3f(33848.0f + 45.0f - 29200.0f, 11162.0f + 192.0f, 41011.20f + 45.0f);
+    glEnd();
+    glEndList();
+
+    glNewList(6025, GL_COMPILE);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(33848.0f - 45.0f - 29200.0f, 11162.0f, 41011.2f - 45.0f);
+    glTexCoord2f(10.54f, 0.0f);
+    glVertex3f(31768.0f - 45 - 29200.0f, 11920.0f, 43095.2f - 45.0f);
+    glTexCoord2f(10.54f, 0.75f);
+    glVertex3f(31768.0f - 45 - 29200.0f, 11920.0f + 192.0f, 43095.2f - 45.0f);
+    glTexCoord2f(0.0f, 0.75f);
+    glVertex3f(33848.0f - 45.0f - 29200.0f, 11162.0f + 192.0f, 41011.2f - 45.0f);
     glEnd();
     glEndList();
 
@@ -1555,9 +2082,9 @@ void ShaysWorld::DrawAboveWindowBlock() {
                          0.78f, 139.25f);
 }
 
-//--------------------------------------------------------------------------------------
-// Display Purple Posts by Guild Shop
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Display Purple Posts by Guild Shop
+ */
 void ShaysWorld::DisplayPurplePosts() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(PURPLE_POST));
     glCallList(29);
@@ -1603,6 +2130,9 @@ void ShaysWorld::DisplayPurplePosts() {
     glCallList(32);
 }
 
+/**
+ * @brief Draws purple posts
+ */
 void ShaysWorld::DrawPurplePosts() {
     tp.CreateDisplayList(YZ, 29, 64.0f, 128.0f, 33802.0f, 10000.0f, 31407.0f, 13.0f,
                          0.875f); // front
@@ -1614,10 +2144,9 @@ void ShaysWorld::DrawPurplePosts() {
                          13.0f); // side
 }
 
-//--------------------------------------------------------------------------------------
-// Display Red Posts by Sta Travel Shop
-//--------------------------------------------------------------------------------------
-
+/**
+ * @brief Displays Red posts by the Sta Travel Shop
+ */
 void ShaysWorld::DisplayRedPosts() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(RED_POST));
     glCallList(33);
@@ -1654,6 +2183,9 @@ void ShaysWorld::DisplayRedPosts() {
     glPopMatrix();
 }
 
+/**
+ * @brief Draws red posts
+ */
 void ShaysWorld::DrawRedPosts() {
     tp.CreateDisplayList(YZ, 33, 64.0f, 128.0f, 33802.0f, 10000.0f, 39200.0f, 13.0f,
                          0.125f); // front
@@ -1663,9 +2195,9 @@ void ShaysWorld::DrawRedPosts() {
                          13.0f); // side
 }
 
-//--------------------------------------------------------------------------------------
-// Display Main Posts
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Displays Main posts
+ */
 void ShaysWorld::DisplayMainPosts() {
     step       = 0.0f;
     stepLength = 0.0f;
@@ -1758,6 +2290,9 @@ void ShaysWorld::DisplayMainPosts() {
     glPopMatrix();
 }
 
+/**
+ * @brief Draws main posts
+ */
 void ShaysWorld::DrawMainPosts() {
     tp.CreateDisplayList(XY, 18, 128.0f, 256.0f, 31740.0f, 9995.0f, 10105.0f,
                          1.0f, 4.48f);
@@ -1769,9 +2304,9 @@ void ShaysWorld::DrawMainPosts() {
                          1.0f); // 1st by steps
 }
 
-//--------------------------------------------------------------------------------------
-//  Display Window and Door Posts on Phys SCi Building
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Display Window and Door Posts on Phys SCi Building
+ */
 void ShaysWorld::DisplayPhysSciPosts() {
     step = 0.0f;
     for (GLuint i = 0; i < 16; i++) {
@@ -1867,6 +2402,9 @@ void ShaysWorld::DisplayPhysSciPosts() {
     }
 }
 
+/**
+ * @brief Draws physical science building posts
+ */
 void ShaysWorld::DrawPhysSciPosts() {
     // WINDOWPOST_PS
     tp.CreateDisplayList(YZ, 36, 512.0f, 128.0f, 33848.0f, 11347.0f, 26625.0f,
@@ -1924,15 +2462,18 @@ void ShaysWorld::DrawPhysSciPosts() {
     glEndList();
 }
 
-//--------------------------------------------------------------------------------------
-//  Display Paving Around Shop Doorway
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Display Paving Around Shop Doorway
+ */
 void ShaysWorld::DisplayDoorPaving() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(DOORPAVE_1));
     glCallList(47);
     glCallList(48);
 }
 
+/**
+ * @brief Draws door paving
+ */
 void ShaysWorld::DrawDoorPaving() {
     tp.CreateDisplayList(XZ, 47, 128.0f, 256.0f, 33808.0f, 10000.0f, 31508.0f, 0.75f,
                          7.5f); // phy sci 1st doorway
@@ -1940,9 +2481,9 @@ void ShaysWorld::DrawDoorPaving() {
                          3.5f); // phy sci 2nd doorway
 }
 
-//--------------------------------------------------------------------------------------
-// Display window and door posts of library
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Display window and door posts of library
+ */
 void ShaysWorld::DisplayLibraryPosts() {
     stepLength = 0.0f;
     for (int j = 0; j < 2; j++) {
@@ -2030,6 +2571,9 @@ void ShaysWorld::DisplayLibraryPosts() {
     glPopMatrix();
 }
 
+/**
+ * @brief Draws library posts
+ */
 void ShaysWorld::DrawLibraryPosts() {
     // WINDOWPOST_LIB_FRONT
     tp.CreateDisplayList(XY, 57, 128.0f, 512.0f, 24035.0f, 10304.0f, 43096.0f,
@@ -2089,9 +2633,9 @@ void ShaysWorld::DrawLibraryPosts() {
                            42992.0f, 43056.0f, 43056.0f, 42992.0f, 6, 1);
 }
 
-//--------------------------------------------------------------------------------------
-//  Display Pavement
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Displays Pavement
+ */
 void ShaysWorld::DisplayPavement() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(PAVEMENT));
     for (GLuint i = 72; i < 74; i++)
@@ -2112,6 +2656,15 @@ void ShaysWorld::DisplayPavement() {
     glPopMatrix();
     glCallList(241);
     glCallList(428);
+
+    glPushMatrix();
+    glTranslatef(-29090, 0, 1000);
+    for (auto i = 0; i < 10; i++) {
+
+        glCallList(249);
+        glTranslatef(0, 0, -2870);
+    }
+    glPopMatrix();
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(PAVEMENT_TOP));
     for (GLuint i = 91; i < 93; i++)
@@ -2136,10 +2689,14 @@ void ShaysWorld::DisplayPavement() {
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(PAVEMENT));
     glCallList(78);
-    glCallList(79);
+    // glCallList(79);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(PAVEMENT_16));
     glCallList(80);
+    glPushMatrix();
+    glTranslatef(-28960.0f, 0.0f, 0.0f);
+    glCallList(80);
+    glPopMatrix();
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(PAVEMENT_CORNER_1));
     glCallList(93);
@@ -2157,6 +2714,9 @@ void ShaysWorld::DisplayPavement() {
     glPopMatrix();
 }
 
+/**
+ * @brief Draws pavement
+ */
 void ShaysWorld::DrawPavement() {
     // PAVEMENT
     tp.CreateDisplayList(XZ, 87, 128.0f, 64.0f, 2608.0f, 10000.0f, 10000.0f,
@@ -2302,10 +2862,9 @@ void ShaysWorld::DrawPavement() {
                          13.5f); // phys sci toilet doorways
 }
 
-//--------------------------------------------------------------------------------------
-// Display Wall Bricks
-//--------------------------------------------------------------------------------------
-
+/**
+ * @brief Display Wall Bricks
+ */
 void ShaysWorld::DisplayBricks() {
     // WALL_BRICK_YZ
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_YZ));
@@ -2450,6 +3009,9 @@ void ShaysWorld::DisplayBricks() {
     glCallList(190);
 }
 
+/**
+ * @brief Draws bricks
+ */
 void ShaysWorld::DrawBricks() {
     // WALL_BRICK_YZ
     // --------  (Face of Cancerllary Building) --------
@@ -2710,19 +3272,29 @@ void ShaysWorld::DrawBricks() {
                          6.5f); // as above but upstairs
 }
 
-//--------------------------------------------------------------------------------------
-// Display Roof
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Displays all roofs
+ */
 void ShaysWorld::DisplayRoof() {
     // main roof planks
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ROOF_PLANKS));
-    for (GLuint i = 250; i < 253; i++)
+    for (GLuint i = 250; i < 253; i++) {
         glCallList(i);
+    }
+    glCallList(6000);
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ROOF_BEAM_1));
     // corner beams
     for (GLuint i = 1; i < 6; i++)
         glCallList(i);
+
+    glPushMatrix();
+    glTranslatef(-31300, 5, 0);
+    for (GLuint i = 6003; i < 6008; i++) {
+        glCallList(i);
+    }
+    glPopMatrix();
+
     step = -1689.0f;
     for (GLuint i = 0; i < 85; i++) {
         glPushMatrix();
@@ -2736,6 +3308,19 @@ void ShaysWorld::DisplayRoof() {
     glCallList(253);
     glPopMatrix();
     glCallList(254);
+
+    step = -1689.0f;
+    for (GLuint i = 0; i < 85; i++) {
+        glPushMatrix();
+        glTranslatef(0.0f, 0.0f, step);
+        glCallList(6001);
+        glPopMatrix();
+        step += 386.0f;
+    }
+    glPushMatrix();
+    glTranslatef(0.0f, 0.0f, -2005.0f);
+    glCallList(6001);
+    glPopMatrix();
 
     step = 214.0f;
     for (GLuint i = 0; i < 8; i++) {
@@ -2792,6 +3377,19 @@ void ShaysWorld::DisplayRoof() {
         glCallList(i);
         glPopMatrix();
     }
+    // Angled beams side *KIERA*
+    glPushMatrix();
+    glTranslatef(-31290, 0, 0);
+    for (GLuint i = 6008; i < 6013; i++) {
+        glCallList(i);
+        glPushMatrix();
+        glTranslatef(0.0f, 0.0f, 32.0f);
+        glCallList(i);
+        glPopMatrix();
+    }
+    glPopMatrix();
+
+    // Angled beams side end
 
     step = -1689.0f;
     for (GLuint i = 0; i < 85; i++) {
@@ -2813,6 +3411,29 @@ void ShaysWorld::DisplayRoof() {
     glPushMatrix();
     glTranslatef(0.0f, 0.0f, -1973.0f);
     glCallList(255);
+    glPopMatrix();
+
+    // HUB PLANKS
+    step = -1689.0f;
+    for (GLuint i = 0; i < 85; i++) {
+        glPushMatrix();
+        glTranslatef(0.0f, 0.0f, step);
+        glCallList(6002);
+        glPopMatrix();
+        glPushMatrix();
+        glTranslatef(0.0f, 0.0f, step + 32.0f);
+        glCallList(6002);
+        glPopMatrix();
+        step += 386.0f;
+    }
+
+    glPushMatrix();
+    glTranslatef(0.0f, 0.0f, -2005.0f);
+    glCallList(6002);
+    glPopMatrix();
+    glPushMatrix();
+    glTranslatef(0.0f, 0.0f, -1973.0f);
+    glCallList(6002);
     glPopMatrix();
 
     step = 214.0f;
@@ -2887,6 +3508,17 @@ void ShaysWorld::DisplayRoof() {
         glCallList(i + 5);
         glPopMatrix();
     }
+
+    glPushMatrix();
+    glTranslatef(-29100, 0, 0);
+    for (GLuint i = 6018; i < 6023; i++) {
+        glCallList(i);
+        glPushMatrix();
+        glTranslatef(32.0f, 0.0f, 0.0f);
+        glCallList(i);
+        glPopMatrix();
+    }
+    glPopMatrix();
     glCallList(426);
     glCallList(427);
     glPushMatrix();
@@ -2917,6 +3549,30 @@ void ShaysWorld::DisplayRoof() {
         glCallList(i);
     }
 
+    glPushMatrix();
+    glTranslatef(-29100, 0, 0);
+    for (GLuint i = 6013; i < 6018; i++) {
+        glCallList(i);
+    }
+    glPopMatrix();
+    // student hub spacers *Kiera*
+    glPushMatrix();
+    glTranslatef(-27300.0f, 0.0f, 0.0f);
+    glCallList(99);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-29250.0f, 720.0f, 0.0f);
+    glCallList(99);
+    glTranslatef(0.0f, 0.0f, 1800.0f);
+    glCallList(99);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-2000.0f, 0.0f, 0.0f);
+    glCallList(202);
+    glPopMatrix();
+
     // Top of Roof
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ROOF_TOP));
     for (GLuint i = 214; i < 216; i++) {
@@ -2927,15 +3583,18 @@ void ShaysWorld::DisplayRoof() {
     glCallList(216);
 }
 
+/**
+ * @brief Draws roof
+ */
 void ShaysWorld::DrawRoof() {
     // Chanc Top of Roof
     glNewList(214, GL_COMPILE);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 0.0f);
     glVertex3f(31740.0f, 11364.0f, 8100.0f);
-    glTexCoord2f(0.0f, 257.9f);
+    glTexCoord2f(0.0f, 257.9f * 2.0f);
     glVertex3f(31740.0f, 11364.0f, 8100.0f + (128.0f * 257.9f));
-    glTexCoord2f(2.0f, 273.4f);
+    glTexCoord2f(2.0f, 273.4f * 2.0f);
     glVertex3f(33848.0f, 12140.72f, 8100.0f + (128.0f * 273.4f));
     glTexCoord2f(2.0f, 0.0f);
     glVertex3f(33848.0f, 12140.72f, 8100.0f);
@@ -2946,9 +3605,9 @@ void ShaysWorld::DrawRoof() {
     glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 0.0f);
     glVertex3f(2608.0f, 12140.72f, 8100.0f);
-    glTexCoord2f(0.0f, 273.4f);
+    glTexCoord2f(0.0f, 273.4f * 2.0f);
     glVertex3f(2608.0f, 12140.72f, 8100.0f + (128.0f * 273.4f));
-    glTexCoord2f(2.0f, 257.9f);
+    glTexCoord2f(2.0f, 257.9f * 2.0f);
     glVertex3f(4716.0f, 11364.0f, 8100.0f + (128.0f * 257.9f));
     glTexCoord2f(2.0f, 0.0f);
     glVertex3f(4716.0f, 11364.0f, 8100.0f);
@@ -2967,7 +3626,7 @@ void ShaysWorld::DrawRoof() {
     glVertex3f(2608.0f, 12140.72f, 43095.2f);
     glEnd();
     glEndList();
-    // Chanc Side Planks
+    // Chanc Side Planks // roof planks
     glNewList(250, GL_COMPILE);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 0.0f);
@@ -3004,6 +3663,45 @@ void ShaysWorld::DrawRoof() {
     glVertex3f(33848.0f, 12012.72f + 82.0f, 10105.0f);
     glTexCoord2f(16.48f, 0.0f);
     glVertex3f(33848.0f, 12012.72f, 10105.0f);
+    glEnd();
+    glEndList();
+    // StudentHub Side Planks
+    glNewList(6000, GL_COMPILE);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(2588.0f, 12094.72f, 8100.0f);
+    glTexCoord2f(0.0f, 257.9f);
+    glVertex3f(2588.0f, 12094.72f, 8100.0f + (128.0f * 273.4f));
+    glTexCoord2f(16.48f, 273.4f);
+    glVertex3f(4568.0f, 11366.0f, 8100.0f + (128.0f * 257.9f));
+    glTexCoord2f(16.48f, 0.0f);
+    glVertex3f(4568.0f, 11366.0f, 8100.0f);
+    glEnd();
+    glEndList();
+    // Hub Side Beams Bottom
+    glNewList(6001, GL_COMPILE);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(31868.0f - 29300, 12012.72f, 10105.0f);
+    glTexCoord2f(0.0, 1.0);
+    glVertex3f(31868.0f - 29300, 12012.72f, 10137.0f);
+    glTexCoord2f(16.48f, 1.0f);
+    glVertex3f(33848.0f - 29300, 11284.0f, 10137.0f);
+    glTexCoord2f(16.48f, 0.0f);
+    glVertex3f(33848.0f - 29300, 11284.0f, 10105.0f);
+    glEnd();
+    glEndList();
+    // Hub Side Beams Side
+    glNewList(6002, GL_COMPILE);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(31868.0f - 29300, 12012.72f, 10105.0f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(31868.0f - 29300, 12012.72f + 82.0f, 10105.0f);
+    glTexCoord2f(16.48f, 1.0f);
+    glVertex3f(33848.0f - 29300, 11284.0f + 82.0f, 10105.0f);
+    glTexCoord2f(16.48f, 0.0f);
+    glVertex3f(33848.0f - 29300, 11284.0f, 10105.0f);
     glEnd();
     glEndList();
     // Chanc Side Planks (between chanc and phys sci)
@@ -3124,6 +3822,9 @@ void ShaysWorld::DrawRoof() {
     glEnd();
     glEndList();
 
+    // physical science block alcove
+    tp.CreateDisplayList(XZ, 9000, 128.0f, 128.0f, 0.0f, 0.0f, 0.0f, 10.0f, 16.0f);
+
     // spacer between phys sci
     tp.CreateDisplayList(YZ, 97, 32.0f, 128.0f, 33808.0f, 12048.0f, 25344.0f,
                          1.0f, 123.3f);
@@ -3165,11 +3866,37 @@ void ShaysWorld::DrawRoof() {
                         8.78f);
     DrawAngledRoofBeam2(173, 33138.0f, 11998.0f - 246.22f, 43056.0f - 669.0f, 5.57f);
     DrawAngledRoofBeam2(174, 33524.0f, 11998.0f - 104.16f, 43056.0f - 283.0f, 2.36f);
+
+    // HUB roof join slants
+    DrawAngledRoofBeam(6003, 33848.0f + 1867.0f, 12012.72f - 687.13f, 41226.0,
+                       15.21f);
+    DrawAngledRoofBeam(6004, 33848.0f + 1481.0f, 12012.72f - 545.07f, 41612.0,
+                       12.0f);
+    DrawAngledRoofBeam(6005, 33848.0f + 1095.0f, 12012.72f - 403.01f, 41998.0,
+                       8.78f);
+    DrawAngledRoofBeam(6006, 33848.0f + 709.0f, 12012.72f - 260.94f, 42384.0, 5.57f);
+    DrawAngledRoofBeam(6007, 33848.0f + 323.0f, 12012.72f - 118.88f, 42770.0, 2.36f);
+    // Library Hub join slants
+    DrawAngledRoofBeam2(6013, 33524.0f, 11998.0f - 672.41f, 43056.0f - 1827.0f,
+                        15.21f);
+    DrawAngledRoofBeam2(6014, 33138.0f, 11998.0f - 530.35f, 43056.0f - 1441.0f,
+                        12.0f);
+    DrawAngledRoofBeam2(6015, 32752.0f, 11998.0f - 388.28f, 43056.0f - 1055.0f,
+                        8.78f);
+    DrawAngledRoofBeam2(6016, 32366.0f, 11998.0f - 246.22f, 43056.0f - 669.0f,
+                        5.57f);
+    DrawAngledRoofBeam2(6017, 31980.0f, 11998.0f - 104.16f, 43056.0f - 283.0f,
+                        2.36f);
 }
 
-// --------------------------------------------------------------------------------------
-//  Creates Angled Roof Beams
-// --------------------------------------------------------------------------------------
+/**
+ * @brief Draws angled roof beams
+ * @param listNo The list number to create the new list as
+ * @param x The x coordinate of the start location of the beam
+ * @param y The y coordinate of the start location of the beam
+ * @param z The z coordinate of the start location of the beam
+ * @param beamSize The beam length
+ */
 void ShaysWorld::DrawAngledRoofBeam(GLuint listNo, GLfloat x, GLfloat y,
                                     GLfloat z, GLfloat beamSize) {
     glNewList(listNo, GL_COMPILE);
@@ -3198,6 +3925,14 @@ void ShaysWorld::DrawAngledRoofBeam(GLuint listNo, GLfloat x, GLfloat y,
     glEndList();
 }
 
+/**
+ * @brief Draws angled roof beams
+ * @param listNo The list number to create the new list as
+ * @param x The x coordinate of the start location of the beam
+ * @param y The y coordinate of the start location of the beam
+ * @param z The z coordinate of the start location of the beam
+ * @param beamSize The beam length
+ */
 void ShaysWorld::DrawAngledRoofBeam2(GLuint listNo, GLfloat x, GLfloat y,
                                      GLfloat z, GLfloat beamSize) {
     glNewList(listNo, GL_COMPILE);
@@ -3226,9 +3961,9 @@ void ShaysWorld::DrawAngledRoofBeam2(GLuint listNo, GLfloat x, GLfloat y,
     glEndList();
 }
 
-//--------------------------------------------------------------------------------------
-// Display Steps
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Displays Entrance steps
+ */
 void ShaysWorld::DisplayEntranceSteps() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(STEP_PAVING_1));
     for (GLuint i = 258; i < 274; i++)
@@ -3269,6 +4004,9 @@ void ShaysWorld::DisplayEntranceSteps() {
     glPopMatrix();
 }
 
+/**
+ * @brief Draws extrance steps
+ */
 void ShaysWorld::DrawEntranceSteps() {
     step       = 10000.0f;
     stepLength = 9808.0f;
@@ -3302,9 +4040,38 @@ void ShaysWorld::DrawEntranceSteps() {
                          0.609f, 0.942f);
 }
 
-//--------------------------------------------------------------------------------------
-// Display Bench
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Displays Tavern Steps
+ */
+void ShaysWorld::DisplayTavSteps() {
+    glBindTexture(GL_TEXTURE_2D, tp.GetTexture(STEP_PAVING_1));
+    for (GLuint i = 1258; i < 1277; i++)
+        glCallList(i);
+
+    glBindTexture(GL_TEXTURE_2D, tp.GetTexture(STEP_EDGE));
+    for (GLuint i = 1277; i < 1298; i++)
+        glCallList(i);
+}
+
+/**
+ * @brief Draws tavern steps
+ */
+void ShaysWorld::DrawTavSteps() {
+    step       = 10000.0f;
+    stepLength = 9808.0f;
+    for (GLuint i = 1258; i < 1277; i++) {
+        tp.CreateDisplayList(XZ, i, 1024.0f, 512.0f, 2600.0f, step, stepLength,
+                             2.2f, 0.277f);
+        tp.CreateDisplayList(XY, i + 19, 64.0f, 64.0f, 2600.0f, step - 64.0f,
+                             stepLength, 35.0f, 1.0f);
+        step -= 48.0f;
+        stepLength -= 142.0f;
+    }
+}
+
+/**
+ * @brief Displays the benches
+ */
 void ShaysWorld::DisplayBench() {
     step2 = 3860.0f;
     for (int j = 0; j < 11; j++) {
@@ -3446,6 +4213,9 @@ void ShaysWorld::DisplayBench() {
     }
 }
 
+/**
+ * @brief Draws benches
+ */
 void ShaysWorld::DrawBench() {
     tp.CreateDisplayList(XZ, 400, 64.0f, 64.0f, 31760.0f, 10147.0f, 10894.0f,
                          3.0f, 7.5f);
@@ -3478,9 +4248,9 @@ void ShaysWorld::DrawBench() {
                          41008.0f, 0.78f, 0.625f);
 }
 
-//--------------------------------------------------------------------------------------
-// Display Extras (signs etc)
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Displays extras
+ */
 void ShaysWorld::DisplayExtras() {
     // Rusty Man like Sculpture
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(RUSTY_MAN));
@@ -3761,6 +4531,9 @@ void ShaysWorld::DisplayExtras() {
     glPopMatrix();
 }
 
+/**
+ * @brief Draws extras
+ */
 void ShaysWorld::DrawExtras() {
     tp.CreateDisplayList(YZ, 300, 256.0f, 1024.0f, 33808.0f, 10576.0f, 25472.0f,
                          1.0f,
@@ -3953,10 +4726,9 @@ void ShaysWorld::DrawExtras() {
                          49.0f); // ticket box ledge edge side
 }
 
-// --------------------------------------------------------------------------------------
-// Display larger textures such as windows and doors
-// --------------------------------------------------------------------------------------
-
+/**
+ * @brief Display larger textures such as windows and doors
+ */
 void ShaysWorld::DisplayLargerTextures() {
     // Gap betweem chanc and phys sci
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOW_1));
@@ -4241,6 +5013,9 @@ void ShaysWorld::DisplayLargerTextures() {
     glCallList(453);
 }
 
+/**
+ * @brief Draws larger textures
+ */
 void ShaysWorld::DrawLargerTextures() {
     // CHANC
     // Gap between chanc and phy sci y1142 z3248
@@ -4362,18 +5137,21 @@ void ShaysWorld::DrawLargerTextures() {
                          1380.0f); // block at bottom of steps
 }
 
-// --------------------------------------------------------------------------------------
-// Display grass and slopes
-// --------------------------------------------------------------------------------------
-
+/**
+ * @brief Displays grass and slopes
+ */
 void ShaysWorld::DisplayGrass() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(GRASS));
+    glPushMatrix();
+    glTranslatef(0, 0, 2880);
     glCallList(79);
+    glPopMatrix();
     glCallList(111);
     glCallList(460);
     glCallList(477);
-    for (GLuint i = 461; i < 477; i++)
+    for (GLuint i = 461; i < 477; i++) {
         glCallList(i);
+    }
 
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(GRASS_2));
     glCallList(198);
@@ -4383,13 +5161,19 @@ void ShaysWorld::DisplayGrass() {
     // for (int i = 461; i < 477; i++) glCallList(i);
 }
 
+/**
+ * @brief Draws grass
+ */
 void ShaysWorld::DrawGrass() {
+    float lowerPlaneExtendMult = 10;
+    // Lower flat plane
     tp.CreateDisplayList(XZ, 79, 64.0f, 64.0f, 4848.0f, 9086.0f, 3408.0f,
-                         417.5f, 45.0f);
+                         417.5f, -45.0f * lowerPlaneExtendMult); // 45.0f
+    // Higher flat plane
     tp.CreateDisplayList(XZ, 111, 64.0f, 64.0f, 4848.0f, 10000.0f, 10000.0f,
                          417.5f, 481.5f);
 
-    // Slope ate the entrance
+    // Slope at the entrance
     tp.CreateAngledPolygon(198, 64.0f, 64.0f, 4848.0f, 31568.0f, 31568.0f,
                            4848.0f, 9086.0f, 9086.0f, 10000.0f, 10000.0f,
                            6200.0f, 6200.0f, 10000.0f, 10000.0f, 1, 1);
@@ -4465,9 +5249,9 @@ void ShaysWorld::DrawGrass() {
                            33000.0f, 33000.0f, 36000.0f, 36000.0f, 1, 1);
 }
 
-// --------------------------------------------------------------------------------------
-// Display Light Fittings
-// --------------------------------------------------------------------------------------
+/**
+ * @brief Display Light Fittings
+ */
 void ShaysWorld::DisplayLights() {
     // Light Fitting
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(LIGHT));
@@ -4537,6 +5321,9 @@ void ShaysWorld::DisplayLights() {
     }
 }
 
+/**
+ * @brief Draws lights
+ */
 void ShaysWorld::DrawLights() {
     // Fittings
     glNewList(376, GL_COMPILE);
@@ -4552,10 +5339,9 @@ void ShaysWorld::DrawLights() {
                          220.0f); // supports
 }
 
-// --------------------------------------------------------------------------------------
-// Display drainpipe and tuckshop serving counter
-// --------------------------------------------------------------------------------------
-
+/**
+ * @brief Display drainpipe and tuckshop serving counter
+ */
 void ShaysWorld::DisplayCylinders() {
     // drainpipe
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(DRAINPIPE));
@@ -4591,13 +5377,14 @@ void ShaysWorld::DisplayCylinders() {
     glPopMatrix();
 }
 
+/**
+ * @brief Draws cylinders
+ */
 void ShaysWorld::DrawCylinders() {
     // Drainpipe
     glNewList(437, GL_COMPILE);
-    glBegin(GL_QUADS);
     gluQuadricDrawStyle(glu_cylinder, GLU_FILL);
     gluCylinder(glu_cylinder, 10.0, 10.0, 2.0, 15, 15);
-    glEnd();
     glEndList();
 
     // Serving Counter
@@ -4620,9 +5407,9 @@ void ShaysWorld::DrawCylinders() {
                          30.0f, 1.0f);
 }
 
-// --------------------------------------------------------------------------------------
-// Display Wall by Entrance
-// --------------------------------------------------------------------------------------
+/**
+ * @brief Display Wall by Entrance
+ */
 void ShaysWorld::DisplayStepBricks() {
     step = 0.0f;
 
@@ -4705,6 +5492,10 @@ void ShaysWorld::DisplayStepBricks() {
     glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_STEPS_EDGE_2));
     glCallList(507);
 }
+
+/**
+ * @brief Draws step bricks
+ */
 void ShaysWorld::DrawStepBricks() {
     tp.CreateDisplayList(YZ, 478, 128.0f, 128.0f, 31582.0f, 9914.0f, 9872.0f,
                          1.7188f, 1.75f);
@@ -4779,9 +5570,175 @@ void ShaysWorld::DrawStepBricks() {
                          1.0f, 3.4376f);
 }
 
-//--------------------------------------------------------------------------------------
-//  Map and Welcome screens
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Displays tavern step bricks
+ */
+void ShaysWorld::DisplayTavStepBricks() {
+    step = 0.0f;
+
+    for (int j = 0; j < 2; j++) {
+        glPushMatrix();
+        glTranslatef(step, 0.0f, 0.0f);
+        glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_STEPS));
+        for (GLuint i = 1478; i < 1487; i++)
+            glCallList(i);
+
+        glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_STEPS_TOP));
+        for (GLuint i = 1488; i < 1493; i++)
+            glCallList(i);
+
+        glPushMatrix();
+        glTranslatef(31572.0f, 9222.0f, 6126.0f);
+        glRotatef(-18.69f, 1.0f, 0.0f, 0.0f);
+        glTranslatef(-31572.0f, -9222.0f, -6126.0f);
+        glCallList(1493);
+        glPopMatrix();
+
+        glPushMatrix();
+        glTranslatef(31572.0f, 9461.0f, 7213.0f);
+        glRotatef(-20.31f, 1.0f, 0.0f, 0.0f);
+        glTranslatef(-31572.0f, -9462.0f, -7213.0f);
+        glCallList(1494);
+        glPopMatrix();
+
+        glPushMatrix();
+        glTranslatef(31572.0f, 9722.0f, 8302.0f);
+        glRotatef(-17.35f, 1.0f, 0.0f, 0.0f);
+        glTranslatef(-31572.0f, -9722.0f, -8302.0f);
+        glCallList(1495);
+        glPopMatrix();
+
+        glPushMatrix();
+        glTranslatef(31572.0f, 9939.0f, 9332.4f);
+        glRotatef(-19.83f, 1.0f, 0.0f, 0.0f);
+        glTranslatef(-31572.0f, -9942.0f, -9332.4f);
+        glCallList(1496);
+        glPopMatrix();
+        glPopMatrix();
+        step += -64.0f;
+    }
+
+    glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_STEPS_COVER));
+    for (GLuint i = 1497; i < 1502; i++)
+        glCallList(i);
+    glPushMatrix();
+    glTranslatef(31572.0f, 9222.0f, 6126.0f);
+    glRotatef(-18.69f, 1.0f, 0.0f, 0.0f);
+    glTranslatef(-31572.0f, -9222.0f, -6126.0f);
+    glCallList(1502);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(31572.0f, 9462.0f, 7213.0f);
+    glRotatef(-20.21f, 1.0f, 0.0f, 0.0f);
+    glTranslatef(-31572.0f, -9462.0f, -7213.0f);
+    glCallList(1503);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(31572.0f, 9722.0f, 8302.0f);
+    glRotatef(-17.35f, 1.0f, 0.0f, 0.0f);
+    glTranslatef(-31572.0f, -9722.0f, -8302.0f);
+    glCallList(1504);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(31572.0f, 9939.0f, 9332.4f);
+    glRotatef(-19.83f, 1.0f, 0.0f, 0.0f);
+    glTranslatef(-31572.0f, -9942.0f, -9332.4f);
+    glCallList(1505);
+    glPopMatrix();
+
+    glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_STEPS_EDGE));
+    glCallList(1506);
+
+    glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_STEPS_EDGE_2));
+    glCallList(1507);
+}
+
+/**
+ * @brief Draws tavern step bricks
+ */
+void ShaysWorld::DrawTavStepBricks() {
+    float xCord = 4880.0f;
+    tp.CreateDisplayList(YZ, 1478, 128.0f, 128.0f, xCord, 9914.0f, 9872.0f,
+                         1.7188f, 1.75f);
+    tp.CreateDisplayList(YZ, 1488, 32.0f, 128.0f, xCord, 10134.0f, 9868.0f,
+                         1.0f, 1.78f);
+
+    tp.CreateDisplayList(YZ, 1479, 128.0f, 128.0f, xCord, 9530.0f, 9006.0f,
+                         3.21875f, 6.0f);
+    tp.CreateDisplayList(YZ, 1489, 32.0f, 128.0f, xCord, 9942.0f, 9004.0f, 1.0f,
+                         2.55f);
+
+    tp.CreateDisplayList(YZ, 1480, 128.0f, 128.0f, xCord, 9350.0f, 7918.0f,
+                         2.90625f, 6.0f);
+    tp.CreateDisplayList(YZ, 1490, 32.0f, 128.0f, xCord, 9722.0f, 7916.0f, 1.0f,
+                         3.0f);
+    /// This is part of the bugged area
+    tp.CreateDisplayList(YZ, 1481, 128.0f, 128.0f, xCord, 9158.0f, 6830.0f,
+                         2.375f, 10.0f);
+    /// Bricks for the wall above.
+    tp.CreateDisplayList(YZ, 1491, 32.0f, 128.0f, xCord, 9462.0f, 6830.0f, 1.0f,
+                         2.99f);
+    /// Far bottom wall
+    tp.CreateDisplayList(YZ, 1482, 128.0f, 128.0f, xCord, 8966.0f, 4590.0f,
+                         2.0f, 30.0f);
+    tp.CreateDisplayList(YZ, 1492, 32.0f, 128.0f, xCord, 9222.0f, 4590.0f, 1.0f,
+                         12.0f);
+    /// Angled section near bottom
+    tp.CreateAngledPolygon(1483, 128.0f, 128.0f, xCord, xCord, xCord, xCord,
+                           9094.0f, 9094.0f, 9462.0f, 9094.0f, 5742.0f, 6830.0f,
+                           6830.0f, 5742.0f, 5, 1);
+    tp.CreateDisplayList(YZ, 1493, 32.0f, 128.0f, xCord, 9222.0f, 6126.0f, 1.0f,
+                         5.92f);
+
+    tp.CreateAngledPolygon(1484, 128.0f, 128.0f, xCord, xCord, xCord, xCord,
+                           9414.0f, 9414.0f, 9722.0f, 9414.0f, 7086.0f, 7918.0f,
+                           7918.0f, 7086.0f, 5, 1);
+    tp.CreateDisplayList(YZ, 1494, 32.0f, 128.0f, xCord, 9462.0f, 7213.0f, 1.0f,
+                         5.93f);
+
+    tp.CreateAngledPolygon(1485, 128.0f, 128.0f, xCord, xCord, xCord, xCord,
+                           9594.0f, 9594.0f, 9942.0f, 9722.0f, 8302.0f, 9006.0f,
+                           9006.0f, 8302.0f, 5, 1);
+    tp.CreateDisplayList(YZ, 1495, 32.0f, 128.0f, xCord, 9722.0f, 8302.0f, 1.0f,
+                         5.82f);
+
+    tp.CreateAngledPolygon(1486, 128.0f, 128.0f, xCord, xCord, xCord, xCord,
+                           9914.0f, 9914.0f, 10134.0f, 9914.0f, 9262.0f,
+                           9872.0f, 9872.0f, 9262.0f, 5, 1);
+    tp.CreateDisplayList(YZ, 1496, 32.0f, 128.0f, xCord, 9942.0f, 9332.4f, 1.0f,
+                         4.545f);
+
+    /// Top of the bricks on the Tav wall steps
+    tp.CreateDisplayList(XZ, 1497, 64.0f, 128.0f, xCord - 64, 10166.0f, 9868.0f,
+                         1.0f, 1.78f);
+    tp.CreateDisplayList(XZ, 1498, 64.0f, 128.0f, xCord - 64, 9974.0f, 9004.0f,
+                         1.0f, 2.55f);
+    tp.CreateDisplayList(XZ, 1499, 64.0f, 128.0f, xCord - 64, 9754.0f, 7916.0f,
+                         1.0f, 3.0f);
+    tp.CreateDisplayList(XZ, 1500, 64.0f, 128.0f, xCord - 64, 9494.0f, 6830.0f,
+                         1.0f, 2.99f);
+    tp.CreateDisplayList(XZ, 1501, 64.0f, 128.0f, xCord - 64, 9254.0f, 4590.0f,
+                         1.0f, 12.0f);
+    tp.CreateDisplayList(XZ, 1502, 64.0f, 128.0f, xCord - 64, 9254.0f, 6126.0f,
+                         1.0f, 5.92f);
+    tp.CreateDisplayList(XZ, 1503, 64.0f, 128.0f, xCord - 64, 9494.0f, 7213.0f,
+                         1.0f, 5.95f);
+    tp.CreateDisplayList(XZ, 1504, 64.0f, 128.0f, xCord - 64, 9754.0f, 8302.0f,
+                         1.0f, 5.82f);
+    tp.CreateDisplayList(XZ, 1505, 64.0f, 128.0f, xCord - 64, 9974.0f, 9332.4f,
+                         1.0f, 4.545f);
+    tp.CreateDisplayList(XY, 1506, 64.0f, 32.0f, xCord - 64, 10134.0f,
+                         10095.84f, 1.0f, 1.0f);
+    tp.CreateDisplayList(XY, 1507, 64.0f, 64.0f, xCord - 64, 9914.0f, 10095.84f,
+                         1.0f, 3.4376f);
+}
+
+/**
+ * @brief Draws map exit
+ */
 void ShaysWorld::DrawMapExit() {
     tp.CreateDisplayList(0, 448, 256.0f, 256.0f, 10.0f, 10.0f, 0.0f, 0.855f,
                          1.0f); // map
@@ -4792,9 +5749,13 @@ void ShaysWorld::DrawMapExit() {
 }
 
 //--------------------------------------------------------------------------------------
-//  Create display lists
-//	Numbers indicate list numbers
+
 //--------------------------------------------------------------------------------------
+
+/**
+ *  @brief   Create display lists
+ *	Numbers indicate list numbers
+ */
 void ShaysWorld::CreateTextureList() {
     DrawGrass();            // 79, 111, 198, 460-477
     DrawChancPosts();       // 11-15, 235-237
@@ -4808,23 +5769,25 @@ void ShaysWorld::CreateTextureList() {
     DrawLibraryPosts();     // 57-63, 442-447
     DrawMainPosts();        // 18-19, 51-52
     DrawPavement();         // 28, 73-94, 240-249, 428, 436
-    DrawBricks(); // 101-110, 112-169, 180-197, 200-201, 390-399, 430-434
-    DrawRoof();   // 1-10, 97-100, 170-179, 202-205, 214-222, 250-257, 296-299,
-                  // 426-427
-    DrawEntranceSteps();  // 258-295, 206-207
-    DrawExtras();         // 300-349, 388, 395, 419-421, 429, 435
+    DrawBricks();        // 101-110, 112-169, 180-197, 200-201, 390-399, 430-434
+    DrawRoof();          // 1-10, 97-100, 170-179, 202-205, 214-222, 250-257,
+                         // 296-299, 426-427
+    DrawEntranceSteps(); // 258-295, 206-207
+    DrawTavSteps();      // 1258-1295 1206-1207
+    DrawExtras();        // 300-349, 388, 395, 419-421, 429, 435
     DrawLargerTextures(); // 350-375, 379-387, 389, 414-418, 422-423, 450-453
     DrawLights();         // 376-378
     DrawBench();          // 400-413
     DrawStepBricks();     // 478-507
+    DrawTavStepBricks();  // 1478-1507
     DrawCylinders();      // 437-441
     DrawMapExit();        // 448-449, 454
                           // 455-459
 }
 
-//--------------------------------------------------------------------------------------
-//  Increments frame count used for setting movement speed
-//--------------------------------------------------------------------------------------
+/**
+ * @brief Increments the current frame cout
+ */
 void ShaysWorld::IncrementFrameCount() {
     float t = (static_cast<GLfloat>((clock() - lastClock))) /
               static_cast<GLfloat>(CLOCKS_PER_SEC);

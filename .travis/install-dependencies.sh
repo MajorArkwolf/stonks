@@ -2,14 +2,19 @@
 
 set -euxo pipefail
 
-if [[ "$TRAVIS_OS_NAME" = "windows" ]]; then
-    git clone --depth=1 https://github.com/Microsoft/vcpkg.git $VCPKG_ROOT
-    cd "$VCPKG_ROOT"
-    powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& '.\bootstrap-vcpkg.bat'"
+if [[ "${TRAVIS_OS_NAME}" == "windows" ]]; then
+    set +x
+    ./.travis/download-github-asset.sh opeik stonks vcpkg vcpkg.tar
+    set -x
+
+    mkdir -p "${VCPKG_ROOT}"
+    tar -xf vcpkg.tar -C "${VCPKG_ROOT}"
+    cd "${VCPKG_ROOT}"
     ./vcpkg.exe integrate install
-    ./vcpkg.exe install $VCPKG_PACKAGES
 fi
 
-if [[ "$TRAVIS_OS_NAME" = "osx" ]]; then
-    brew install cmake sdl2 sdl2_image sdl2_ttf sdl2_mixer glm || true
+if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+    brew install ${BREW_PACKAGES}
 fi
+
+git lfs install

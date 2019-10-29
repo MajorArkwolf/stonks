@@ -1,13 +1,15 @@
-#include "Camera.h"
+#include "Camera.hpp"
 
 #include <algorithm>
 #include <cmath>
+#include <cstddef>
 
 #include <SDL2/SDL.h>
 #include <glm/gtc/constants.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
+#include "Shay/PlainNode.hpp"
 #include "Shay/Shay.hpp"
 #include "Stonk/Engine.hpp"
 #include "Stonk/OpenGl.hpp"
@@ -15,6 +17,11 @@
 using glm::vec2;
 using glm::vec3;
 using Shay::Camera;
+using std::size_t;
+
+using Shay::PlainNode;
+using Slope = PlainNode::Slope;
+
 constexpr auto PI = glm::pi<float>();
 
 /**
@@ -25,21 +32,19 @@ void Camera::AdjustForPlane() {
     if (m_No_Plains == 0)
         m_No_Plains = m_Plain.GetListSize();
 
-    for (int i = 0; i < m_No_Plains; i++) {
+    for (size_t i = 0; i < m_No_Plains; i++) {
         // if camera is positioned on a plain
         if ((position.z <= m_Plain.GetZend(i)) &&
             (position.z >= m_Plain.GetZstart(i)) &&
             (position.x <= m_Plain.GetXend(i)) &&
             (position.x >= m_Plain.GetXstart(i))) {
-            // if flat plain
-            if (m_Plain.GetType(i) == 0) {
+            if (m_Plain.GetType(i) == Slope::FLAT) {
                 position.y = m_Plain.GetYstart(i);
 
                 m_plainNo     = i;
                 m_plainHeight = m_Plain.GetYstart(i);
             }
-            // if plain slopes in z direction
-            if (m_Plain.GetType(i) == 2) {
+            if (m_Plain.GetType(i) == Slope::ZY) {
                 auto height = std::abs(m_Plain.GetYstart(i) - m_Plain.GetYend(i));
                 auto length = std::abs(m_Plain.GetZstart(i) - m_Plain.GetZend(i));
                 auto ratio =
@@ -51,8 +56,7 @@ void Camera::AdjustForPlane() {
                     position.y = m_Plain.GetYend(i) - (ratio * height);
                 }
             }
-            // if plain slopes in x direction
-            if (m_Plain.GetType(i) == 1) {
+            if (m_Plain.GetType(i) == Slope::XY) {
                 auto height = std::abs(m_Plain.GetYstart(i) - m_Plain.GetYend(i));
                 auto length = std::abs(m_Plain.GetXstart(i) - m_Plain.GetXend(i));
                 auto ratio =
@@ -73,7 +77,7 @@ void Camera::AdjustForPlane() {
  *
  * @param dt The elapsed delta time since last frame.
  */
-void Camera::UpdateLook(double dt) {
+void Camera::UpdateLook([[maybe_unused]] double dt) {
     // The vertical look limit, to prevent looking completely up or down.
     constexpr auto VERTICAL_LIMIT = (PI / 2.0f) - 0.03f;
 
@@ -106,6 +110,11 @@ void Camera::UpdateLook(double dt) {
     this->look.y = std::sin(this->angles.y);
     this->look.z = std::cos(this->angles.x) * std::cos(this->angles.y);
     this->look += this->position;
+}
+
+auto Camera::getForwardDir() const -> vec3 {
+    return vec3{std::sin(this->angles.x), std::sin(this->angles.y),
+                std::cos(this->angles.x)};
 }
 
 /**
@@ -171,51 +180,77 @@ void Camera::Update(double dt) {
               static_cast<double>(this->tilt.z));    //
 }
 
+/**
+ * @brief Moves the camera if no collision occurs
+ * @param newPos The new position to set the camera to
+ */
 void Camera::MoveIfOk(glm::vec3 newPos) {
     if (!(m_colDetect.Collide(newPos.x, newPos.y, newPos.z))) {
         this->position = newPos;
     }
 }
 
-//--------------------------------------------------------------------------------------
-// Display map of world
-//----------------------------------------------------------------------------------------
-
-void Camera::DisplayMap(const int &screenWidth, const int &screenHeight,
-                        const GLuint &tempImage) {
+/**
+ * @brief Displays the map
+ * @param screenWidth The width of the screen
+ * @param screenHeight The height of the screen
+ * @param tempImage The enum number of the map texture
+ */
+void Camera::DisplayMap(int screenWidth, int screenHeight, GLuint tempImage) {
     m_map.DisplayMap(screenWidth, screenHeight, GetLR(), GetFB(), tempImage);
 }
 
-//--------------------------------------------------------------------------------------
-// Display welcome or exit page
-//----------------------------------------------------------------------------------------
-
-void Camera::DisplayWelcomeScreen(const int &screenWidth, const int &screenHeight,
-                                  const int &tempExit, const GLuint &tempImage) {
-    m_map.DisplayWelcomeScreen(screenWidth, screenHeight, tempExit, tempImage);
+/**
+ * @brief Displays the welcome screen
+ * @param screenWidth The width of the screen
+ * @param screenHeight The height of the screen
+ * @param tempImage The enum number of the texture to display
+ */
+void Camera::DisplayWelcomeScreen(int screenWidth, int screenHeight,
+                                  GLuint tempImage) {
+    m_map.DisplayWelcomeScreen(screenWidth, screenHeight, tempImage);
 }
 
-//--------------------------------------------------------------------------------------
-// Display welcome or exit page
-//----------------------------------------------------------------------------------------
-
-void Camera::DisplayNoExit(const int &screenWidth, const int &screenHeight,
-                           const GLuint &tempImage) {
+/**
+ * @brief Displays the no exit screen
+ * @param screenWidth The width of the screen
+ * @param screenHeight The height of the screen
+ * @param tempImage The enum number of the texture to display
+ */
+void Camera::DisplayNoExit(int screenWidth, int screenHeight, GLuint tempImage) {
     m_map.DisplayNoExit(screenWidth, screenHeight, tempImage);
 }
 
-//----------------------------------------------------------------------------------------
-
-void Camera::SetWorldCoordinates(const GLfloat &tempX, const GLfloat &tempZ) {
+/**
+ * @brief Sets the world coordinates
+ * @param tempX The x coordinate of the world
+ * @param tempZ The y coordinate of the world
+ */
+void Camera::SetWorldCoordinates(GLfloat tempX, GLfloat tempZ) {
     m_colDetect.SetWorldX(tempX);
     m_colDetect.SetWorldZ(tempZ);
 }
 
-//----------------------------------------------------------------------------------------
-
-void Camera::SetPlains(const int tempType, const GLfloat tempXs,
-                       const GLfloat tempXe, const GLfloat tempYs,
-                       const GLfloat tempYe, const GLfloat tempZs,
-                       const GLfloat tempZe) {
+/**
+ * @brief  Adds a slope to the end of the slope vector
+ *
+ * @param tempType Slope type
+ * @param tempXs X start location
+ * @param tempXe X end location
+ * @param tempYs Y start location
+ * @param tempYe Y end location
+ * @param tempZs Z start location
+ * @param tempZe Z end location
+ */
+void Camera::SetPlains(Slope tempType, GLfloat tempXs, GLfloat tempXe,
+                       GLfloat tempYs, GLfloat tempYe, GLfloat tempZs,
+                       GLfloat tempZe) {
     m_Plain.AddToStart(tempType, tempXs, tempXe, tempYs, tempYe, tempZs, tempZe);
+}
+
+/**
+ * @brief  Finishes the current AABB by incrementing the AABB count
+ */
+auto Camera::FinishAABB() -> void {
+    m_colDetect.FinishAABB();
 }

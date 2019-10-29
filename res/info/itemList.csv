@@ -1,0 +1,18 @@
+#Armor,Name,Description,Rarity,AC,Dex Penalty,,,
+#Weapon,Name,Description,Rarity,PreHitDie,PostHitDie,CritRange,CritMulitplier,Range,Type(S,A,I)
+#Consumable
+weapon,Iron Dagger,Better then nothing but you should probably upgrade soon.,common,1,3,0,2,1
+weapon,Great Sword,A mighty sword that squishes foes.,rare,2,6,0,3,1
+weapon,Brass Nuckles,Not practical. But cool,common,1,3,4,2,1,2
+weapon,Long Sword,,uncommon,1,6,1,2,1,1
+weapon,Rapier,,uncommon,1,6,1,2,1,1
+weapon,Club,Wooden and reliable,common,1,4,1,2,1,1
+weapon,Shay Bane,An item of incrediable Shay slaying,mythic,2,8,1,4,1,1
+armor,Leather Armor,Sturdy and strong.,common,1,0,,,
+armor,Studded Leather Armor,Sturdy and strong.,rare,2,0,,,
+armor,Chain Mail,Sturdy and strong.,common,2,1,,,
+armor,Light Plate Armor,Sturdy and strong.,rare,3,2,,,
+armor,Plate Armor,Sturdy and strong.,rare,4,3,,,
+armor,Fur Coat,Sturdy and strong.,rare,1,0,,,
+armor,Armor of the Forgotton King,Sturdy and strong.,mythic,6,3,,,
+armor,Shay Mail,Its like a link list only crunchy,mythic,10,10,,,

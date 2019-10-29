@@ -15,11 +15,15 @@ namespace Stonk {
         Entities entities = Entities{};
     };
 
+    /**
+     * @class Physics
+     * @brief Stonk physics subsystem
+     */
     class Physics {
       public:
-        auto update(State &state, float dt) -> void;
+        auto update(State &state, double dt) -> void;
     };
-};
+}
 
 auto operator*(const Stonk::State &rhs, float scalar) -> Stonk::State;
 auto operator*(const Stonk::State &rhs, double scalar) -> Stonk::State;
