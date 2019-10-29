@@ -7,6 +7,7 @@
 
 #include "Akuma/CombatLog.hpp"
 #include "Camera.hpp"
+#include "Items/ItemManager.hpp"
 #include "imgui.h"
 #include "imgui_impl_opengl2.h"
 #include "imgui_impl_sdl.h"
@@ -244,7 +245,12 @@ void Akuma::displayGameStats() {
     auto &playerStats = player->getComponent<StatComponent>().stat;
     auto &playerEquip = player->getComponent<EquipmentComponent>();
     auto playerTurn   = player->getComponent<TurnComponent>().checkTurn();
-    auto turnOutput   = string();
+    auto armorID      = playerEquip.getEquippedArmor().itemID;
+    auto weaponID     = playerEquip.getEquippedMainHand().itemID;
+    auto weapon       = ItemManager::getWeapon(weaponID);
+    auto armor        = ItemManager::getArmor(armorID);
+
+    auto turnOutput = string();
     if (playerTurn) {
         turnOutput = "Your Turn";
     } else {
@@ -282,7 +288,10 @@ void Akuma::displayGameStats() {
     ImGui::Text("Equipped Items");
     ImGui::Separator();
     ImGui::Text("Main Hand:  %s", playerEquip.getEquippedMainHand().name.c_str());
+    ImGui::Text("DMG: %.0dD%0.d CRIT: %0.d-20", weapon.weaponPreHitDie,
+                weapon.weaponHitDie, (20 - weapon.critRange));
     ImGui::Text("Armor:  %s", playerEquip.getEquippedArmor().name.c_str());
+    ImGui::Text("AC: %.0d DEXP: %.0d", armor.armorBonus, armor.dexPentalty);
 
     if (!playerIsDead) {
 
@@ -517,6 +526,7 @@ void Akuma::levelStatSelection(const char *attribName, int &pointsLeft,
 void Akuma::drawCharacterMenu() {
     const int statMin = 8;
     auto &playerStats = player->getComponent<StatComponent>().stat;
+
     ImGui::SetNextWindowSize(ImVec2(300, 500), 1);
     ImGui::SetNextWindowPosCenter(1);
 
